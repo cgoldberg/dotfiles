@@ -1,0 +1,22 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+
+# / was on /dev/sda1 during installation
+UUID=58263589-286e-4db2-8816-241846ccfe43 /               ext4    noatime,nodiratime,errors=remount-ro 0       1
+
+# swap was on /dev/sda5 during installation
+UUID=dfc7acd9-9e9e-40c5-a665-44a8387f7eb6 none            swap    sw              0       0
+
+# Bytez - QNAP NAS - 2TB HDD
+//192.168.1.10/Public /mnt/bytez cifs guest,gid=1000,uid=1000,username=cgoldberg,password=,iocharset=utf8,sec=ntlm  0  0
+
+# Bitz - Buffalo NAS
+#//192.168.1.23/share /mnt/bitz cifs gid=cgoldberg,uid=cgoldberg,iocharset=utf8,sec=ntlm 0 0
+
+# Western Digital Green 2TB Internal HDD
+/dev/disk/by-label/wd-green /mnt/wd-green ext4 noatime,nodiratime,nofail 0 0

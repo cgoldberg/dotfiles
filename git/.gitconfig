@@ -1,0 +1,12 @@
+[user]
+	email = cgoldberg@gmail.com
+	name = Corey Goldberg
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[branch]
+	autosetupmerge = true
+	autosetuprebase = always
+[push]
+	default = simple
