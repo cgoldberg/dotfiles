@@ -15,6 +15,7 @@ echo
 rsync -a --delete --human-readable --progress --safe-links --verbose /mnt/bytez/ /mnt/wd-green/
 echo
 echo
+sync
 echo "Everything synced!"
 echo
 df -hT /mnt/wd-green
