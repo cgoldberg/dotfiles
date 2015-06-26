@@ -8,19 +8,6 @@ case $- in
       *) return;;
 esac
 
-# **************** HISTORY ****************
-# append to the history file, don't overwrite it
-shopt -s histappend
-# save each line of a multi-line command in the same history entry
-shopt -s cmdhist
-# don't put duplicate lines in the history.
-HISTCONTROL=ignoredups
-HISTSIZE=2000
-HISTFILESIZE=2000
-HISTIGNORE='ls:exit'
-PROMPT_COMMAND="history -a; history -n"
-# *****************************************
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -94,4 +81,41 @@ if ! shopt -oq posix; then
   fi
 fi
 
-~/screenfetch-ubuntu.sh
+
+# **************** cmg tweaks *************
+
+# history
+# -------
+# append to the history file, don't overwrite it
+shopt -s histappend
+# save each line of a multi-line command in the same history entry
+shopt -s cmdhist
+# don't put duplicate lines in the history
+HISTCONTROL=ignoredups
+HISTSIZE=2000
+HISTFILESIZE=2000
+HISTIGNORE='ls:exit'
+PROMPT_COMMAND="history -a; history -n"
+
+# git command completion
+# ----------------------
+# https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
+source ~/.git-completion.bash
+
+# git repo prompt
+# ---------------
+# https://github.com/magicmonty/bash-git-prompt
+GIT_PROMPT_ONLY_IN_REPO=1
+source ~/.bash-git-prompt/gitprompt.sh
+
+# logo and system info
+# --------------------
+# https://github.com/cgoldberg/screenfetch-ubuntu
+~/.screenfetch-ubuntu.sh
+
+# random quotation
+# ----------------
+# apt-get install fortunes
+fortune
+
+echo ""
