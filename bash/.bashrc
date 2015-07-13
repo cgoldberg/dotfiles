@@ -117,9 +117,11 @@ source ~/.bash-git-prompt/gitprompt.sh
 # https://github.com/cgoldberg/screenfetch-ubuntu
 ~/.screenfetch-ubuntu.sh
 
+echo "------------------------------------------------------------"
+
 # random quotation
 # ----------------
-# apt-get install fortunes
-fortune
+fortune -a -s -n 80
 
+echo "------------------------------------------------------------"
 echo ""
