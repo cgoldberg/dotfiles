@@ -11,9 +11,17 @@ if [ -x /usr/bin/dircolors ]; then
     alias grep="grep --color=auto"
 fi
 
-alias clear_dropbox_cache="rm -rf ~/Dropbox/.dropbox.cache/*"
 alias cls="clear"
+
+alias clear_dropbox_cache="rm -rf ~/Dropbox/.dropbox.cache/*"
+
 alias count_files_recursively="find . -type f | wc -l"
+
 alias strip_jpgs="exiv2 -d a *.jpg"
+
 alias h="history | grep"
-alias apt-all="sudo apt-get update; sudo apt-get dist-upgrade; sudo apt-get autoremove; sudo apt-get autoclean; sudo apt-get clean"
+
+# see: https://help.ubuntu.com/community/AptGet/Howto
+alias apt-all="sudo apt-get update; sudo apt-get dist-upgrade; sudo apt-get -f install; sudo apt-get autoremove; sudo apt-get autoclean; sudo apt-get clean; sudo apt-get check"
+
+alias apt-purge-old-configs="dpkg -l | grep '^rc' | awk '{print $2}' | sudo xargs dpkg --purge"
