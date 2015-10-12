@@ -15,10 +15,10 @@ rsync -a --delete --human-readable --progress --safe-links /mnt/bytez/ /mnt/wd-g
 echo "flushing local file system buffers..."
 sync
 echo
-echo "Everything synced!"
+echo "everything synced!"
 echo
 df -hT /mnt/wd-green
 echo
 df -hT /mnt/bytez
 echo
-echo "Done"
+echo "done"
