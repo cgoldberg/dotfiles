@@ -2,9 +2,11 @@
 
 set -e
 
-echo "\ndeleting Dropbox cache..."
+echo
+echo "deleting Dropbox cache..."
 rm -rf ~/Dropbox/.dropbox.cache/*
-echo "\nsyncing local Dropbox to Bytez NAS..."
+echo
+echo "syncing local Dropbox to Bytez NAS..."
 rsync -a --delete --human-readable --safe-links ~/Dropbox/ /mnt/bytez/Dropbox/
 echo
 echo "syncing Bytez NAS to local WD-Green HDD..."
