@@ -104,24 +104,24 @@ PROMPT_COMMAND="history -a; history -n"
 # git command completion
 # ----------------------
 # https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
-source ~/.git-completion.bash
+#source ~/.git-completion.bash
 
 # git repo prompt
 # ---------------
 # https://github.com/magicmonty/bash-git-prompt
-GIT_PROMPT_ONLY_IN_REPO=1
-source ~/.bash-git-prompt/gitprompt.sh
+#GIT_PROMPT_ONLY_IN_REPO=1
+#source ~/.bash-git-prompt/gitprompt.sh
 
 # logo and system info
 # --------------------
 # https://github.com/cgoldberg/screenfetch-ubuntu
 ~/.screenfetch-ubuntu.sh
 
-echo "------------------------------------------------------------"
+#echo "------------------------------------------------------------"
 
 # random quotation
 # ----------------
-fortune -a -s -n 80
+#fortune -a -s -n 80
 
-echo "------------------------------------------------------------"
-echo ""
+#echo "------------------------------------------------------------"
+#echo ""
