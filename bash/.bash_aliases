@@ -24,4 +24,4 @@ alias h="history | grep"
 # see: https://help.ubuntu.com/community/AptGet/Howto
 alias apt-all="sudo apt-get update; sudo apt-get dist-upgrade; sudo apt-get -f install; sudo apt-get autoremove; sudo apt-get autoclean; sudo apt-get clean; sudo apt-get check"
 
-alias apt-purge-old-configs="dpkg -l | grep '^rc' | awk '{print $2}' | sudo xargs dpkg --purge"
+#alias apt-purge-old-configs="dpkg -l | grep '^rc' | awk '{print $2}' | sudo xargs dpkg --purge"
