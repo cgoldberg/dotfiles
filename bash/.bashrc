@@ -84,44 +84,33 @@ fi
 
 # **************** cmg tweaks *************
 
+# terminal stuff
+# ------------------------------------------------------------------------------
 # custom prompt
-# -------------
 export PS1="\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\\$ \[$(tput sgr0)\]"
+# terminal title
+PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
+# disable terminal suspend and resume feature
+stty -ixon
 
 # history
-# -------
+# ------------------------------------------------------------------------------
 # append to the history file, don't overwrite it
 shopt -s histappend
 # save each line of a multi-line command in the same history entry
 shopt -s cmdhist
 # don't put duplicate lines in the history
 HISTCONTROL=ignoredups
+# immediately add commands to history instead of waiting for end of session
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+# number of previous commands stored in history file
 HISTSIZE=2000
+# number of previous commands stored in memory for current session
 HISTFILESIZE=2000
+# don't store these commands in history
 HISTIGNORE='ls:exit'
-PROMPT_COMMAND="history -a; history -n"
-
-# git command completion
-# ----------------------
-# https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
-#source ~/.git-completion.bash
-
-# git repo prompt
-# ---------------
-# https://github.com/magicmonty/bash-git-prompt
-#GIT_PROMPT_ONLY_IN_REPO=1
-#source ~/.bash-git-prompt/gitprompt.sh
 
 # logo and system info
-# --------------------
+# ------------------------------------------------------------------------------
 # https://github.com/cgoldberg/screenfetch-ubuntu
 ~/.screenfetch-ubuntu.sh
-
-#echo "------------------------------------------------------------"
-
-# random quotation
-# ----------------
-#fortune -a -s -n 80
-
-#echo "------------------------------------------------------------"
-#echo ""
