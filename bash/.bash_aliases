@@ -1,6 +1,6 @@
 # cgoldberg
-# alias definitions
-# -----------------
+# bash alias definitions and functions
+# ------------------------------------
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -12,16 +12,33 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 alias cls="clear"
-
 alias clear_dropbox_cache="rm -rf ~/Dropbox/.dropbox.cache/*"
-
 alias count_files_recursively="find . -type f | wc -l"
-
 alias strip_jpgs="exiv2 -d a *.jpg"
 
-alias h="history | grep"
+# search history
+alias h="history | grep "
 
-# see: https://help.ubuntu.com/community/AptGet/Howto
-alias apt-all="sudo apt-get update; sudo apt-get dist-upgrade; sudo apt-get -f install; sudo apt-get autoremove; sudo apt-get autoclean; sudo apt-get clean; sudo apt-get check"
+function apt-all () {
+    # reload package index files from sources
+    sudo apt-get update
+    # upgrade all installed packages using smart conflict resolution
+    sudo apt-get dist-upgrade -y --show-progress
+    # check for broken dependencies
+    sudo apt-get check
+    # fix broken dependencies
+    sudo apt-get install -y --fix-broken
+    # remove packages installed by other packages and no longer needed
+    sudo apt-get autoremove -y
+    # remove all packages from the package cache
+    sudo apt-get clean -y
+}
 
-#alias apt-purge-old-configs="dpkg -l | grep '^rc' | awk '{print $2}' | sudo xargs dpkg --purge"
+function apt-purge-configs () {
+        # remove all configuration data from removed packages
+        dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
+}
+
+function scoreboard () {
+    git log | grep Author | sort | uniq -ci | sort -hr
+}
