@@ -112,5 +112,4 @@ HISTIGNORE='ls:exit'
 # call script to display logo and system info
 # ------------------------------------------------------------------------------
 # https://github.com/cgoldberg/screenfetch-ubuntu
-#~/.screenfetch-ubuntu.sh
 bash ~/.screenfetch-ubuntu.sh
