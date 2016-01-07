@@ -11,7 +11,8 @@ rsync -a --delete --human-readable --safe-links ~/Dropbox/ /mnt/bytez/Dropbox/
 echo
 echo "syncing Bytez NAS to local WD-Green HDD..."
 echo
-rsync -a --delete --human-readable --progress --safe-links /mnt/bytez/ /mnt/wd-green/
+rsync -a --delete --human-readable --progress --info=progress2 --safe-links /mnt/bytez/ /mnt/wd-green/
+echo
 echo "flushing local file system buffers..."
 sync
 echo
