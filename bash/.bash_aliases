@@ -32,8 +32,6 @@ function apt-all () {
     sudo apt-get autoremove --show-progress
     # remove all packages from the package cache
     sudo apt-get clean --show-progress
-    # remove all configuration data from removed packages
-    apt-purge-configs
 }
 
 function apt-purge-configs () {
