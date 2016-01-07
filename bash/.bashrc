@@ -65,7 +65,6 @@ esac
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -88,12 +87,12 @@ fi
 # ------------------------------------------------------------------------------
 # custom prompt
 export PS1="\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\\$ \[$(tput sgr0)\]"
-# terminal title
+# add title to new terminal windows
 PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
 # disable terminal suspend and resume feature
 stty -ixon
 
-# history
+# fix history handling
 # ------------------------------------------------------------------------------
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -110,7 +109,8 @@ HISTFILESIZE=2000
 # don't store these commands in history
 HISTIGNORE='ls:exit'
 
-# logo and system info
+# call script to display logo and system info
 # ------------------------------------------------------------------------------
 # https://github.com/cgoldberg/screenfetch-ubuntu
-~/.screenfetch-ubuntu.sh
+#~/.screenfetch-ubuntu.sh
+bash ~/.screenfetch-ubuntu.sh
