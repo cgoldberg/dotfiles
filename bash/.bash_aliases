@@ -23,15 +23,17 @@ function apt-all () {
     # reload package index files from sources
     sudo apt-get update
     # upgrade all installed packages using smart conflict resolution
-    sudo apt-get dist-upgrade -y --show-progress
+    sudo apt-get dist-upgrade --show-progress --verbose-versions
     # check for broken dependencies
     sudo apt-get check
     # fix broken dependencies
-    sudo apt-get install -y --fix-broken
+    sudo apt-get install --fix-broken --show-progress --verbose-versions
     # remove packages installed by other packages and no longer needed
-    sudo apt-get autoremove -y
+    sudo apt-get autoremove --show-progress
     # remove all packages from the package cache
-    sudo apt-get clean -y
+    sudo apt-get clean --show-progress
+    # remove all configuration data from removed packages
+    apt-purge-configs
 }
 
 function apt-purge-configs () {
