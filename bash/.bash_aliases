@@ -23,20 +23,20 @@ function apt-all () {
     # reload package index files from sources
     sudo apt-get update
     # upgrade all installed packages using smart conflict resolution
-    sudo apt-get dist-upgrade --show-progress --verbose-versions
+    sudo apt-get dist-upgrade --show-progress
     # check for broken dependencies
     sudo apt-get check
     # fix broken dependencies
-    sudo apt-get install --fix-broken --show-progress --verbose-versions
+    sudo apt-get install --fix-broken --show-progress
     # remove packages installed by other packages and no longer needed
     sudo apt-get autoremove --show-progress
     # remove all packages from the package cache
-    sudo apt-get clean --show-progress
+    sudo apt-get clean
 }
 
+# remove all configuration data from removed packages
 function apt-purge-configs () {
-        # remove all configuration data from removed packages
-        dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
+    dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
 }
 
 function scoreboard () {
