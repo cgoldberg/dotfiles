@@ -34,7 +34,7 @@ function apt-all () {
     sudo apt-get clean
 }
 
-# remove all configuration data from removed packages
+# purge all configuration data from removed packages
 function apt-purge-configs () {
     dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
 }
