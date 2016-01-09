@@ -109,7 +109,16 @@ HISTFILESIZE=2000
 # don't store these commands in history
 HISTIGNORE='ls:exit'
 
-# call script to display logo and system info
+# git auto-completion
 # ------------------------------------------------------------------------------
-# https://github.com/cgoldberg/screenfetch-ubuntu
-bash ~/.screenfetch-ubuntu.sh
+# to install:
+#  $ mkdir ~/bin
+#  $ cd ~/bin
+#  $  mkdir ~/bin; cd ~/bin && wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+source ~/bin/git-completion.bash
+
+# display ubuntu logo and system info in new terminals
+# ------------------------------------------------------------------------------
+# to install:
+#  $ mkdir ~/bin; cd ~/bin && wget https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu.sh
+bash ~/bin/screenfetch-ubuntu.sh
