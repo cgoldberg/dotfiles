@@ -12,13 +12,15 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 alias cls="clear"
-alias clear_dropbox_cache="rm -rf ~/Dropbox/.dropbox.cache/*"
-alias count_files_recursively="find . -type f | wc -l"
-alias strip_jpgs="exiv2 -d a *.jpg"
+alias clear-dropbox-cache="rm -rf ~/Dropbox/.dropbox.cache/*"
+alias count-files-recursively="find . -type f | wc -l"
+alias strip-jpgs="exiv2 -d a *.jpg"
+alias scoreboard="git log | grep Author | sort | uniq -ci | sort -hr"
 
 # search history
 alias h="history | grep "
 
+# update packages and do maintenance
 function apt-all () {
     # reload package index files from sources
     sudo apt-get update
@@ -29,16 +31,25 @@ function apt-all () {
     # fix broken dependencies
     sudo apt-get install --fix-broken --show-progress
     # remove packages installed by other packages and no longer needed
-    sudo apt-get autoremove --show-progress
+    sudo apt-get autoremove --purge --show-progress
     # remove all packages from the package cache
     sudo apt-get clean
 }
 
-# purge all configuration data from removed packages
-function apt-purge-configs () {
-    dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
+# purge configuration data from files marked for removal
+function clear-apt-configs () {
+    if $(dpkg -l | grep --quiet '^rc'); then
+        $(dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge)
+    else
+        echo "no package configuration data to remove"
+    fi
 }
 
-function scoreboard () {
-    git log | grep Author | sort | uniq -ci | sort -hr
+# purge thumbnail cache
+function clear-thumbnails () {
+    echo "current size of thumbnail cache:"
+    du -sh ~/.cache/thumbnails/
+    find ~/.cache/thumbnails -type f -exec rm -vf {} \;
+    echo "size after purge:"
+    du -sh ~/.cache/thumbnails/
 }
