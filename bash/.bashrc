@@ -84,16 +84,23 @@ fi
 # **************** cmg tweaks *************
 
 # terminal stuff
-# ------------------------------------------------------------------------------
-# custom prompt
-export PS1="\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\\$ \[$(tput sgr0)\]"
+# --------------
+# use git auto-completion
+# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+source ~/bin/git-completion.bash
+# show git branch name in prompt
+# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+source ~/bin/git-prompt.sh
+# customize prompt
+PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\\$ \[$(tput sgr0)\]$(__git_ps1 "(%s)$ ")'
 # add title to new terminal windows
 PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
 # disable terminal suspend and resume feature
 stty -ixon
 
-# fix history handling
-# ------------------------------------------------------------------------------
+
+# command history handling
+# ------------------------
 # append to the history file, don't overwrite it
 shopt -s histappend
 # save each line of a multi-line command in the same history entry
@@ -109,16 +116,7 @@ HISTFILESIZE=2000
 # don't store these commands in history
 HISTIGNORE='ls:exit'
 
-# git auto-completion
-# ------------------------------------------------------------------------------
-# to install:
-#  $ mkdir ~/bin
-#  $ cd ~/bin
-#  $  mkdir ~/bin; cd ~/bin && wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-source ~/bin/git-completion.bash
 
 # display ubuntu logo and system info in new terminals
-# ------------------------------------------------------------------------------
-# to install:
-#  $ mkdir ~/bin; cd ~/bin && wget https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu.sh
+# https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu.sh
 bash ~/bin/screenfetch-ubuntu.sh
