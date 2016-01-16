@@ -11,6 +11,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias grep="grep --color=auto"
 fi
 
+alias g="git"
+alias gs="git status"
 alias cls="clear"
 alias clear-dropbox-cache="rm -rf ~/Dropbox/.dropbox.cache/*"
 alias count-files-recursively="find . -type f | wc -l"
