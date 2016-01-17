@@ -50,7 +50,6 @@ fi
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]$(__git_ps1 "(%s)")\$ '
 
 # add title to new terminal windows
-#__git_ps1
 PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
 
 # disable terminal suspend and resume feature
