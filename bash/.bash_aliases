@@ -2,6 +2,15 @@
 # bash alias definitions and functions
 # ------------------------------------
 
+alias g="git"
+alias cls="clear"
+alias clear-dropbox-cache="rm -rf ~/Dropbox/.dropbox.cache/*"
+alias count-files-recursively="find . -type f | wc -l"
+alias strip-jpgs="exiv2 -d a *.jpg"
+alias scoreboard="git log | grep Author | sort | uniq -ci | sort -hr"
+# search history
+alias h="history | grep "
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -10,15 +19,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias lsl="\ls -AFGl --color=always | more"
     alias grep="grep --color=auto"
 fi
-
-alias cls="clear"
-alias clear-dropbox-cache="rm -rf ~/Dropbox/.dropbox.cache/*"
-alias count-files-recursively="find . -type f | wc -l"
-alias strip-jpgs="exiv2 -d a *.jpg"
-alias scoreboard="git log | grep Author | sort | uniq -ci | sort -hr"
-
-# search history
-alias h="history | grep "
 
 # update packages and do maintenance
 function apt-all () {
@@ -36,7 +36,7 @@ function apt-all () {
     sudo apt-get clean
 }
 
-# purge configuration data from files marked for removal
+# purge configuration data from packages marked for removal
 function clear-apt-configs () {
     if $(dpkg -l | grep --quiet '^rc'); then
         $(dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge)
