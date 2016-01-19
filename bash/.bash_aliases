@@ -8,6 +8,8 @@ alias clear-dropbox-cache="rm -rf ~/Dropbox/.dropbox.cache/*"
 alias count-files-recursively="find . -type f | wc -l"
 alias strip-jpgs="exiv2 -d a *.jpg"
 alias scoreboard="git log | grep Author | sort | uniq -ci | sort -hr"
+# open GitHub in browser for current repo
+alias gh="git config --get remote.origin.url | xargs xdg-open > /dev/null 2>&1"
 # search history
 alias h="history | grep "
 
