@@ -2,17 +2,6 @@
 # bash alias definitions and functions
 # ------------------------------------
 
-alias g="git"
-alias cls="clear"
-alias clear-dropbox-cache="rm -rf ~/Dropbox/.dropbox.cache/*"
-alias count-files-recursively="find . -type f | wc -l"
-alias strip-jpgs="exiv2 -d a *.jpg"
-alias scoreboard="git log | grep Author | sort | uniq -ci | sort -hr"
-# open GitHub in browser for current repo
-alias gh="git config --get remote.origin.url | xargs xdg-open > /dev/null 2>&1"
-# search history
-alias h="history | grep "
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -22,7 +11,36 @@ if [ -x /usr/bin/dircolors ]; then
     alias grep="grep --color=auto"
 fi
 
-# update packages and do maintenance
+alias g="git"
+# open GitHub in browser for current repo
+alias gh="git config --get remote.origin.url | xargs xdg-open > /dev/null 2>&1"
+alias scoreboard="git log | grep Author | sort | uniq -ci | sort -hr"
+
+alias x="exit"
+alias cls="clear"
+alias clear-dropbox-cache="rm -rf ~/Dropbox/.dropbox.cache/*"
+alias count-files-recursively="find . -type f | wc -l"
+alias strip-jpgs="exiv2 -d a *.jpg"
+
+# search history
+alias h="history | grep "
+
+# disable line wrapping in the terminal (long lines truncated at terminal width)
+nowrap="tput rmam"
+# enable line wrapping in the terminal (long lines wrapped at terminal width)
+alias wrap="tput smam"
+
+# search process info (with line wrapping disabled and restored)
+function psgrep () {
+    ps aux | grep --color=always $* | grep -v grep | more
+}
+
+# search for file by name or glob pattern (
+function name () {
+    find / -name $*
+}
+
+# update packages and do package maintenance
 function apt-all () {
     # reload package index files from sources
     sudo apt-get update
@@ -32,7 +50,7 @@ function apt-all () {
     sudo apt-get check
     # fix broken dependencies
     sudo apt-get install --fix-broken --show-progress
-    # remove packages installed by other packages and no longer needed
+    # remove packages installed by other packages that are no longer needed
     sudo apt-get autoremove --purge --show-progress
     # remove all packages from the package cache
     sudo apt-get clean
