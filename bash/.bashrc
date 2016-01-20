@@ -38,22 +38,24 @@ if [ -f ~/bin/git-completion.bash ]; then
     __git_complete g _git
 fi
 
-# show current git branch name in prompt.
-# must also call `__git_ps1` when setting PS1.
+# show current git branch name in prompt. must also call `__git_ps1` when setting PS1.
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 if [ -f ~/bin/git-prompt.sh ]; then
     . ~/bin/git-prompt.sh
 fi
 
-# customize and color the prompt
+# customize and colorize the prompt
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]$(__git_ps1 "(%s)")\$ '
 
 # add title to new terminal windows
-#__git_ps1
 PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
 
-# disable terminal suspend and resume feature
+# disable suspend and resume feature in the terminal
 stty -ixon
+
+# enable line wrapping in the terminal
+tput smam
+
 
 # command history handling
 # ------------------------
