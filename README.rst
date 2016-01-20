@@ -1,7 +1,0 @@
-------------------
-cgoldberg/dotfiles
-------------------
-
-linux configurations.
-
-----
