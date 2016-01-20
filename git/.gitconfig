@@ -1,12 +1,20 @@
 [user]
-	email = cgoldberg@gmail.com
-	name = Corey Goldberg
+    name = Corey Goldberg
+    email = cgoldberg@gmail.com
 [color]
-	diff = auto
-	status = auto
-	branch = auto
+    diff = auto
+    status = auto
+    branch = auto
 [branch]
-	autosetupmerge = true
-	autosetuprebase = always
+    autosetupmerge = true
+    autosetuprebase = always
 [push]
-	default = upstream
+    default = simple
+[alias]
+    # list all git aliases
+    la = "!git config -l | grep alias | cut -c 7-"
+    # list commits in short form, with colors and branch/tag annotations
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    # list commits showing changed files
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    
