@@ -18,4 +18,4 @@
     # list commits showing changed files
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
     # reset to HEAD and clean untracked files
-    blowaway = reset --hard HEAD; clean -d -x --force
+    blowaway = !git reset --hard HEAD && git clean -d -x --force
