@@ -11,8 +11,10 @@
 [push]
     default = simple
 [alias]
-    # list all git aliases
-    la = "!git config -l | grep alias | cut -c 7-"
+    # open GitHub website for current repo
+    open = !git config --get remote.origin.url | xargs xdg-open > /dev/null 2>&1
+    # list commit counts ranked by contributor
+    score = !git log | grep Author | sort | uniq -ci | sort -hr
     # list commits in short form, with colors and branch/tag annotations
     ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
     # list commits showing changed files
