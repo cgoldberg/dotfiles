@@ -12,9 +12,8 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 alias g="git"
-# open GitHub in browser for current repo
-alias gh="git config --get remote.origin.url | xargs xdg-open > /dev/null 2>&1"
-alias scoreboard="git log | grep Author | sort | uniq -ci | sort -hr"
+# list all git aliases specified in .gitconfig
+alias git-aliases="git config -l | grep alias | cut -c 7-"
 
 alias x="exit"
 alias cls="clear"
@@ -27,10 +26,11 @@ alias h="history | grep "
 
 # disable line wrapping in the terminal (long lines truncated at terminal width)
 nowrap="tput rmam"
+
 # enable line wrapping in the terminal (long lines wrapped at terminal width)
 alias wrap="tput smam"
 
-# search process info (with line wrapping disabled and restored)
+# search process info
 function psgrep () {
     ps aux | grep --color=always $* | grep -v grep | more
 }
