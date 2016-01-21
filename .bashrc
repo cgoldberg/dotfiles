@@ -45,7 +45,7 @@ if [ -f ~/bin/git-prompt.sh ]; then
 fi
 
 # customize and colorize the prompt
-PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]$(__git_ps1 "(%s)")\$ '
+PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1 "(%s)")\]\[$(tput sgr0)\]\$ '
 
 # add title to new terminal windows
 PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
@@ -55,7 +55,6 @@ stty -ixon
 
 # enable line wrapping in the terminal
 tput smam
-
 
 # command history handling
 # ------------------------
@@ -84,3 +83,4 @@ fi
 if [ -f  ~/bin/screenfetch-ubuntu.sh ]; then
     bash ~/bin/screenfetch-ubuntu.sh
 fi
+
