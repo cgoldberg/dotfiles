@@ -2,6 +2,10 @@
 # bash alias definitions and functions
 # ------------------------------------
 
+# enable auto-completion for "g" alias
+__git_complete g _git
+alias g="git"
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -10,10 +14,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias lsl="\ls -AFGl --color=always | more"
     alias grep="grep --color=auto"
 fi
-
-alias g="git"
-# list all git aliases specified in .gitconfig
-alias git-aliases="git config -l | grep alias | cut -c 7-"
 
 alias x="exit"
 alias cls="clear"
