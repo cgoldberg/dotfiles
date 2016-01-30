@@ -12,6 +12,9 @@ esac
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# add title to new terminal windows
+PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
+
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
@@ -30,18 +33,27 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# add auto-completion support for git commands
+# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+if [ -f ~/bin/git-completion.bash ]; then
+    . ~/bin/git-completion.bash
+fi
+
+# show current git branch name in prompt when in a repo directory
+# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+if [ -f ~/bin/git-prompt.sh ]; then
+    . ~/bin/git-prompt.sh
+fi
+
 # include shell aliases and functions
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# add title to new terminal windows
-PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
-
-# disable suspend and resume feature in the terminal
+# disable suspend and resume feature in terminal
 stty -ixon
 
-# enable line wrapping in the terminal
+# enable line wrapping in terminal
 tput smam
 
 # command history handling
@@ -63,18 +75,6 @@ HISTIGNORE='ls:exit'
 
 # customize and colorize the prompt
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1 "(%s)")\]\[$(tput sgr0)\]\$ '
-
-# add auto-completion support for git commands
-# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-if [ -f ~/bin/git-completion.bash ]; then
-    . ~/bin/git-completion.bash
-fi
-
-# show current git branch name in prompt when in a repo directory
-# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-if [ -f ~/bin/git-prompt.sh ]; then
-    . ~/bin/git-prompt.sh
-fi
 
 # customize and colorize the prompt
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1 "(%s)")\]\[$(tput sgr0)\]\$ '

@@ -1,12 +1,11 @@
-# cgoldberg
-# bash alias definitions and functions
-# ------------------------------------
+# cgoldberg's bash aliases and functions
+# ------------------------------------------------
 
 # enable auto-completion for "g" alias
 __git_complete g _git
 alias g="git"
 
-# enable color support of ls and also add handy aliases
+# enable color support (when available) for ls and grep
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls="\ls -AFGl --color=auto"
@@ -17,47 +16,58 @@ fi
 
 alias x="exit"
 alias cls="clear"
-alias clear-dropbox-cache="rm -rf ~/Dropbox/.dropbox.cache/*"
 alias count-files-recursively="find . -type f | wc -l"
 alias strip-jpgs="exiv2 -d a *.jpg"
 
-# search history
-alias h="history | grep "
+# list desktop trash (works against all gvfs mounted volumes)
+alias trash-list="gvfs-ls trash://"
+
+# empty desktop trash (works against all gvfs mounted volumes)
+alias trash-empty="gvfs-trash --empty"
 
 # disable line wrapping in the terminal (long lines truncated at terminal width)
-nowrap="tput rmam"
+alias nowrap="tput rmam"
 
 # enable line wrapping in the terminal (long lines wrapped at terminal width)
 alias wrap="tput smam"
 
+#----------------------------------------------------------------
+
+# search command history
+function h () {
+    history | grep $1
+}
+
 # search process info
 function psgrep () {
-    ps aux | grep --color=always $* | grep -v grep | more
+    ps aux | grep --color=always $1 | grep -v grep | more
 }
 
-# search for file by name or glob pattern (
+# recursively search for file names, partially matching, starting from user HOME
+# (creates or updates mlocate database before searching)
 function name () {
-    find / -name $*
+    updatedb --require-visibility 0 --output ~/locatedb --database-root ~
+    locate --database ~/locatedb $1
 }
 
-# update packages and do package maintenance
+# update all packages and do package maintenance
 function apt-all () {
     # reload package index files from sources
     sudo apt-get update
     # upgrade all installed packages using smart conflict resolution
-    sudo apt-get dist-upgrade --show-progress
+    sudo apt-get dist-upgrade
     # check for broken dependencies
     sudo apt-get check
     # fix broken dependencies
-    sudo apt-get install --fix-broken --show-progress
+    sudo apt-get install --fix-broken
     # remove packages installed by other packages that are no longer needed
-    sudo apt-get autoremove --purge --show-progress
+    sudo apt-get autoremove --purge
     # remove all packages from the package cache
     sudo apt-get clean
 }
 
 # purge configuration data from packages marked for removal
-function clear-apt-configs () {
+function purge-apt-configs () {
     if $(dpkg -l | grep --quiet '^rc'); then
         $(dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge)
     else
@@ -66,10 +76,21 @@ function clear-apt-configs () {
 }
 
 # purge thumbnail cache
-function clear-thumbnails () {
-    echo "current size of thumbnail cache:"
-    du -sh ~/.cache/thumbnails/
-    find ~/.cache/thumbnails -type f -exec rm -vf {} \;
+function purge-thumbnail-cache () {
+    CACHED_DIR=~/.cache/thumbnails/
+    echo "size before purge:"
+    du -sh $CACHED_DIR
+    find $CACHED_DIR -type f -exec rm -rf {} \;
     echo "size after purge:"
-    du -sh ~/.cache/thumbnails/
+    du -sh $CACHED_DIR
+}
+
+# purge local Dropbox cache
+function purge-dropbox-cache () {
+    CACHED_DIR=~/Dropbox/.dropbox.cache/
+    echo "size before purge:"
+    du -sh $CACHED_DIR
+    find $CACHED_DIR -type f -exec rm -rf {} \;
+    echo "size after purge:"
+    du -sh $CACHED_DIR
 }
