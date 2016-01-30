@@ -1,5 +1,7 @@
-# cgoldberg's bash aliases and functions
-# ------------------------------------------------
+# --------------------------------------------------------
+# ~/.bash_asliases: sourced in bashrc for non-login shells
+# aliases and functions customized for cgoldberg
+# --------------------------------------------------------
 
 # enable auto-completion for "g" alias
 __git_complete g _git
