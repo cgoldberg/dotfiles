@@ -18,7 +18,7 @@ PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -57,23 +57,6 @@ stty -ixon
 # enable line wrapping in terminal
 tput smam
 
-# command history handling
-# ------------------------
-# append to the history file, don't overwrite it
-shopt -s histappend
-# save each line of a multi-line command in the same history entry
-shopt -s cmdhist
-# don't show duplicate commands in history
-HISTCONTROL=ignoredups
-# immediately add commands to history instead of waiting for end of session
-PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-# number of previous commands stored in history file
-HISTSIZE=2000
-# number of previous commands stored in memory for current session
-HISTFILESIZE=2000
-# don't store these commands in history
-HISTIGNORE='ls:exit'
-
 # customize and colorize the prompt
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1 "(%s)")\]\[$(tput sgr0)\]\$ '
 
@@ -85,3 +68,22 @@ PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[3
 if [ -f  ~/bin/screenfetch-ubuntu.sh ]; then
     bash ~/bin/screenfetch-ubuntu.sh
 fi
+
+# better command history handling
+# -------------------------------
+# append to the history file, don't overwrite it
+shopt -s histappend
+# edit a recalled history line before executing
+shopt -s histverify
+# save each line of a multi-line command in the same history entry
+shopt -s cmdhist
+# don't show duplicate commands in history
+HISTCONTROL=ignoredups
+# immediately add commands to history instead of waiting for end of session
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+# number of previous commands stored in history file
+HISTSIZE=10000
+# number of previous commands stored in memory for current session
+HISTFILESIZE=10000
+# don't store these commands in history
+HISTIGNORE='ls:exit:h:history:pwd'

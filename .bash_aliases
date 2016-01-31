@@ -35,21 +35,30 @@ alias wrap="tput smam"
 
 #----------------------------------------------------------------
 
-# search command history
+# search command history for given regex
+# when executed with no args, this function just calls `history`
 function h () {
-    history | grep $1
+    if [ $# -eq 0 ]; then
+        history
+    else
+        history | grep --color=never $1
+    fi
 }
 
 # search process info
 function psgrep () {
-    ps aux | grep --color=always $1 | grep -v grep | more
+    if [ $# -eq 0 ]; then
+        echo "$FUNCNAME requires 1 arg"
+    else
+        ps aux | grep --color=always $1 | grep -v grep | more
+    fi
 }
 
 # recursively search for file names, partially matching, starting from user HOME
 # (creates or updates mlocate database before searching)
 function name () {
-    updatedb --require-visibility 0 --output ~/locatedb --database-root ~
-    locate --database ~/locatedb $1
+    updatedb --require-visibility 0 --output ~/.locatedb --database-root ~
+    locate --database ~/.locatedb $1
 }
 
 # update all packages and do package maintenance
