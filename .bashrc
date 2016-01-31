@@ -13,12 +13,12 @@ esac
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# add title to new terminal windows
-PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
-
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
+
+# add title to new terminal windows
+PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -56,6 +56,9 @@ stty -ixon
 
 # enable line wrapping in terminal
 tput smam
+
+# map an extra Escape key instead of Caps Lock key
+xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 # customize and colorize the prompt
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1 "(%s)")\]\[$(tput sgr0)\]\$ '
