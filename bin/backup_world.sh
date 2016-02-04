@@ -2,24 +2,16 @@
 
 set -e
 
-echo
-echo "deleting Dropbox cache..."
+echo "\ndeleting Dropbox cache..."
 rm -rf ~/Dropbox/.dropbox.cache/*
-echo
-echo "syncing local Dropbox to Bytez NAS..."
-rsync -a --delete --human-readable --safe-links ~/Dropbox/ /mnt/bytez/Dropbox/
-echo
-echo "syncing Bytez NAS to local WD-Green HDD..."
-echo
+echo "\nsyncing local Dropbox to Bytez NAS..."
+rsync -a --delete --human-readable --progress --info=progress2 --safe-links ~/Dropbox/ /mnt/bytez/Dropbox/
+echo "\nsyncing Bytez NAS to local WD-Green HDD..."
 rsync -a --delete --human-readable --progress --info=progress2 --safe-links /mnt/bytez/ /mnt/wd-green/
-echo
-echo "flushing local file system buffers..."
+echo "\nflushing local file system buffers..."
 sync
-echo
-echo "everything synced!"
-echo
+echo "\neverything synced!\n"
 df -hT /mnt/wd-green
 echo
 df -hT /mnt/bytez
-echo
-echo "done"
+echo "\ndone"
