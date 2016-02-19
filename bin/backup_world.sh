@@ -1,21 +1,37 @@
+#!/usr/bin/env bash
+
+# master backup job:
+# - rsyncs local dropbox to remote NAS
+# - rsyncs remote NAS to secondary local HDD mirror
+# - report disk space of all mounted file systems
+
 set -e
 
-echo "\nrunning master backup job:"
-echo "----------------------------------------------------------------"
-echo "\ndeleting Dropbox cache..."
+if [ ! -d "/mnt/bytez/" ]; then
+    echo "error: can't find mount point for remote NAS (bytez)"
+    exit 1
+fi
+
+if [ ! -d "/mnt/wd-green/" ]; then
+    echo "error: can't find mount point for secondary local HDD mirror (wd-green)"
+    exit 1
+fi
+
+SEP="----------------------------------------"
+echo "starting master backup job:"
+echo $SEP
+echo "deleting local dropbox cache..."
 rm -rf ~/Dropbox/.dropbox.cache/*
-echo "----------------------------------------------------------------"
-echo "\nsyncing local Dropbox to Bytez NAS..."
+echo $SEP
+echo "syncing local dropbox to remote NAS..."
 rsync -a --delete --human-readable --info=progress2 --safe-links ~/Dropbox/ /mnt/bytez/Dropbox/
-echo "----------------------------------------------------------------"
-echo "\nsyncing Bytez NAS to local WD-Green HDD..."
+echo $SEP
+echo "syncing remote NAS to local backup..."
 rsync -a --delete --human-readable --progress --info=progress2 --safe-links /mnt/bytez/ /mnt/wd-green/
-echo "----------------------------------------------------------------"
-echo "\nflushing local file system buffers..."
+echo $SEP
+echo "flushing local file system buffers..."
 sync
-echo "----------------------------------------------------------------\n"
-df -hT /mnt/wd-green
-echo "----------------------------------------------------------------\n"
-df -hT /mnt/bytez
-echo "----------------------------------------------------------------\n"
+echo $SEP
+df -hT
+echo $SEP
 echo "done"
