@@ -26,10 +26,10 @@ alias count-files-recursively="find . -type f | wc -l"
 # display 100 latest modified files under current dir (sorted in reverse)
 alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 100"
 
-# list desktop trash (works against all gvfs mounted volumes)
+# list desktop trash (works for all gvfs mounted volumes)
 alias trash-list="gvfs-ls trash://"
 
-# empty desktop trash (works against all gvfs mounted volumes)
+# empty desktop trash (works for all gvfs mounted volumes)
 alias trash-empty="gvfs-trash --empty"
 
 # disable line wrapping in the terminal (long lines truncated at terminal width)
@@ -64,7 +64,7 @@ function psgrep () {
     fi
 }
 
-# recursively search for file names, partially matching, starting from user HOME
+# search for partially matching file names starting under $HOME
 # (creates or updates mlocate database before searching)
 function name () {
     updatedb --require-visibility 0 --output ~/.locatedb --database-root ~
@@ -105,34 +105,31 @@ function purge-apt-configs () {
 
 # purge thumbnail cache
 function purge-thumbnail-cache () {
-    CACHED_DIR=~/.cache/thumbnails/
-    echo "size before purge:"
-    du -sh $CACHED_DIR
-    find $CACHED_DIR -type f -exec rm -rf {} \;
-    echo "size after purge:"
-    du -sh $CACHED_DIR
+    CACHE_DIR=~/.cache/thumbnails/
+    echo "purging:"
+    du -h $CACHE_DIR
+    rm -rf $CACHE_DIR
+    mkdir $CACHE_DIR
 }
 
 # purge local Dropbox cache
 function purge-dropbox-cache () {
-    CACHED_DIR=~/Dropbox/.dropbox.cache/
-    SIZE=$(du -sh $CACHED_DIR)
-    echo "size before purge: $SIZE"
-    echo "purging..."
-    find $CACHED_DIR -delete
-    dropbox stop && dropbox start
+    if ! $(dropbox running); then
+        dropbox stop
+    fi
+    CACHE_DIR=~/Dropbox/.dropbox.cache/
+    echo "purging:"
+    du -h $CACHE_DIR
+    rm -rf $CACHE_DIR
+    dropbox start
 }
 
 # print all 256 terminal colors as both foreground and background
 function print-colors () {
-    for fgbg in 38 48 ; do
-        for color in {0..256} ; do
-            # display the color
+    for fgbg in 38 48; do
+        for color in {0..256}; do
             echo -en "\e[${fgbg};5;${color}m ${color}\t\e[0m"
-            # display 10 colors per lines
-            if [ $((($color + 1) % 10)) == 0 ] ; then
-                echo #New line
-            fi
+            if [ $((($color + 1) % 10)) == 0 ]; then echo; fi
         done
         echo
     done
