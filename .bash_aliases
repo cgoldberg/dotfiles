@@ -103,25 +103,14 @@ function purge-apt-configs () {
     fi
 }
 
-# purge thumbnail cache
-function purge-thumbnail-cache () {
-    CACHE_DIR=~/.cache/thumbnails/
-    echo "purging: $(du -h $CACHE_DIR)"
-    rm -rf $CACHE_DIR
-    mkdir $CACHE_DIR
-    CACHE_DIR=~/thumbnails/
-    rm $CACHE_DIR
-    ln -s ~/.cache/thumbnails ~/.thumbnails
-
-}
-
 # purge local Dropbox cache
 function purge-dropbox-cache () {
     if ! $(dropbox running); then
         dropbox stop
     fi
     CACHE_DIR=~/Dropbox/.dropbox.cache/
-    echo "purging: $(du -h $CACHE_DIR)"
+    echo "purging:"
+    du -h $CACHE_DIR
     rm -rf $CACHE_DIR
     dropbox start
 }
