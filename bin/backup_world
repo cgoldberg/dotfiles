@@ -1,11 +1,25 @@
 #!/usr/bin/env bash
 
 # master backup job:
+# - deletes local dropbox cache
 # - rsyncs local dropbox to remote NAS
 # - rsyncs remote NAS to secondary local HDD mirror
 # - report disk space of all mounted file systems
 
 set -e
+
+
+function purge-dropbox-cache () {
+    if ! $(dropbox running); then
+        dropbox stop
+    fi
+    CACHE_DIR=~/Dropbox/.dropbox.cache/
+    echo "purging local dropbox cache:"
+    du -h $CACHE_DIR
+    rm -rf $CACHE_DIR
+    dropbox start
+}
+
 
 if [ ! -d "/mnt/bytez/" ]; then
     echo "error: can't find mount point for remote NAS (bytez)"
@@ -17,11 +31,15 @@ if [ ! -d "/mnt/wd-green/" ]; then
     exit 1
 fi
 
+if [ ! -d "~/Dropbox/" ]; then
+    echo "error: can't find local Dropbox"
+    exit 1
+fi
+
 SEP="----------------------------------------"
-echo "starting master backup job:"
+echo "starting master backup job..."
 echo $SEP
-echo "deleting local dropbox cache..."
-rm -rf ~/Dropbox/.dropbox.cache/*
+purge-dropbox-cache
 echo $SEP
 echo "syncing local dropbox to remote NAS..."
 rsync -a --delete --human-readable --info=progress2 --safe-links ~/Dropbox/ /mnt/bytez/Dropbox/
@@ -29,9 +47,9 @@ echo $SEP
 echo "syncing remote NAS to local backup..."
 rsync -a --delete --human-readable --progress --info=progress2 --safe-links /mnt/bytez/ /mnt/wd-green/
 echo $SEP
-echo "flushing local file system buffers..."
+echo "flushing local file system buffers (synchronize cached writes)..."
 sync
 echo $SEP
-df -hT
+df -hT --total | egrep "Type|ext4|cifs|total"
 echo $SEP
 echo "done"

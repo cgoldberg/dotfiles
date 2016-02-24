@@ -12,7 +12,7 @@ FILES=(
     ".bashrc"
     ".bash_aliases"
     ".gitconfig"
-    "bin/backup_world.sh"
+    "bin/backup_world"
 )
 for FILE in "${FILES[@]}"; do
     if [ -f "$HOME/$FILE" ]; then

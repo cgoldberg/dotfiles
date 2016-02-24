@@ -97,6 +97,7 @@ function apt-all () {
 # purge configuration data from packages marked for removal
 function purge-apt-configs () {
     if $(dpkg -l | grep --quiet '^rc'); then
+        echo "purging package configs from removed packages..."
         $(dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge)
     else
         echo "no package configuration data to remove"
@@ -109,7 +110,7 @@ function purge-dropbox-cache () {
         dropbox stop
     fi
     CACHE_DIR=~/Dropbox/.dropbox.cache/
-    echo "purging:"
+    echo "purging local dropbox cache:"
     du -h $CACHE_DIR
     rm -rf $CACHE_DIR
     dropbox start
