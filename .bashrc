@@ -63,8 +63,8 @@ PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[3
 
 # display ubuntu logo and system info
 # https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu.sh
-if [ -f  ~/bin/screenfetch-ubuntu.sh ]; then
-    bash ~/bin/screenfetch-ubuntu.sh
+if [ -f  ~/bin/screenfetch-ubuntu ]; then
+    ~/bin/screenfetch-ubuntu
 fi
 
 # better command history handling

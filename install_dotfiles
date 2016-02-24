@@ -22,3 +22,17 @@ for FILE in "${FILES[@]}"; do
     echo "copying $DIR/$FILE to $HOME/$FILE ..."
     cp "$DIR/$FILE" "$HOME/$FILE"
 done
+
+echo "getting screenfetch-ubuntu..."
+wget "https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu" -O "$HOME/bin/screenfetch-ubuntu"
+chmod +x "$HOME/bin/screenfetch-ubuntu"
+
+echo "getting git-prompt.sh..."
+wget "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh" -O "$HOME/bin/git-prompt.sh"
+chmod +x "$HOME/bin/git-prompt.sh"
+
+echo "getting git-completion.bash..."
+wget "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" -O "$HOME/bin/git-completion.bash"
+chmod +x "$HOME/bin/git-completion.bash"
+
+echo "done"

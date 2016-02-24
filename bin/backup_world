@@ -8,48 +8,50 @@
 
 set -e
 
-
 function purge-dropbox-cache () {
     if ! $(dropbox running); then
         dropbox stop
     fi
     CACHE_DIR=~/Dropbox/.dropbox.cache/
-    echo "purging local dropbox cache:"
     du -h $CACHE_DIR
     rm -rf $CACHE_DIR
     dropbox start
 }
 
-
-if [ ! -d "/mnt/bytez/" ]; then
+if [ ! -d /mnt/bytez/ ]; then
     echo "error: can't find mount point for remote NAS (bytez)"
     exit 1
 fi
 
-if [ ! -d "/mnt/wd-green/" ]; then
+if [ ! -d /mnt/wd-green/ ]; then
     echo "error: can't find mount point for secondary local HDD mirror (wd-green)"
     exit 1
 fi
 
-if [ ! -d "~/Dropbox/" ]; then
+if [ ! -d ~/Dropbox/ ]; then
     echo "error: can't find local Dropbox"
     exit 1
 fi
 
-SEP="----------------------------------------"
+echo
+SEP="----------------------------------------------------------------"
 echo "starting master backup job..."
 echo $SEP
+echo "purging local dropbox cache..."
+echo
 purge-dropbox-cache
 echo $SEP
 echo "syncing local dropbox to remote NAS..."
+echo
 rsync -a --delete --human-readable --info=progress2 --safe-links ~/Dropbox/ /mnt/bytez/Dropbox/
 echo $SEP
 echo "syncing remote NAS to local backup..."
+echo
 rsync -a --delete --human-readable --progress --info=progress2 --safe-links /mnt/bytez/ /mnt/wd-green/
 echo $SEP
 echo "flushing local file system buffers (synchronize cached writes)..."
 sync
-echo $SEP
+echo
 df -hT --total | egrep "Type|ext4|cifs|total"
 echo $SEP
 echo "done"

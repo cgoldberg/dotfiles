@@ -110,7 +110,6 @@ function purge-dropbox-cache () {
         dropbox stop
     fi
     CACHE_DIR=~/Dropbox/.dropbox.cache/
-    echo "purging local dropbox cache:"
     du -h $CACHE_DIR
     rm -rf $CACHE_DIR
     dropbox start
