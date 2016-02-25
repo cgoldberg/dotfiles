@@ -46,7 +46,7 @@ function funcs () {
 }
 
 # search command history by regex
-# when called with no args, just execute history command
+# (when called with no args, display entire history)
 function h () {
     if [ $# -eq 0 ]; then
         history
@@ -56,9 +56,10 @@ function h () {
 }
 
 # search process info by regex
+# (when called with no args, run `ps aux`)
 function psgrep () {
     if [ $# -eq 0 ]; then
-        echo "$FUNCNAME requires 1 arg"
+        ps aux | less --chop-long-lines
     else
         ps aux | grep --color=always $1 | grep -v grep | less --chop-long-lines
     fi
@@ -72,7 +73,7 @@ function name () {
 }
 
 # launch SciTE (GUI) editor in the background and suppress stdout/stderr
-# keeps running after the shell session ends and doesn't appear in jobs list
+# (keeps running after the shell session ends and doesn't appear in jobs list)
 function scite () {
     nohup scite "$@" > /dev/null 2>&1 & disown
 }

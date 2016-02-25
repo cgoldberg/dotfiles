@@ -3,17 +3,30 @@
 BIN="$HOME/bin"
 DIR="$(realpath .)"
 
-if [ ! -d "$BIN" ]; then
-    echo "creating directory: $BIN ..."
-    mkdir "$BIN"
-fi
-
 FILES=(
     ".bashrc"
     ".bash_aliases"
     ".gitconfig"
     "bin/backup_world"
 )
+
+if [ ! -d "$BIN" ]; then
+    echo "creating directory: $BIN ..."
+    mkdir "$BIN"
+fi
+
+echo "fetching screenfetch-ubuntu..."
+wget -nv "https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu" -O "$HOME/bin/screenfetch-ubuntu"
+chmod +x "$HOME/bin/screenfetch-ubuntu"
+
+echo "fetching git-prompt.sh..."
+wget -nv "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh" -O "$HOME/bin/git-prompt.sh"
+chmod +x "$HOME/bin/git-prompt.sh"
+
+echo "fetching git-completion.bash..."
+wget -nv "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" -O "$HOME/bin/git-completion.bash"
+chmod +x "$HOME/bin/git-completion.bash"
+
 for FILE in "${FILES[@]}"; do
     if [ -f "$HOME/$FILE" ]; then
         echo "backing up $HOME/$FILE to $HOME/$FILE.old ..."
@@ -23,16 +36,7 @@ for FILE in "${FILES[@]}"; do
     cp "$DIR/$FILE" "$HOME/$FILE"
 done
 
-echo "getting screenfetch-ubuntu..."
-wget "https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu" -O "$HOME/bin/screenfetch-ubuntu"
-chmod +x "$HOME/bin/screenfetch-ubuntu"
-
-echo "getting git-prompt.sh..."
-wget "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh" -O "$HOME/bin/git-prompt.sh"
-chmod +x "$HOME/bin/git-prompt.sh"
-
-echo "getting git-completion.bash..."
-wget "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" -O "$HOME/bin/git-completion.bash"
-chmod +x "$HOME/bin/git-completion.bash"
+echo "sourcing .bashrc..."
+source "$HOME/.bashrc"
 
 echo "done"
