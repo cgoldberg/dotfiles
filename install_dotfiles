@@ -36,7 +36,4 @@ for FILE in "${FILES[@]}"; do
     cp "$DIR/$FILE" "$HOME/$FILE"
 done
 
-echo "sourcing .bashrc..."
-source "$HOME/.bashrc"
-
 echo "done"
