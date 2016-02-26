@@ -1,5 +1,5 @@
 # --------------------------------------------------------
-# ~/.bash_asliases: sourced in bashrc for non-login shells
+# ~/.bash_aliases: sourced in bashrc for non-login shells
 # aliases and functions customized for cgoldberg
 # --------------------------------------------------------
 
@@ -9,8 +9,7 @@ alias g="git"
 
 # enable color support (when available) for ls and grep
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls="\ls -AFGl --color=auto"
+    alias ls="\ls -lhAFG --group-directories-first --color=auto"
     alias l="\ls -F --color=auto"
     alias lsl="\ls -AFGl --color=always | less"
     alias grep="grep --color=auto"
@@ -18,10 +17,12 @@ fi
 
 # add some handy defaults to less
 alias less="less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
+alias more='less'
 
 alias x="exit"
 alias cls="clear"
 alias count-files-recursively="find . -type f | wc -l"
+alias df="df -Th --total"
 
 # display 100 latest modified files under current dir (sorted in reverse)
 alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 100"
@@ -126,3 +127,9 @@ function print-colors () {
         echo
     done
 }
+
+weather() {
+    ZIPCODE="02116"
+    curl -s "http://www.wunderground.com/q/zmw:$ZIPCODE.1.99999" | grep "og:title" | cut -d\" -f4 | sed 's/&deg;/ degrees F/';
+}
+
