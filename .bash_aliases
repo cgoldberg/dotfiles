@@ -7,36 +7,34 @@
 __git_complete g _git
 alias g="git"
 
-# enable color support (when available) for ls and grep
-if [ -x /usr/bin/dircolors ]; then
-    alias ls="\ls -lhAFG --group-directories-first --color=auto"
-    alias l="\ls -F --color=auto"
-    alias lsl="\ls -AFGl --color=always | less"
-    alias grep="grep --color=auto"
-fi
+alias ls="\ls -lhAFG --color=auto --group-directories-first"
+alias l="\ls -AFG --color=auto --group-directories-first"
 
-# add some handy defaults to less
+alias grep="grep --color=auto"
+
 alias less="less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 alias more='less'
 
 alias x="exit"
 alias cls="clear"
-alias count-files-recursively="find . -type f | wc -l"
 alias df="df -Th --total"
+
+# recursive file count from current directory
+alias filecount="find . -type f | wc -l"
 
 # display 100 latest modified files under current dir (sorted in reverse)
 alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 100"
 
-# list desktop trash (works for all gvfs mounted volumes)
-alias trash-list="gvfs-ls trash://"
+# list desktop trash (on all gvfs mounted volumes)
+alias trash-ls="gvfs-ls trash://"
 
-# empty desktop trash (works for all gvfs mounted volumes)
+# empty desktop trash (on all gvfs mounted volumes)
 alias trash-empty="gvfs-trash --empty"
 
-# disable line wrapping in the terminal (long lines truncated at terminal width)
+# disable line wrapping (long lines truncated at terminal width)
 alias nowrap="tput rmam"
 
-# enable line wrapping in the terminal (long lines wrapped at terminal width)
+# enable line wrapping (long lines wrapped at terminal width)
 alias wrap="tput smam"
 
 #----------------------------------------------------------------
@@ -47,17 +45,19 @@ function funcs () {
 }
 
 # search command history by regex
-# (when called with no args, display entire history)
+# (when called with no args, show last 100 commands)
+# usage: h <pattern>
 function h () {
     if [ $# -eq 0 ]; then
-        history
+        history | tail -n 100
     else
         history | grep --color=never $1
     fi
 }
 
 # search process info by regex
-# (when called with no args, run `ps aux`)
+# (when called with no args, show all processes)
+# usage: psgrep <pattern>
 function psgrep () {
     if [ $# -eq 0 ]; then
         ps aux | less --chop-long-lines
@@ -68,6 +68,7 @@ function psgrep () {
 
 # search for partially matching file names starting under $HOME
 # (creates or updates mlocate database before searching)
+# usage: name <pattern>
 function name () {
     updatedb --require-visibility 0 --output ~/.locatedb --database-root ~
     locate --database ~/.locatedb $1
@@ -75,10 +76,10 @@ function name () {
 
 # launch SciTE (GUI) editor in the background and suppress stdout/stderr
 # (keeps running after the shell session ends and doesn't appear in jobs list)
+# usage: scite <file>
 function scite () {
     nohup scite "$@" > /dev/null 2>&1 & disown
 }
-
 
 # update all packages and do package maintenance
 function apt-all () {
@@ -122,14 +123,44 @@ function print-colors () {
     for fgbg in 38 48; do
         for color in {0..256}; do
             echo -en "\e[${fgbg};5;${color}m ${color}\t\e[0m"
-            if [ $((($color + 1) % 10)) == 0 ]; then echo; fi
+            if [ $((($color + 1) % 10)) == 0 ]; then
+                echo
+            fi
         done
         echo
     done
 }
 
+# get current weather
 weather() {
     ZIPCODE="02116"
     curl -s "http://www.wunderground.com/q/zmw:$ZIPCODE.1.99999" | grep "og:title" | cut -d\" -f4 | sed 's/&deg;/ degrees F/';
 }
 
+# archive extractor
+# usage: extract <file>
+extract () {
+    if [ $# -eq 0 ]; then
+        echo "please specify an archive to extract"
+        return 1
+    fi
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xjf $1;;
+            *.tar.gz)    tar xzf $1;;
+            *.bz2)       bunzip2 $1;;
+            *.rar)       unrar e $1;;
+            *.gz)        gunzip $1;;
+            *.tar)       tar xf $1;;
+            *.tbz2)      tar xjf $1;;
+            *.tgz)       tar xzf $1;;
+            *.zip)       unzip $1;;
+            *.Z)         uncompress $1;;
+            *.7z)        7z x $1;;
+            *)           echo "extracting '$1' is not supported";;
+        esac
+    else
+        echo "'$1' is not a valid file"
+        return 1
+    fi
+}
