@@ -52,6 +52,6 @@ echo $SEP
 echo "flushing local file system buffers (synchronize cached writes)..."
 sync
 echo
-df -hT --total | egrep "Type|ext4|cifs|total"
+df -hT --total --type=ext4 --type=smb
 echo $SEP
 echo "done"

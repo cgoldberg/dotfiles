@@ -17,7 +17,7 @@ alias more='less'
 
 alias x="exit"
 alias cls="clear"
-alias df="df -Th --total"
+alias disk="df -hT --total --type=ext4 --type=smb --sync"
 
 # recursive file count from current directory
 alias filecount="find . -type f | wc -l"
