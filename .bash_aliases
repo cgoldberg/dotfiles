@@ -95,16 +95,20 @@ function apt-all () {
     sudo apt-get autoremove --purge
     # remove all packages from the package cache
     sudo apt-get clean
+    # display number of packages installed
+    echo "$(dpkg -l | grep '^ii' | wc -l) packages currently installed"
 }
 
 # purge configuration data from packages marked for removal
 function purge-apt-configs () {
     if $(dpkg -l | grep --quiet '^rc'); then
+        echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
         echo "purging package configs from removed packages..."
-        $(dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge)
+        dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
     else
         echo "no package configuration data to remove"
     fi
+    echo "$(dpkg -l | grep '^ii' | wc -l) packages currently installed"
 }
 
 # purge local Dropbox cache
