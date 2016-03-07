@@ -20,8 +20,11 @@ shopt -s globstar
 # set the title on terminals to user@host:dir
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
 
-# make less more friendly for non-text input files
+# make `less` more friendly for non-text input files
 eval "$(SHELL=/bin/sh lesspipe)"
+
+# use `most` as default pager
+export PAGER="/usr/bin/most"
 
 # enable bash completion in interactive shells
 if ! shopt -oq posix; then
@@ -38,7 +41,7 @@ if [ -f ~/bin/git-completion.bash ]; then
     . ~/bin/git-completion.bash
 fi
 
-# show current git branch name in prompt when in a repo directory
+# show current git branch name in the prompt (if inside a repo directory)
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 if [ -f ~/bin/git-prompt.sh ]; then
     . ~/bin/git-prompt.sh
@@ -55,7 +58,7 @@ stty -ixon
 # enable line wrapping in terminal
 tput smam
 
-# map an extra Escape key instead of Caps Lock key
+# disable the 'Caps Lock' key in terminals (map an extra Escape key instead)
 xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 # customize and colorize the prompt
