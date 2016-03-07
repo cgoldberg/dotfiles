@@ -1,5 +1,5 @@
 # --------------------------------------------------------
-# ~/.bash_aliases: sourced in bashrc for non-login shells
+# ~/.bash_aliases: sourced in .bashrc for non-login shells
 #
 # aliases and functions customized for cgoldberg
 # --------------------------------------------------------
@@ -9,22 +9,27 @@
 __git_complete g _git
 alias g="git"
 
+# defaults for ls
 alias ls="\ls -lhAFG --color=auto --group-directories-first"
 alias l="\ls -AFG --color=auto --group-directories-first"
 
+# colorize grep
 alias grep="grep --color=auto"
 
+# pager defaults
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 alias more='most'
 
+# exit terminal
 alias x="exit"
 
+# clear terminal
 alias cls="clear"
 
-#install package
+# install package
 install="sudo apt-get update && sudo apt-get install"
 
-#remove package and purge configs
+# remove package and purge configs
 remove="sudo apt-get remove --purge"
 
 # disk free on all local and smb mounted drives
@@ -51,12 +56,15 @@ alias nowrap="tput rmam"
 # enable line wrapping in terminal (long lines wrapped at terminal width)
 alias wrap="tput smam"
 
+
 #----------------------------------------------------------------
+
 
 # display names of all public bash functions and aliases in current shell
 function funcs () {
     compgen -a -A function | grep -v ^_ | sort
 }
+
 
 # side-by-side colored diff
 # requires colordiff package
@@ -67,6 +75,7 @@ function sdiff () {
         diff -y $1 $2 | cdiff | most
     fi
 }
+
 
 # search command history by regex
 # (when called with no args, show last 100 commands)
@@ -79,6 +88,7 @@ function h () {
     fi
 }
 
+
 # search process info by regex
 # (when called with no args, show all processes)
 # usage: psgrep <pattern>
@@ -90,6 +100,7 @@ function psgrep () {
     fi
 }
 
+
 # search for partially matching file names starting under $HOME
 # (creates or updates mlocate database before searching)
 # usage: name <pattern>
@@ -98,12 +109,14 @@ function name () {
     locate --database ~/.locatedb $1
 }
 
+
 # launch SciTE (GTK) editor in the background and suppress stdout/stderr
 # (keeps running after the shell session ends and doesn't appear in jobs list)
 # usage: scite <file>
 function scite () {
     nohup scite "$@" > /dev/null 2>&1 & disown
 }
+
 
 # update all packages and do package maintenance
 function apt-all () {
@@ -123,6 +136,7 @@ function apt-all () {
     echo "$(dpkg -l | grep '^ii' | wc -l) packages currently installed"
 }
 
+
 # purge configuration data from packages marked for removal
 function purge-apt-configs () {
     if $(dpkg -l | grep --quiet '^rc'); then
@@ -135,6 +149,7 @@ function purge-apt-configs () {
     echo "$(dpkg -l | grep '^ii' | wc -l) packages currently installed"
 }
 
+
 # purge local Dropbox cache
 function purge-dropbox-cache () {
     if ! $(dropbox running); then
@@ -145,6 +160,7 @@ function purge-dropbox-cache () {
     rm -rf $CACHE_DIR
     dropbox start
 }
+
 
 # print all 256 terminal colors as both foreground and background
 function print-colors () {
@@ -159,6 +175,7 @@ function print-colors () {
     done
 }
 
+
 # get current weather
 # (when called with no args, default to Boston weather)
 # usage: weather <zipcode>
@@ -168,11 +185,13 @@ weather() {
     else
         ZIPCODE = $1
     fi
-    curl -s "http://www.wunderground.com/q/zmw:$ZIPCODE.1.99999" | grep "og:title" | cut -d\" -f4 | sed 's/&deg;/ degrees F/'
+    curl -s "http://www.wunderground.com/q/zmw:$ZIPCODE.1.99999" | \
+        grep "og:title" | cut -d\" -f4 | sed 's/&deg;/ degrees F/'
 }
 
+
 # extract any archive into a new directory
-weather() {
+extract() {
     if [ $# -eq 0 ]; then
         echo "usage: extract <file>"
     else
