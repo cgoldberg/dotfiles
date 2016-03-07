@@ -8,6 +8,8 @@
 
 set -e
 
+SEP="----------------------------------------------------------------"
+
 function purge-dropbox-cache () {
     if ! $(dropbox running); then
         dropbox stop
@@ -34,7 +36,6 @@ if [ ! -d ~/Dropbox/ ]; then
 fi
 
 echo
-SEP="----------------------------------------------------------------"
 echo "starting master backup job..."
 echo $SEP
 echo "purging local dropbox cache..."
@@ -52,6 +53,6 @@ echo $SEP
 echo "flushing local file system buffers (synchronize cached writes)..."
 sync
 echo
-df -hT --total --type=ext4 --type=smb
+df -hT --total --type=ext4 --type=cifs
 echo $SEP
 echo "done"
