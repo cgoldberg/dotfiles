@@ -6,9 +6,9 @@
 # - rsyncs remote NAS to secondary local HDD mirror
 # - report disk space of all mounted file systems
 
+
 set -e
 
-SEP="----------------------------------------------------------------"
 
 function purge-dropbox-cache () {
     if ! $(dropbox running); then
@@ -19,6 +19,12 @@ function purge-dropbox-cache () {
     rm -rf $CACHE_DIR
     dropbox start
 }
+
+
+if [[ $HOSTNAME != "collosus" ]]; then
+    echo "Sorry, this script can only be run from colossus"
+    exit 1
+fi
 
 if [ ! -d /mnt/bytez/ ]; then
     echo "error: can't find mount point for remote NAS (bytez)"
@@ -34,6 +40,9 @@ if [ ! -d ~/Dropbox/ ]; then
     echo "error: can't find local Dropbox"
     exit 1
 fi
+
+
+SEP="----------------------------------------------------------------"
 
 echo
 echo "starting master backup job..."
