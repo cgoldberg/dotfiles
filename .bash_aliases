@@ -16,29 +16,29 @@ alias l="\ls -AFG --color=auto --group-directories-first"
 # colorize grep
 alias grep="grep --color=auto"
 
-# pager defaults
+# text pager defaults
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
-alias more='most'
+alias more="most"
 
-# exit terminal
-alias x="exit"
+# halt and power-off machine via init system, and trigger a reboot
+alias reboot="sudo reboot"
+
+# halt and power-off machine via init system
+alias shutdown="sudo poweroff"
 
 # clear terminal
 alias cls="clear"
 
-# install package
-install="sudo apt-get update && sudo apt-get install"
+# exit terminal
+alias x="exit"
 
-# remove package and purge configs
-remove="sudo apt-get remove --purge"
+# display amount of disk available on all local and samba mounted drives
+alias diskfree="df -hT --total --type=ext4 --type=cifs --sync"
 
-# disk free on all local and smb mounted drives
-alias diskfree="df -hT --total --type=ext4 --type=smb --sync"
-
-# disk used under current directory, sorted by size
+# display amount of disk used under current directory, grouped and sorted by directory size
 alias diskused="du -S | sort -nr | most"
 
-# serve current dir over HTTP
+# serve current dir over HTTP on port 8000
 alias webserver='python -m SimpleHTTPServer'
 
 # count files recursively under current directory
@@ -77,14 +77,14 @@ function sdiff () {
 }
 
 
-# search command history by regex
+# search command history by regex (case-insensitive)
 # (when called with no args, show last 100 commands)
 # usage: h <pattern>
 function h () {
     if [ $# -eq 0 ]; then
         history | tail -n 100
     else
-        history | grep --color=never $1
+        history | grep -i --color=always $1
     fi
 }
 
