@@ -63,7 +63,8 @@ ${font sans-serif:normal:size=8}${color FFFFCC} $mem / $memmax $alignr $memperc 
 
 ${font sans-serif:bold:size=8}${color FFCC00}DISK SPACE $stippled_hr
 ${font sans-serif:normal:size=8}${color FFFFCC} ${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /} %
-${font sans-serif:normal:size=8}${color FFFFCC} ${fs_used /mnt/WD-Red/} / ${fs_size /mnt/WD-Red/} $alignr ${fs_used_perc /mnt/WD-Red/} %
+${font sans-serif:normal:size=8}${color FFFFCC} ${fs_used /mnt/wd-green/} / ${fs_size /mnt/wd-green/} $alignr ${fs_used_perc /mnt/wd-green/} %
+${font sans-serif:normal:size=8}${color FFFFCC} ${fs_used /mnt/bytez/} / ${fs_size /mnt/bytez/} $alignr ${fs_used_perc /mnt/bytez/} %
 
 ${font sans-serif:bold:size=8}${color FFCC00}DISK I/O $stippled_hr
 ${font sans-serif:normal:size=8}${color FFFFCC}Read: $alignr $diskio_read
@@ -72,7 +73,7 @@ ${font sans-serif:normal:size=8}${color FFFFCC}Write: $alignr $diskio_write
 ${diskiograph_write 20,0 -t}
 
 ${font sans-serif:bold:size=8}${color FFCC00}NETWORK $stippled_hr
-${font sans-serif:normal:size=8}${color FFFFCC}Upload: $alignr ${upspeed eth0}/s
-${upspeedgraph eth0 20,0 -t}
-${font sans-serif:normal:size=8}${color FFFFCC}Download: $alignr ${downspeed eth0}/s
-${downspeedgraph eth0 20,0 -t}
+${font sans-serif:normal:size=8}${color FFFFCC}Upload: $alignr ${upspeed enp4s0}/s
+${upspeedgraph enp4s0 20,0 -t}
+${font sans-serif:normal:size=8}${color FFFFCC}Download: $alignr ${downspeed enp4s0}/s
+${downspeedgraph enp4s0 20,0 -t}

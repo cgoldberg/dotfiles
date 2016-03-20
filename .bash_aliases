@@ -2,28 +2,32 @@
 # ~/.bash_aliases: sourced in .bashrc for non-login shells
 #
 # aliases and functions customized for cgoldberg
+#
 # --------------------------------------------------------
 
+# allow aliases to run with sudo
+# (if the last character of an alias is a blank, the next command is also checked for alias expansion)
+alias sudo="sudo "
 
-# enable auto-completion for "g" alias
-__git_complete g _git
+# alias for git with command auto-completion enabled
 alias g="git"
+__git_complete g _git
 
-# defaults for ls
+# colored directory listings
 alias ls="\ls -lhAFG --color=auto --group-directories-first"
 alias l="\ls -AFG --color=auto --group-directories-first"
 
-# colorize grep
+# colored grep
 alias grep="grep --color=auto"
 
 # text pager defaults
-alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 alias more="most"
+alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 
-# halt and power-off machine via init system, and trigger a reboot
+# trigger a reboot via the init system
 alias reboot="sudo reboot"
 
-# halt and power-off machine via init system
+# halt and power-off machine via the init system
 alias shutdown="sudo poweroff"
 
 # clear terminal
@@ -32,23 +36,41 @@ alias cls="clear"
 # exit terminal
 alias x="exit"
 
-# display amount of disk available on all local and samba mounted drives
-alias diskfree="df -hT --total --type=ext4 --type=cifs --sync"
+# disk space available on local ext4 and samba mounted filesystems
+alias diskspace="df -hT --total --type=ext4 --type=cifs --sync"
 
-# display amount of disk used under current directory, grouped and sorted by directory size
+# disk space usage under current directory, grouped and sorted by directory size
 alias diskused="du -S | sort -nr | most"
 
-# serve current dir over HTTP on port 8000
+# serve current directory over HTTP on port 8000
 alias webserver='python -m SimpleHTTPServer'
 
 # count files recursively under current directory
 alias filecount="find . -type f | wc -l"
 
-# display 100 latest modified files under current dir (sorted in reverse)
+# last modified files under current dir (100 entries, sorted in reverse)
 alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 100"
 
-# purge desktop trash (on all gvfs mounted volumes)
+# purge desktop trash on all gvfs mounted volumes
 alias purge-trash="gvfs-trash --empty"
+
+# install package from repo
+alias apt-install="sudo apt-get update && sudo apt-get install"
+
+# package description
+alias apt-show="apt-cache show"
+
+# package installation status and repository it belongs to
+alias apt-policy="apt-cache policy"
+
+# enable auto-completion of package names for apt-* aliases
+_pkg_completion() {
+    _init_completion || return
+    mapfile -t COMPREPLY < <(apt-cache --no-generate pkgnames "${COMP_WORDS[COMP_CWORD]}")
+}
+complete -F _pkg_completion apt-show
+complete -F _pkg_completion apt-policy
+complete -F _pkg_completion apt-install
 
 # disable line wrapping in terminal (long lines truncated at terminal width)
 alias nowrap="tput rmam"
@@ -56,24 +78,27 @@ alias nowrap="tput rmam"
 # enable line wrapping in terminal (long lines wrapped at terminal width)
 alias wrap="tput smam"
 
+# show diffs in side-by-side mode, with colors and automatic column widths
+# (requires colordiff package)
+alias diff="colordiff -yW`tput cols`"
+
+# navigate up the directory tree using dots
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+
+# make yourself look all busy and fancy to non-technical people
+alias busy="cat /dev/urandom | hexdump -C | grep 'ca fe'"
+
 
 #----------------------------------------------------------------
 
 
-# display names of all public bash functions and aliases in current shell
+# list public bash functions and aliases defined in the current shell
 function funcs () {
     compgen -a -A function | grep -v ^_ | sort
-}
-
-
-# side-by-side colored diff
-# requires colordiff package
-function sdiff () {
-    if [ $# -ne 2 ]; then
-        echo "usage: sdiff <file1> <file2>"
-    else
-        diff -y $1 $2 | cdiff | most
-    fi
 }
 
 
@@ -101,12 +126,12 @@ function psgrep () {
 }
 
 
-# search for partially matching file names starting under $HOME
+# search for file names matching glob patterns
 # (creates or updates mlocate database before searching)
 # usage: name <pattern>
 function name () {
-    updatedb --require-visibility 0 --output ~/.locatedb --database-root ~
-    locate --database ~/.locatedb $1
+    updatedb --require-visibility 0 --output ~/.locatedb --database-root /
+    locate --existing --ignore-case --database ~/.locatedb $1
 }
 
 
@@ -118,8 +143,8 @@ function scite () {
 }
 
 
-# update all packages and do package maintenance
-function apt-all () {
+# package maintenance
+function apt-maintain () {
     # reload package index files from sources
     sudo apt-get update
     # upgrade all installed packages using smart conflict resolution
@@ -155,9 +180,9 @@ function purge-dropbox-cache () {
     if ! $(dropbox running); then
         dropbox stop
     fi
-    CACHE_DIR=~/Dropbox/.dropbox.cache/
-    du -h $CACHE_DIR
-    rm -rf $CACHE_DIR
+    cache_dir=~/Dropbox/.dropbox.cache/
+    du -h $cache_dir
+    rm -rf $cache_dir
     dropbox start
 }
 
@@ -181,11 +206,11 @@ function print-colors () {
 # usage: weather <zipcode>
 weather() {
     if [ $# -eq 0 ]; then
-        ZIPCODE="02116"
+        zipcode="02116"
     else
-        ZIPCODE = $1
+        zipcode = $1
     fi
-    curl -s "http://www.wunderground.com/q/zmw:$ZIPCODE.1.99999" | \
+    curl -s "http://www.wunderground.com/q/zmw:$zipcode.1.99999" | \
         grep "og:title" | cut -d\" -f4 | sed 's/&deg;/ degrees F/'
 }
 
@@ -197,4 +222,24 @@ extract() {
     else
         dtrx -v $1
     fi
+}
+
+
+# share a file
+# (upload file to https://transfer.sh/ and display the public url for download)
+# usage: transfer <file>
+transfer() {
+    if [ $# -eq 0 ]; then
+        echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"
+        return 1
+    fi
+    tmpfile=$(mktemp -t transferXXX)
+    if tty -s; then
+        basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g')
+        curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile
+    else
+        curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile
+    fi
+    cat $tmpfile
+    rm -f $tmpfile
 }

@@ -26,7 +26,7 @@ eval "$(SHELL=/bin/sh lesspipe)"
 # use `most` as default pager
 export PAGER="/usr/bin/most"
 
-# enable bash completion in interactive shells
+# enable bash command completion
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
         . /usr/share/bash-completion/bash_completion
@@ -35,7 +35,7 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# enable auto-completion support for git commands
+# enable git command completion
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 if [ -f ~/bin/git-completion.bash ]; then
     . ~/bin/git-completion.bash

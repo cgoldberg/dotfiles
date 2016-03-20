@@ -25,7 +25,7 @@
     ci = !git commit -a -m $2
 
     # show status of current branch
-    st = status
+    s = status
 
     # reset current branch to HEAD and delete untracked files
     blowaway = !git reset --hard HEAD && git clean -d -x --force
