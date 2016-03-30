@@ -64,4 +64,10 @@ sync
 echo
 df -hT --total --type=ext4 --type=cifs
 echo $SEP
+echo "bytez NAS:"
+tree /mnt/bytez/ | tail -n 1
+echo
+echo "wd-green local:"
+tree /mnt/wd-green/ | tail -n 1
+echo $SEP
 echo "done"
