@@ -24,11 +24,11 @@ alias grep="grep --color=auto"
 alias more="most"
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 
-# trigger a reboot via the init system
-alias reboot="sudo reboot"
+# halt, power off, and restart via systemd
+alias reboot="systemctl reboot"
 
-# halt and power-off machine via the init system
-alias shutdown="sudo poweroff"
+# halt and power off via systemd
+alias shutdown="systemctl poweroff"
 
 # clear terminal
 alias cls="clear"

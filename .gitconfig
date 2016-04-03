@@ -2,6 +2,7 @@
     name = Corey Goldberg
     email = cgoldberg@gmail.com
 [color]
+    ui = auto
     branch = auto
     diff = auto
     interactive = auto
@@ -11,6 +12,12 @@
     autosetuprebase = always
 [push]
     default = simple
+[diff]
+    tool = colordiff
+[difftool]
+    prompt = false
+[difftool "colordiff"]
+    cmd = diff -y $LOCAL $REMOTE | expand | colordiff | less -rS  #grep -E -C3 '^.{123} [|<>]( |$)' | colordiff | less -rS
 [alias]
     # list git aliases
     la = !git config --list | grep alias | cut -c 7- &
