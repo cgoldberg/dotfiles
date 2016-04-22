@@ -216,7 +216,7 @@ weather() {
     if [ $# -eq 0 ]; then
         zipcode="02116"
     else
-        zipcode = $1
+        zipcode=$1
     fi
     curl -s "http://www.wunderground.com/q/zmw:$zipcode.1.99999" | \
         grep "og:title" | cut -d\" -f4 | sed 's/&deg;/ degrees F/'
