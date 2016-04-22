@@ -211,7 +211,7 @@ function print-colors () {
 
 # get current weather
 # (when called with no args, default to Boston weather)
-# usage: weather <zipcode>
+# usage: weather [zipcode]
 weather() {
     if [ $# -eq 0 ]; then
         zipcode="02116"
