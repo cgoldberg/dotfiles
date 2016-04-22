@@ -18,7 +18,7 @@ alias ls="\ls -lhAFG --color=auto --group-directories-first"
 alias l="\ls -AFG --color=auto --group-directories-first"
 
 # colored grep
-alias grep="grep --color=auto"
+alias grep="\grep --color=auto"
 
 # text pager defaults
 alias more="most"
