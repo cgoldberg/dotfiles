@@ -126,6 +126,14 @@ function psgrep () {
 }
 
 
+# show directory tree with individual file/dir sizes
+# (hidden files and colors are enabled, `.git` directory is ignored)
+# usage: tre [dir]
+tre() {
+	\tree -ahCF -I '.git' --dirsfirst "$@" | most
+}
+
+
 # search for file names matching glob patterns
 # (creates or updates mlocate database before searching)
 # usage: name <pattern>
