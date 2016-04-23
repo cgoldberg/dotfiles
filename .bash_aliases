@@ -127,9 +127,9 @@ function psgrep () {
 
 
 # show directory tree with individual file/dir sizes
-# (hidden files and colors are enabled, `.git` directory is ignored)
+# (hidden files and colors enabled, `.git` directories ignored)
 # usage: tre [dir]
-tre() {
+function tre() {
 	\tree -ahCF -I '.git' --dirsfirst "$@" | most
 }
 
@@ -138,8 +138,12 @@ tre() {
 # (creates or updates mlocate database before searching)
 # usage: name <pattern>
 function name () {
-    updatedb --require-visibility 0 --output ~/.locatedb --database-root /
-    locate --existing --ignore-case --database ~/.locatedb $1
+    if [ $# -eq 0 ]; then
+        echo "usage: name <pattern>"
+    else
+        updatedb --require-visibility 0 --output ~/.locatedb --database-root /
+        locate --existing --ignore-case --database ~/.locatedb $1
+    fi
 }
 
 
@@ -212,7 +216,7 @@ function print-colors () {
 # get current weather
 # (when called with no args, default to Boston weather)
 # usage: weather [zipcode]
-weather() {
+function weather() {
     if [ $# -eq 0 ]; then
         zipcode="02116"
     else
@@ -224,7 +228,7 @@ weather() {
 
 
 # extract any archive into a new directory
-extract() {
+function extract() {
     if [ $# -eq 0 ]; then
         echo "usage: extract <file>"
     else
@@ -236,7 +240,7 @@ extract() {
 # share a file
 # (upload file to https://transfer.sh/ and display the public url for download)
 # usage: transfer <file>
-transfer() {
+function transfer() {
     if [ $# -eq 0 ]; then
         echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"
         return 1
