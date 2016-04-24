@@ -19,27 +19,31 @@
 [difftool "colordiff"]
     cmd = diff -y $LOCAL $REMOTE | expand | colordiff | less -rS  #grep -E -C3 '^.{123} [|<>]( |$)' | colordiff | less -rS
 [alias]
-    # list git aliases
-    la = !git config --list | grep alias | cut -c 7- &
-
-    # list commits with colors
-    ls = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-
-    # list commits with colors and show stats of file changes
-    lg = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --stat
+    # reset current branch to HEAD and delete untracked files
+    blowaway = !git reset --hard HEAD && git clean -d -x --force
 
     # commit changes with inline message
     ci = !git commit -a -m $2
 
+    # list git aliases
+    la = !git config --list | grep alias | cut -c 7- &
+
+    # list commits with colors and show stats of file changes
+    logstats = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --stat
+
+    # list commits with colors
+    ls = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+    # list your commits
+    mylog = !git log --reverse --branches --author="$(git config --get user.email)" --format=format:'%C(cyan) %ad %C(yellow)%h %Creset %s %Cgreen%d' --date=iso
+
     # show status of current branch
     s = status
 
-    # reset current branch to HEAD and delete untracked files
-    blowaway = !git reset --hard HEAD && git clean -d -x --force
+    # list commit counts ranked by author
+    score = !git log | grep Author | sort | uniq -ci | sort -hr
 
     # launch browser and go to current repo page on GitGub
     web = !nohup git config --get remote.origin.url 2>/dev/null | xargs xdg-open > /dev/null 2>&1
 
-    # list commit counts ranked by author
-    score = !git log | grep Author | sort | uniq -ci | sort -hr
 
