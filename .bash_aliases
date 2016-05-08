@@ -9,7 +9,17 @@
 # (if the last character of an alias is a blank, the next command is also checked for alias expansion)
 alias sudo="sudo "
 
-# alias for git with command auto-completion enabled
+# shortcuts for editors
+alias edit="scite"
+alias ed="scite"
+alias vi="\vim"
+alias v="\vim"
+
+# shortcuts for text pagers
+alias more="most"
+alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
+
+# run git with command auto-completion enabled
 alias g="git"
 __git_complete g _git
 
@@ -20,10 +30,6 @@ alias l="\ls -AFG --color=auto --group-directories-first"
 # colored grep
 alias grep="\grep --color=auto"
 
-# text pager defaults
-alias more="most"
-alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
-
 # halt, power off, and restart via systemd
 alias reboot="systemctl reboot"
 
@@ -32,6 +38,7 @@ alias shutdown="systemctl poweroff"
 
 # clear terminal
 alias cls="clear"
+alias c="clear"
 
 # exit terminal
 alias x="exit"
@@ -102,6 +109,20 @@ function funcs () {
 }
 
 
+# reload shell configurations
+function re-source () {
+    if [ -f ~/.profile ]; then
+        . ~/.profile
+    fi
+    if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+    fi
+    if [ -f ~/.bash_profile ]; then
+        . ~/.bash_profile
+    fi
+}
+
+
 # search command history by regex (case-insensitive)
 # (when called with no args, show last 100 commands)
 # usage: h <pattern>
@@ -134,14 +155,14 @@ function tre() {
 }
 
 
-# search for file names matching glob patterns
-# (creates or updates mlocate database before searching)
+# search entire filesystem for filenames matching glob pattern
+# (case insensitive, skips any filesystems mount under /mnt, updates the mlocate database before searching)
 # usage: name <pattern>
 function name () {
     if [ $# -eq 0 ]; then
         echo "usage: name <pattern>"
     else
-        updatedb --require-visibility 0 --output ~/.locatedb --database-root /
+        updatedb --require-visibility 0 --output ~/.locatedb --database-root / --prunepaths /mnt
         locate --existing --ignore-case --database ~/.locatedb $1
     fi
 }
@@ -216,7 +237,7 @@ function print-colors () {
 # get current weather
 # (when called with no args, default to Boston weather)
 # usage: weather [zipcode]
-function weather() {
+function weather () {
     if [ $# -eq 0 ]; then
         zipcode="02116"
     else
@@ -228,7 +249,7 @@ function weather() {
 
 
 # extract any archive into a new directory
-function extract() {
+function extract () {
     if [ $# -eq 0 ]; then
         echo "usage: extract <file>"
     else
@@ -240,7 +261,7 @@ function extract() {
 # share a file
 # (upload file to https://transfer.sh/ and display the public url for download)
 # usage: transfer <file>
-function transfer() {
+function transfer () {
     if [ $# -eq 0 ]; then
         echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"
         return 1
