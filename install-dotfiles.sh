@@ -8,6 +8,7 @@ FILES=(
     ".bash_aliases"
     ".gitconfig"
     "bin/backup_world"
+    "bin/git-score"
     "bin/gphoto_remove_jsons.py"
     "bin/img_metadata_strip_fix.py"
 )
