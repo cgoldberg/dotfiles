@@ -1,8 +1,8 @@
 # --------------------------------------------------------
 # ~/.bash_aliases: sourced in .bashrc for non-login shells
 #
-# aliases and functions customized for cgoldberg
-#
+# shell aliases and functions for use on Ubuntu
+# customized for cgoldberg
 # --------------------------------------------------------
 
 # allow aliases to run with sudo
@@ -16,7 +16,7 @@ alias vi="\vim"
 alias v="\vim"
 
 # shortcuts for text pagers
-alias more="most"
+alias more="less"
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 
 # run git with command auto-completion enabled
@@ -47,7 +47,7 @@ alias x="exit"
 alias diskspace="df -hT --total --type=ext4 --type=cifs --sync"
 
 # disk space usage under current directory, grouped and sorted by directory size
-alias diskused="du -S | sort -nr | most"
+alias diskused="du -S | sort -nr | less"
 
 # serve current directory over HTTP on port 8000
 alias webserver='python -m SimpleHTTPServer'
@@ -55,7 +55,7 @@ alias webserver='python -m SimpleHTTPServer'
 # count files recursively under current directory
 alias filecount="find . -type f | wc -l"
 
-# last modified files under current dir (100 entries, sorted in reverse)
+# show last modified files under current dir (100 entries, sorted in reverse)
 alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 100"
 
 # purge desktop trash on all gvfs mounted volumes
@@ -64,10 +64,10 @@ alias purge-trash="gvfs-trash --empty"
 # install package from repo
 alias apt-install="sudo apt-get update && sudo apt-get install"
 
-# package description
+# show package description
 alias apt-show="apt-cache show"
 
-# package installation status and repository it belongs to
+# show package installation status and repository it belongs to
 alias apt-policy="apt-cache policy"
 
 # enable auto-completion of package names for apt-* aliases
@@ -130,19 +130,19 @@ function h () {
     if [ $# -eq 0 ]; then
         history | tail -n 100
     else
-        history | grep -i --color=always $1
+        history | grep -i --color=always "$1"
     fi
 }
 
 
-# search process info by regex
+# search process info by regex (case-insensitive)
 # (when called with no args, show all processes)
 # usage: psgrep <pattern>
 function psgrep () {
     if [ $# -eq 0 ]; then
-        ps aux | most
+        ps aux | less
     else
-        ps aux | grep --color=always $1 | grep -v grep | most
+        ps aux | grep -i --color=always "$1" | grep -v grep | less
     fi
 }
 
@@ -151,7 +151,16 @@ function psgrep () {
 # (hidden files and colors enabled, `.git` directories ignored)
 # usage: tre [dir]
 function tre() {
-	\tree -ahCF -I '.git' --dirsfirst "$@" | most
+	\tree -ahCF -I '.git' --dirsfirst "$@" | less
+}
+
+
+# recursive search in file contents for regex
+# regex under current directory
+# (searches under current directory for pattern in file contents of all non-binary files, recursing all subdirectories)
+# usage: grepr <pattern>
+function grepr() {
+	grep -rI --color=always "$1" . | less
 }
 
 
@@ -159,12 +168,8 @@ function tre() {
 # (case insensitive, skips any filesystems mount under /mnt, updates the mlocate database before searching)
 # usage: name <pattern>
 function name () {
-    if [ $# -eq 0 ]; then
-        echo "usage: name <pattern>"
-    else
-        updatedb --require-visibility 0 --output ~/.locatedb --database-root / --prunepaths /mnt
-        locate --existing --ignore-case --database ~/.locatedb $1
-    fi
+    updatedb --require-visibility 0 --output ~/.locatedb --database-root / --prunepaths /mnt
+    locate --existing --ignore-case --database ~/.locatedb $1
 }
 
 
@@ -235,7 +240,7 @@ function print-colors () {
 
 
 # get current weather
-# (when called with no args, default to Boston weather)
+# (when called with no args, default to home weather [Boston, MA 02116])
 # usage: weather [zipcode]
 function weather () {
     if [ $# -eq 0 ]; then
@@ -249,12 +254,9 @@ function weather () {
 
 
 # extract any archive into a new directory
+# usage: extract <archive>
 function extract () {
-    if [ $# -eq 0 ]; then
-        echo "usage: extract <file>"
-    else
-        dtrx -v $1
-    fi
+    dtrx -v $1
 }
 
 
