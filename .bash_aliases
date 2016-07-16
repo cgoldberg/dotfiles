@@ -30,11 +30,10 @@ alias l="\ls -AFG --color=auto --group-directories-first"
 # colored grep
 alias grep="\grep --color=auto"
 
-# halt, power off, and restart via systemd
-alias reboot="systemctl reboot"
-
-# halt and power off via systemd
-alias shutdown="systemctl poweroff"
+# system shutdown
+alias poweroff="sudo poweroff"
+alias shutdown="sudo poweroff"
+alias reboot="sudo reboot"
 
 # clear terminal
 alias cls="clear"
