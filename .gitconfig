@@ -1,51 +1,48 @@
 [user]
     name = Corey Goldberg
     email = cgoldberg@gmail.com
+
 [color]
     ui = auto
     branch = auto
     diff = auto
     interactive = auto
     status = auto
+
 [branch]
     autosetupmerge = always
     autosetuprebase = always
+
 [push]
     default = simple
+
 [diff]
     tool = colordiff
+
 [difftool]
     prompt = false
+
 [difftool "colordiff"]
     cmd = diff -y $LOCAL $REMOTE | expand | colordiff | less -rS
+
 [alias]
-    # reset current branch to HEAD and delete untracked files
-    blowaway = !git reset --hard HEAD && git clean -d -x --force
+    # list git aliases
+    la = !git config --list | grep alias | cut -c 7- &
+
+    # show status of current branch
+    s = !git status
+
+    # fetch changes and rebase master from remote
+    up = !git fetch && git pull --rebase origin master
 
     # commit changes with inline message
     ci = !git commit -a -m $2
 
-    # list git aliases
-    la = !git config --list | grep alias | cut -c 7- &
-
-    # list commits with colors and show stats of file changes
-    logstats = !git log --branches --full-history --abbrev-commit --date=local --stat --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'
-
-    # list commits with colors
-    ls = !git log --branches --full-history --abbrev-commit --date=local --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' 
-
-    # list only my commits
-    mylog = !git log --branches --full-history --abbrev-commit --date=relative --author="$(git config --get user.email)" --format=format:'%C(cyan) %ad %C(yellow)%h %Creset %s %Cgreen%d'
-
-    # show status of current branch
-    s = status
-
-    # launch browser and go to current repo page on GitGub
-    web = !nohup git config --get remote.origin.url 2>/dev/null | xargs open > /dev/null 2>&1
-
+    # reset current branch to HEAD and delete untracked files
+    blowaway = !git reset --hard HEAD && git clean -d -x --force
 
 [filter "lfs"]
 	smudge = git-lfs smudge %f
 	required = true
 	clean = git-lfs clean %f
-	
+
