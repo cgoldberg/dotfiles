@@ -259,21 +259,17 @@ function extract () {
 }
 
 
-# share a file
-# (upload file to https://transfer.sh/ and display the public url for download)
-# usage: transfer <file>
-function transfer () {
-    if [ $# -eq 0 ]; then
-        echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"
-        return 1
-    fi
-    tmpfile=$(mktemp -t transferXXX)
-    if tty -s; then
-        basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g')
-        curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile
-    else
-        curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile
-    fi
-    cat $tmpfile
-    rm -f $tmpfile
+# senjd an HTTP GET and display timings (poor man's http profiler)
+function http_profile () {
+    curl "$@" \
+    -s \
+    -o /dev/null \
+    -w \
+"response_code: %{http_code}\n
+dns_time: %{time_namelookup}
+connect_time: %{time_connect}
+pretransfer_time: %{time_pretransfer}
+starttransfer_time: %{time_starttransfer}
+total_time: %{time_total}
+"
 }
