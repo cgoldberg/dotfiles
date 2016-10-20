@@ -31,8 +31,10 @@ alias l="\ls -AFG --color=auto --group-directories-first"
 alias grep="\grep --color=auto"
 
 # system shutdown
+alias sd="sudo poweroff"
 alias poweroff="sudo poweroff"
 alias shutdown="sudo poweroff"
+alias rb="sudo reboot"
 alias reboot="sudo reboot"
 
 # clear terminal
@@ -110,9 +112,6 @@ function funcs () {
 
 # reload shell configurations
 function re-source () {
-    if [ -f ~/.profile ]; then
-        . ~/.profile
-    fi
     if [ -f ~/.bashrc ]; then
         . ~/.bashrc
     fi
