@@ -213,12 +213,12 @@ function purge-apt-configs () {
 
 # purge local Dropbox cache
 function purge-dropbox-cache () {
-    if ! $(dropbox running); then
-        dropbox stop
-    fi
+    dropbox stop
     cache_dir=~/Dropbox/.dropbox.cache/
-    du -h $cache_dir
-    rm -rf $cache_dir
+    if [ -e $cache_dir ]; then
+        du -h $cache_dir
+        rm -rf $cache_dir
+    fi
     dropbox start
 }
 
