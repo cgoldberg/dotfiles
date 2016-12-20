@@ -7,6 +7,7 @@ FILES=(
     ".bashrc"
     ".bash_aliases"
     ".gitconfig"
+    "bin/audio_meta_tag.py"
     "bin/backup_world"
     "bin/git-score"
     "bin/gphoto_remove_jsons.py"
@@ -44,6 +45,7 @@ for FILE in "${FILES[@]}"; do
     echo
     echo "copying $DIR/$FILE to $HOME/$FILE"
     cp "$DIR/$FILE" "$HOME/$FILE"
+    chmod +x "$HOME/$FILE"
 done
 
 echo
