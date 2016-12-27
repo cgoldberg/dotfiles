@@ -237,11 +237,12 @@ function print-colors () {
 }
 
 
-# get current weather
-# (when called with no args, default to home weather [Boston, MA 02116])
+# display one-line weather report
+# accepts an optional zipcode
+# defaults to weather in Boston, MA
 # usage: weather [zipcode]
 function weather () {
-    if [ $# -eq 0 ]; then
+    if [[ $# -eq 0 ]]; then
         zipcode="02116"
     else
         zipcode=$1
