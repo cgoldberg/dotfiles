@@ -153,12 +153,11 @@ function tre() {
 }
 
 
-# recursive search in file contents for regex
-# regex under current directory
-# (searches under current directory for pattern in file contents of all non-binary files, recursing all subdirectories)
-# usage: grepr <pattern>
-function grepr() {
-	grep -rI --color=always "$1" . | less
+# search recursively for text file content by regex (case-insensitive)
+# in files under current directory
+# usage: rgrep <pattern>
+function rgrep () {
+    fgrep -iInr --color=auto --exclude-dir=".git" "$1" . | most
 }
 
 
@@ -259,7 +258,7 @@ function extract () {
 }
 
 
-# senjd an HTTP GET and display timings (poor man's http profiler)
+# send an HTTP GET and display timings (poor man's http profiler)
 function http_profile () {
     curl "$@" \
     -s \
