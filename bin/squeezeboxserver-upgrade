@@ -7,7 +7,7 @@ echo "starting upgrade for Squeezebox Server (LMS)..."
 sudo killall squeezeboxserver
 sudo killall squeezeboxserver_safe
 echo "finding latest LMS version..."
-latest_deb_url=$(curl -s http://www.mysqueezebox.com/update/?version=7.9.0&revision=1&geturl=1&os=deb)
+latest_deb_url=$(curl -s 'http://www.mysqueezebox.com/update/?version=7.9.0&revision=1&geturl=1&os=deb')
 echo "downloading latest LMS nightly release..."
 curl -O -s $latest_deb_url
 latest_deb=${latest_deb_url##*/}
