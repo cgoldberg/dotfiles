@@ -1,8 +1,6 @@
 #!/bin/bash
 # Squeezebox Server (LMS) updater for Debian/Ubuntu
 
-set -e
-
 echo "starting upgrade of Squeezebox Server (LMS)..."
 sudo killall squeezeboxserver > /dev/null 2>&1
 sudo killall squeezeboxserver_safe > /dev/null 2>&1
