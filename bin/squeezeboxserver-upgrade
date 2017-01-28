@@ -3,9 +3,9 @@
 
 set -e
 
-echo "starting upgrade for Squeezebox Server (LMS)..."
-sudo killall squeezeboxserver
-sudo killall squeezeboxserver_safe
+echo "starting upgrade of Squeezebox Server (LMS)..."
+sudo killall squeezeboxserver > /dev/null 2>&1
+sudo killall squeezeboxserver_safe > /dev/null 2>&1
 echo "finding latest LMS version..."
 latest_deb_url=$(curl -s 'http://www.mysqueezebox.com/update/?version=7.9.0&revision=1&geturl=1&os=deb')
 echo "downloading latest LMS nightly release..."
