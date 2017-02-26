@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Show info from current Git repository
+
+
+# Traverse up to root of the repo
+while [ ! -d .git ] && [ ! $(pwd) = "/" ]; do cd ..; done
+
+if [ ! -d .git ]; then
+    echo -e "Not a git repository!"
+    exit 1
+fi
+
+# Display info from the repo
+echo -e "\\e[94m\e[1m=== Configuration ===\e[0m"
+git config --list |
+while IFS= read -r line; do
+    echo "    $line"
+done
+echo
+
+echo -e "\\e[94m\e[1m=== Remote URLs ===\e[0m"
+git remote -v |
+while IFS= read -r line; do
+    echo "    $line"
+done
+echo
+
+echo -e "\\e[94m\e[1m=== Remote Branches ===\e[0m"
+git branch --no-color -r |
+while IFS= read -r line; do
+    echo "  $line"
+done
+echo
+
+echo -e "\\e[94m\e[1m=== Local Branches ===\e[0m"
+git branch --no-color |
+while IFS= read -r line; do
+    echo "  $line"
+done
+echo
+
+echo -e "\\e[94m\e[1m=== Most Recent Commit ===\e[0m"
+git log --max-count=1 --no-color |
+while IFS= read -r line; do
+    echo "    $line"
+done
+echo

@@ -9,9 +9,11 @@ FILES=(
     ".gitconfig"
     "bin/audio_meta_tag.py"
     "bin/backup_world"
+    "bin/git-info"
     "bin/git-score"
     "bin/gphoto_remove_jsons.py"
     "bin/img_metadata_strip_fix.py"
+    "bin/squeezeboxserver-upgrade"
 )
 
 if [ ! -d "$BIN" ]; then
