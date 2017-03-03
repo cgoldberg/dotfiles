@@ -32,6 +32,9 @@
     # show status of current branch
     s = !git status
 
+    # show repo information
+    i = !git info
+
     # fetch changes and rebase master from remote
     up = !git fetch && git pull --rebase origin master
 
