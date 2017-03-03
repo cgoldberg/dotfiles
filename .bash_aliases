@@ -23,11 +23,11 @@ alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --q
 alias g="git"
 __git_complete g _git
 
-# colored directory listings
+# color directory listings
 alias ls="\ls -lhAFG --color=auto --group-directories-first"
 alias l="\ls -AFG --color=auto --group-directories-first"
 
-# colored grep
+# color grep output
 alias grep="\grep --color=auto"
 
 # system shutdown
@@ -44,11 +44,11 @@ alias c="clear"
 # exit terminal
 alias x="exit"
 
-# disk space available on local ext4 and samba mounted filesystems
+# disk space available on local ext4 and samba filesystems
 alias diskspace="df -hT --total --type=ext4 --type=cifs --sync"
 
-# disk space usage under current directory, grouped and sorted by directory size
-alias diskused="du -S | sort -nr | less"
+# disk space used under current directory, grouped and sorted by directory size
+alias diskused="du -S | grep -v .git | sort -nr | less"
 
 # serve current directory over HTTP on port 8000
 alias webserver='python -m SimpleHTTPServer'
@@ -86,9 +86,9 @@ alias nowrap="tput rmam"
 # enable line wrapping in terminal (long lines wrapped at terminal width)
 alias wrap="tput smam"
 
-# show diffs in side-by-side mode, with colors and automatic column widths
+# color diff output
 # (requires colordiff package)
-alias diff="colordiff -yW`tput cols`"
+alias diff="\colordiff -s"
 
 # navigate up the directory tree using dots
 alias ..="cd .."
@@ -98,7 +98,7 @@ alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
 
 # make yourself look all busy and fancy to non-technical people
-alias busy="cat /dev/urandom | hexdump -C | grep 'ca fe'"
+alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
 
 
 #----------------------------------------------------------------
@@ -145,24 +145,17 @@ function psgrep () {
 }
 
 
-# show directory tree with individual file/dir sizes
-# (hidden files and colors enabled, `.git` directories ignored)
-# usage: tre [dir]
-function tre() {
-	\tree -ahCF -I '.git' --dirsfirst "$@" | less
-}
-
-
 # search recursively for text file content by regex (case-insensitive)
 # in files under current directory
 # usage: rgrep <pattern>
 function rgrep () {
-    fgrep -iInr --color=auto --exclude-dir=".git" "$1" . | most
+    fgrep -iInr --color=always --exclude-dir=".git" "$1" . | less
 }
 
 
 # search entire filesystem for filenames matching glob pattern
-# (case insensitive, skips any filesystems mount under /mnt, updates the mlocate database before searching)
+# (case insensitive, skip any filesystems mounted under /mnt)
+# update the mlocate database before searching
 # usage: name <pattern>
 function name () {
     updatedb --require-visibility 0 --output ~/.locatedb --database-root / --prunepaths /mnt
