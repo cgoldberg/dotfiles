@@ -36,10 +36,10 @@
     i = info
 
     # fetch changes and rebase master from remote
-    up = !git fetch && !git pull --rebase origin master
+    up = !git fetch && git pull --rebase origin master
 
     # commit changes with inline message
-    ci = commit -a -m $2
+    ci = !git commit -a -m $2
 
     ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
