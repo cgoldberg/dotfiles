@@ -30,19 +30,21 @@
     la = !git config --list | grep alias | cut -c 7- &
 
     # show status of current branch
-    s = !git status
+    s = status
 
     # show repo information
-    i = !git info
+    i = info
 
     # fetch changes and rebase master from remote
-    up = !git fetch && git pull --rebase origin master
+    up = !git fetch && !git pull --rebase origin master
 
     # commit changes with inline message
-    ci = !git commit -a -m $2
+    ci = commit -a -m $2
+
+    ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
     # reset current branch to HEAD and delete untracked files
-    blowaway = !git reset --hard HEAD && git clean -d -x --force
+    blowaway = !git reset --hard HEAD && !git clean -d -x --force
 
 [filter "lfs"]
 	smudge = git-lfs smudge %f
