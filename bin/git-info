@@ -1,20 +1,33 @@
 #!/usr/bin/env bash
-# Show info from current Git repository
+# Show info from local Git repository
 
 
-# Traverse up to root of the repo
-while [ ! -d .git ] && [ ! $(pwd) = "/" ]; do cd ..; done
+# Traverse up to root of repo
+while [[ ! -d .git ]] && [[ ! $(pwd) = "/" ]]; do
+    cd ..
+done
+echo
 
-if [ ! -d .git ]; then
-    echo -e "Not a git repository!"
+if [[ ! -d .git ]]; then
+    echo "Not a Git repository!"
     exit 1
 fi
 
-# Display info from the repo
 echo -e "\\e[94m\e[1m=== Configuration ===\e[0m"
 git config --list |
 while IFS= read -r line; do
-    echo "    $line"
+    if [[ ! $line =~ alias.* ]]; then
+        echo "    $line"
+    fi
+done
+echo
+
+echo -e "\\e[94m\e[1m=== Aliases ===\e[0m"
+git config --list |
+while IFS= read -r line; do
+    if [[ $line =~ alias.* ]]; then
+        echo "    $line"
+    fi
 done
 echo
 
@@ -26,22 +39,32 @@ done
 echo
 
 echo -e "\\e[94m\e[1m=== Remote Branches ===\e[0m"
-git branch --no-color -r |
+git branch -r |
 while IFS= read -r line; do
     echo "  $line"
 done
 echo
 
 echo -e "\\e[94m\e[1m=== Local Branches ===\e[0m"
-git branch --no-color |
+git branch |
 while IFS= read -r line; do
-    echo "  $line"
+    echo "    $line"
 done
 echo
 
 echo -e "\\e[94m\e[1m=== Most Recent Commit ===\e[0m"
-git log --max-count=1 --no-color |
+git log --max-count=1 |
 while IFS= read -r line; do
     echo "    $line"
 done
+echo
+
+echo -e "\\e[94m\e[1m=== Status ===\e[0m"
+git status -b -s |
+while IFS= read -r line; do
+    echo "    $line"
+done
+echo
+
+echo -e "\\e[94m\e[1m================================================\e[0m"
 echo
