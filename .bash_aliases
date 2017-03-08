@@ -145,6 +145,14 @@ function psgrep () {
 }
 
 
+# convert all PNG images in current directory to JPG format and delete originals
+function convert_png_to_jpg () {
+    find . -type f -iname "*.png" -prune | parallel convert -quality 95% {} {.}.jpg
+    find . -type f -iname "*.png" -prune | parallel rm {}
+
+}
+
+
 # search recursively for text file content by regex (case-insensitive)
 # in files under current directory
 # usage: rgrep <pattern>
