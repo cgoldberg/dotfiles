@@ -35,8 +35,11 @@
     # show repo information
     i = info
 
-    # fetch changes and rebase from remote master
+    # fetch changes from remote and rebase local master
     up = pull --rebase origin master
+
+    # list branches sorted by last modified
+    br = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
 
     # commit changes with inline message
     ci = !git commit -a -m $2
