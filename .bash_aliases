@@ -261,15 +261,11 @@ function extract () {
 
 # send an HTTP GET and display timings (poor man's http profiler)
 function http_profile () {
-    curl "$@" \
-    -s \
-    -o /dev/null \
-    -w \
-"response_code: %{http_code}\n
+    curl "$@" -s -o /dev/null -w \
+"response_code: %{http_code}
 dns_time: %{time_namelookup}
 connect_time: %{time_connect}
 pretransfer_time: %{time_pretransfer}
 starttransfer_time: %{time_starttransfer}
-total_time: %{time_total}
-"
+total_time: %{time_total}"
 }
