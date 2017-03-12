@@ -147,7 +147,7 @@ function psgrep () {
 
 # convert all PNG images in current directory to JPG format and delete originals
 function convert_png_to_jpg () {
-    find . -type f -iname "*.png" -prune | parallel convert -quality 95% {} {.}.jpg
+    find . -type f -iname "*.png" -prune | parallel convert -quality 95% {} {.}.jpg && \
     find . -type f -iname "*.png" -prune | parallel rm {}
 
 }
