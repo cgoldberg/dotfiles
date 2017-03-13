@@ -51,7 +51,7 @@ alias diskspace="df -hT --total --type=ext4 --type=cifs --sync"
 alias diskused="du -S | grep -v .git | sort -nr | less"
 
 # serve current directory over HTTP on port 8000
-alias webserver='python -m SimpleHTTPServer'
+alias webserver="python -m SimpleHTTPServer"
 
 # count files recursively under current directory
 alias filecount="find . -type f | wc -l"
