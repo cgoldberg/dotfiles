@@ -1,7 +1,3 @@
-[user]
-    name = Corey Goldberg
-    email = cgoldberg@gmail.com
-
 [color]
     ui = auto
     branch = auto
@@ -29,16 +25,16 @@
     # list git aliases
     la = !git config --list | grep alias | cut -c 7- &
 
-    # show status of current branch
+    # show status of local branch
     s = status
 
     # show repo information
     i = info
 
-    # fetch changes from remote and rebase local master
-    up = pull --rebase origin master
+    # fetch changes from remote and rebase local branch
+    up = !git fetch && git pull --rebase origin \"$(git rev-parse --abbrev-ref HEAD)\"
 
-    # list branches sorted by last modified
+    # list local branches sorted by last modified
     br = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
 
     # commit changes with inline message
@@ -47,11 +43,12 @@
     # show pretty log
     ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
-    # reset current branch to HEAD and delete untracked files
+    # reset local branch to HEAD and delete untracked files
     blowaway = !git reset --hard HEAD && git clean -d -x --force
 
 [filter "lfs"]
-	smudge = git-lfs smudge %f
-	required = true
-	clean = git-lfs clean %f
+    smudge = git-lfs smudge %f
+    required = true
+    clean = git-lfs clean %f
 
+    
