@@ -1,4 +1,4 @@
-user]
+[user]
     name = Corey Goldberg
     email = cgoldberg@gmail.com
 
@@ -55,4 +55,4 @@ user]
     required = true
     clean = git-lfs clean %f
 
-    
+
