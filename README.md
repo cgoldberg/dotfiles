@@ -1,5 +1,5 @@
 # cgoldberg/dotfiles
 
-#### my configuration files and scripts
+##### my configuration files and scripts
 
 ----
