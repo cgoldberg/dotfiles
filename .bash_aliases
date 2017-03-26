@@ -260,22 +260,22 @@ function extract () {
 
 
 # send an HTTP GET and display timings (poor man's http profiler)
-# usage: http_profile <url>
-function http_profile () {
-    w="\n"
-    w+="URL:\t\t$1\n"
-    w+="Local IP:\t%{local_ip}\n"
-    w+="Remote IP:\t%{remote_ip}\n\n"
-    w+="Status code:\t%{http_code}\n"
-    w+="Response size:\t%{size_download}\n\n"
-    w+="DNS time:\t%{time_namelookup}\n"
-    w+="Connect time:\t%{time_connect}\n"
-    w+="PretXfer time:\t%{time_pretransfer}\n"
-    w+="StartXfer time:\t%{time_starttransfer}\n"
-    w+="Total time:\t%{time_total}\n"
-    if [[ ! $# -lt 1 ]]; then
-        curl "$1" -s -o /dev/null -w "$w"
+# usage: http-profile <url>
+function http-profile () {
+    if [[ $# -lt 1 ]]; then
+        echo "no URL specified!" && return 1
     else
-        echo "no URL specified!"
+        w="\n"
+        w+="URL:\t\t$1\n"
+        w+="Local IP:\t%{local_ip}\n"
+        w+="Remote IP:\t%{remote_ip}\n\n"
+        w+="Status code:\t%{http_code}\n"
+        w+="Response size:\t%{size_download}\n\n"
+        w+="DNS time:\t%{time_namelookup}\n"
+        w+="Connect time:\t%{time_connect}\n"
+        w+="PretXfer time:\t%{time_pretransfer}\n"
+        w+="StartXfer time:\t%{time_starttransfer}\n"
+        w+="Total time:\t%{time_total}\n\n"
+        curl -sS --compressed -o /dev/null -w "$w" "$1"
     fi
 }

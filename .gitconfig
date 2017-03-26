@@ -29,11 +29,17 @@
     # list git aliases
     la = !git config --list | grep alias | cut -c 7- &
 
-    # show status of local branch
-    s = status
+    # show diff of uncomitted local changes
+    df = diff
+
+    # show side-by-side diff of uncomitted local changes using colordiff
+    dfc = diff
 
     # show repo information
     i = info
+
+    # show status of local branch
+    s = status
 
     # fetch changes from remote and rebase local branch
     up = !git fetch && git pull --rebase origin \"$(git rev-parse --abbrev-ref HEAD)\"
@@ -42,7 +48,7 @@
     br = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
 
     # commit changes with inline message
-    ci = !git commit -a -m $2
+    ci = !git commit -a -m "$2"
 
     # show pretty log
     ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
