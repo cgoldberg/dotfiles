@@ -54,7 +54,7 @@
     ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
     # reset local branch to HEAD and delete untracked files
-    blowaway = !git reset --hard HEAD && git clean -d -x --force
+    blowaway = !git fetch && git reset --hard @{upstream} && git clean -d -x --force
 
 [filter "lfs"]
     smudge = git-lfs smudge %f
