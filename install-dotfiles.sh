@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# dotfiles installer for user: cgoldberg
+
 
 BIN="$HOME/bin"
 DIR="$(realpath .)"

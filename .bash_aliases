@@ -23,11 +23,11 @@ alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --q
 alias g="git"
 __git_complete g _git
 
-# color directory listings
+# colored directory listings
 alias ls="\ls -lhAFG --color=auto --group-directories-first"
 alias l="\ls -AFG --color=auto --group-directories-first"
 
-# color grep output
+# colored grep output
 alias grep="\grep --color=auto"
 
 # system shutdown
@@ -43,6 +43,9 @@ alias c="clear"
 
 # exit terminal
 alias x="exit"
+
+# get external ip address
+alias myip='curl icanhazip.com'
 
 # disk space available on local ext4 and samba filesystems
 alias diskspace="df -hT --total --type=ext4 --type=cifs --sync"
@@ -105,13 +108,13 @@ alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
 
 
 # list public bash functions and aliases defined in the current shell
-function funcs () {
+funcs () {
     compgen -a -A function | grep -v ^_ | sort
 }
 
 
 # reload shell configurations
-function re-source () {
+re-source () {
     if [ -f ~/.bashrc ]; then
         . ~/.bashrc
     fi
@@ -124,7 +127,7 @@ function re-source () {
 # search command history by regex (case-insensitive)
 # (when called with no args, show last 100 commands)
 # usage: h <pattern>
-function h () {
+h () {
     if [ $# -eq 0 ]; then
         history | tail -n 100
     else
@@ -136,7 +139,7 @@ function h () {
 # search process info by regex (case-insensitive)
 # (when called with no args, show all processes)
 # usage: psgrep <pattern>
-function psgrep () {
+psgrep () {
     if [ $# -eq 0 ]; then
         ps aux | less
     else
@@ -145,18 +148,23 @@ function psgrep () {
 }
 
 
-# convert all PNG images in current directory to JPG format and delete originals
-function convert_png_to_jpg () {
-    find . -type f -iname "*.png" -prune | parallel convert -quality 95% {} {.}.jpg && \
-    find . -type f -iname "*.png" -prune | parallel rm {}
-
+# convert .png images in current directory to .jpg format and rename file extensions
+convert_pngs_to_jpgs () {
+    find_pngs () {
+        find . -type f -iname "*.png" -prune
+    }
+    if [[ -n $(find_pngs) ]]; then
+        (find_pngs | parallel convert -quality 95% {} {.}.jpg) && (find_pngs | parallel rm {})
+    else
+        echo "nothing to convert"
+    fi
 }
 
 
 # search recursively for text file content by regex (case-insensitive)
 # in files under current directory
 # usage: rgrep <pattern>
-function rgrep () {
+rgrep () {
     fgrep -iInr --color=always --exclude-dir=".git" "$1" . | less
 }
 
@@ -165,7 +173,7 @@ function rgrep () {
 # (case insensitive, skip any filesystems mounted under /mnt)
 # update the mlocate database before searching
 # usage: name <pattern>
-function name () {
+name () {
     updatedb --require-visibility 0 --output ~/.locatedb --database-root / --prunepaths /mnt
     locate --existing --ignore-case --database ~/.locatedb $1
 }
@@ -174,13 +182,13 @@ function name () {
 # launch SciTE (GTK) editor in the background and suppress stdout/stderr
 # (keeps running after the shell session ends and doesn't appear in jobs list)
 # usage: scite <file>
-function scite () {
+scite () {
     nohup scite "$@" > /dev/null 2>&1 & disown
 }
 
 
 # package maintenance
-function apt-maintain () {
+apt-maintain () {
     # reload package index files from sources
     sudo apt-get update
     # upgrade all installed packages using smart conflict resolution
@@ -199,7 +207,7 @@ function apt-maintain () {
 
 
 # purge configuration data from packages marked for removal
-function purge-apt-configs () {
+purge-apt-configs () {
     if $(dpkg -l | grep --quiet '^rc'); then
         echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
         echo "purging package configs from removed packages..."
@@ -212,7 +220,7 @@ function purge-apt-configs () {
 
 
 # purge local Dropbox cache
-function purge-dropbox-cache () {
+purge-dropbox-cache () {
     dropbox stop
     cache_dir=~/Dropbox/.dropbox.cache/
     if [ -e $cache_dir ]; then
@@ -224,7 +232,7 @@ function purge-dropbox-cache () {
 
 
 # print all 256 terminal colors as both foreground and background
-function print-colors () {
+print-colors () {
     for fgbg in 38 48; do
         for color in {0..256}; do
             echo -en "\e[${fgbg};5;${color}m ${color}\t\e[0m"
@@ -241,7 +249,7 @@ function print-colors () {
 # accepts an optional zipcode
 # defaults to weather in Boston, MA
 # usage: weather [zipcode]
-function weather () {
+weather () {
     if [[ $# -eq 0 ]]; then
         zipcode="02116"
     else
@@ -254,14 +262,14 @@ function weather () {
 
 # extract any archive into a new directory
 # usage: extract <archive>
-function extract () {
+extract () {
     dtrx -v $1
 }
 
 
 # send an HTTP GET and display timings (poor man's http profiler)
 # usage: http-profile <url>
-function http-profile () {
+http-profile () {
     if [[ $# -lt 1 ]]; then
         echo "no URL specified!" && return 1
     else
