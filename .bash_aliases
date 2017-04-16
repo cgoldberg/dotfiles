@@ -45,7 +45,7 @@ alias c="clear"
 alias x="exit"
 
 # get external ip address
-alias myip='curl icanhazip.com'
+alias myip="curl icanhazip.com"
 
 # disk space available on local ext4 and samba filesystems
 alias diskspace="df -hT --total --type=ext4 --type=cifs --sync"
