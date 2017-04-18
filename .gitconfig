@@ -26,35 +26,35 @@
     cmd = diff -y $LOCAL $REMOTE | expand | colordiff | less -rS
 
 [alias]
-    # list git aliases
-    la = !git config --list | grep alias | cut -c 7- &
-
-    # show diff of uncomitted local changes
+    # basic shortcuts
+    br = branch
+    cl = clone
+    co = checkout
     df = diff
-
-    # show side-by-side diff of uncomitted local changes using colordiff
-    dfc = diff
-
-    # show repo information
+    dfc = colordiff
     i = info
-
-    # show status of local branch
     s = status
 
-    # fetch changes from remote and rebase local branch
-    up = !git fetch && git pull --rebase origin \"$(git rev-parse --abbrev-ref HEAD)\"
+    # list all git aliases
+    la = !f() { git config --list | grep alias | cut -c 7- &; }; f"
 
-    # list local branches sorted by last modified
-    br = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+    # change last commit
+    amend = commit -a --amend
+
+    # fetch changes from remote and rebase local branch
+    up = "!f() { git fetch && git pull --rebase origin \"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
 
     # commit changes with inline message
-    ci = !git commit -a -m "$2"
+    ci = !git commit -a -m $2
 
     # show pretty log
     ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
     # reset local branch to HEAD and delete untracked files
-    blowaway = !git fetch && git reset --hard @{upstream} && git clean -d -x --force
+    blowaway = "!f() { git fetch && git reset --hard @{upstream} && git clean -d -x --force; }; f"
+
+    # list local branches with last commit date and commit hash, sorted by last modified
+    branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'; }; f"
 
 [filter "lfs"]
     smudge = git-lfs smudge %f
