@@ -30,9 +30,9 @@
     br = branch
     cl = clone
     co = checkout
-    df = diff
-    dfc = colordiff
+    com = checkout master
     i = info
+    po = push origin
     s = status
 
     # list all git aliases
