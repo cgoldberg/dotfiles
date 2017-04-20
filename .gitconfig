@@ -1,13 +1,16 @@
 [user]
     name = Corey Goldberg
-    email = cgoldberg@gmail.com
+    email = corey.goldberg@maxwellhealth.com
+
+[pager]
+    diff = false
 
 [color]
-    ui = auto
-    branch = auto
-    diff = auto
-    interactive = auto
-    status = auto
+    ui = always
+    branch = always
+    diff = always
+    interactive = always
+    status = always
 
 [branch]
     autosetupmerge = always
@@ -16,24 +19,23 @@
 [push]
     default = simple
 
-[diff]
-    tool = colordiff
-
-[difftool]
-    prompt = false
-
-[difftool "colordiff"]
-    cmd = diff -y $LOCAL $REMOTE | expand | colordiff | less -rS
-
 [alias]
     # basic shortcuts
-    br = branch
+    b = branch
+    br = !branches
     cl = clone
     co = checkout
     com = checkout master
+    df = diff
     i = info
     po = push origin
     s = status
+
+    # show diff piped through a pager
+    dff = !git --paginate diff
+
+    # show diff of current branch against master
+    dfm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
 
     # list all git aliases
     la = !git config --list | grep alias | cut -c 7- &
@@ -44,8 +46,9 @@
     # commit changes with inline message
     ci = !git commit -a -m $2
 
-    # pretty commit log
-    ls = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    # show pretty commit log
+    ls = log --pretty=format:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
+    ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
     # fetch changes from remote and rebase local branch
     up = "!f() { git fetch && git pull --rebase origin \"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
@@ -54,11 +57,9 @@
     blowaway = "!f() { git fetch && git reset --hard @{upstream} && git clean -d -x --force; }; f"
 
     # list local branches with last commit date and commit hash, sorted by last modified
-    branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'; }; f"
+    br = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'; }; f"
 
 [filter "lfs"]
     smudge = git-lfs smudge %f
     required = true
     clean = git-lfs clean %f
-
-
