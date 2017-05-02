@@ -1,6 +1,6 @@
 [user]
     name = Corey Goldberg
-    email = corey.goldberg@maxwellhealth.com
+    email = cgoldberg@gmail.com
 
 [pager]
     diff = false
@@ -22,7 +22,6 @@
 [alias]
     # basic shortcuts
     b = branch
-    br = !branches
     cl = clone
     co = checkout
     com = checkout master
@@ -36,6 +35,7 @@
 
     # show diff of current branch against master
     dfm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
+    diffm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
 
     # list all git aliases
     la = !git config --list | grep alias | cut -c 7- &
@@ -46,20 +46,10 @@
     # commit changes with inline message
     ci = !git commit -a -m $2
 
-    # show pretty commit log
+    # show pretty commit logs
     ls = log --pretty=format:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
     ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
     # fetch changes from remote and rebase local branch
     up = "!f() { git fetch && git pull --rebase origin \"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
-
-    # reset local branch to HEAD and delete untracked files
-    blowaway = "!f() { git fetch && git reset --hard @{upstream} && git clean -d -x --force; }; f"
-
-    # list local branches with last commit date and commit hash, sorted by last modified
-    br = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'; }; f"
-
-[filter "lfs"]
-    smudge = git-lfs smudge %f
-    required = true
-    clean = git-lfs clean %f
+    
