@@ -15,6 +15,10 @@ alias ed="scite"
 alias vi="\vim"
 alias v="\vim"
 
+# edit shell configs
+alias edbrc="ed ~/.bashrc"
+alias edba="ed ~/.bash_aliases"
+
 # shortcuts for text pagers
 alias more="less"
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
@@ -114,6 +118,15 @@ funcs () {
 
 
 # reload shell configurations
+re-source () {
+    if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+    fi
+    if [ -f ~/.bash_profile ]; then
+        . ~/.bash_profile
+    fi
+}
+
 re-source () {
     if [ -f ~/.bashrc ]; then
         . ~/.bashrc
@@ -245,18 +258,13 @@ print-colors () {
 }
 
 
-# display one-line weather report
-# accepts an optional zipcode
-# defaults to weather in Boston, MA
-# usage: weather [zipcode]
+# display one-line weather report for Boston (02116)
 weather () {
-    if [[ $# -eq 0 ]]; then
-        zipcode="02116"
-    else
-        zipcode=$1
-    fi
-    curl -sL "http://www.wunderground.com/q/zmw:$zipcode.1.99999" | \
-        grep "og:title" | cut -d\" -f4 | sed 's/&deg;/ degrees F/'
+    local ZIPCODE=02116
+    curl -sL "http://www.wunderground.com/q/zmw:$ZIPCODE.1.99999" | \
+    grep "og:title" | \
+    cut -d\" -f4 | \
+    sed "s/&deg;/° F/"
 }
 
 
