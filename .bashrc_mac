@@ -1,0 +1,109 @@
+PS1='\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(tput setaf 3)\]\[$(__git_ps1 "(%s)")\]\[$(tput bold)\] $ \[$(tput sgr0)\]'
+
+# add personal bin to PATH
+export PATH=$PATH:$HOME/bin
+
+# enable git command completion
+# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+if [ -f ~/bin/git-completion.bash ]; then
+    source ~/bin/git-completion.bash
+fi
+
+# show current git branch name in the prompt (if inside a repo directory)
+# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+if [ -f ~/bin/git-prompt.sh ]; then
+    source ~/bin/git-prompt.sh
+fi
+
+# editor aliases
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+alias sublime="subl"
+alias ed="subl"
+alias edit="subl"
+alias e="subl ."
+
+# misc aliases
+alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
+alias c="clear"
+alias cls="clear"
+alias x="exit"
+alias ex="exit"
+alias dc="docker-compose"
+alias dcu="docker-compose up"
+alias ebrc="edit ~/.bashrc_mac"
+alias filecount="find . -type f | grep -v '.git' | wc -l"
+alias ls="\ls -lhAFG"
+alias l="\ls -AFG"
+alias o="open ."
+alias re-source="source ~/.bash_profile"
+alias screensaver="/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine"
+alias ss="screensaver"
+alias webserver="python -m SimpleHTTPServer"
+
+# network aliases
+alias flushdns="sudo killall -HUP mDNSResponder"
+alias localip="ipconfig getifaddr en0"
+alias externalip="curl icanhazip.com"
+alias ips="echo -n 'local IP: ' && localip && echo -n 'external IP: ' && externalip"
+
+# navigate up the directory tree using dots
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+alias .......="cd ../../../../../.."
+
+
+# search recursively for text content matching regex (case-insensitive)
+# in files under current directory
+# usage: rgrep <pattern>
+rgrep () {
+    fgrep -iInr --color=always --exclude-dir=".git" "$1" . | less -R
+}
+
+
+# search recursively for filenames matching partial name (case-insensitive).
+# results are sorted by date
+# usage: findfiles <pattern>
+findfiles () {
+    find .  -iname "*$1*" -type f -print0 | xargs -0 ls -flrt | awk '{print $6, $7, $9}'
+}
+
+
+# search command history by regex (case-insensitive)
+# (when called with no args, show last 100 commands)
+# usage: h <pattern>
+h () {
+    if [ $# -eq 0 ]; then
+        history | tail -n 100
+    else
+        history | grep -i --color=always "$1"
+    fi
+}
+
+
+# better command history handling
+# -------------------------------
+# append to the history file, don't overwrite it
+shopt -s histappend
+# edit a recalled history line before executing
+shopt -s histverify
+# save each line of a multi-line command in the same history entry
+shopt -s cmdhist
+# don't show duplicate commands in history
+HISTCONTROL=ignoredups
+# immediately add commands to history instead of waiting for end of session
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+# number of previous commands stored in history file
+HISTSIZE=100000
+# number of previous commands stored in memory for current session
+HISTFILESIZE=100000
+# don't store these commands in history
+HISTIGNORE='ls:exit:x:c:clear:h:history:pwd'
+# -------------------------------
+
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
