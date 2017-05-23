@@ -31,14 +31,15 @@
     s = status
 
     # show diff piped through a pager
-    dff = !git --paginate diff
+    dff = "!f() { git --paginate diff; }; f"
 
     # show diff of current branch against master
     dfm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
     diffm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
 
     # list all git aliases
-    la = !git config --list | grep alias | cut -c 7- &
+    alias = "!f() { git config --list | grep alias | cut -c 7- | sort; }; f"
+    la = "!f() { git config --list | grep alias | cut -c 7- | sort; }; f"
 
     # change last commit
     amend = commit -a --amend
@@ -46,6 +47,9 @@
     # commit changes with inline message
     ci = !git commit -a -m $2
 
+    # open Github page for current repo
+    open = "!f() { open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@'`"; }; f"
+    
     # show pretty commit logs
     ls = log --pretty=format:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
     ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
