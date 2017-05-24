@@ -2,7 +2,7 @@
     name = Corey Goldberg
     email = cgoldberg@gmail.com
 
-[pager]
+pager]
     diff = false
 
 [color]
