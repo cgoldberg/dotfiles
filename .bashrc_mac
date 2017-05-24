@@ -9,7 +9,7 @@ if [ -f ~/bin/git-completion.bash ]; then
     source ~/bin/git-completion.bash
 fi
 
-# show current git branch name in the prompt (if inside a repo directory)
+# display current git branch name in the prompt when inside a repo directory
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 if [ -f ~/bin/git-prompt.sh ]; then
     source ~/bin/git-prompt.sh
@@ -21,11 +21,15 @@ alias sublime="subl"
 alias ed="subl"
 alias edit="subl"
 alias e="subl -n ."
+alias v="vim"
+alias vi="vim"
 
 # misc aliases
 alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
+alias brewupdate="brew update && brew upgrade && brew cleanup"
 alias c="clear"
 alias cls="clear"
+alias dsclean="find . -type f -name '*.DS_Store' -ls -delete"
 alias x="exit"
 alias ex="exit"
 alias dc="docker-compose"
@@ -38,6 +42,8 @@ alias o="open -n --fresh ."
 alias re-source="source ~/.bash_profile"
 alias screensaver="/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine"
 alias ss="screensaver"
+alias afk="screensaver"
+alias screenshot="screencapture -i -T 1 -t jpg -P screenshot.jpg"
 alias webserver="python -m SimpleHTTPServer"
 
 # network aliases
@@ -46,7 +52,7 @@ alias localip="ipconfig getifaddr en0"
 alias externalip="curl icanhazip.com"
 alias ips="echo -n 'local IP: ' && localip && echo -n 'external IP: ' && externalip"
 
-# navigate up the directory tree using dots
+# navigate up the directory tree
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -54,6 +60,9 @@ alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
 alias .......="cd ../../../../../.."
 
+# sound aliases
+alias mute="osascript -e 'set volume output muted true'"
+alias unmute="osascript -e 'set volume output muted false'"
 
 # search recursively for text content matching regex (case-insensitive)
 # in files under current directory
@@ -62,7 +71,6 @@ rgrep () {
     fgrep -iInr --color=always --exclude-dir=".git" "$1" . | less -R
 }
 
-
 # search recursively for filenames matching partial name (case-insensitive).
 # results are sorted by date
 # usage: findfiles <pattern>
@@ -70,6 +78,10 @@ findfiles () {
     find .  -iname "*$1*" -type f -print0 | xargs -0 ls -flrt | awk '{print $6, $7, $9}'
 }
 
+# show all files under current dir sorted by modified date
+filemod () {
+    find . -type f -print0 | xargs -0 stat -f"%m %Sm %N" | sort -rn | less
+}
 
 # search command history by regex (case-insensitive)
 # (when called with no args, show last 100 commands)
@@ -81,7 +93,6 @@ h () {
         history | grep -i --color=always "$1"
     fi
 }
-
 
 # better command history handling
 # -------------------------------
@@ -102,7 +113,6 @@ HISTFILESIZE=100000
 # don't store these commands in history
 HISTIGNORE='ls:exit:x:c:clear:h:history:pwd'
 # -------------------------------
-
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
