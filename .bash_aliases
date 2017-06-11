@@ -10,8 +10,8 @@
 alias sudo="sudo "
 
 # shortcuts for editors
-alias edit="scite"
-alias ed="scite"
+alias edit="subl"
+alias ed="subl"
 alias vi="\vim"
 alias v="\vim"
 
@@ -52,7 +52,7 @@ alias x="exit"
 alias myip="curl icanhazip.com"
 
 # disk space available on local ext4 and samba filesystems
-alias diskspace="df -hT --total --type=ext4 --type=cifs --sync"
+alias diskspace="df --sync --human-readable --total --type=ext4"
 
 # disk space used under current directory, grouped and sorted by directory size
 alias diskused="du -S | grep -v .git | sort -nr | less"
