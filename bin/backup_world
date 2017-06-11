@@ -2,14 +2,18 @@
 
 # master backup job:
 # - delete local dropbox cache
-# - rsync local dropbox to remote NAS
-# - rsync remote NAS to local mirror
+# - rsync local Dropbox to remote NAS
+# - rsync remote NAS to local backup HDD
 
 
 set -e
 
+BYTEZ="/run/user/1000/gvfs/smb-share:server=bytez,share=public/"
+WDGREEN="/mnt/wd-green/"
+DROPBOX="/home/cgoldberg/Dropbox/"
+SEP="----------------------------------------------------------------"
 
-function purge-dropbox-cache () {
+purge-dropbox-cache () {
     dropbox stop
     cache_dir=~/Dropbox/.dropbox.cache/
     if [ -e $cache_dir ]; then
@@ -19,62 +23,58 @@ function purge-dropbox-cache () {
     dropbox start
 }
 
+echo "starting master backup job..."
+echo $SEP
 
 if [[ $HOSTNAME != "collosus" ]]; then
     echo "sorry, this script can only be run on colossus"
     exit 1
 fi
 
-if [ ! -d /mnt/bytez/ ]; then
+if [ ! -d "$BYTEZ" ]; then
     echo "error: can't find mount point for remote NAS (bytez)"
     exit 1
 fi
 
-if [ ! -d /mnt/wd-green/ ]; then
-    echo "error: can't find mount point for secondary local HDD mirror (wd-green)"
+if [ ! -d "$WDGREEN" ]; then
+    echo "error: can't find mount point for local backup HDD (wd-green)"
     exit 1
 fi
 
-if [ ! -d ~/Dropbox/ ]; then
-    echo "error: can't find local Dropbox"
+if [ ! -d "$DROPBOX" ]; then
+    echo "error: can't find local Dropbox directory"
     exit 1
 fi
 
-
-SEP="----------------------------------------------------------------"
-
-echo
-echo "starting master backup job..."
-echo
-echo $SEP
-echo "purging local dropbox cache..."
-echo
+echo "purging local Dropbox cache..."
 purge-dropbox-cache
-echo
 echo $SEP
-echo "syncing local dropbox to remote NAS..."
-echo
-rsync -a --delete --human-readable --info=progress2 --safe-links ~/Dropbox/ /mnt/bytez/Dropbox/
-echo
+
+echo "syncing local Dropbox to remote NAS..."
+#  Note: There is an issue with QNAP's samba or rsyncd configuration that is causing "failed to set permissions"
+#  errors when it's on the receiving end of a transfer.  To get around this, we just disable preserving
+#  permissions when rsyncing to the QNAP NAS.  To disable permissions, we use individual rsync options rather
+#  than the --archive option (which is equivalent to -rlptgoD) so we can omit the --perms option
+rsync --recursive --links --times --group --owner --safe-links --delete --human-readable --progress --info=progress2 $DROPBOX $BYTEZ/Dropbox/
 echo $SEP
-echo "syncing remote NAS to local mirror..."
-echo
-rsync -a --delete --human-readable --progress --info=progress2 --safe-links /mnt/bytez/ /mnt/wd-green/
-echo
+
+echo "syncing remote NAS to local backup HDD..."
+#  Note: The --archive option is equivalent to -rlptgoD
+rsync --archive --delete --human-readable --progress --info=progress2 --safe-links $BYTEZ $WDGREEN
 echo $SEP
-echo "flushing local file system buffers (synchronize cached writes)..."
-sync
-echo
-echo $SEP
+
 echo "stats:"
 echo
-df -hT --total --type=ext4 --type=cifs
+df --sync --type=ext4 --block-size=G
 echo
+NAS_COUNTS=$(tree -a $BYTEZ | tail -n 1)
 echo "NAS (bytez):"
-tree /mnt/bytez/ | tail -n 1
+echo "  * $NAS_COUNTS"
 echo
-echo "local mirror (wd-green):"
-tree /mnt/wd-green/ | tail -n 1
+LOCALBACKUP_COUNTS=$(tree -a $WDGREEN | tail -n 1)
+echo "local backup HDD (wd-green):"
+echo "  * $LOCALBACKUP_COUNTS"
 echo $SEP
+
 echo
 echo "done"
