@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# master backup job:
-# - delete local dropbox cache
-# - rsync local Dropbox to remote NAS
-# - rsync remote NAS to local backup HDD
+#  master backup job:
+#   - deletes local dropbox cache
+#   - rsyncs local Dropbox to remote NAS
+#   - rsyncs remote NAS to local backup HDD
 
 
 set -e
@@ -13,68 +13,97 @@ WDGREEN="/mnt/wd-green/"
 DROPBOX="/home/cgoldberg/Dropbox/"
 SEP="----------------------------------------------------------------"
 
-purge-dropbox-cache () {
+
+check_configuration () {
+    if [[ "$HOSTNAME" != "collosus" ]]; then
+        echo "error: this script can only be run on colossus"
+        exit 1
+    fi
+
+    if [[ ! -d "$BYTEZ" ]]; then
+        echo "error: can't find mount point for remote NAS (bytez): ${BYTEZ}"
+        exit 1
+    fi
+
+    if [[ ! -d "$WDGREEN" ]]; then
+        echo "error: can't find mount point for local backup HDD (wd-green): ${WDGREEN}"
+        exit 1
+    fi
+
+    if [[ ! -d "$DROPBOX" ]]; then
+        echo "error: can't find local Dropbox directory: ${DROPBOX}"
+        exit 1
+    fi
+}
+
+
+purge_dropbox_cache () {
     dropbox stop
-    cache_dir=~/Dropbox/.dropbox.cache/
-    if [ -e $cache_dir ]; then
-        du -h $cache_dir
-        rm -rf $cache_dir
+    local cache_dir="${DROPBOX}.dropbox.cache/"
+    if [[ -e "$cache_dir" ]]; then
+        du -h "$cache_dir"
+        rm -rf "$cache_dir"
     fi
     dropbox start
 }
 
+
+display_storage_stats () {
+    echo
+    df --sync --type=ext4 --block-size=G
+    echo
+    local nas_count=$(tree -a "$BYTEZ" | tail -n 1)
+    echo "NAS (bytez):"
+    echo "  * ${nas_count}"
+    local localbackup_count=$(tree -a "$WDGREEN" | tail -n 1)
+    echo "local backup HDD (wd-green):"
+    echo "  * ${localbackup_count}"
+}
+
+
 echo "starting master backup job..."
-echo $SEP
 
-if [[ $HOSTNAME != "collosus" ]]; then
-    echo "sorry, this script can only be run on colossus"
-    exit 1
+#  unlock the Gnome keyring so we can access the samba share (requires "python-gnomekeyring" package)
+echo  "unlocking the keyring..."
+python -c "import gnomekeyring;gnomekeyring.unlock_sync(None, 'cmg')"
+
+#  if the samba share isn't mounted, mount it on the local virtual filesystem
+if [[ ! -d "$BYTEZ" ]]; then
+    echo "mounting samba share to access NAS..."
+    gvfs-mount smb://bytez/public
 fi
 
-if [ ! -d "$BYTEZ" ]; then
-    echo "error: can't find mount point for remote NAS (bytez)"
-    exit 1
-fi
+echo "checking configuration..."
+check_configuration
 
-if [ ! -d "$WDGREEN" ]; then
-    echo "error: can't find mount point for local backup HDD (wd-green)"
-    exit 1
-fi
-
-if [ ! -d "$DROPBOX" ]; then
-    echo "error: can't find local Dropbox directory"
-    exit 1
-fi
+echo "$SEP"
 
 echo "purging local Dropbox cache..."
-purge-dropbox-cache
-echo $SEP
+purge_dropbox_cache
+
+echo "$SEP"
 
 echo "syncing local Dropbox to remote NAS..."
-#  Note: There is an issue with QNAP's samba or rsyncd configuration that is causing "failed to set permissions"
+#  There is an issue with QNAP's samba or rsyncd configuration that is causing "failed to set permissions"
 #  errors when it's on the receiving end of a transfer.  To get around this, we just disable preserving
 #  permissions when rsyncing to the QNAP NAS.  To disable permissions, we use individual rsync options rather
 #  than the --archive option (which is equivalent to -rlptgoD) so we can omit the --perms option
-rsync --recursive --links --times --group --owner --safe-links --delete --human-readable --progress --info=progress2 $DROPBOX $BYTEZ/Dropbox/
-echo $SEP
+rsync \
+    --recursive --links --times --group --owner --safe-links \
+    --delete --human-readable --progress --info=progress2 \
+    "$DROPBOX" "${BYTEZ}/Dropbox/"
+
+echo "$SEP"
 
 echo "syncing remote NAS to local backup HDD..."
-#  Note: The --archive option is equivalent to -rlptgoD
-rsync --archive --delete --human-readable --progress --info=progress2 --safe-links $BYTEZ $WDGREEN
-echo $SEP
+#  The --archive option is equivalent to -rlptgoD
+rsync --archive --safe-links --delete --human-readable --progress --info=progress2 "$BYTEZ" "$WDGREEN"
 
-echo "stats:"
-echo
-df --sync --type=ext4 --block-size=G
-echo
-NAS_COUNTS=$(tree -a $BYTEZ | tail -n 1)
-echo "NAS (bytez):"
-echo "  * $NAS_COUNTS"
-echo
-LOCALBACKUP_COUNTS=$(tree -a $WDGREEN | tail -n 1)
-echo "local backup HDD (wd-green):"
-echo "  * $LOCALBACKUP_COUNTS"
-echo $SEP
+echo "$SEP"
 
-echo
+echo "storage stats:"
+display_storage_stats
+
+echo "$SEP"
+
 echo "done"
