@@ -20,10 +20,10 @@ alias edbrc="ed ~/.bashrc"
 alias edba="ed ~/.bash_aliases"
 
 # shortcuts for text pagers
-alias more="less"
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
+alias more="less"
 
-# run git with command auto-completion enabled
+# enable auto-completion for git commands
 alias g="git"
 __git_complete g _git
 
@@ -97,15 +97,16 @@ alias wrap="tput smam"
 # (requires colordiff package)
 alias diff="\colordiff -s"
 
+# make yourself look all busy and fancy to non-technical people
+alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
+
 # navigate up the directory tree using dots
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
-
-# make yourself look all busy and fancy to non-technical people
-alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
+alias .......="cd ../../../../../.."
 
 
 #----------------------------------------------------------------
@@ -118,15 +119,6 @@ funcs () {
 
 
 # reload shell configurations
-re-source () {
-    if [ -f ~/.bashrc ]; then
-        . ~/.bashrc
-    fi
-    if [ -f ~/.bash_profile ]; then
-        . ~/.bash_profile
-    fi
-}
-
 re-source () {
     if [ -f ~/.bashrc ]; then
         . ~/.bashrc
@@ -268,8 +260,7 @@ weather () {
 }
 
 
-# extract any archive into a new directory
-# usage: extract <archive>
+# extract any type of archive into a new directory
 extract () {
     dtrx -v $1
 }

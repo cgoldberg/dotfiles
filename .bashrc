@@ -33,15 +33,10 @@ if [ -f ~/bin/git-completion.bash ]; then
     . ~/bin/git-completion.bash
 fi
 
-# show current git branch name in the prompt (if inside a repo directory)
+# show current git branch name in the prompt when inside a repo directory
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 if [ -f ~/bin/git-prompt.sh ]; then
     . ~/bin/git-prompt.sh
-fi
-
-# include shell aliases and functions
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
 fi
 
 # set the title on terminals to user@host:dir
@@ -59,12 +54,6 @@ tput smam
 
 # disable the 'Caps Lock' key in terminals (map an extra Escape key instead)
 xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-
-# display Ubuntu logo and system info
-# https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu.sh
-if [ -f  ~/bin/screenfetch-ubuntu ]; then
-    ~/bin/screenfetch-ubuntu
-fi
 
 # better command history handling
 # -------------------------------
@@ -84,3 +73,15 @@ HISTSIZE=10000
 HISTFILESIZE=10000
 # don't store these commands in history
 HISTIGNORE='ls:exit:h:history:pwd'
+
+
+# also source shell aliases and functions
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# display Ubuntu logo and system info
+# https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu.sh
+if [ -f  ~/bin/screenfetch-ubuntu ]; then
+    ~/bin/screenfetch-ubuntu
+fi
