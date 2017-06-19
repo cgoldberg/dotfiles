@@ -2,7 +2,6 @@
 #
 #  master backup script
 #  --------------------
-#
 #  This script first synchronizes the local Dropbox directory to the remote NAS.
 #  Then it creates a mirror of the remote NAS on the local backup HDD.  It uses
 #  rsync to generate an incremental file list, then deletes extraneous files on
@@ -19,6 +18,7 @@ SEP="----------------------------------------------------------------"
 
 
 check_configuration () {
+    echo "checking configuration..."
     if [[ "$HOSTNAME" != "collosus" ]]; then
         echo "error: this script can only be run on colossus"
         exit 1
@@ -42,6 +42,7 @@ check_configuration () {
 
 
 purge_dropbox_cache () {
+    echo "purging local Dropbox cache..."
     dropbox stop
     local cache_dir="${DROPBOX}.dropbox.cache/"
     if [[ -e "$cache_dir" ]]; then
@@ -53,11 +54,12 @@ purge_dropbox_cache () {
 
 
 display_storage_stats () {
+    echo "storage stats:"
     echo
     df --sync --type=ext4 --block-size=G
-    echo
     local nas_count=$(tree -a "$BYTEZ" | tail -n 1)
     local localbackup_count=$(tree -a "$WDGREEN" | tail -n 1)
+    echo
     echo "NAS (bytez):"
     echo "  * ${nas_count}"
     echo "local backup HDD (wd-green):"
@@ -67,18 +69,18 @@ display_storage_stats () {
 
 mount_nas () {
     if [[ ! -d "$BYTEZ" ]]; then
-        echo "mounting NAS as Samba share on local virtual filesystem..."
+        echo "mounting NAS as samba share on local virtual filesystem..."
         gvfs-mount smb://bytez/public
     else
-        echo "Samba share for NAS already exists on local virtual filesystem..."
+        echo "samba share for NAS already exists on local virtual filesystem..."
     fi
 }
 
 
 unlock_keyring () {
     echo "unlocking keyring..."
-    #  unlock the Gnome keyring so we can access the samba share.
-    #  requires "python-gnomekeyring" package.
+    # Unlock the Gnome keyring so we can access the samba share.
+    # Requires "python-gnomekeyring" package.
     python -c "import gnomekeyring;gnomekeyring.unlock_sync(None, 'cmg')"
 }
 
@@ -86,41 +88,28 @@ unlock_keyring () {
 main () {
     echo "starting master backup job..."
     echo "$SEP"
-
+    unlock_keyring
     mount_nas
-
-    echo "checking configuration..."
-
     check_configuration
-
     echo "$SEP"
-    echo "purging local Dropbox cache..."
-
     purge_dropbox_cache
-
     echo "$SEP"
     echo "syncing local Dropbox to remote NAS..."
-
-    #  There is an issue with QNAP's samba or rsyncd configuration that is causing "failed to set permissions"
-    #  errors when it's on the receiving end of a transfer.  To get around this, we just disable preserving
-    #  permissions when rsyncing to the QNAP NAS.  Rather than using rsync's --archive option (which is equivalent
-    #  to -rlptgoD), we use individual rsync options so the --perms option can be excluded.
-    rsync \
-        --recursive --links --times --group --owner --safe-links \
+    # There is an issue with QNAP's samba or rsyncd configuration that is causing "failed
+    # to set permissions" errors when it's on the receiving end of a transfer.  To get
+    # around this, we just disable preserving permissions when rsyncing to the QNAP NAS.
+    # Rather than using rsync's --archive option (which is equivalent to -rlptgoD), we use
+    # individual rsync options so the --perms option can be excluded.
+    rsync --recursive --links --times --group --owner --safe-links \
         --delete --human-readable --progress --info=progress2 \
         "$DROPBOX" "${BYTEZ}/Dropbox/"
-
     echo "$SEP"
     echo "syncing remote NAS to local backup HDD..."
-
-    #  The --archive option is equivalent to -rlptgoD
-    rsync --archive --safe-links --delete --human-readable --progress --info=progress2 "$BYTEZ" "$WDGREEN"
-
+    # The --archive option is equivalent to -rlptgoD
+    rsync --archive --safe-links --delete --human-readable --progress --info=progress2 \
+        "$BYTEZ" "$WDGREEN"
     echo "$SEP"
-    echo "storage stats:"
-
     display_storage_stats
-
     echo "$SEP"
     echo "done"
 }
