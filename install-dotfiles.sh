@@ -9,7 +9,6 @@ FILES=(
     ".bashrc"
     ".bash_aliases"
     ".gitconfig"
-    "bin/audio_meta_tag.py"
     "bin/backup_world"
     "bin/git-info"
     "bin/git-score"
@@ -27,6 +26,11 @@ fi
 echo
 echo "fetching screenfetch-ubuntu"
 wget -nv "https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu" -O "$HOME/bin/screenfetch-ubuntu"
+chmod +x "$HOME/bin/screenfetch-ubuntu"
+
+echo
+echo "fetching audio_tag.py"
+wget -nv "https://raw.githubusercontent.com/cgoldberg/audiotools/master/audio_tag.py" -O "$HOME/bin/audio_tag.py"
 chmod +x "$HOME/bin/screenfetch-ubuntu"
 
 echo
