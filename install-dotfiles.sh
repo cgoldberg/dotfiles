@@ -30,7 +30,7 @@ chmod +x "$HOME/bin/screenfetch-ubuntu"
 
 echo
 echo "fetching audio_tag.py"
-wget -nv "https://raw.githubusercontent.com/cgoldberg/audiotools/master/audio_tag.py" -O "$HOME/bin/audio_tag.py"
+wget -nv "https://raw.githubusercontent.com/cgoldberg/audiotools/master/tagging/audio_tag.py" -O "$HOME/bin/audio_tag.py"
 chmod +x "$HOME/bin/screenfetch-ubuntu"
 
 echo
