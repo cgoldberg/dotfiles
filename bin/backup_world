@@ -100,14 +100,31 @@ main () {
     # around this, we just disable preserving permissions when rsyncing to the QNAP NAS.
     # Rather than using rsync's --archive option (which is equivalent to -rlptgoD), we use
     # individual rsync options so the --perms option can be excluded.
-    rsync --recursive --links --times --group --owner --safe-links \
-        --delete --human-readable --progress --info=progress2 \
-        "$DROPBOX" "${BYTEZ}/Dropbox/"
+    rsync \
+        --recursive \
+        --links \
+        --times \
+        --group \
+        --owner \
+        --safe-links \
+        --delete \
+        --human-readable \
+        --progress \
+        --info=progress2 \
+        "$DROPBOX" \
+        "${BYTEZ}/Dropbox_backup/"
     echo "$SEP"
     echo "syncing remote NAS to local backup HDD..."
     # The --archive option is equivalent to -rlptgoD
-    rsync --archive --safe-links --delete --human-readable --progress --info=progress2 \
-        "$BYTEZ" "$WDGREEN"
+    rsync \
+        --archive \
+        --safe-links \
+        --delete \
+        --human-readable \
+        --progress \
+        --info=progress2 \
+        "$BYTEZ" \
+        "$WDGREEN"
     echo "$SEP"
     display_storage_stats
     echo "$SEP"
