@@ -1,8 +1,7 @@
 # --------------------------------------------------------
 # ~/.bash_aliases: sourced in .bashrc for non-login shells
 #
-# shell aliases and functions for use on Ubuntu
-# customized for cgoldberg
+# shell aliases and functions (Ubuntu) for cgoldberg
 # --------------------------------------------------------
 
 # allow aliases to run with sudo
@@ -14,10 +13,6 @@ alias edit="subl"
 alias ed="subl"
 alias vi="\vim"
 alias v="\vim"
-
-# edit shell configs
-alias edbrc="ed ~/.bashrc"
-alias edba="ed ~/.bash_aliases"
 
 # shortcuts for text pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
@@ -38,6 +33,8 @@ alias grep="\grep --color=auto"
 alias sd="sudo poweroff"
 alias poweroff="sudo poweroff"
 alias shutdown="sudo poweroff"
+
+# system reboot
 alias rb="sudo reboot"
 alias reboot="sudo reboot"
 
@@ -51,10 +48,10 @@ alias x="exit"
 # get external ip address
 alias myip="curl icanhazip.com"
 
-# disk space available on local ext4 and samba filesystems
+# show disk space available on mounted ext4 filesystems
 alias diskspace="df --sync --human-readable --total --type=ext4"
 
-# disk space used under current directory, grouped and sorted by directory size
+# show disk space used by subdirectories (grouped and sorted by directory size)
 alias diskused="du -S | grep -v .git | sort -nr | less"
 
 # serve current directory over HTTP on port 8000
@@ -180,7 +177,7 @@ rgrep () {
 # usage: name <pattern>
 name () {
     updatedb --require-visibility 0 --output ~/.locatedb --database-root / --prunepaths /mnt
-    locate --existing --ignore-case --database ~/.locatedb $1
+    locate --existing --ignore-case --database ~/.locatedb "$1"
 }
 
 
@@ -193,7 +190,7 @@ scite () {
 
 
 # package maintenance
-apt-maintain () {
+apt-up () {
     # reload package index files from sources
     sudo apt-get update
     # upgrade all installed packages using smart conflict resolution
