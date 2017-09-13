@@ -11,6 +11,7 @@ alias sudo="sudo "
 # shortcuts for editors
 alias edit="subl"
 alias ed="subl"
+alias e="subl ."
 alias vi="\vim"
 alias v="\vim"
 
