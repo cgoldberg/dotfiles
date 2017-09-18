@@ -52,8 +52,8 @@ alias myip="curl icanhazip.com"
 # show disk space available on mounted ext4 filesystems
 alias diskspace="df --sync --human-readable --total --type=ext4"
 
-# show disk space used by subdirectories (grouped and sorted by directory size)
-alias diskused="du -S | grep -v .git | sort -nr | less"
+# show disk space used by subdirectories
+alias diskused="du -hS | grep -v .git | sort -h"
 
 # serve current directory over HTTP on port 8000
 alias webserver="python -m SimpleHTTPServer"
