@@ -7,8 +7,8 @@
 # expand aliases when run with sudo (following command is checked for alias expansion)
 alias sudo="sudo "
 
-# set defaults and expand aliases when running watch command (following command is checked for alias expansion)
-alias watch="watch --precise --interval=1 "
+# expand aliases when running watch command (following command is checked for alias expansion)
+alias watch="watch "
 
 # shortcuts for editors
 alias edit="subl"
@@ -56,6 +56,9 @@ alias diskspace="df --sync --human-readable --total --type=ext4"
 
 # show disk space used by files and directories in the current filesystem
 alias diskused="du -ahx | grep -v .git | sort -h"
+
+# watch disk space used by largest subdirectories under current directory
+alias diskwatch="watch --precise --interval=1 'du -hx | grep -v .git | tail -n 20 | sort -h'"
 
 # serve current directory over HTTP on port 8000
 alias webserver="python -m SimpleHTTPServer"
