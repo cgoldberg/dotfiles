@@ -4,9 +4,11 @@
 # shell aliases and functions (Ubuntu) for cgoldberg
 # --------------------------------------------------------
 
-# allow aliases to run with sudo
-# (if the last character of an alias is a blank, the next command is also checked for alias expansion)
+# expand aliases when run with sudo (following command is checked for alias expansion)
 alias sudo="sudo "
+
+# set defaults and expand aliases when running watch command (following command is checked for alias expansion)
+alias sudo="watch --precise --interval=1 "
 
 # shortcuts for editors
 alias edit="subl"
