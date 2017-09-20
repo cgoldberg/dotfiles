@@ -58,7 +58,7 @@ alias diskspace="df --sync --human-readable --total --type=ext4"
 alias diskused="du -ahx | grep -v .git | sort -h"
 
 # watch disk space used by largest subdirectories under current directory
-alias diskwatch="watch --precise --interval=1 'du -hx | grep -v .git | tail -n 30 | sort -h'"
+alias diskwatch="watch --precise --interval=1 'du -hx | grep -v .git | tail -n 25 | sort -hr'"
 
 # serve current directory over HTTP on port 8000
 alias webserver="python -m SimpleHTTPServer"

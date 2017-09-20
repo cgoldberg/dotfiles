@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# dotfiles installer for user: cgoldberg
+# dotfiles installer for cgoldberg
 
 
 BIN="$HOME/bin"
@@ -31,7 +31,7 @@ chmod +x "$HOME/bin/screenfetch-ubuntu"
 echo
 echo "fetching audio_tag.py"
 wget -nv "https://raw.githubusercontent.com/cgoldberg/audiotools/master/tagging/audio_tag.py" -O "$HOME/bin/audio_tag.py"
-chmod +x "$HOME/bin/screenfetch-ubuntu"
+chmod +x "$HOME/bin/audio_tag.py"
 
 echo
 echo "fetching git-prompt.sh"
@@ -48,17 +48,10 @@ for FILE in "${FILES[@]}"; do
         echo
         echo "backing up $HOME/$FILE to $HOME/$FILE.old"
         cp "$HOME/$FILE" "$HOME/$FILE.old"
-
     fi
-    echo
     echo "copying $DIR/$FILE to $HOME/$FILE"
     cp "$DIR/$FILE" "$HOME/$FILE"
-    chmod +x "$HOME/$FILE"
 done
-
-echo
-echo "sourcing ~/.bashrc"
-source "$HOME/.bashrc"
 
 echo
 echo "done"
