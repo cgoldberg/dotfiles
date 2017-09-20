@@ -123,6 +123,9 @@ funcs () {
 
 # reload shell configurations
 re-source () {
+    if [ -f ~/.profile ]; then
+        . ~/.profile
+    fi
     if [ -f ~/.bashrc ]; then
         . ~/.bashrc
     fi
@@ -159,10 +162,11 @@ psgrep () {
 # convert .png images in current directory to .jpg format and rename file extensions
 convert_pngs_to_jpgs () {
     find_pngs () {
-        find . -type f -iname "*.png" -prune
+        find . -maxdepth 1 -type f -iname "*.png" -prune
     }
     if [[ -n $(find_pngs) ]]; then
-        (find_pngs | parallel convert -quality 95% {} {.}.jpg) && (find_pngs | parallel rm {})
+        find_pngs | parallel convert -quality 95% {} {.}.jpg
+        find_pngs | parallel rm {}
     else
         echo "nothing to convert"
     fi
