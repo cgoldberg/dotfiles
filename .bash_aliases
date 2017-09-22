@@ -4,10 +4,10 @@
 # shell aliases and functions (Ubuntu) for cgoldberg
 # --------------------------------------------------------
 
-# expand aliases when run with sudo (following command is checked for alias expansion)
+# expand aliases when run with sudo
 alias sudo="sudo "
 
-# expand aliases when running watch command (following command is checked for alias expansion)
+# expand aliases when running watch command
 alias watch="watch "
 
 # shortcuts for editors
@@ -26,15 +26,14 @@ alias g="git"
 __git_complete g _git
 
 # colored directory listings
-alias ls="\ls -lhAFG --color=auto --group-directories-first"
-alias l="\ls -AFG --color=auto --group-directories-first"
+alias ls="\ls -hlAFG --group-directories-first --color=auto"
+alias l="\ls -AF --group-directories-first --color=auto"
 
 # colored grep output
 alias grep="\grep --color=auto"
 
 # system shutdown
 alias sd="sudo poweroff"
-alias poweroff="sudo poweroff"
 alias shutdown="sudo poweroff"
 
 # system reboot
@@ -48,7 +47,7 @@ alias c="clear"
 # exit terminal
 alias x="exit"
 
-# get external ip address
+# get external/public ip address
 alias myip="curl icanhazip.com"
 
 # show disk space available on mounted ext4 filesystems
@@ -57,8 +56,8 @@ alias diskspace="df --sync --human-readable --total --type=ext4"
 # show disk space used by files and directories in the current filesystem
 alias diskused="du -ahx | grep -v .git | sort -h"
 
-# watch disk space used by largest subdirectories under current directory
-alias diskwatch="watch --precise --interval=5 'du -hx | grep -v .git | sort -hr | head -n 25'"
+# watch disk space used by largest directories in current filesystem
+alias diskwatch="watch --precise --interval=3 'du -hx | grep -v .git | sort -hr | head -n 25'"
 
 # serve current directory over HTTP on port 8000
 alias webserver="python -m SimpleHTTPServer"
@@ -80,6 +79,9 @@ alias apt-show="apt-cache show"
 
 # show package installation status and repository it belongs to
 alias apt-policy="apt-cache policy"
+
+# change directory to NAS mount point
+alias nas="cd /run/user/1000/gvfs/smb-share:server=bytez.local,share=public"
 
 # enable auto-completion of package names for apt-* aliases
 _pkg_completion() {
@@ -123,9 +125,6 @@ funcs () {
 
 # reload shell configurations
 re-source () {
-    if [ -f ~/.profile ]; then
-        . ~/.profile
-    fi
     if [ -f ~/.bashrc ]; then
         . ~/.bashrc
     fi
@@ -186,8 +185,8 @@ rgrep () {
 # update the mlocate database before searching
 # usage: name <pattern>
 name () {
-    updatedb --require-visibility 0 --output ~/.locatedb --database-root / --prunepaths /mnt
-    locate --existing --ignore-case --database ~/.locatedb "$1"
+    updatedb --require-visibility 0 --output ~/.locatedb --database-root /
+    locate --existing --ignore-case --database ~/.locatedb "$@"
 }
 
 
@@ -231,15 +230,15 @@ purge-apt-configs () {
 }
 
 
-# purge local Dropbox cache
+# stop Dropbox and purge local cache
 purge-dropbox-cache () {
     dropbox stop
-    cache_dir=~/Dropbox/.dropbox.cache/
-    if [ -e $cache_dir ]; then
-        du -h $cache_dir
-        rm -rf $cache_dir
+    sleep 1
+    cache_dir="~/Dropbox/.dropbox.cache/"
+    if [[ -e "$cache_dir" ]]; then
+        du -h "$cache_dir"
+        rm -rf "$cache_dir"
     fi
-    dropbox start
 }
 
 
@@ -269,7 +268,7 @@ weather () {
 
 # extract any type of archive into a new directory
 extract () {
-    dtrx -v $1
+    dtrx -v "$1"
 }
 
 
