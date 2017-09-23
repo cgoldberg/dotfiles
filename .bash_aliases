@@ -125,11 +125,11 @@ funcs () {
 
 # reload shell configurations
 re-source () {
-    if [ -f ~/.bashrc ]; then
-        . ~/.bashrc
+    if [[ -f ~/.bashrc ]]; then
+        source ~/.bashrc
     fi
-    if [ -f ~/.bash_profile ]; then
-        . ~/.bash_profile
+    if [[ -f ~/.bash_profile ]]; then
+        source ~/.bash_profile
     fi
 }
 
