@@ -80,11 +80,8 @@ alias apt-show="apt-cache show"
 # show package installation status and repository it belongs to
 alias apt-policy="apt-cache policy"
 
-# change directory to NAS mount point
-alias nas="cd /run/user/1000/gvfs/smb-share:server=bytez.local,share=public"
-
 # enable auto-completion of package names for apt-* aliases
-_pkg_completion() {
+_pkg_completion () {
     _init_completion || return
     mapfile -t COMPREPLY < <(apt-cache --no-generate pkgnames "${COMP_WORDS[COMP_CWORD]}")
 }
@@ -138,7 +135,7 @@ re-source () {
 # (when called with no args, show last 100 commands)
 # usage: h <pattern>
 h () {
-    if [ $# -eq 0 ]; then
+    if [[ $# -eq 0 ]]; then
         history | tail -n 100
     else
         history | grep -i --color=always "$1"
@@ -150,7 +147,7 @@ h () {
 # (when called with no args, show all processes)
 # usage: psgrep <pattern>
 psgrep () {
-    if [ $# -eq 0 ]; then
+    if [[ $# -eq 0 ]]; then
         ps aux | less
     else
         ps aux | grep -i --color=always "$1" | grep -v grep | less
@@ -195,6 +192,18 @@ name () {
 # usage: scite <file>
 scite () {
     nohup scite "$@" > /dev/null 2>&1 & disown
+}
+
+
+# change directory to NAS mount point
+nas () {
+    local share="public"
+    local server="bytez.local"
+    local location="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=admin"
+    if [[ ! -d "$location" ]]; then
+        gvfs-mount smb://admin@${server}/${share}
+    fi
+    cd "$location"
 }
 
 
@@ -253,22 +262,6 @@ print-colors () {
         done
         echo
     done
-}
-
-
-# display one-line weather report for Boston (02116)
-weather () {
-    local ZIPCODE=02116
-    curl -sL "http://www.wunderground.com/q/zmw:$ZIPCODE.1.99999" | \
-    grep "og:title" | \
-    cut -d\" -f4 | \
-    sed "s/&deg;/° F/"
-}
-
-
-# extract any type of archive into a new directory
-extract () {
-    dtrx -v "$1"
 }
 
 
