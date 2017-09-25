@@ -53,11 +53,11 @@ alias myip="curl icanhazip.com"
 # show disk space available on mounted ext4 filesystems
 alias diskspace="df --sync --human-readable --total --type=ext4"
 
-# show disk space used by files and directories in the current filesystem
-alias diskused="du -ahx | grep -v .git | sort -h"
+# show disk space used by files and directories under the current directory
+alias diskused="du -ahx . | grep -v .git | sort -h"
 
 # watch disk space used by largest directories in current filesystem
-alias diskwatch="watch --precise --interval=3 'du -hx | grep -v .git | sort -hr | head -n 25'"
+alias diskwatch="watch --precise --interval=3 'du -hx | grep -v .git | sort -h | tail -n 25'"
 
 # serve current directory over HTTP on port 8000
 alias webserver="python -m SimpleHTTPServer"
@@ -73,6 +73,9 @@ alias purge-trash="gvfs-trash --empty"
 
 # install package from repo
 alias apt-install="sudo apt-get update && sudo apt-get install"
+
+# remove package and it's config files
+alias apt-remove="sudo apt-get update && sudo apt-get remove --purge"
 
 # show package description
 alias apt-show="apt-cache show"
@@ -95,8 +98,7 @@ alias nowrap="tput rmam"
 # enable line wrapping in terminal (long lines wrapped at terminal width)
 alias wrap="tput smam"
 
-# color diff output
-# (requires colordiff package)
+# color diff output (requires colordiff package)
 alias diff="\colordiff -s"
 
 # make yourself look all busy and fancy to non-technical people
@@ -128,9 +130,6 @@ re-source () {
     if [[ -f ~/.bashrc ]]; then
         source ~/.bashrc
     fi
-    if [[ -f ~/.bash_profile ]]; then
-        source ~/.bash_profile
-    fi
 }
 
 
@@ -158,7 +157,7 @@ psgrep () {
 }
 
 
-# convert .png images in current directory to .jpg format and rename file extensions
+# convert all .png to .jpg in current directory and rename file extensions
 convert_pngs_to_jpgs () {
     find_pngs () {
         find . -maxdepth 1 -type f -iname "*.png" -prune
@@ -172,16 +171,14 @@ convert_pngs_to_jpgs () {
 }
 
 
-# search recursively for text file content by regex (case-insensitive)
-# in files under current directory
+# search recursively under current directory for text file content containing regex (case-insensitive)
 # usage: rgrep <pattern>
 rgrep () {
     fgrep -iInr --color=always --exclude-dir=".git" "$1" . | less
 }
 
 
-# search entire filesystem for filenames matching glob pattern
-# (case insensitive, skip any filesystems mounted under /mnt)
+# search entire filesystem for filenames matching glob pattern (case insensitive)
 # update the mlocate database before searching
 # usage: name <pattern>
 name () {
@@ -203,11 +200,17 @@ nas () {
     local share="public"
     local server="bytez"
     local user="admin"
-    local location="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${user}"
+    local location=/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${user}
     if [[ ! -d "$location" ]]; then
         gvfs-mount smb://${user}@${server}/${share}
     fi
     cd "$location"
+}
+
+
+# show number of packages currently installed
+count-packages () {
+    echo $(dpkg -l | grep '^ii' | wc -l) "packages currently installed"
 }
 
 
@@ -225,8 +228,7 @@ apt-up () {
     sudo apt-get autoremove --purge
     # remove all packages from the package cache
     sudo apt-get clean
-    # display number of packages installed
-    echo "$(dpkg -l | grep '^ii' | wc -l) packages currently installed"
+    count-packages
 }
 
 
@@ -239,7 +241,7 @@ purge-apt-configs () {
     else
         echo "no package configuration data to remove"
     fi
-    echo "$(dpkg -l | grep '^ii' | wc -l) packages currently installed"
+    count-packages
 }
 
 
@@ -255,8 +257,8 @@ purge-dropbox-cache () {
 }
 
 
-# print all 256 terminal colors as both foreground and background
-print-colors () {
+# show all 256 terminal colors (foreground and background)
+show-colors () {
     for fgbg in 38 48; do
         for color in {0..256}; do
             echo -en "\e[${fgbg};5;${color}m ${color}\t\e[0m"
