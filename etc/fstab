@@ -19,4 +19,5 @@ UUID=dfc7acd9-9e9e-40c5-a665-44a8387f7eb6 none            swap    sw            
 #//192.168.1.23/share /mnt/bitz cifs gid=cgoldberg,uid=cgoldberg,iocharset=utf8,sec=ntlm 0 0
 
 # Western Digital Green 2TB Internal HDD
-/dev/disk/by-label/wd-green /mnt/wd-green ext4 noatime,nodiratime,nofail 0 0
+#/dev/disk/by-label/wd-green /mnt/wd-green ext4 noatime,nodiratime,nofail 0 0
+UUID=bea6d6ec-990a-407e-86bb-d6f00ee65dfb /mnt/wd-green ext4 rw,noatime,nodiratime,nodev,nofail,nosuid,nouser 0 2
