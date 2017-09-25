@@ -102,8 +102,8 @@ alias diff="\colordiff -s"
 # make yourself look all busy and fancy to non-technical people
 alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
 
-# change directory to NAS mount point
-alias nas="cd /mnt/wd-green"
+# change directory to wd-green mount point
+alias hdd="cd /mnt/wd-green"
 
 # navigate up the directory tree using dots
 alias ..="cd .."
@@ -199,15 +199,16 @@ scite () {
 
 
 # change directory to NAS mount point
-#nas () {
-#    local share="public"
-#    local server="bytez.local"
-#    local location="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=admin"
-#    if [[ ! -d "$location" ]]; then
-#        gvfs-mount smb://admin@${server}/${share}
-#    fi
-#    cd "$location"
-#}
+nas () {
+    local share="public"
+    local server="bytez"
+    local user="admin"
+    local location="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${user}"
+    if [[ ! -d "$location" ]]; then
+        gvfs-mount smb://${user}@${server}/${share}
+    fi
+    cd "$location"
+}
 
 
 # package maintenance
