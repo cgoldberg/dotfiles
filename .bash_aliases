@@ -50,14 +50,18 @@ alias x="exit"
 # get external/public ip address
 alias myip="curl icanhazip.com"
 
-# show disk space available on mounted ext4 filesystems
-alias diskspace="df --sync --human-readable --total --type=ext4"
+# show disk space available on all mounted ext4 filesystems
+alias df="\df --sync --human-readable --total --type=ext4"
+alias diskfree="df"
+alias diskspace="df"
 
-# show disk space used by files and directories under the current directory
-alias diskused="du -ahx . | grep -v .git | sort -h"
+# show disk space used by files and directories under the current directory on current filesystem
+alias du="\du -ahx . | sort -h"
+alias diskused="du"
 
-# watch disk space used by largest directories in current filesystem
-alias diskwatch="watch --precise --interval=3 'du -hx | grep -v .git | sort -h | tail -n 25'"
+# watch disk space used by largest directories under the current directory on current filesystem
+alias dw="watch --precise --interval=3 '\du -hx . | grep -v .git | sort -h | tail -n 25'"
+alias diskwatch="dw"
 
 # serve current directory over HTTP on port 8000
 alias webserver="python -m SimpleHTTPServer"
@@ -88,9 +92,11 @@ _pkg_completion () {
     _init_completion || return
     mapfile -t COMPREPLY < <(apt-cache --no-generate pkgnames "${COMP_WORDS[COMP_CWORD]}")
 }
+complete -F _pkg_completion apt-install
+complete -F _pkg_completion apt-remove
 complete -F _pkg_completion apt-show
 complete -F _pkg_completion apt-policy
-complete -F _pkg_completion apt-install
+
 
 # disable line wrapping in terminal (long lines truncated at terminal width)
 alias nowrap="tput rmam"
@@ -178,12 +184,17 @@ rgrep () {
 }
 
 
-# search entire filesystem for filenames matching glob pattern (case insensitive)
-# update the mlocate database before searching
+# update the mlocate database and search for filenames matching glob pattern (case-insensitive)
 # usage: name <pattern>
 name () {
     updatedb --require-visibility 0 --output ~/.locatedb --database-root /
     locate --existing --ignore-case --database ~/.locatedb "$@"
+}
+
+
+# search under current directory for filenames containing matching substring (case-insensitive)
+findfile() {
+    find . -type f -iname "*$1*"
 }
 
 
