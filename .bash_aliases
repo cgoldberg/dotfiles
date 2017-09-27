@@ -73,7 +73,7 @@ alias webserver="python -m SimpleHTTPServer"
 alias countfiles="find . -type f 2>/dev/null | wc -l"
 
 # show last modified files under current dir
-alias latestfiles="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 50"
+alias latestfiles="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 100"
 
 # purge desktop trash on all gvfs mounted volumes
 alias purge-trash="gvfs-trash --empty"
@@ -258,7 +258,7 @@ purge-apt-configs () {
 purge-dropbox-cache () {
     dropbox stop
     sleep 1
-    cache_dir="~/Dropbox/.dropbox.cache/"
+    cache_dir=~/Dropbox/.dropbox.cache/
     if [[ -e "$cache_dir" ]]; then
         du -h "$cache_dir"
         rm -rf "$cache_dir"
