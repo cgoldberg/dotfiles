@@ -48,7 +48,7 @@ alias c="clear"
 alias x="exit"
 
 # get external/public ip address
-alias myip="curl icanhazip.com"
+alias externalip="curl icanhazip.com"
 
 # show disk space available on all mounted ext4 filesystems
 alias df="\df --sync --human-readable --total --type=ext4"
@@ -60,17 +60,20 @@ alias du="\du -ahx . | sort -h"
 alias diskused="du"
 
 # watch disk space used by largest directories under the current directory on current filesystem
-alias dw="watch --precise --interval=3 '\du -hx . | grep -v .git | sort -h | tail -n 25'"
+alias dw="watch --precise --interval=3 '\du -hx . | sort -h | tail -n 25'"
 alias diskwatch="dw"
+
+# count installed packages
+alias countpackages="dpkg -l | grep '^ii' | wc -l"
 
 # serve current directory over HTTP on port 8000
 alias webserver="python -m SimpleHTTPServer"
 
 # count files recursively under current directory
-alias filecount="find . -type f | wc -l"
+alias countfiles="find . -type f 2>/dev/null | wc -l"
 
-# show last modified files under current dir (100 entries, sorted in reverse)
-alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 100"
+# show last modified files under current dir
+alias latestfiles="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 50"
 
 # purge desktop trash on all gvfs mounted volumes
 alias purge-trash="gvfs-trash --empty"
@@ -85,7 +88,7 @@ alias apt-remove="sudo apt-get update && sudo apt-get remove --purge"
 alias apt-show="apt-cache show"
 
 # show package installation status and repository it belongs to
-alias apt-policy="apt-cache policy"
+alias apt-policy="sudo apt-get update && apt-cache policy"
 
 # enable auto-completion of package names for apt-* aliases
 _pkg_completion () {
@@ -165,63 +168,58 @@ psgrep () {
 
 # convert all .png to .jpg in current directory and rename file extensions
 convert_pngs_to_jpgs () {
-    find_pngs () {
+    findpngs () {
         find . -maxdepth 1 -type f -iname "*.png" -prune
     }
     if [[ -n $(find_pngs) ]]; then
-        find_pngs | parallel convert -quality 95% {} {.}.jpg
-        find_pngs | parallel rm {}
+        findpngs | parallel convert -quality 95% {} {.}.jpg
+        findpngs | parallel rm {}
     else
         echo "nothing to convert"
     fi
 }
 
 
-# search recursively under current directory for text file content containing regex (case-insensitive)
+# search recursively under current directory for text file contents containing regex (case-insensitive)
 # usage: rgrep <pattern>
 rgrep () {
-    fgrep -iInr --color=always --exclude-dir=".git" "$1" . | less
+    fgrep -iInr --color=always --exclude-dir='.git' "$1" . | less
 }
 
 
-# update the mlocate database and search for filenames matching glob pattern (case-insensitive)
+# search for filenames matching glob pattern (case-insensitive)
+# update the mlocate database before searching
 # usage: name <pattern>
-name () {
-    updatedb --require-visibility 0 --output ~/.locatedb --database-root /
+findfiles () {
+    updatedb --require-visibility 0 --output ~/.locatedb
     locate --existing --ignore-case --database ~/.locatedb "$@"
 }
 
 
 # search under current directory for filenames containing matching substring (case-insensitive)
-findfile() {
-    find . -type f -iname "*$1*"
+findfilesunder() {
+    find . -type f -iname "*$1*" | grep -v '.git'
 }
 
 
 # launch SciTE (GTK) editor in the background and suppress stdout/stderr
 # (keeps running after the shell session ends and doesn't appear in jobs list)
-# usage: scite <file>
 scite () {
     nohup scite "$@" > /dev/null 2>&1 & disown
 }
 
 
 # change directory to NAS mount point
+# mount the filesystem first if needed
 nas () {
     local share="public"
     local server="bytez"
     local user="admin"
-    local location=/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${user}
-    if [[ ! -d "$location" ]]; then
-        gvfs-mount smb://${user}@${server}/${share}
+    local mount_dir=/run/user/"${UID}"/gvfs/smb-share:server="${server}",share="${share}",user="${user}"
+    if [[ ! -d "$mount_dir" ]]; then
+        gvfs-mount smb://"${user}"@"${server}"/"${share}"
     fi
-    cd "$location"
-}
-
-
-# show number of packages currently installed
-count-packages () {
-    echo $(dpkg -l | grep '^ii' | wc -l) "packages currently installed"
+    cd "$mount_dir"
 }
 
 
@@ -239,7 +237,7 @@ apt-up () {
     sudo apt-get autoremove --purge
     # remove all packages from the package cache
     sudo apt-get clean
-    count-packages
+    echo "$(countpackages) packages currently installed"
 }
 
 
@@ -252,7 +250,7 @@ purge-apt-configs () {
     else
         echo "no package configuration data to remove"
     fi
-    count-packages
+    echo "$(countpackages) packages currently installed"
 }
 
 
