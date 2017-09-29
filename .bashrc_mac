@@ -79,8 +79,8 @@ findfiles () {
 }
 
 # show all files under current dir sorted by modified date
-filemod () {
-    find . -type f -print0 | xargs -0 stat -f"%m %Sm %N" | sort -rn | less
+filemods () {
+    find . -type f -print0 | xargs -0 stat -f"%m %Sm %N" | grep -v '.git' | sort -rn | less
 }
 
 # search command history by regex (case-insensitive)
@@ -115,5 +115,5 @@ HISTIGNORE='ls:exit:x:c:clear:h:history:pwd'
 # -------------------------------
 
 # NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
