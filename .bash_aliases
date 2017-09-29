@@ -10,11 +10,11 @@ alias sudo="sudo "
 # expand aliases when running watch command
 alias watch="watch "
 
-# shortcuts for editors
+# text editors
 alias sublime="subl"
 alias edit="subl"
 alias ed="subl"
-alias e="subl ."
+alias e="subl -n ."
 alias vi="vim"
 alias v="vim"
 
@@ -34,22 +34,26 @@ alias l="\ls -AF --group-directories-first --color=auto"
 alias grep="\grep --color=auto"
 
 # system shutdown
-alias sd="sudo poweroff"
-alias shutdown="sudo poweroff"
+alias sd="sudo \poweroff"
+alias shutdown="sudo \poweroff"
 
 # system reboot
-alias rb="sudo reboot"
-alias reboot="sudo reboot"
+alias rb="sudo \reboot"
+alias reboot="sudo \reboot"
 
 # clear terminal
 alias cls="clear"
 alias c="clear"
 
 # exit terminal
+alias ex="exit"
 alias x="exit"
 
-# get external/public ip address
+# external ip address
 alias externalip="curl icanhazip.com"
+
+# local ip address
+alias localip="hostname -I"
 
 # show disk space available on all mounted ext4 filesystems
 alias df="\df --sync --human-readable --total --type=ext4"
@@ -109,7 +113,7 @@ alias nowrap="tput rmam"
 alias wrap="tput smam"
 
 # color diff output (requires colordiff package)
-alias diff="\colordiff -s"
+alias diff="colordiff -s"
 
 # make yourself look all busy and fancy to non-technical people
 alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
