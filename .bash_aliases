@@ -11,11 +11,12 @@ alias sudo="sudo "
 alias watch="watch "
 
 # shortcuts for editors
+alias sublime="subl"
 alias edit="subl"
 alias ed="subl"
 alias e="subl ."
-alias vi="\vim"
-alias v="\vim"
+alias vi="vim"
+alias v="vim"
 
 # shortcuts for text pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
@@ -63,11 +64,11 @@ alias diskused="du"
 alias dw="watch --precise --interval=3 '\du -hx . | sort -h | tail -n 25'"
 alias diskwatch="dw"
 
-# count installed packages
-alias countpackages="dpkg -l | grep '^ii' | wc -l"
-
 # serve current directory over HTTP on port 8000
 alias webserver="python -m SimpleHTTPServer"
+
+# count installed packages
+alias countpackages="dpkg -l | grep '^ii' | wc -l"
 
 # count files recursively under current directory
 alias countfiles="find . -type f 2>/dev/null | wc -l"
@@ -161,7 +162,7 @@ psgrep () {
     if [[ $# -eq 0 ]]; then
         ps aux | less
     else
-        ps aux | grep -i --color=always "$1" | grep -v grep | less
+        ps aux | grep -i --color=always "$1" | grep -v 'grep' | less
     fi
 }
 
@@ -181,31 +182,25 @@ convert_pngs_to_jpgs () {
 
 
 # search recursively under current directory for text file contents containing regex (case-insensitive)
-# usage: rgrep <pattern>
 rgrep () {
-    fgrep -iInr --color=always --exclude-dir='.git' "$1" . | less
+    fgrep -iInr --color=always --exclude-dir='.git' "$1" . | less -R
 }
 
 
-# search for filenames matching glob pattern (case-insensitive)
+
+# search entire filesystem for filenames matching glob pattern (case-insensitive)
 # update the mlocate database before searching
-# usage: name <pattern>
-findfiles () {
+locatefiles () {
     updatedb --require-visibility 0 --output ~/.locatedb
     locate --existing --ignore-case --database ~/.locatedb "$@"
 }
 
 
-# search under current directory for filenames containing matching substring (case-insensitive)
-findfilesunder() {
-    find . -type f -iname "*$1*" | grep -v '.git'
-}
-
-
-# launch SciTE (GTK) editor in the background and suppress stdout/stderr
-# (keeps running after the shell session ends and doesn't appear in jobs list)
-scite () {
-    nohup scite "$@" > /dev/null 2>&1 & disown
+# search recursively under current directory for filenames matching pattern (case-insensitive).
+# results are sorted by date
+# usage: findfiles <pattern>
+findfiles () {
+    find .  -iname "*$1*" -type f -print0 | xargs -0 ls -flrt | awk '{print $6, $7, $9}'
 }
 
 
