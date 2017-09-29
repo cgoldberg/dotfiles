@@ -10,7 +10,7 @@ case $- in
 esac
 
 # export some environment variables
-export PAGER="/usr/bin/less"
+export PAGER="less"
 export VISUAL="vim"
 export EDITOR="vim"
 

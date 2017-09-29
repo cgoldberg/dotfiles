@@ -18,7 +18,7 @@ alias e="subl -n ."
 alias vi="vim"
 alias v="vim"
 
-# shortcuts for text pagers
+# text pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 alias more="less"
 
@@ -49,11 +49,10 @@ alias c="clear"
 alias ex="exit"
 alias x="exit"
 
-# external ip address
+# ip addresses
 alias externalip="curl icanhazip.com"
-
-# local ip address
 alias localip="hostname -I"
+alias ips="echo -n 'local IP: ' && localip && echo -n 'external IP: ' && externalip"
 
 # show disk space available on all mounted ext4 filesystems
 alias df="\df --sync --human-readable --total --type=ext4"
