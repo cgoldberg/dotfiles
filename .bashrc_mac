@@ -18,11 +18,11 @@ fi
 # editor aliases
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias sublime="subl"
-alias ed="subl"
 alias edit="subl"
+alias ed="subl"
 alias e="subl -n ."
-alias v="vim"
 alias vi="vim"
+alias v="vim"
 
 # misc aliases
 alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
