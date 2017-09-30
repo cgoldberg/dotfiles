@@ -1,16 +1,27 @@
 #!/bin/bash
 # Squeezebox Server (LMS) updater for Debian/Ubuntu
 
-echo "starting upgrade of Squeezebox Server (LMS)..."
+echo "starting Squeezebox Server (LMS) update"
 sudo killall squeezeboxserver > /dev/null 2>&1
 sudo killall squeezeboxserver_safe > /dev/null 2>&1
-echo "finding latest LMS version..."
+echo "finding latest LMS beta release"
 latest_deb_url=$(curl -s 'http://www.mysqueezebox.com/update/?version=7.9.1&revision=1&geturl=1&os=deb')
-echo "downloading latest LMS nightly release..."
-curl -O -s $latest_deb_url
-latest_deb=${latest_deb_url##*/}
-echo "installing $latest_deb..."
-sudo dpkg -i $latest_deb
-echo "cleaning up installation package..."
-rm $latest_deb
-echo "upgrade complete! (please restart LMS or reboot)"
+echo "downloading: $latest_deb_url"
+curl -O -s "$latest_deb_url" &
+pid=$!
+spin='-\|/'
+i=0
+while kill -0 "$pid" > /dev/null 2>&1
+do
+  i=$(( (i + 1) % 4 ))
+  printf "\r${spin:$i:1}"
+  sleep .1
+done
+printf "\r"
+latest_deb="${latest_deb_url##*/}"
+echo "installing: $latest_deb"
+sudo dpkg -i "$latest_deb" > /dev/null 2>&1 || { echo "installation FAILED" && exit 1; }
+echo "cleaning up after installation"
+rm "$latest_deb"
+lms_version=$(apt-cache show logitechmediaserver | grep 'Version')
+echo "upgrade to $lms_version complete! (please restart LMS or reboot)"
