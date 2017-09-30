@@ -60,7 +60,7 @@ alias diskfree="df"
 alias diskspace="df"
 
 # show disk space used by files and directories under the current directory on current filesystem
-alias du="\du -ahx . | sort -h"
+alias du="\du --all --human-readable --one-file-system . | sort -h"
 alias diskused="du"
 
 # watch disk space used by largest directories under the current directory on current filesystem
@@ -77,7 +77,7 @@ alias countpackages="dpkg -l | grep '^ii' | wc -l"
 alias countfiles="find . -type f 2>/dev/null | wc -l"
 
 # show last modified files under current dir
-alias latestfiles="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 100"
+alias latestfiles="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 50"
 
 # purge desktop trash on all gvfs mounted volumes
 alias purge-trash="gvfs-trash --empty"
@@ -179,7 +179,7 @@ convert_pngs_to_jpgs () {
         findpngs | parallel convert -quality 95% {} {.}.jpg
         findpngs | parallel rm {}
     else
-        echo "nothing to convert"
+        echo 'nothing to convert'
     fi
 }
 
@@ -258,7 +258,7 @@ purge-dropbox-cache () {
     sleep 1
     cache_dir=~/Dropbox/.dropbox.cache/
     if [[ -e "$cache_dir" ]]; then
-        du -h "$cache_dir"
+        \du -ah "$cache_dir"
         rm -rf "$cache_dir"
     fi
 }
