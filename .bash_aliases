@@ -40,15 +40,15 @@ alias ls="\ls -hlAFG --group-directories-first --color=auto"
 alias l="\ls -AF --group-directories-first --color=auto"
 
 # colored grep output
-alias grep="\grep --color=auto"
+alias grep="grep --color=auto"
 
 # system shutdown
-alias sd="sudo \poweroff"
-alias shutdown="sudo \poweroff"
+alias sd="sudo poweroff"
+alias shutdown="sudo poweroff"
 
 # system reboot
-alias rb="sudo \reboot"
-alias reboot="sudo \reboot"
+alias rb="sudo reboot"
+alias reboot="sudo reboot"
 
 # clear terminal
 alias cls="clear"
