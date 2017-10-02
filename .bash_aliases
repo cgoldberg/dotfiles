@@ -10,6 +10,10 @@ alias sudo="sudo "
 # expand aliases when running watch command
 alias watch="watch "
 
+alias re-source="source ~/.bashrc"
+alias ebr="subl -n ~/.bashrc"
+alias eba="subl -n ~/.bash_aliases"
+
 # text editors
 alias sublime="subl"
 alias edit="subl"
@@ -104,14 +108,13 @@ complete -F _pkg_completion apt-remove
 complete -F _pkg_completion apt-show
 complete -F _pkg_completion apt-policy
 
-
 # disable line wrapping in terminal (long lines truncated at terminal width)
 alias nowrap="tput rmam"
 
 # enable line wrapping in terminal (long lines wrapped at terminal width)
 alias wrap="tput smam"
 
-# color diff output (requires colordiff package)
+# color and side-by-side for diffs (requires colordiff package)
 alias diff="colordiff -s"
 
 # make yourself look all busy and fancy to non-technical people
@@ -120,13 +123,19 @@ alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
 # change directory to wd-green mount point
 alias hdd="cd /mnt/wd-green"
 
-# navigate up the directory tree using dots
+# navigate up the directory tree
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
 alias .......="cd ../../../../../.."
+alias cd..="cd .."
+alias cd...="cd ../.."
+alias cd....="cd ../../.."
+alias cd.....="cd ../../../.."
+alias cd......="cd ../../../../.."
+alias cd.......="cd ../../../../../.."
 
 
 #----------------------------------------------------------------
@@ -134,39 +143,21 @@ alias .......="cd ../../../../../.."
 
 # list public bash functions and aliases defined in the current shell
 funcs () {
-    compgen -a -A function | grep -v ^_ | sort
+    compgen -a -A function | grep -v "^_" | sort
 }
 
 
-# reload shell configurations
-re-source () {
-    if [[ -f ~/.bashrc ]]; then
-        source ~/.bashrc
-    fi
-}
-
-
-# search command history by regex (case-insensitive)
-# (when called with no args, show last 100 commands)
+# search command history by regex (case-insensitive) and show last 200 matches
 # usage: h <pattern>
 h () {
-    if [[ $# -eq 0 ]]; then
-        history | tail -n 100
-    else
-        history | grep -i --color=always "$1"
-    fi
+    history | grep -i --color=always "$1" | tail -n 200
 }
 
 
 # search process info by regex (case-insensitive)
-# (when called with no args, show all processes)
 # usage: psgrep <pattern>
 psgrep () {
-    if [[ $# -eq 0 ]]; then
-        ps aux | less
-    else
-        ps aux | grep -i --color=always "$1" | grep -v 'grep' | less
-    fi
+    ps -ef | grep -i --color=always "$1" | grep -v 'grep' | sort -n | less
 }
 
 
@@ -184,9 +175,9 @@ convert_pngs_to_jpgs () {
 }
 
 
-# search recursively under current directory for text file contents containing regex (case-insensitive)
+# search recursively under current directory for text file contents matching regex (case-insensitive)
 rgrep () {
-    fgrep -iInr --color=always --exclude-dir='.git' "$1" . | less -R
+    grep -iInr --color=always --exclude-dir='.git' "$1" . | less
 }
 
 
@@ -199,16 +190,14 @@ locatefiles () {
 }
 
 
-# search recursively under current directory for filenames matching pattern (case-insensitive).
-# results are sorted by date
+# search recursively under current directory for filenames matching glob pattern (case-insensitive)
 # usage: findfiles <pattern>
 findfiles () {
     find .  -iname "*$1*" -type f -print0 | xargs -0 ls -flrt | awk '{print $6, $7, $9}'
 }
 
 
-# change directory to NAS mount point
-# mount the filesystem first if needed
+# mount NAS (if needed) and change directory to the mount point
 nas () {
     local share="public"
     local server="bytez"
@@ -235,6 +224,7 @@ apt-up () {
     sudo apt-get autoremove --purge
     # remove all packages from the package cache
     sudo apt-get clean
+    # display package count
     echo "$(countpackages) packages currently installed"
 }
 
