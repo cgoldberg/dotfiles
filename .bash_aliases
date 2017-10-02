@@ -10,9 +10,14 @@ alias sudo="sudo "
 # expand aliases when running watch command
 alias watch="watch "
 
+# open shell configurations for editing
+alias aliases="subl -n ~/.bashrc ~/.bash_aliases"
+
+# list public bash functions and aliases defined in the current shell
+alias funcs="compgen -a -A function | grep -v ^_ | sort"
+
+# reload shell configurations
 alias re-source="source ~/.bashrc"
-alias ebr="subl -n ~/.bashrc"
-alias eba="subl -n ~/.bash_aliases"
 
 # text editors
 alias sublime="subl"
@@ -56,7 +61,7 @@ alias x="exit"
 # ip addresses
 alias externalip="curl icanhazip.com"
 alias localip="hostname -I"
-alias ips="echo -n 'local IP: ' && localip && echo -n 'external IP: ' && externalip"
+alias ips="echo -n 'local ip: ' && localip && echo -n 'external ip: ' && externalip"
 
 # show disk space available on all mounted ext4 filesystems
 alias df="\df --sync --human-readable --total --type=ext4"
@@ -141,12 +146,6 @@ alias cd.......="cd ../../../../../.."
 #----------------------------------------------------------------
 
 
-# list public bash functions and aliases defined in the current shell
-funcs () {
-    compgen -a -A function | grep -v "^_" | sort
-}
-
-
 # search command history by regex (case-insensitive) and show last 200 matches
 # usage: h <pattern>
 h () {
@@ -161,7 +160,8 @@ psgrep () {
 }
 
 
-# convert all .png to .jpg in current directory and rename file extensions
+# convert all .png images in the current directory to .jpg format
+# save with renamed extensions and delete originals
 convert_pngs_to_jpgs () {
     findpngs () {
         find . -maxdepth 1 -type f -iname "*.png" -prune
@@ -240,6 +240,7 @@ purge-apt-configs () {
     fi
     echo "$(countpackages) packages currently installed"
 }
+
 
 
 # stop Dropbox and purge local cache
