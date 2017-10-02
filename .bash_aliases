@@ -162,13 +162,13 @@ psgrep () {
 
 # convert all .png images in the current directory to .jpg format
 # save with renamed extensions and delete originals
-convert_pngs_to_jpgs () {
+convert-pngs-to-jpgs () {
     findpngs () {
         find . -maxdepth 1 -type f -iname "*.png" -prune
     }
-    if [[ -n $(find_pngs) ]]; then
-        findpngs | parallel convert -quality 95% {} {.}.jpg
-        findpngs | parallel rm {}
+    if [[ -n $(findpngs) ]]; then
+        ( findpngs | parallel convert -quality 95% {} {.}.jpg ) && \
+        ( findpngs | parallel rm {} )
     else
         echo 'nothing to convert'
     fi
