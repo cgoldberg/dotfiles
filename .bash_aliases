@@ -10,15 +10,6 @@ alias sudo="sudo "
 # expand aliases when running watch command
 alias watch="watch "
 
-# open shell configurations for editing
-alias aliases="subl -n ~/.bashrc ~/.bash_aliases"
-
-# list public bash functions and aliases defined in the current shell
-alias funcs="compgen -a -A function | grep -v ^_ | sort"
-
-# reload shell configurations
-alias re-source="source ~/.bashrc"
-
 # text editors
 alias sublime="subl"
 alias edit="subl"
@@ -40,7 +31,16 @@ alias ls="\ls -hlAFG --group-directories-first --color=auto"
 alias l="\ls -AF --group-directories-first --color=auto"
 
 # colored grep output
-alias grep="grep --color=auto"
+alias grep="\grep --color=auto"
+
+# open shell configurations for editing
+alias aliases="subl -n ~/.bashrc ~/.bash_aliases"
+
+# list public bash functions and aliases defined in the current shell
+alias funcs="compgen -a -A function | grep -v ^_ | sort"
+
+# reload shell configurations
+alias re-source="source ~/.bashrc"
 
 # system shutdown
 alias sd="sudo poweroff"
@@ -68,12 +68,14 @@ alias df="\df --sync --human-readable --total --type=ext4"
 alias diskfree="df"
 alias diskspace="df"
 
-# show disk space used by files and directories under the current directory on current filesystem
-alias du="\du --all --human-readable --one-file-system . | sort -h"
+# show disk space used by top 1000 files and directories under the current directory
+alias du="\du --all --human-readable --one-file-system . | sort -h | tail -n 100"
 alias diskused="du"
 
 # watch disk space used by largest directories under the current directory on current filesystem
-alias dw="watch --precise --interval=3 '\du -hx . | sort -h | tail -n 25'"
+#alias dw="watch --precise --interval=3 '\du -hx . | sort -h | tail -n 25'"
+alias dw="watch --precise --interval=3 'echo \"Watching largest directories under ${PWD}:\n\"; \du -hx . | sort -h | tail -n 25; echo; echo \"Totals for ${PWD}:\n\"; tree -a /mnt/wd-green/ | tail -n 1'"
+
 alias diskwatch="dw"
 
 # serve current directory over HTTP on port 8000
@@ -85,7 +87,7 @@ alias countpackages="dpkg -l | grep '^ii' | wc -l"
 # count files recursively under current directory
 alias countfiles="find . -type f 2>/dev/null | wc -l"
 
-# show last modified files under current dir
+# show last 50 modified files under current dir
 alias latestfiles="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 50"
 
 # purge desktop trash on all gvfs mounted volumes
