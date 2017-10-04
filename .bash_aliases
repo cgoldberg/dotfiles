@@ -74,8 +74,7 @@ alias diskused="du"
 
 # watch disk space used by largest directories under the current directory on current filesystem
 #alias dw="watch --precise --interval=3 '\du -hx . | sort -h | tail -n 25'"
-alias dw="watch --precise --interval=3 'echo \"Watching largest directories under ${PWD}:\n\"; \du -hx . | sort -h | tail -n 25; echo; echo \"Totals for ${PWD}:\n\"; tree -a /mnt/wd-green/ | tail -n 1'"
-
+alias dw="watch --precise --interval=3 'echo Largest directories under ${PWD}:; \du -hx . | sort -h | tail -n 20; echo; echo Total:; tree -a  ${PWD} | tail -n 1'"
 alias diskwatch="dw"
 
 # serve current directory over HTTP on port 8000
