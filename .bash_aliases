@@ -68,26 +68,25 @@ alias df="\df --sync --human-readable --total --type=ext4"
 alias diskfree="df"
 alias diskspace="df"
 
-# show disk space used by top 1000 files and directories under the current directory
+# show disk space used by top 100 files and directories under the current directory
 alias du="\du --all --human-readable --one-file-system . | sort -h | tail -n 100"
 alias diskused="du"
 
 # watch disk space used by largest directories under the current directory on current filesystem
-#alias dw="watch --precise --interval=3 '\du -hx . | sort -h | tail -n 25'"
-alias dw="watch --precise --interval=3 'echo Largest directories under ${PWD}:; \du -hx . | sort -h | tail -n 20; echo; echo Total:; tree -a  ${PWD} | tail -n 1'"
+alias dw="watch --precise --interval=3 'echo Largest directories under \"${PWD}\":; \du -hx . | sort -h | tail -n 20; echo; echo Total:; tree -a  \"${PWD}\" | tail -n 1'"
 alias diskwatch="dw"
 
-# serve current directory over HTTP on port 8000
-alias webserver="python -m SimpleHTTPServer"
+# serve current directory over HTTP on port 8080
+alias webserver="python -m SimpleHTTPServer 8080"
 
 # count installed packages
 alias countpackages="dpkg -l | grep '^ii' | wc -l"
 
 # count files recursively under current directory
-alias countfiles="find . -type f 2>/dev/null | wc -l"
+alias countfiles="find . -type f | wc -l"
 
 # show last 50 modified files under current dir
-alias latestfiles="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | sort -n | tail -n 50"
+alias latestfiles="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | grep -v '.git' | sort -n | tail -n 50"
 
 # purge desktop trash on all gvfs mounted volumes
 alias purge-trash="gvfs-trash --empty"
@@ -174,7 +173,7 @@ convert-pngs-to-jpgs () {
         echo 'nothing to convert'
     fi
 }
-
+    
 
 # search recursively under current directory for text file contents matching regex (case-insensitive)
 rgrep () {
@@ -191,10 +190,9 @@ locatefiles () {
 }
 
 
-# search recursively under current directory for filenames matching glob pattern (case-insensitive)
-# usage: findfiles <pattern>
+# search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
-    find .  -iname "*$1*" -type f -print0 | xargs -0 ls -flrt | awk '{print $6, $7, $9}'
+    find .  -iname "*$1*" -type f
 }
 
 
@@ -203,9 +201,9 @@ nas () {
     local share="public"
     local server="bytez"
     local user="admin"
-    local mount_dir=/run/user/"${UID}"/gvfs/smb-share:server="${server}",share="${share}",user="${user}"
+    local mount_dir="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${user}"
     if [[ ! -d "$mount_dir" ]]; then
-        gvfs-mount smb://"${user}"@"${server}"/"${share}"
+        gvfs-mount "smb://${user}@${server}/${share}"
     fi
     cd "$mount_dir"
 }
