@@ -192,7 +192,7 @@ locatefiles () {
 
 # search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
-    find .  -iname "*$1*" -type f
+    find . -type f -iname "*$1*"
 }
 
 
@@ -230,7 +230,7 @@ apt-up () {
 
 # purge configuration data from packages marked for removal
 purge-apt-configs () {
-    if $(dpkg -l | grep --quiet '^rc'); then
+    if dpkg -l | grep --quiet '^rc'; then
         echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
         echo "purging package configs from removed packages..."
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
@@ -241,16 +241,18 @@ purge-apt-configs () {
 }
 
 
-
 # stop Dropbox and purge local cache
 purge-dropbox-cache () {
-    dropbox stop
-    sleep 1
-    cache_dir=~/Dropbox/.dropbox.cache/
-    if [[ -e "$cache_dir" ]]; then
+    if ! dropbox running; then
+        dropbox stop && sleep 2
+    fi
+    cache_dir="~/Dropbox/.dropbox.cache/"
+    if [[ -d "$cache_dir" ]]; then
         \du -ah "$cache_dir"
+        echo "purging local Dropbox cache..."
         rm -rf "$cache_dir"
     fi
+    dropbox start
 }
 
 
