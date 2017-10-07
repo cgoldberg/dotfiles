@@ -185,7 +185,7 @@ rgrep () {
 # search entire filesystem for filenames matching glob pattern (case-insensitive)
 # update the mlocate database before searching
 locatefiles () {
-    updatedb --require-visibility 0 --output ~/.locatedb
+    updatedb --require-visibility 0 --output ~/.locatedb && \
     locate --existing --ignore-case --database ~/.locatedb "$@"
 }
 
@@ -234,6 +234,7 @@ purge-apt-configs () {
         echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
         echo "purging package configs from removed packages..."
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
+        sudo apt-get update
     else
         echo "no package configuration data to remove"
     fi
