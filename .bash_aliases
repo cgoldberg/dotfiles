@@ -243,7 +243,6 @@ purge-apt-configs () {
     else
         echo "no package configs to remove"
     fi
-    echo "$(countpackages) packages currently installed"
 }
 
 
