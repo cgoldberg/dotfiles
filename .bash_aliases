@@ -29,6 +29,7 @@ __git_complete g _git
 # directory listings
 alias ls="\ls -l --human-readable --almost-all --classify --group-directories-first --no-group --color=auto"
 alias l="\ls --almost-all --classify --group-directories-first --color=auto"
+alias ll="\ls --classify --group-directories-first --color=auto"
 
 # colored grep output
 alias grep="\grep --color=auto"
