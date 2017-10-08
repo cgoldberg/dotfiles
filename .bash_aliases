@@ -213,30 +213,32 @@ nas () {
 apt-up () {
     # reload package index files from sources
     sudo apt-get update
-    # upgrade all installed packages using smart conflict resolution
+    # upgrade installed packages using smart conflict resolution
     sudo apt-get dist-upgrade
     # check for broken dependencies
-    sudo apt-get check
+    sudo apt-get check 
     # fix broken dependencies
     sudo apt-get install --fix-broken
-    # remove packages installed by other packages that are no longer needed
+    # purge packages that are no longer needed
     sudo apt-get autoremove --purge
-    # remove all packages from the package cache
+    # purge orphaned configs from removed packages
+    purge-apt-configs 
+    # remove cached packages
     sudo apt-get clean
     # display package count
     echo "$(countpackages) packages currently installed"
 }
 
 
-# purge configuration data from packages marked for removal
+# purge configuration data from packages marked as removed
 purge-apt-configs () {
     if dpkg -l | grep --quiet '^rc'; then
         echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
         echo "purging package configs from removed packages..."
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
-        sudo apt-get update
+        apt-get update
     else
-        echo "no package configuration data to remove"
+        echo "no package configs to remove"
     fi
     echo "$(countpackages) packages currently installed"
 }
