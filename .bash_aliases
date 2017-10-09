@@ -177,7 +177,7 @@ convert-pngs-to-jpgs () {
         echo 'nothing to convert'
     fi
 }
-    
+
 
 # search recursively under current directory for text file contents matching regex (case-insensitive)
 rgrep () {
@@ -220,13 +220,13 @@ apt-up () {
     # upgrade installed packages using smart conflict resolution
     sudo apt-get dist-upgrade
     # check for broken dependencies
-    sudo apt-get check 
+    sudo apt-get check
     # fix broken dependencies
     sudo apt-get install --fix-broken
     # purge packages that are no longer needed
     sudo apt-get autoremove --purge
     # purge orphaned configs from removed packages
-    purge-apt-configs 
+    purge-apt-configs
     # remove cached packages
     sudo apt-get clean
     # display package count
@@ -263,11 +263,11 @@ purge-dropbox-cache () {
 
 
 # show all 256 terminal colors (foreground and background)
-show-colors () {
+colors () {
     for fgbg in 38 48; do
         for color in {0..256}; do
             echo -en "\e[${fgbg};5;${color}m ${color}\t\e[0m"
-            if [ $((($color + 1) % 10)) == 0 ]; then
+            if [[ $(((${color} + 1) % 10)) == 0 ]]; then
                 echo
             fi
         done
