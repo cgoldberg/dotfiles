@@ -179,6 +179,14 @@ convert-pngs-to-jpgs () {
 }
 
 
+# list dimensions of jpg and png images in the current directory
+img-sizes () {
+    for f in  *{jpg,png}; do
+        identify -ping -format "%[width]x%[height] - $f\n" "$f"
+    done
+}
+
+
 # search recursively under current directory for text file contents matching regex (case-insensitive)
 rgrep () {
     grep -iInr --color=always --exclude-dir='.git' "$1" . | less
