@@ -179,10 +179,10 @@ convert-pngs-to-jpgs () {
 }
 
 
-# list dimensions of jpg and png images in the current directory
+# list dimensions of gif/jpg/png images in the current directory
 img-sizes () {
-    for f in  *{jpg,png}; do
-        identify -ping -format "%[width]x%[height] - $f\n" "$f"
+    for f in  *{gif,jpg,png}; do
+        identify -ping -format "%[width]x%[height] - $f\n" "$f" 2> /dev/null
     done
 }
 
@@ -204,7 +204,7 @@ locatefiles () {
 
 # search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
-    find . -type f -iname "*$1*"
+    find . -type f -iname "*$1*" | grep -i --color=always "$1"
 }
 
 
@@ -248,10 +248,10 @@ purge-apt-configs () {
         echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
         echo "purging package configs from removed packages..."
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
-        apt-get update
     else
         echo "no package configs to remove"
     fi
+    sudo apt-get update
 }
 
 
