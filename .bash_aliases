@@ -73,11 +73,11 @@ alias diskfree="df"
 alias diskspace="df"
 
 # show disk space used by top 100 files and directories under the current directory
-alias du="\du --all --human-readable --one-file-system . | sort -h | tail -n 100"
+alias du="\du --all --human-readable --one-file-system . | sort -h | tail -n 100; echo; echo Total:; tree . | tail -n 1"
 alias diskused="du"
 
 # watch disk space used by largest directories under the current directory on current filesystem
-alias dw="watch --precise --interval=3 'echo Largest directories under \"${PWD}\":; \du -hx . | sort -h | tail -n 20; echo; echo Total:; tree -a  \"${PWD}\" | tail -n 1'"
+alias dw="watch --interval=3 'echo Largest directories under \"${PWD}\":; \du -hx . | sort -h | tail -n 20; echo; echo Total for \"${PWD}\":; tree \"${PWD}\" | tail -n 1'"
 alias diskwatch="dw"
 
 # serve current directory over HTTP on port 8080
@@ -99,7 +99,7 @@ alias purge-trash="gvfs-trash --empty"
 alias apt-install="sudo apt-get update && sudo apt-get install"
 
 # remove package and it's config files
-alias apt-remove="sudo apt-get update && sudo apt-get remove --purge"
+alias apt-remove="sudo apt-get remove --purge"
 
 # show package description
 alias apt-show="apt-cache show"
