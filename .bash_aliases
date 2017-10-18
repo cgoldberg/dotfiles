@@ -73,7 +73,7 @@ alias diskfree="df"
 alias diskspace="df"
 
 # show disk space used by top 100 files and directories under the current directory
-alias du="\du --all --human-readable --one-file-system . | sort -h | tail -n 100; echo; echo Total:; tree . | tail -n 1"
+alias du="\du --all --human-readable --one-file-system \"${PWD}\" | sort -h | tail -n 100; echo; echo Total for \"${PWD}\":; tree \"${PWD}\" | tail -n 1"
 alias diskused="du"
 
 # watch disk space used by largest directories under the current directory on current filesystem
