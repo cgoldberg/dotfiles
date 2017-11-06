@@ -77,29 +77,29 @@ alias dw="diskwatch"
 # serve current directory over HTTP on port 8080
 alias webserver="python -m SimpleHTTPServer 8080"
 
-# count installed packages
-alias countpackages="dpkg -l | grep '^ii' | wc -l"
-
 # count files recursively under current directory
 alias countfiles="find . -type f | wc -l"
 
 # show last 50 modified files under current dir
-alias latestfiles="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | grep -v '.git' | sort -n | tail -n 50"
+alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | grep -v '.git' | sort -n | tail -n 50"
 
 # purge desktop trash on all gvfs mounted volumes
 alias purge-trash="gvfs-trash --empty"
 
-# install package from repo
+# count installed system packages
+alias countpackages="dpkg -l | grep '^ii' | wc -l"
+
+# install packages from distro archive
 alias apt-install="sudo apt-get update && sudo apt-get install"
 
-# remove package and it's config files
+# remove packages and purge their config files
 alias apt-remove="sudo apt-get remove --purge"
 
 # show package description
 alias apt-show="apt-cache show"
 
 # show package installation status and repository it belongs to
-alias apt-policy="sudo apt-get update && apt-cache policy"
+alias apt-policy="apt-cache policy"
 
 # enable auto-completion of package names for apt-* aliases
 _pkg_completion () {
@@ -182,9 +182,7 @@ diskwatch () {
 # convert all .png images in the current directory to .jpg format
 # save with renamed extensions and delete originals
 convert-pngs-to-jpgs () {
-    findpngs () {
-        find . -maxdepth 1 -type f -iname "*.png" -prune
-    }
+    findpngs () { find . -maxdepth 1 -type f -iname "*.png" -prune; }
     if [[ -n $(findpngs) ]]; then
         ( findpngs | parallel convert -quality 95% {} {.}.jpg ) &&
         ( findpngs | parallel rm {} )
@@ -239,19 +237,19 @@ nas () {
 # package maintenance
 apt-up () {
     # reload package index files from sources
-    sudo apt-get update
+    sudo apt-get update &&
     # upgrade installed packages using smart conflict resolution
-    sudo apt-get dist-upgrade
+    sudo apt-get dist-upgrade &&
     # check for broken dependencies
-    sudo apt-get check
+    sudo apt-get check &&
     # fix broken dependencies
-    sudo apt-get install --fix-broken
+    sudo apt-get install --fix-broken &&
     # purge packages that are no longer needed
-    sudo apt-get autoremove --purge
+    sudo apt-get autoremove --purge &&
     # purge orphaned configs from removed packages
-    purge-apt-configs
+    purge-apt-configs &&
     # remove cached packages
-    sudo apt-get clean
+    sudo apt-get clean &&
     # display package count
     echo "$(countpackages) packages currently installed"
 }
@@ -302,20 +300,15 @@ colors () {
 # send an HTTP GET and display timings (poor man's http profiler)
 # usage: http-profile <url>
 http-profile () {
-    if [[ $# -lt 1 ]]; then
-        echo "no URL specified!" && return 1
-    else
-        w="\n"
-        w+="URL:\t\t$1\n"
-        w+="Local IP:\t%{local_ip}\n"
-        w+="Remote IP:\t%{remote_ip}\n\n"
-        w+="Status code:\t%{http_code}\n"
-        w+="Response size:\t%{size_download}\n\n"
-        w+="DNS time:\t%{time_namelookup}\n"
-        w+="Connect time:\t%{time_connect}\n"
-        w+="PretXfer time:\t%{time_pretransfer}\n"
-        w+="StartXfer time:\t%{time_starttransfer}\n"
-        w+="Total time:\t%{time_total}\n\n"
-        curl -sS --compressed -o /dev/null -w "$w" "$1"
-    fi
+    w="URL:\t\t$1\n"
+    w+="Local IP:\t%{local_ip}\n"
+    w+="Remote IP:\t%{remote_ip}\n\n"
+    w+="Status code:\t%{http_code}\n"
+    w+="Response size:\t%{size_download}\n\n"
+    w+="DNS time:\t%{time_namelookup}\n"
+    w+="Connect time:\t%{time_connect}\n"
+    w+="PreXfer time:\t%{time_pretransfer}\n"
+    w+="StartXfer time:\t%{time_starttransfer}\n"
+    w+="Total time:\t%{time_total}\n\n"
+    curl -sS --compressed -o /dev/null -w "$w" "$1"
 }

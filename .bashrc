@@ -14,11 +14,6 @@ export PAGER="less"
 export VISUAL="vim"
 export EDITOR="vim"
 
-# enable bash command completion
-if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-fi
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -26,6 +21,11 @@ shopt -s checkwinsize
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
+
+# enable bash command completion
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+fi
 
 # enable git command completion
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
@@ -37,6 +37,11 @@ fi
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 if [ -f ~/bin/git-prompt.sh ]; then
     . ~/bin/git-prompt.sh
+fi
+
+# source shell aliases and functions
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
 fi
 
 # set the title on terminals to user@host:dir
@@ -73,12 +78,6 @@ HISTSIZE=10000
 HISTFILESIZE=10000
 # don't store these commands in history
 HISTIGNORE='ls:exit:h:history:pwd'
-
-
-# also source shell aliases and functions
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
 
 # display Ubuntu logo and system info
 # https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu.sh
