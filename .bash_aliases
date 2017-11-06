@@ -32,13 +32,10 @@ alias l="\ls --almost-all --classify --group-directories-first --color=auto"
 alias ll="\ls --classify --group-directories-first --color=auto"
 
 # colored grep output
-alias grep="\grep --color=auto"
+alias grep="grep --color=auto"
 
 # open shell configurations for editing
 alias ebrc="subl -n ~/.bashrc ~/.bash_aliases"
-alias aliases="ebrc"
-alias edbashrc="ebrc"
-alias edaliases="ebrc"
 
 # list public bash functions and aliases defined in the current shell
 alias funcs="compgen -a -A function | grep -v ^_ | sort"
@@ -68,17 +65,14 @@ alias localip="hostname -I"
 alias ips="echo -n 'local ip: ' && localip && echo -n 'external ip: ' && externalip"
 
 # show disk space available on all mounted ext4 filesystems
-alias df="\df --sync --human-readable --total --type=ext4"
+alias df="df --sync --human-readable --total --type=ext4"
 alias diskfree="df"
-alias diskspace="df"
 
 # show disk space used by top 100 files and directories under the current directory
-alias du="\du --all --human-readable --one-file-system \"${PWD}\" | sort -h | tail -n 100; echo; echo Total for \"${PWD}\":; tree \"${PWD}\" | tail -n 1"
-alias diskused="du"
+alias du="diskused"
 
-# watch disk space used by largest directories under the current directory on current filesystem
-alias dw="watch --interval=3 'echo Largest directories under \"${PWD}\":; \du -hx . | sort -h | tail -n 20; echo; echo Total for \"${PWD}\":; tree \"${PWD}\" | tail -n 1'"
-alias diskwatch="dw"
+# watch disk space used by largest directories under the current directory
+alias dw="diskwatch"
 
 # serve current directory over HTTP on port 8080
 alias webserver="python -m SimpleHTTPServer 8080"
@@ -129,8 +123,8 @@ alias diff="colordiff -s"
 # make yourself look all busy and fancy to non-technical people
 alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
 
-# change directory to wd-green mount point
-alias hdd="cd /mnt/wd-green"
+# change directory to blue mount point
+alias hdd="cd /mnt/blue"
 
 # navigate up the directory tree
 alias ..="cd .."
@@ -150,6 +144,12 @@ alias cd.......="cd ../../../../../.."
 #----------------------------------------------------------------
 
 
+# make new directory and change to it
+# usage: mkdir <name>
+mkdir () {
+    mkdir -p "$1" && cd "$1"
+}
+
 # search command history by regex (case-insensitive) and show last 200 matches
 # usage: h <pattern>
 h () {
@@ -160,7 +160,22 @@ h () {
 # search process info by regex (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
-    ps -ef | grep -i --color=always "$1" | grep -v 'grep' | sort -n | less
+    ps -ef | grep -i --color=always "$1" | grep -v "grep" | sort -n | less
+}
+
+
+# show disk space used by top 100 files and directories under the current directory
+diskused () {
+    \du --all --human-readable --one-file-system "$PWD" | sort -h | tail -n 100
+    echo -e "\nTotal for ${PWD}:"
+    tree -a "$PWD" | tail -n 1
+}
+
+
+# watch disk space used by largest directories under the current directory
+diskwatch () {
+    local command="echo Largest directories under ${PWD}:; du -hx ${PWD} 2>/dev/null | sort -h | tail -n 20; echo; echo Total for ${PWD}:; tree -a ${PWD} | tail -n 1"
+    watch --interval=3 $command
 }
 
 
@@ -171,7 +186,7 @@ convert-pngs-to-jpgs () {
         find . -maxdepth 1 -type f -iname "*.png" -prune
     }
     if [[ -n $(findpngs) ]]; then
-        ( findpngs | parallel convert -quality 95% {} {.}.jpg ) && \
+        ( findpngs | parallel convert -quality 95% {} {.}.jpg ) &&
         ( findpngs | parallel rm {} )
     else
         echo 'nothing to convert'
@@ -197,7 +212,7 @@ rgrep () {
 # search entire filesystem for filenames matching glob pattern (case-insensitive)
 # update the mlocate database before searching
 locatefiles () {
-    updatedb --require-visibility 0 --output ~/.locatedb && \
+    updatedb --require-visibility 0 --output ~/.locatedb &&
     locate --existing --ignore-case --database ~/.locatedb "$@"
 }
 
