@@ -48,8 +48,8 @@
     ci = !git commit -a -m $2
 
     # open Github page for current repo
-    open = "!f() { open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@'`"; }; f"
-    
+    open = "!f() { xdg-open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@'`; }; f"
+
     # show pretty commit logs
     ls = log --pretty=format:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
     ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
@@ -61,7 +61,10 @@
     blowaway = "!f() { git fetch && git reset --hard @{upstream} && git clean -d -x --force; }; f"
 
     # list local branches with last commit date and commit hash, sorted by last modified
-    br = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'; }; f"
+    branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'; }; f"
+
+    # cleanup merged branches
+    brclean = "!f() { git branch --merged | grep -v master | xargs -r git branch -d; }; f"
 
 [filter "lfs"]
     smudge = git-lfs smudge %f
