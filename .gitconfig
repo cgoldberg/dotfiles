@@ -25,17 +25,19 @@
     cl = clone
     co = checkout
     com = checkout master
-    df = diff
     i = info
     po = push origin
     s = status
 
-    # show diff piped through a pager
-    dff = "!f() { git --paginate diff; }; f"
+    # clone a github repo
+    ghclone = "!f() { git clone "https://github.com/${1}/${2}"; }; f"
+
+    # show diffs piped through a pager
+    df = "!f() { git --paginate diff; }; f"
 
     # show diff of current branch against master
-    dfm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
     diffm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
+    dfm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
 
     # list all git aliases
     alias = "!f() { git config --list | grep alias | cut -c 7- | sort; }; f"

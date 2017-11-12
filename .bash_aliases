@@ -225,7 +225,7 @@ findfiles () {
 nas () {
     local share="public"
     local server="bytez"
-    local user="admin"
+    local user="$(id -nu ${UID})"
     local mount_dir="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${user}"
     if [[ ! -d "$mount_dir" ]]; then
         gvfs-mount "smb://${user}@${server}/${share}"
