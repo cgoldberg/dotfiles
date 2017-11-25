@@ -179,6 +179,12 @@ diskwatch () {
 }
 
 
+# rename .jpeg extensions to .jpg and lowercase any .JPG extensions
+img-fix-jpg-extensions () {
+    rename 's/\.jpe?g$/.jpg/i' *
+}
+
+
 # convert all .png images in the current directory to .jpg format
 # save with renamed extensions and delete originals
 convert-pngs-to-jpgs () {
@@ -192,12 +198,17 @@ convert-pngs-to-jpgs () {
 }
 
 
-# list dimensions of gif/jpg/png images in the current directory
+# list dimensions of images in the current directory
 img-sizes () {
+    shopt -s nullglob nocaseglob
     for f in  *{gif,jpg,png}; do
-        identify -ping -format "%[width]x%[height] - $f\n" "$f" 2> /dev/null
+        if [[ -e "$f" ]]; then
+            identify -ping -format "%[width]x%[height] - $f\n" "$f" 2> /dev/null
+        fi
     done
+    shopt -u nullglob nocaseglob
 }
+
 
 
 # search recursively under current directory for text file contents matching regex (case-insensitive)
