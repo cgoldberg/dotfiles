@@ -3,53 +3,52 @@
 #  master backup script
 #  --------------------
 #  This script first synchronizes the local Dropbox directory to the remote NAS.
-#  Then it creates a mirror of the remote NAS on the local backup HDD.  It uses
-#  rsync to generate an incremental file list, then deletes extraneous files on
-#  the destination and copies files that have changed in size or last-modified
-#  time between the destination and receiver.
+#  Then it synchronizes the remote NAS to the local backup HDD.  It uses `rsync`
+#  for file transfer, which will: generate an incremental file list, delete
+#  extraneous files on the destination, and copy files that have changed in
+#  size or last-modified time between the destination and receiver.
 #
 
 set -e
 
-BYTEZ="/run/user/1000/gvfs/smb-share:server=bytez,share=public/"
-WDGREEN="/mnt/wd-green/"
-DROPBOX="/home/cgoldberg/Dropbox/"
+HDD="/mnt/blue/"
+NAS="/run/user/${UID}/gvfs/smb-share:server=bytez,share=public,user=cgoldberg/"
+DROPBOX="${HOME}/Dropbox/"
+
 SEP="----------------------------------------------------------------"
 
 
 check_configuration () {
     echo "checking configuration..."
     if [[ "$HOSTNAME" != "collosus" ]]; then
-        echo "error: this script can only be run on colossus"
-        exit 1
+        echo "error: this script can only be run on colossus!"; exit 1
     fi
 
-    if [[ ! -d "$BYTEZ" ]]; then
-        echo "error: can't find mount point for remote NAS (bytez): ${BYTEZ}"
-        exit 1
+    if [[ ! -d "$NAS" ]]; then
+        echo "error: can't find mount point for remote NAS: ${NAS}!"; exit 1
     fi
 
-    if [[ ! -d "$WDGREEN" ]]; then
-        echo "error: can't find mount point for local backup HDD (wd-green): ${WDGREEN}"
-        exit 1
+    if [[ ! -d "$HDD" ]]; then
+        echo "error: can't find mount point for local HDD backup: ${HDD}!"; exit 1
     fi
 
     if [[ ! -d "$DROPBOX" ]]; then
-        echo "error: can't find local Dropbox directory: ${DROPBOX}"
-        exit 1
+        echo "error: can't find local Dropbox directory: ${DROPBOX}"; exit 1
     fi
 }
 
 
+# stop Dropbox and purge local cache
 purge_dropbox_cache () {
-    echo "purging local Dropbox cache..."
-    dropbox stop
+    if ! dropbox running; then
+        dropbox stop && sleep 2
+    fi
     local cache_dir="${DROPBOX}.dropbox.cache/"
-    if [[ -e "$cache_dir" ]]; then
-        du -h "$cache_dir"
+    if [[ -d "$cache_dir" ]]; then
+        du -ah "$cache_dir"
+        echo "purging local Dropbox cache..."
         rm -rf "$cache_dir"
     fi
-    dropbox start
 }
 
 
@@ -57,75 +56,53 @@ display_storage_stats () {
     echo "storage stats:"
     echo
     df --sync --type=ext4 --block-size=G
-    local nas_count=$(tree -a "$BYTEZ" | tail -n 1)
-    local localbackup_count=$(tree -a "$WDGREEN" | tail -n 1)
+    local nas_stats=$(tree -a "$NAS" | tail -n 1)
+    local hdd_stats=$(tree -a "$HDD" | tail -n 1)
     echo
-    echo "NAS (bytez):"
-    echo "  * ${nas_count}"
-    echo "local backup HDD (wd-green):"
-    echo "  * ${localbackup_count}"
-}
-
-
-mount_nas () {
-    if [[ ! -d "$BYTEZ" ]]; then
-        echo "mounting NAS as samba share on local virtual filesystem..."
-        gvfs-mount smb://bytez/public
-    else
-        echo "samba share for NAS already exists on local virtual filesystem..."
-    fi
-}
-
-
-unlock_keyring () {
-    echo "unlocking keyring..."
-    # Unlock the Gnome keyring so we can access the samba share.
-    # Requires "python-gnomekeyring" package.
-    python -c "import gnomekeyring;gnomekeyring.unlock_sync(None, 'cmg')"
+    echo "remote NAS: ${nas_stats}"
+    echo "local HDD: ${hdd_stats}"
 }
 
 
 main () {
     echo "starting master backup job..."
-    echo "$SEP"
-    unlock_keyring
-    mount_nas
+    if [[ ! -d "$NAS" ]]; then
+        gvfs-mount smb://cgoldberg@bytez/public  # requires user in local keychain
+    fi
     check_configuration
     echo "$SEP"
     purge_dropbox_cache
     echo "$SEP"
     echo "syncing local Dropbox to remote NAS..."
-    # There is an issue with QNAP's samba or rsyncd configuration that is causing "failed
-    # to set permissions" errors when it's on the receiving end of a transfer.  To get
-    # around this, we just disable preserving permissions when rsyncing to the QNAP NAS.
-    # Rather than using rsync's --archive option (which is equivalent to -rlptgoD), we use
-    # individual rsync options so the --perms option can be excluded.
+    # Note: We disable preserving permissions when rsyncing.  Rather than
+    # using rsync's --archive option (which is equivalent to -rlptgoD), we
+    # pass individual rsync options so the --perms option can be excluded.
     rsync \
-        --recursive \
-        --links \
-        --times \
-        --group \
-        --owner \
-        --safe-links \
         --delete \
         --human-readable \
+        --links \
         --progress \
+        --recursive \
+        --safe-links \
+        --times \
         --info=progress2 \
         "$DROPBOX" \
-        "${BYTEZ}/Dropbox_backup/"
+        "${NAS}Dropbox_Backup"
     echo "$SEP"
-    echo "syncing remote NAS to local backup HDD..."
-    # The --archive option is equivalent to -rlptgoD
+    echo "syncing remote NAS to local HDD..."
     rsync \
-        --archive \
-        --safe-links \
         --delete \
         --human-readable \
+        --links \
         --progress \
+        --recursive \
+        --safe-links \
+        --times \
         --info=progress2 \
-        "$BYTEZ" \
-        "$WDGREEN"
+        "$NAS" \
+        "$HDD"
     echo "$SEP"
+    sync
     display_storage_stats
     echo "$SEP"
     echo "done"
