@@ -272,10 +272,10 @@ purge-apt-configs () {
         echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
         echo "purging package configs from removed packages..."
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
+        sudo apt-get update
     else
         echo "no package configs to remove"
     fi
-    sudo apt-get update
 }
 
 
