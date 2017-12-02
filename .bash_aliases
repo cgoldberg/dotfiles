@@ -261,6 +261,8 @@ apt-up () {
     purge-apt-configs &&
     # remove cached packages
     sudo apt-get clean &&
+    # reload package index files from sources
+    sudo apt-get update &&
     # display package count
     echo "$(countpackages) packages currently installed"
 }
