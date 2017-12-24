@@ -29,7 +29,8 @@ __git_complete g _git
 # directory listings
 alias ls="\ls -l --human-readable --almost-all --classify --group-directories-first --no-group --color=auto"
 alias l="\ls --almost-all --classify --group-directories-first --color=auto"
-alias ll="\ls --classify --group-directories-first --color=auto"
+alias ll="\ls --almost-all --classify --group-directories-first --color=auto"
+alias la="\ls --almost-all --classify --group-directories-first --color=auto"
 
 # colored grep output
 alias grep="grep --color=auto"
@@ -75,7 +76,9 @@ alias du="diskused"
 alias dw="diskwatch"
 
 # serve current directory over HTTP on port 8080
-alias webserver="python -m SimpleHTTPServer 8080"
+alias webserver="python3 -m http.server 8080"
+alias webserver-py3="python3 -m http.server 8080"
+alias webserver-py2="python -m SimpleHTTPServer 8080"
 
 # count files recursively under current directory
 alias countfiles="find . -type f | wc -l"
@@ -210,12 +213,10 @@ img-sizes () {
 }
 
 
-
 # search recursively under current directory for text file contents matching regex (case-insensitive)
 rgrep () {
     grep -iInr --color=always --exclude-dir='.git' "$1" . | less
 }
-
 
 
 # search entire filesystem for filenames matching glob pattern (case-insensitive)
