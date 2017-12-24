@@ -27,6 +27,7 @@
     com = checkout master
     i = info
     po = push origin
+    pom = push origin master
     s = status
 
     # clone a github repo
