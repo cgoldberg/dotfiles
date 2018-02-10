@@ -1,17 +1,22 @@
 #!/bin/bash
 # Squeezebox Server (LMS) updater for Debian/Ubuntu
 
+# - This script will download and install the latest nightly beta version of
+#   Logitech Media Server (AKA Squeezebox Server).
+# - Audio files and LMS server settings are preserved through an upgrade.
+# - Root is required.
 
-lms_version='7.9.1'
+
+base_version='7.9.1'
 
 
-echo "starting Squeezebox Server update"
+echo "starting Squeezebox Server upgrade..."
 
 sudo killall squeezeboxserver > /dev/null 2>&1
 sudo killall squeezeboxserver_safe > /dev/null 2>&1
 
-echo "finding latest LMS ${LMS_VERSION} beta release"
-latest_deb_url=$(curl -s "http://www.mysqueezebox.com/update/?version=${lms_version}&revision=1&geturl=1&os=deb")
+echo "finding latest LMS ${base_version} beta release"
+latest_deb_url=$(curl -s "http://www.mysqueezebox.com/update/?version=${base_version}&revision=1&geturl=1&os=deb")
 
 echo "downloading: ${latest_deb_url}"
 curl -O -s "${latest_deb_url}" &
@@ -34,5 +39,6 @@ echo "cleaning up after installation"
 rm "${latest_deb}"
 
 lms_installed_version=$(apt-cache show logitechmediaserver | grep "Version" | cut -d " " -f 2)
-echo "update to LMS ${lms_version} complete! (${lms_installed_version})"
-echo "please restart Squeezebox Server or reboot"
+echo "The update to LMS ${base_version} is complete! (${lms_installed_version})"
+echo "please restart Squeezebox Server"
+echo "done"
