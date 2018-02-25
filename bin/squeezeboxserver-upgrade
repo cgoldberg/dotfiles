@@ -1,26 +1,25 @@
 #!/usr/bin/env bash
 #
-# Squeezebox Server (LMS) updater for Debian/Ubuntu
+#  Squeezebox Server (LMS) beta updater for Debian/Ubuntu
 #
-#  - This script downloads and installs the latest nightly beta version of
-#    Logitech Media Server (AKA Squeezebox Server).
-#  - Audio files and LMS server settings are preserved through an upgrade.
-#  - Root is required.
+#  - Downloads and installs the latest nightly release of Logitech Media Server (AKA Squeezebox Server)
+#  - Media files and LMS server settings are preserved through an upgrade
+#  - Requires root
 
 
 base_version='7.9.1'
 
-
 echo "starting Squeezebox Server upgrade..."
-
 sudo killall squeezeboxserver > /dev/null 2>&1
 sudo killall squeezeboxserver_safe > /dev/null 2>&1
 
 echo "finding latest LMS ${base_version} beta release"
 latest_deb_url=$(curl -s "http://www.mysqueezebox.com/update/?version=${base_version}&revision=1&geturl=1&os=deb")
+latest_deb="${latest_deb_url##*/}"
+tmp_dir=$(mktemp -d)
 
 echo "downloading: ${latest_deb_url}"
-curl -O -s "${latest_deb_url}" &
+curl -s -o "${tmp_dir}/${latest_deb}" "${latest_deb_url}" &
 pid=$!
 spin='-\|/'
 i=0
@@ -32,14 +31,12 @@ do
 done
 printf "\r"
 
-latest_deb="${latest_deb_url##*/}"
 echo "installing: ${latest_deb}"
-sudo dpkg -i "${latest_deb}" > /dev/null 2>&1 || { echo "installation FAILED" && exit 1; }
+sudo dpkg -i "${tmp_dir}/${latest_deb}" > /dev/null 2>&1 || { echo "installation FAILED" && exit 1; }
 
 echo "cleaning up after installation"
-rm "${latest_deb}"
+rm -rf "${tmp_dir}"
 
 lms_installed_version=$(apt-cache show logitechmediaserver | grep "Version" | cut -d " " -f 2)
 echo "update to LMS ${base_version} is complete! (${lms_installed_version})"
 echo "please restart Squeezebox Server"
-echo "done"
