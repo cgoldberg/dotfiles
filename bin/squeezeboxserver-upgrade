@@ -7,9 +7,17 @@
 #  - Requires root
 
 
+set -e
+
+
 base_version='7.9.1'
 
+
 echo "starting Squeezebox Server upgrade..."
+lms_old_installed_version=$(apt-cache show logitechmediaserver | grep "Version" | cut -d " " -f 2)
+echo "found existing LMS installation: ${lms_old_installed_version}"
+
+echo "killing all running versions of LMS"
 sudo killall squeezeboxserver > /dev/null 2>&1
 sudo killall squeezeboxserver_safe > /dev/null 2>&1
 
@@ -38,5 +46,5 @@ echo "cleaning up after installation"
 rm -rf "${tmp_dir}"
 
 lms_installed_version=$(apt-cache show logitechmediaserver | grep "Version" | cut -d " " -f 2)
-echo "update to LMS ${base_version} is complete! (${lms_installed_version})"
+echo "update of LMS ${base_version} from ${lms_old_installed_version} to ${lms_installed_version} is complete!"
 echo "please restart Squeezebox Server"
