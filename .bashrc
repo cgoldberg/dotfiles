@@ -44,6 +44,9 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# enable auto-completion for git commands
+__git_complete g _git
+
 # set the title on terminals to user@host:dir
 # this gets executed just before the prompt is displayed
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'

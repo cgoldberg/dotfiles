@@ -10,6 +10,9 @@ alias sudo="sudo "
 # expand aliases when running watch command
 alias watch="watch "
 
+# version control
+alias g="git"
+
 # python
 alias py="python3"
 alias py3="python3"
@@ -26,10 +29,6 @@ alias v="vim"
 # text pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 alias more="less"
-
-# enable auto-completion for git commands
-alias g="git"
-__git_complete g _git
 
 # directory listings
 alias ls="\ls -l --human-readable --almost-all --classify --group-directories-first --no-group --color=auto"
