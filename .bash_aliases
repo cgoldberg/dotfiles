@@ -108,16 +108,6 @@ alias apt-show="apt-cache show"
 # show package installation status and repository it belongs to
 alias apt-policy="apt-cache policy"
 
-# enable auto-completion of package names for apt-* aliases
-_pkg_completion () {
-    _init_completion || return
-    mapfile -t COMPREPLY < <(apt-cache --no-generate pkgnames "${COMP_WORDS[COMP_CWORD]}")
-}
-complete -F _pkg_completion apt-install
-complete -F _pkg_completion apt-remove
-complete -F _pkg_completion apt-show
-complete -F _pkg_completion apt-policy
-
 # disable line wrapping in terminal (long lines truncated at terminal width)
 alias nowrap="tput rmam"
 
