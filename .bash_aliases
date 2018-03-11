@@ -64,6 +64,9 @@ alias c="clear"
 alias ex="exit"
 alias x="exit"
 
+# upgrade music server
+alias squeezeboxserver-upgrade="sudo ~/bin/squeezeboxserver-upgrade"
+
 # ip addresses
 alias externalip="curl icanhazip.com"
 alias localip="hostname -I"
