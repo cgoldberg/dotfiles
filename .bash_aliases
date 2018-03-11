@@ -10,6 +10,11 @@ alias sudo="sudo "
 # expand aliases when running watch command
 alias watch="watch "
 
+# python
+alias py="python3"
+alias py3="python3"
+alias py2="python"
+
 # text editors
 alias sublime="subl"
 alias edit="subl"
