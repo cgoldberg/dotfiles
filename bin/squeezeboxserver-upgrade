@@ -12,10 +12,9 @@ set -e
 
 base_version='7.9.1'
 
-
 if [[ $EUID -ne 0 ]]; then
-  echo "permission denied."
-  echo "$(basename $0) must be run as root."
+  echo "permission denied"
+  echo "$(basename $0) must be run as root"
   exit 1
 fi
 
@@ -23,13 +22,16 @@ echo "starting Squeezebox Server upgrade..."
 lms_old_installed_version=$(apt-cache show logitechmediaserver | grep "Version" | cut -d " " -f 2)
 echo "found existing LMS installation: ${lms_old_installed_version}"
 
-echo "killing all running versions of LMS"
-killall squeezeboxserver > /dev/null 2>&1
-killall squeezeboxserver_safe > /dev/null 2>&1
-
 echo "finding latest LMS ${base_version} beta release"
 latest_deb_url=$(curl -s "http://www.mysqueezebox.com/update/?version=${base_version}&revision=1&geturl=1&os=deb")
 latest_deb="${latest_deb_url##*/}"
+
+if [[ "${latest_deb}" =~ "${lms_old_installed_version}" ]]; then
+  echo "latest version of LMS is already installed: ${lms_old_installed_version}"
+  echo "done"
+  exit 1
+fi
+
 tmp_dir=$(mktemp -d)
 
 echo "downloading: ${latest_deb_url}"
@@ -45,6 +47,10 @@ do
 done
 printf "\r"
 
+echo "killing all running instances of LMS"
+killall squeezeboxserver > /dev/null 2>&1
+killall squeezeboxserver_safe > /dev/null 2>&1
+
 echo "installing: ${latest_deb}"
 dpkg -i "${tmp_dir}/${latest_deb}" > /dev/null 2>&1 || { echo "installation FAILED" && exit 1; }
 
@@ -52,6 +58,6 @@ echo "cleaning up after installation"
 rm -rf "${tmp_dir}"
 
 lms_installed_version=$(apt-cache show logitechmediaserver | grep "Version" | cut -d " " -f 2)
-echo "update of LMS ${base_version} from ${lms_old_installed_version} to ${lms_installed_version} is complete!"
+echo "update of LMS ${base_version} from ${lms_old_installed_version} to ${lms_installed_version} is complete"
 echo "please restart Squeezebox Server"
 echo "done"
