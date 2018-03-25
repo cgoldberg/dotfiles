@@ -210,6 +210,16 @@ img-sizes () {
 }
 
 
+# set permissions in music library so Squeezebox server can scan and play audio files (recursive)
+fix-squeezebox-permissions () {
+    local music_dir="/mnt/blue/Tunes/"
+    # for directories, set read/write/execute permissions for owner and read/execute permissions for group/others
+    find "$music_dir" -maxdepth 1 -type d -exec chmod 755 {} \; -print
+    # for files, set read/write permissions for owner and read permissions for group/others
+    find "$music_dir" -maxdepth 2 -type f -exec chmod 644 {} \; -print
+}
+
+
 # search recursively under current directory for text file contents matching regex (case-insensitive)
 rgrep () {
     grep -iInr --color=always --exclude-dir='.git' "$1" . | less
@@ -279,7 +289,7 @@ purge-apt-configs () {
 }
 
 
-# stop Dropbox and purge local cache
+# purge all Dropbox files from local cache
 purge-dropbox-cache () {
     if ! dropbox running; then
         dropbox stop && sleep 2
