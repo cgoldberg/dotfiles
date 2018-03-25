@@ -210,13 +210,13 @@ img-sizes () {
 }
 
 
-# set permissions in music library so Squeezebox server can scan and play audio files (recursive)
+# set permissions in music library so Squeezebox server can scan and play audio files
 fix-squeezebox-permissions () {
     local music_dir="/mnt/blue/Tunes/"
     # for directories, set read/write/execute permissions for owner and read/execute permissions for group/others
-    find "$music_dir" -maxdepth 1 -type d -exec chmod 755 {} \; -print
-    # for files, set read/write permissions for owner and read permissions for group/others
-    find "$music_dir" -maxdepth 2 -type f -exec chmod 644 {} \; -print
+    find "$music_dir" -type d -exec chmod 755 {} \; -print
+    # for audio files, set read/write permissions for owner and read permission for group/others
+    find "$music_dir" -type f -iname '*.flac' -o -iname '*.mp3' -exec chmod 644 {} \; -print
 }
 
 
