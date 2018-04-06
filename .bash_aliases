@@ -33,8 +33,8 @@ alias more="less"
 # directory listings
 alias ls="\ls -l --human-readable --almost-all --classify --group-directories-first --no-group --color=auto"
 alias l="\ls --almost-all --classify --group-directories-first --color=auto"
-alias ll="\ls --almost-all --classify --group-directories-first --color=auto"
-alias la="\ls --almost-all --classify --group-directories-first --color=auto"
+alias ll="l"
+alias la="l"
 
 # colored grep output
 alias grep="grep --color=auto"
@@ -49,16 +49,16 @@ alias funcs="compgen -a -A function | grep -v ^_ | sort"
 alias re-source="source ~/.bashrc"
 
 # system shutdown
-alias sd="sudo poweroff"
 alias shutdown="sudo poweroff"
+alias sd="shutdown"
 
 # system reboot
-alias rb="sudo reboot"
 alias reboot="sudo reboot"
+alias rb="reboot"
 
 # clear terminal
 alias cls="clear"
-alias c="clear"
+alias c="cls"
 
 # exit terminal
 alias ex="exit"
@@ -73,8 +73,8 @@ alias localip="hostname -I"
 alias ips="echo -n 'local ip: ' && localip && echo -n 'external ip: ' && externalip"
 
 # show disk space available on all mounted ext4 filesystems
-alias df="df --sync --human-readable --total --type=ext4"
-alias diskfree="df"
+alias diskfree="\df --sync --human-readable --total --type=ext4"
+alias df="diskfree"
 
 # show disk space used by top 100 files and directories under the current directory
 alias du="diskused"
@@ -83,9 +83,9 @@ alias du="diskused"
 alias dw="diskwatch"
 
 # serve current directory over HTTP on port 8080
-alias webserver="python3 -m http.server 8080"
 alias webserver-py3="python3 -m http.server 8080"
 alias webserver-py2="python -m SimpleHTTPServer 8080"
+alias webserver="webserver-py3"
 
 # count files recursively under current directory
 alias countfiles="find . -type f | wc -l"
@@ -174,8 +174,7 @@ diskused () {
 
 # watch disk space used by largest directories under the current directory
 diskwatch () {
-    local command="echo Largest directories under ${PWD}:; du -hx ${PWD} 2>/dev/null | sort -h | tail -n 20; echo; echo Total for ${PWD}:; tree -a ${PWD} | tail -n 1"
-    watch --interval=3 $command
+    watch --interval=3 echo "Largest directories under ${PWD}:; du -hx ${PWD} 2>/dev/null | sort -h | tail -n 20; echo; echo Total for ${PWD}:; tree -a ${PWD} | tail -n 1"
 }
 
 
