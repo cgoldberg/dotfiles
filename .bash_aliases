@@ -294,9 +294,7 @@ purge-dropbox-cache () {
         dropbox stop && sleep 2
     fi
     cache_dir="${HOME}/Dropbox/.dropbox.cache/"
-    echo "fooooo"
     if [[ -d "$cache_dir" ]]; then
-        echo "barrrrrrrrrrr"
         \du -ah "$cache_dir"
         echo "purging local Dropbox cache..."
         rm -rf "$cache_dir"
