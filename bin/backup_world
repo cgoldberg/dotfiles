@@ -48,6 +48,7 @@ purge_dropbox_cache () {
         du -ah "$cache_dir"
         echo "purging local Dropbox cache..."
         rm -rf "$cache_dir"
+        sleep 1
     fi
 }
 

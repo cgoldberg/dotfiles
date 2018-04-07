@@ -293,13 +293,16 @@ purge-dropbox-cache () {
     if ! dropbox running; then
         dropbox stop && sleep 2
     fi
-    cache_dir="~/Dropbox/.dropbox.cache/"
+    cache_dir="${HOME}/Dropbox/.dropbox.cache/"
+    echo "fooooo"
     if [[ -d "$cache_dir" ]]; then
+        echo "barrrrrrrrrrr"
         \du -ah "$cache_dir"
         echo "purging local Dropbox cache..."
         rm -rf "$cache_dir"
+        sleep 1
     fi
-    dropbox start
+    dropbox start > /dev/null 2>&1
 }
 
 
