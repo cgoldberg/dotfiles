@@ -61,7 +61,6 @@ alias cls="clear"
 alias c="cls"
 
 # exit terminal
-alias ex="exit"
 alias x="exit"
 
 # upgrade music server
@@ -178,12 +177,6 @@ diskwatch () {
 }
 
 
-# rename .jpeg extensions to .jpg and lowercase any .JPG extensions
-img-fix-jpg-extensions () {
-    rename 's/\.jpe?g$/.jpg/i' *
-}
-
-
 # convert all .png images in the current directory to .jpg format
 # save with renamed extensions and delete originals
 convert-pngs-to-jpgs () {
@@ -197,6 +190,12 @@ convert-pngs-to-jpgs () {
 }
 
 
+# rename all files in current directory with ".jpeg" extension to ".jpg" and lowercase any .JPG extensions
+img-fix-jpg-extensions () {
+    rename 's/\.jpe?g$/.jpg/i' *
+}
+
+
 # list dimensions of images in the current directory
 img-sizes () {
     shopt -s nullglob nocaseglob
@@ -207,6 +206,20 @@ img-sizes () {
     done
     shopt -u nullglob nocaseglob
 }
+
+
+# expand initial tabs into 4 spaces and convert line endings
+# conversion done in-place
+# (requires dos2unix and moreutils packages)
+fix-whitespace () {
+    if [[ $# -eq 0 ]] ; then
+        echo "filename argument required"
+    else
+        expand -i -t 4 "$1" | sponge "$1"
+        dos2unix --quiet "$1"
+    fi
+}
+
 
 
 # set permissions in music library so Squeezebox server can scan and play audio files
