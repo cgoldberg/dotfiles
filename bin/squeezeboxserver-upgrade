@@ -48,8 +48,8 @@ done
 printf "\r"
 
 echo "killing all running instances of LMS"
-killall squeezeboxserver > /dev/null 2>&1
-killall squeezeboxserver_safe > /dev/null 2>&1
+killall -r ^squeezeboxserver$ > /dev/null 2>&1
+killall -r ^squeezeboxserver_safe$ > /dev/null 2>&1
 
 echo "installing: ${latest_deb}"
 dpkg -i "${tmp_dir}/${latest_deb}" > /dev/null 2>&1 || { echo "installation FAILED" && exit 1; }
