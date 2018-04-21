@@ -149,6 +149,18 @@ mkdir () {
     mkdir -p "$1" && cd "$1"
 }
 
+
+# create and activate python3 virtualenv in ./ENV
+venv () {
+    if [[ ! -d ./ENV ]]; then
+        echo "creating virtualenv in ./ENV"
+        python3 -m venv ENV
+    fi
+    echo "activating virtualenv in ./ENV"
+    source ./ENV/bin/activate
+}
+
+
 # search command history by regex (case-insensitive) and show last 200 matches
 # usage: h <pattern>
 h () {
@@ -211,14 +223,14 @@ img-sizes () {
 # expand initial tabs into 4 spaces and convert line endings
 # conversion done in-place
 # (requires dos2unix and moreutils packages)
-fix-whitespace () {
-    if [[ $# -eq 0 ]] ; then
-        echo "filename argument required"
-    else
-        expand -i -t 4 "$1" | sponge "$1"
-        dos2unix --quiet "$1"
-    fi
-}
+#fix-whitespace () {
+#    if [[ $# -eq 0 ]] ; then
+#        echo "filename argument required"
+#    else
+#        expand -i -t 4 "$1" | sponge "$1"
+#        dos2unix --quiet "$1"
+#    fi
+#}
 
 
 
