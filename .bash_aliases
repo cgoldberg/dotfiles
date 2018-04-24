@@ -95,6 +95,9 @@ alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | grep -
 # purge desktop trash on all gvfs mounted volumes
 alias purge-trash="gvfs-trash --empty"
 
+# purge thumbnail and icon cache
+alias purge-thumbs="rm -rf ${HOME}/.cache/thumbnails && sudo gtk-update-icon-cache -f /usr/share/icons/hicolor && nautilus -q 2>/dev/null"
+
 # count installed system packages
 alias countpackages="dpkg -l | grep '^ii' | wc -l"
 
