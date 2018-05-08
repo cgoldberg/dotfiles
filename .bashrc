@@ -140,7 +140,7 @@ HISTSIZE=10000
 # number of previous commands stored in memory for current session
 HISTFILESIZE=10000
 # don't store these commands in history
-HISTIGNORE='exit:h:history:l:ls:ll:la:pwd:rb:sd:x'
+HISTIGNORE='exit:h:history:l:ls:ll:la:pwd:rb:reboot:sd:shutdown:x'
 
 
 # display Ubuntu logo and system info
