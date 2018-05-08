@@ -242,8 +242,9 @@ fix-squeezebox-permissions () {
     local music_dir="/mnt/blue/Tunes/"
     # for directories, set read/write/execute permissions for owner and read/execute permissions for group/others
     find "$music_dir" -type d -exec chmod 755 {} \; -print
-    # for audio files, set read/write permissions for owner and read permission for group/others
-    find "$music_dir" -type f -iname '*.flac' -o -iname '*.mp3' -exec chmod 644 {} \; -print
+    # for mp3/flac audio files, set read/write permissions for owner and read permission for group/others
+    find "$music_dir" -type f -iname '*.flac' -exec chmod 644 {} \; -print
+    find "$music_dir" -type f -iname '*.mp3' -exec chmod 644 {} \; -print
 }
 
 
