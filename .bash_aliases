@@ -284,21 +284,21 @@ nas () {
 # package maintenance
 apt-up () {
     # reload package index files from sources
-    sudo apt update &&
+    sudo apt update && echo &&
     # upgrade installed packages using smart conflict resolution
-    sudo apt full-upgrade &&
+    sudo apt full-upgrade && echo &&
     # check for broken dependencies
-    sudo apt-get check &&
+    sudo apt-get check && echo &&
     # fix broken dependencies
-    sudo apt install --fix-broken &&
+    sudo apt install --fix-broken && echo &&
     # purge packages that are no longer needed
-    sudo apt autoremove --purge &&
+    sudo apt autoremove --purge && echo &&
     # purge orphaned configs from removed packages
     purge-apt-configs &&
     # remove cached packages
-    sudo apt clean &&
+    sudo apt clean && echo &&
     # reload package index files from sources
-    sudo apt update &&
+    sudo apt update && echo &&
     # display package count
     echo "${REVERSEGREEN}$(countpackages) packages currently installed${RESTORE}"
 }
