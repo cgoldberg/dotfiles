@@ -300,7 +300,7 @@ apt-up () {
     # reload package index files from sources
     sudo apt update &&
     # display package count
-    echo "$(countpackages) packages currently installed"
+    echo "${REVERSEGREEN}$(countpackages) packages currently installed${RESTORE}"
 }
 
 
