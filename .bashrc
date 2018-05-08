@@ -14,10 +14,15 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# export some environment variables
+# export environment variables
 export PAGER="less"
 export VISUAL="vim"
 export EDITOR="vim"
+
+# set shell variables
+SQUEEZEBOX_SERVER='localhost:9000'
+SQUEEZEBOX_PLAYER='00:04:20:23:82:6f'
+SQUEEZEBOX_ENDPOINT="http://${SQUEEZEBOX_SERVER}/jsonrpc.js"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.

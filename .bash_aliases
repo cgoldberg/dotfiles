@@ -362,3 +362,15 @@ http-profile () {
     w+="Total time:\t%{time_total}\n\n"
     curl -sS --compressed -o /dev/null -w "$w" "$1"
 }
+
+
+# skip to next track in Squeezebox playlist
+next () {
+    curl -sS -o /dev/null -X POST -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["button","jump_fwd"]]}' "$SQUEEZEBOX_ENDPOINT"
+}
+
+
+# pause/resume audio from Squeezebox player
+pause () {
+    curl -sS -o /dev/null -X POST -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["pause"]]}' "$SQUEEZEBOX_ENDPOINT"
+}
