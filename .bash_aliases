@@ -146,13 +146,6 @@ alias cd.......="cd ../../../../../.."
 #----------------------------------------------------------------
 
 
-# make new directory and change to it
-# usage: mkdir <name>
-mkdir () {
-    mkdir -p "$1" && cd "$1"
-}
-
-
 # create and activate python3 virtualenv in ./ENV
 venv () {
     if [[ ! -d ./ENV ]]; then
