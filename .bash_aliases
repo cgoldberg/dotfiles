@@ -277,21 +277,23 @@ nas () {
 # package maintenance
 apt-up () {
     # reload package index files from sources
-    sudo apt update && echo &&
-    # upgrade installed packages using smart conflict resolution
+    sudo apt --no-allow-insecure-repositories update && echo &&
+    # upgrade installed packages
     sudo apt full-upgrade && echo &&
     # check for broken dependencies
     sudo apt-get check && echo &&
     # fix broken dependencies
-    sudo apt install --fix-broken && echo &&
+    sudo apt --fix-broken install && echo &&
+    # fix missing dependencies
+    sudo apt --fix-missing install && echo &&
     # purge packages that are no longer needed
-    sudo apt autoremove --purge && echo &&
+    sudo apt --purge autoremove && echo &&
     # purge orphaned configs from removed packages
     purge-apt-configs &&
     # remove cached packages
     sudo apt clean && echo &&
     # reload package index files from sources
-    sudo apt update && echo &&
+    sudo apt --no-allow-insecure-repositories update && echo &&
     # display package count
     echo "${REVERSEGREEN}$(countpackages) packages currently installed${RESTORE}"
 }
@@ -303,7 +305,7 @@ purge-apt-configs () {
         echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
         echo "purging package configs from removed packages..."
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
-        sudo apt update
+        sudo apt --no-allow-insecure-repositories update
     else
         echo "no package configs to remove"
     fi
