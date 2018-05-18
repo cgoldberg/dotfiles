@@ -18,7 +18,7 @@ alias py="python3"
 alias py3="python3"
 alias py2="python"
 
-# text editors
+# editors
 alias sublime="subl"
 alias edit="subl"
 alias ed="subl"
@@ -26,7 +26,7 @@ alias e="subl -n ."
 alias vi="vim"
 alias v="vim"
 
-# text pagers
+# pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 alias more="less"
 
@@ -35,6 +35,9 @@ alias ls="\ls -l --human-readable --almost-all --classify --group-directories-fi
 alias l="\ls --almost-all --classify --group-directories-first --color=auto"
 alias ll="l"
 alias la="l"
+
+# extract a tarball
+alias untar="tar zxvf"
 
 # colored grep output
 alias grep="grep --color=auto"
@@ -58,7 +61,7 @@ alias rb="reboot"
 
 # clear terminal
 alias cls="clear"
-alias c="cls"
+alias c="clear"
 
 # exit terminal
 alias x="exit"
