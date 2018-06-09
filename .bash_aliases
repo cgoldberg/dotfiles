@@ -69,6 +69,9 @@ alias x="exit"
 # upgrade music server
 alias squeezeboxserver-upgrade="sudo ~/bin/squeezeboxserver-upgrade"
 
+# bounce music server
+alias squeezeboxserver-restart="service logitechmediaserver restart"
+
 # ip addresses
 alias externalip="curl icanhazip.com"
 alias localip="hostname -I"
@@ -328,6 +331,15 @@ purge-dropbox-cache () {
         sleep 1
     fi
     dropbox start > /dev/null 2>&1
+}
+
+
+# download and install latest Dropbox daemon
+dropbox-update-daemon () {
+    if ! dropbox running; then
+        dropbox stop && sleep 2
+    fi
+    dropbox update && dropbox start > /dev/null 2>&1
 }
 
 
