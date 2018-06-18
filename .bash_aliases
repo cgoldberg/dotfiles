@@ -66,6 +66,9 @@ alias c="clear"
 # exit terminal
 alias x="exit"
 
+#  ¯\_(ツ)_/¯
+alias shrug="echo -n '¯\_(ツ)_/¯' | xclip; echo '¯\_(ツ)_/¯ copied to X clipboard'"
+
 # upgrade music server
 alias squeezeboxserver-upgrade="sudo ~/bin/squeezeboxserver-upgrade"
 
@@ -192,7 +195,7 @@ diskwatch () {
 
 
 # convert all .png images in the current directory to .jpg format
-# save with renamed extensions and delete originals
+# save with renamed extensions and delete originals (requires gnu parallel)
 convert-pngs-to-jpgs () {
     findpngs () { find . -maxdepth 1 -type f -iname "*.png" -prune; }
     if [[ -n $(findpngs) ]]; then
@@ -223,16 +226,15 @@ img-sizes () {
 
 
 # expand initial tabs into 4 spaces and convert line endings
-# conversion done in-place
-# (requires dos2unix and moreutils packages)
-#fix-whitespace () {
-#    if [[ $# -eq 0 ]] ; then
-#        echo "filename argument required"
-#    else
-#        expand -i -t 4 "$1" | sponge "$1"
-#        dos2unix --quiet "$1"
-#    fi
-#}
+# conversion done in-place (requires dos2unix and moreutils packages)
+fix-whitespace () {
+    if [[ $# -eq 0 ]] ; then
+        echo "filename argument required"
+    else
+        expand -i -t 4 "$1" | sponge "$1"
+        dos2unix --quiet "$1"
+    fi
+}
 
 
 
@@ -371,6 +373,17 @@ http-profile () {
     w+="StartXfer time:\t%{time_starttransfer}\n"
     w+="Total time:\t%{time_total}\n\n"
     curl -sS --compressed -o /dev/null -w "$w" "$1"
+}
+
+
+# download Selenium server from official release archive
+fetch_selenium () {
+    baseurl="https://selenium-release.storage.googleapis.com"
+    latest=$(curl -sS $baseurl | xpath -q -e "./ListBucketResult/Contents/Key/text(  )" |
+        grep "selenium-server-standalone" | sort -V |
+        tail -n 1)
+    echo "Downloading: $(echo $latest | cut -d'/' -f2)";
+    curl -O# ${baseurl}/${latest}
 }
 
 
