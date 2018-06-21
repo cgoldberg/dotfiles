@@ -155,14 +155,27 @@ alias cd.......="cd ../../../../../.."
 #----------------------------------------------------------------
 
 
-# create and activate python3 virtualenv in ./ENV
+# create and activate python2.7 virtualenv in ./ENV
 venv () {
-    if [[ ! -d ./ENV ]]; then
-        echo "creating virtualenv in ./ENV"
-        python3 -m venv ENV
+    local dir="ENV"
+    if [[ ! -d ./$dir ]]; then
+        echo "creating py2.7 virtualenv in ./$dir"
+        virtualenv "$dir"
     fi
-    echo "activating virtualenv in ./ENV"
-    source ./ENV/bin/activate
+    echo "activating py2 virtualenv in ./$dir"
+    source ./$dir/bin/activate
+}
+
+
+# create and activate python3 virtualenv in ./ENV
+venv3 () {
+    local dir="ENV"
+    if [[ ! -d ./$dir ]]; then
+        echo "creating py3 virtualenv in ./$dir"
+        python3 -m venv "$dir"
+    fi
+    echo "activating py3 virtualenv in ./$dir"
+    source ./$dir/bin/activate
 }
 
 
