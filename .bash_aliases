@@ -389,13 +389,14 @@ http-profile () {
 }
 
 
-# download Selenium server from official release archive
-fetch_selenium () {
-    baseurl="https://selenium-release.storage.googleapis.com"
-    latest=$(curl -sS $baseurl | xpath -q -e "./ListBucketResult/Contents/Key/text(  )" |
-        grep "selenium-server-standalone" | sort -V |
-        tail -n 1)
-    echo "Downloading: $(echo $latest | cut -d'/' -f2)";
+
+# download latest Selenium server from official release archive
+# (requires: libxml-xpath-perl)
+download_selenium_server () {
+    local baseurl="https://selenium-release.storage.googleapis.com"
+    local latest=$(curl -sS $baseurl | xpath -q -e "./ListBucketResult/Contents/Key/text()" |
+        grep "selenium-server-standalone" | sort -V | tail -n 1)
+    echo -n "Downloading: " && echo $latest | cut -d'/' -f2
     curl -O# ${baseurl}/${latest}
 }
 
