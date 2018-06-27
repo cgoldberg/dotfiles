@@ -179,6 +179,13 @@ venv3 () {
 }
 
 
+# open a browser and go to the online Debian man page for the given command
+# usage: wman <pattern>
+wman () {
+    python -c "import webbrowser; webbrowser.open('https://manpages.debian.org/${1}')" > /dev/null 2>&1
+}
+
+
 # search command history by regex (case-insensitive) and show last 200 matches
 # usage: h <pattern>
 h () {
@@ -387,7 +394,6 @@ http-profile () {
     w+="Total time:\t%{time_total}\n\n"
     curl -sS --compressed -o /dev/null -w "$w" "$1"
 }
-
 
 
 # download latest Selenium server from official release archive
