@@ -67,7 +67,7 @@ alias c="clear"
 alias x="exit"
 
 #  ¯\_(ツ)_/¯
-alias shrug="echo -n '¯\_(ツ)_/¯' | xclip; echo '¯\_(ツ)_/¯ copied to X clipboard'"
+alias shrug="echo -n '¯\_(ツ)_/¯' | xclip && echo '¯\_(ツ)_/¯ copied to X clipboard'"
 
 # upgrade music server
 alias squeezeboxserver-upgrade="sudo ~/bin/squeezeboxserver-upgrade"
@@ -248,7 +248,7 @@ img-sizes () {
 # expand initial tabs into 4 spaces and convert line endings
 # conversion done in-place (requires dos2unix and moreutils packages)
 fix-whitespace () {
-    if [[ $# -eq 0 ]] ; then
+    if [[ $# -eq 0 ]]; then
         echo "filename argument required"
     else
         expand -i -t 4 "$1" | sponge "$1"
@@ -261,11 +261,17 @@ fix-whitespace () {
 # set permissions in music library so Squeezebox server can scan and play audio files
 fix-squeezebox-permissions () {
     local music_dir="/mnt/blue/Tunes/"
-    # for directories, set read/write/execute permissions for owner and read/execute permissions for group/others
-    find "$music_dir" -type d -exec chmod 755 {} \; -print
-    # for mp3/flac audio files, set read/write permissions for owner and read permission for group/others
-    find "$music_dir" -type f -iname '*.flac' -exec chmod 644 {} \; -print
-    find "$music_dir" -type f -iname '*.mp3' -exec chmod 644 {} \; -print
+    fix_perms () {
+        find "$music_dir" -type d -exec chmod 755 {} \; -print
+        find "$music_dir" -type f -iname '*.flac' -exec chmod 644 {} \; -print
+        find "$music_dir" -type f -iname '*.mp3' -exec chmod 644 {} \; -print
+    }
+    echo "setting file permissions in Music Library..."
+    echo "  * directories: read/write/execute for owner, read/execute for group/others"
+    echo "  * audio files: read/write for owner, read for group/others"
+    echo
+    read -p "are you sure? <y/N> " prompt
+    if [[ "$prompt" =~ [yY](es)$ ]]; then fix_perms; fi
 }
 
 
