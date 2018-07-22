@@ -259,7 +259,7 @@ fix-whitespace () {
 
 
 # set permissions in music library so Squeezebox server can scan and play audio files
-fix-squeezebox-permissions () {
+squeezebox-fix-permissions () {
     local music_dir="/mnt/blue/Tunes/"
     fix_perms () {
         find "$music_dir" -type d -exec chmod 755 {} \; -print
@@ -271,7 +271,9 @@ fix-squeezebox-permissions () {
     echo "  * audio files: read/write for owner, read for group/others"
     echo
     read -p "are you sure? <y/N> " prompt
-    if [[ "$prompt" =~ [yY](es)$ ]]; then fix_perms; fi
+    if [[ "$prompt" =~ [yY]$ ]]; then
+        fix_perms
+    fi
 }
 
 
