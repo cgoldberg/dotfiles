@@ -2,18 +2,23 @@
 #
 #  master backup script
 #  --------------------
-#  This script first synchronizes the local Dropbox directory to the remote NAS.
-#  Then it synchronizes the remote NAS to the local backup HDD.  It uses `rsync`
-#  for file transfer, which will: generate an incremental file list, delete
-#  extraneous files on the destination, and copy files that have changed in
-#  size or last-modified time between the destination and receiver.
+#    * synchronizes local Dropbox directory to remote NAS
+#    * synchronizes remote NAS to local backup HDD
+#
+#  This script uses `rsync` for file transfer.
+#  This first does a recursive scan and generates an incremental list of files
+#  that have changed between the source and destination.  Then it deletes
+#  extraneous files on the destination.  Finally, it copies new files and
+#  files that have changed (in size or last-modified time) between the source
+#  and destination.
 #
 
 set -e
 
-HDD="/mnt/blue/"
-NAS="/run/user/${UID}/gvfs/smb-share:server=bytez,share=public,user=cgoldberg/"
-DROPBOX="${HOME}/Dropbox/"
+
+HDD="/mnt/blue"
+NAS="/run/user/${UID}/gvfs/smb-share:server=bytez,share=public,user=cgoldberg"
+DROPBOX="${HOME}/Dropbox"
 
 SEP="----------------------------------------------------------------"
 
@@ -38,17 +43,17 @@ check_configuration () {
 }
 
 
-# stop Dropbox and purge local cache
 purge_dropbox_cache () {
     if ! dropbox running; then
         dropbox stop && sleep 2
     fi
-    local cache_dir="${DROPBOX}.dropbox.cache/"
+    local cache_dir="${DROPBOX}/.dropbox.cache/"
     if [[ -d "$cache_dir" ]]; then
         du -ah "$cache_dir"
         echo "purging local Dropbox cache..."
         rm -rf "$cache_dir"
-        sleep 1
+    else
+        echo "no existing Dropbox cache to purge"
     fi
 }
 
@@ -67,6 +72,7 @@ display_storage_stats () {
 
 main () {
     echo "starting master backup job..."
+    echo
     if [[ ! -d "$NAS" ]]; then
         gvfs-mount smb://cgoldberg@bytez/public  # requires user in local keychain
     fi
@@ -74,7 +80,9 @@ main () {
     echo "$SEP"
     purge_dropbox_cache
     echo "$SEP"
+    sync
     echo "syncing local Dropbox to remote NAS..."
+    echo
     # Note: We disable preserving permissions when rsyncing.  Rather than
     # using rsync's --archive option (which is equivalent to -rlptgoD), we
     # pass individual rsync options so the --perms option can be excluded.
@@ -85,12 +93,15 @@ main () {
         --progress \
         --recursive \
         --safe-links \
+        --stats \
         --times \
         --info=progress2 \
-        "$DROPBOX" \
-        "${NAS}Dropbox_Backup"
+        "$DROPBOX/" \
+        "${NAS}/Dropbox_Backup/"
     echo "$SEP"
+    sync
     echo "syncing remote NAS to local HDD..."
+    echo
     rsync \
         --delete \
         --human-readable \
@@ -98,10 +109,10 @@ main () {
         --progress \
         --recursive \
         --safe-links \
+        --stats \
         --times \
         --info=progress2 \
-        "$NAS" \
-        "$HDD"
+        "$NAS/" "$HDD/"
     echo "$SEP"
     sync
     display_storage_stats
