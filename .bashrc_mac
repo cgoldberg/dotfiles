@@ -45,6 +45,7 @@ alias ss="screensaver"
 alias afk="screensaver"
 alias screenshot="screencapture -i -T 1 -t jpg -P screenshot.jpg"
 alias webserver="python -m SimpleHTTPServer"
+alias ping="prettyping"
 
 # network aliases
 alias flushdns="sudo killall -HUP mDNSResponder"

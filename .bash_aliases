@@ -42,6 +42,9 @@ alias untar="tar zxvf"
 # colored grep output
 alias grep="grep --color=auto"
 
+# better ICMP ECHO_REQUEST
+alias ping="prettyping"
+
 # open shell configurations for editing
 alias ebrc="subl -n ~/.bashrc ~/.bash_aliases"
 

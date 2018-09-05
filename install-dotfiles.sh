@@ -15,6 +15,7 @@ FILES=(
     "bin/gphoto_clean_exported_library.py"
     "bin/img_metadata_strip_fix.py"
     "bin/squeezeboxserver-upgrade"
+    "bin/prettyping"
 )
 
 if [ ! -d "$BIN" ]; then
