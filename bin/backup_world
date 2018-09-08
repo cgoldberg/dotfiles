@@ -13,31 +13,28 @@
 #  and destination.
 #
 
+
 set -e
 
 
+DROPBOX="${HOME}/Dropbox"
 HDD="/mnt/blue"
 NAS="/run/user/${UID}/gvfs/smb-share:server=bytez,share=public,user=cgoldberg"
-DROPBOX="${HOME}/Dropbox"
-
 SEP="----------------------------------------------------------------"
 
 
 check_configuration () {
     echo "checking configuration..."
-    if [[ "$HOSTNAME" != "collosus" ]]; then
+    if [[ "${HOSTNAME}" != "collosus" ]]; then
         echo "error: this script can only be run on colossus!"; exit 1
     fi
-
-    if [[ ! -d "$NAS" ]]; then
+    if [[ ! -d "${NAS}" ]]; then
         echo "error: can't find mount point for remote NAS: ${NAS}!"; exit 1
     fi
-
-    if [[ ! -d "$HDD" ]]; then
+    if [[ ! -d "${HDD}" ]]; then
         echo "error: can't find mount point for local HDD backup: ${HDD}!"; exit 1
     fi
-
-    if [[ ! -d "$DROPBOX" ]]; then
+    if [[ ! -d "${DROPBOX}" ]]; then
         echo "error: can't find local Dropbox directory: ${DROPBOX}"; exit 1
     fi
 }
@@ -48,38 +45,26 @@ purge_dropbox_cache () {
         dropbox stop && sleep 2
     fi
     local cache_dir="${DROPBOX}/.dropbox.cache/"
-    if [[ -d "$cache_dir" ]]; then
-        du -ah "$cache_dir"
+    if [[ -d "${cache_dir}" ]]; then
         echo "purging local Dropbox cache..."
-        rm -rf "$cache_dir"
+        du -ah "${cache_dir}"
+        rm -rf "${cache_dir}"
     else
-        echo "no existing Dropbox cache to purge"
+        echo "no Dropbox cache to purge"
     fi
-}
-
-
-display_storage_stats () {
-    echo "storage stats:"
-    echo
-    df --sync --type=ext4 --block-size=G
-    local nas_stats=$(tree -a "$NAS" | tail -n 1)
-    local hdd_stats=$(tree -a "$HDD" | tail -n 1)
-    echo
-    echo "remote NAS: ${nas_stats}"
-    echo "local HDD: ${hdd_stats}"
 }
 
 
 main () {
     echo "starting master backup job..."
     echo
-    if [[ ! -d "$NAS" ]]; then
+    if [[ ! -d "${NAS}" ]]; then
         gvfs-mount smb://cgoldberg@bytez/public  # requires user in local keychain
     fi
     check_configuration
-    echo "$SEP"
+    echo "${SEP}"
     purge_dropbox_cache
-    echo "$SEP"
+    echo "${SEP}"
     sync
     echo "syncing local Dropbox to remote NAS..."
     echo
@@ -96,9 +81,8 @@ main () {
         --stats \
         --times \
         --info=progress2 \
-        "$DROPBOX/" \
-        "${NAS}/Dropbox_Backup/"
-    echo "$SEP"
+        "${DROPBOX}/" "${NAS}/Dropbox_Backup/"
+    echo "${SEP}"
     sync
     echo "syncing remote NAS to local HDD..."
     echo
@@ -112,11 +96,12 @@ main () {
         --stats \
         --times \
         --info=progress2 \
-        "$NAS/" "$HDD/"
-    echo "$SEP"
+        "${NAS}/" "${HDD}/"
+    echo "${SEP}"
     sync
-    display_storage_stats
-    echo "$SEP"
+    echo "storage stats:"
+    df --sync --type=ext4 --block-size=G | grep sdb
+    echo "${SEP}"
     echo "done"
 }
 
