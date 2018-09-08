@@ -31,19 +31,16 @@ alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --q
 alias more="less"
 
 # directory listings
-alias ls="\ls -l --human-readable --almost-all --classify --group-directories-first --no-group --color=auto"
-alias l="\ls --almost-all --classify --group-directories-first --color=auto"
-alias ll="l"
-alias la="l"
+alias ls="LC_COLLATE='C' \ls -l --human-readable --almost-all --classify --group-directories-first --no-group --color=auto"
+alias l="ls"
+alias ll="LC_COLLATE='C' \ls --almost-all --classify --group-directories-first --color=auto"
+alias la="ll"
 
 # extract a tarball
 alias untar="tar zxvf"
 
 # colored grep output
 alias grep="grep --color=auto"
-
-# better ICMP ECHO_REQUEST
-alias ping="prettyping"
 
 # open shell configurations for editing
 alias ebrc="subl -n ~/.bashrc ~/.bash_aliases"
@@ -93,6 +90,9 @@ alias du="diskused"
 # watch disk space used by largest directories under the current directory
 alias dw="diskwatch"
 
+# show TCP/UDP sockets that are actively listening
+alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
+
 # serve current directory over HTTP on port 8080
 alias webserver-py3="python3 -m http.server 8080"
 alias webserver-py2="python -m SimpleHTTPServer 8080"
@@ -137,8 +137,8 @@ alias diff="colordiff -s"
 # make yourself look all busy and fancy to non-technical people
 alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
 
-# change directory to blue mount point
-alias hdd="cd /mnt/blue"
+# go to blue mount point
+alias blue="cd /mnt/blue && ls"
 
 # navigate up the directory tree
 alias ..="cd .."
@@ -156,7 +156,6 @@ alias cd.......="cd ../../../../../.."
 
 
 #----------------------------------------------------------------
-
 
 # create and activate python2.7 virtualenv in ./ENV
 venv () {
@@ -199,7 +198,7 @@ h () {
 # search process info by regex (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
-    ps -ef | grep -i --color=always "$1" | grep -v "grep" | sort -n | less
+    ps -ef | \grep -i --color=always "$1" | grep -v "grep" | sort -n | less
 }
 
 
@@ -258,7 +257,6 @@ fix-whitespace () {
         dos2unix --quiet "$1"
     fi
 }
-
 
 
 # set permissions in music library so Squeezebox server can scan and play audio files
