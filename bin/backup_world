@@ -19,23 +19,23 @@ set -e
 
 DROPBOX="${HOME}/Dropbox"
 HDD="/mnt/blue"
-NAS="/run/user/${UID}/gvfs/smb-share:server=bytez,share=public,user=cgoldberg"
+NAS="/run/user/${UID}/gvfs/smb-share:server=bytez,share=public,user=${USER}"
 SEP="----------------------------------------------------------------"
 
 
 check_configuration () {
     echo "checking configuration..."
     if [[ "${HOSTNAME}" != "collosus" ]]; then
-        echo "error: this script can only be run on colossus!"; exit 1
+        echo "error: this script can only be run on colossus"; exit 1
     fi
     if [[ ! -d "${NAS}" ]]; then
-        echo "error: can't find mount point for remote NAS: ${NAS}!"; exit 1
+        echo "error: can't find remote NAS: ${NAS}"; exit 1
     fi
     if [[ ! -d "${HDD}" ]]; then
-        echo "error: can't find mount point for local HDD backup: ${HDD}!"; exit 1
+        echo "error: can't find local HDD backup: ${HDD}"; exit 1
     fi
     if [[ ! -d "${DROPBOX}" ]]; then
-        echo "error: can't find local Dropbox directory: ${DROPBOX}"; exit 1
+        echo "error: can't find local Dropbox: ${DROPBOX}"; exit 1
     fi
 }
 
@@ -59,7 +59,7 @@ main () {
     echo "starting master backup job..."
     echo
     if [[ ! -d "${NAS}" ]]; then
-        gvfs-mount smb://cgoldberg@bytez/public  # requires user in local keychain
+        gvfs-mount smb://${USER}@bytez/public  # requires user in local keychain
     fi
     check_configuration
     echo "${SEP}"
@@ -82,6 +82,7 @@ main () {
         --times \
         --info=progress2 \
         "${DROPBOX}/" "${NAS}/Dropbox_Backup/"
+    echo
     echo "${SEP}"
     sync
     echo "syncing remote NAS to local HDD..."
@@ -97,11 +98,14 @@ main () {
         --times \
         --info=progress2 \
         "${NAS}/" "${HDD}/"
+    echo
     echo "${SEP}"
     sync
     echo "storage stats:"
-    df --sync --type=ext4 --block-size=G | grep sdb
+    echo
+    df --sync --type=ext4 --block-size=G | grep -e sdb -e Filesystem
     echo "${SEP}"
+    echo
     echo "done"
 }
 
