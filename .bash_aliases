@@ -181,6 +181,12 @@ venv3 () {
 }
 
 
+# open a file or URL in the preferred application and hide all console output
+open () {
+    nohup xdg-open "$@" > /dev/null 2>&1
+}
+
+
 # open a browser and go to the online Debian man page for the given command
 # usage: wman <pattern>
 wman () {
