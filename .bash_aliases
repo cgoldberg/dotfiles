@@ -37,34 +37,38 @@ alias ll="LC_COLLATE='C' \ls --almost-all --classify --group-directories-first -
 alias la="ll"
 
 # extract a tarball
-alias untar="tar zxvf"
+alias untar="\tar zxvf"
 
 # colored grep output
-alias grep="grep --color=auto"
+alias grep="\grep --color=auto"
 
 # open shell configurations for editing
 alias ebrc="subl -n ~/.bashrc ~/.bash_aliases"
 
 # list public bash functions and aliases defined in the current shell
-alias funcs="compgen -a -A function | grep -v ^_ | sort"
+alias funcs="\compgen -a -A function | grep -v ^_ | sort"
 
 # reload shell configurations
 alias re-source="source ~/.bashrc"
 
 # system shutdown
-alias shutdown="sudo poweroff"
+alias shutdown="sudo \poweroff"
 alias sd="shutdown"
 
 # system reboot
-alias reboot="sudo reboot"
+alias reboot="sudo \reboot"
 alias rb="reboot"
 
 # clear terminal
-alias cls="clear"
-alias c="clear"
+alias cls="\clear"
+alias c="cls"
 
 # exit terminal
-alias x="exit"
+alias x="\exit"
+
+# show disk space used by files/dirs under the current directory (ncurses interface)
+alias du="\ncdu -rx ${PWD}"
+alias diskused="du"
 
 #  ¯\_(ツ)_/¯
 alias shrug="echo -n '¯\_(ツ)_/¯' | xclip && echo '¯\_(ツ)_/¯ copied to X clipboard'"
@@ -84,14 +88,8 @@ alias ips="echo -n 'local ip: ' && localip && echo -n 'external ip: ' && externa
 alias diskfree="\df --sync --human-readable --total --type=ext4"
 alias df="diskfree"
 
-# show disk space used by top 100 files and directories under the current directory
-alias du="diskused"
-
-# watch disk space used by largest directories under the current directory
-alias dw="diskwatch"
-
 # show TCP/UDP sockets that are actively listening
-alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
+alias listening="sudo \netstat --listening --program --symbolic --tcp --udp"
 
 # serve current directory over HTTP on port 8080
 alias webserver-py3="python3 -m http.server 8080"
@@ -165,7 +163,7 @@ venv () {
         virtualenv "$dir"
     fi
     echo "activating py2 virtualenv in ./$dir"
-    source ./$dir/bin/activate
+    source ./${dir}/bin/activate
 }
 
 
@@ -177,7 +175,7 @@ venv3 () {
         python3 -m venv "$dir"
     fi
     echo "activating py3 virtualenv in ./$dir"
-    source ./$dir/bin/activate
+    source ./${dir}/bin/activate
 }
 
 
@@ -185,6 +183,14 @@ venv3 () {
 open () {
     nohup xdg-open "$@" > /dev/null 2>&1
 }
+alias 0="open"
+
+
+# open a file or URL in the preferred application and hide all console output
+google () {
+    nohup chromium-browser "$@" > /dev/null 2>&1
+}
+alias goog="google"
 
 
 # open a browser and go to the online Debian man page for the given command
@@ -208,18 +214,11 @@ psgrep () {
 }
 
 
-# show disk space used by top 100 files and directories under the current directory
-diskused () {
-    \du --all --human-readable --one-file-system "$PWD" | sort -h | tail -n 100
-    echo -e "\nTotal for ${PWD}:"
-    tree -a "$PWD" | tail -n 1
-}
-
-
 # watch disk space used by largest directories under the current directory
 diskwatch () {
     watch --interval=3 echo "Largest directories under ${PWD}:; du -hx ${PWD} 2>/dev/null | sort -h | tail -n 20; echo; echo Total for ${PWD}:; tree -a ${PWD} | tail -n 1"
 }
+alias dw="diskwatch"
 
 
 # convert all .png images in the current directory to .jpg format
@@ -266,7 +265,7 @@ fix-whitespace () {
 
 
 # set permissions in music library so Squeezebox server can scan and play audio files
-squeezebox-fix-permissions () {
+squeezeboxserver-fix-permissions () {
     local music_dir="/mnt/blue/Tunes/"
     fix_perms () {
         find "$music_dir" -type d -exec chmod 755 {} \; -print
