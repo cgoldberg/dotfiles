@@ -43,13 +43,13 @@ alias untar="\tar zxvf"
 alias grep="\grep --color=auto"
 
 # open shell configurations for editing
-alias ebrc="subl -n ~/.bashrc ~/.bash_aliases"
+alias ebrc="subl -n ${HOME}/.bashrc ${HOME}/.bash_aliases"
 
 # list public bash functions and aliases defined in the current shell
 alias funcs="\compgen -a -A function | grep -v ^_ | sort"
 
 # reload shell configurations
-alias re-source="source ~/.bashrc"
+alias re-source="source ${HOME}/.bashrc"
 
 # system shutdown
 alias shutdown="sudo \poweroff"
@@ -74,7 +74,7 @@ alias diskused="du"
 alias shrug="echo -n '¯\_(ツ)_/¯' | xclip && echo '¯\_(ツ)_/¯ copied to X clipboard'"
 
 # upgrade music server
-alias squeezeboxserver-upgrade="sudo ~/bin/squeezeboxserver-upgrade"
+alias squeezeboxserver-upgrade="sudo ${HOME}/bin/squeezeboxserver-upgrade"
 
 # bounce music server
 alias squeezeboxserver-restart="service logitechmediaserver restart"
@@ -88,7 +88,10 @@ alias ips="echo -n 'local ip: ' && localip && echo -n 'external ip: ' && externa
 alias diskfree="\df --sync --human-readable --total --type=ext4"
 alias df="diskfree"
 
-# show TCP/UDP sockets that are actively listening
+# show TCP and UDP sockets that are actively listening
+alias listening="sudo \netstat --listening --program --symbolic --tcp --udp"
+
+# show TCP and UDP sockets that are actively listening
 alias listening="sudo \netstat --listening --program --symbolic --tcp --udp"
 
 # serve current directory over HTTP on port 8080
@@ -158,11 +161,11 @@ alias cd.......="cd ../../../../../.."
 # create and activate python2.7 virtualenv in ./ENV
 venv () {
     local dir="ENV"
-    if [[ ! -d ./$dir ]]; then
-        echo "creating py2.7 virtualenv in ./$dir"
-        virtualenv "$dir"
+    if [[ ! -d ./${dir} ]]; then
+        echo "creating py2.7 virtualenv in ./${dir}"
+        virtualenv "${dir}"
     fi
-    echo "activating py2 virtualenv in ./$dir"
+    echo "activating py2 virtualenv in ./${dir}"
     source ./${dir}/bin/activate
 }
 
@@ -170,11 +173,11 @@ venv () {
 # create and activate python3 virtualenv in ./ENV
 venv3 () {
     local dir="ENV"
-    if [[ ! -d ./$dir ]]; then
-        echo "creating py3 virtualenv in ./$dir"
-        python3 -m venv "$dir"
+    if [[ ! -d ./${dir} ]]; then
+        echo "creating py3 virtualenv in ./${dir}"
+        python3 -m venv "${dir}"
     fi
-    echo "activating py3 virtualenv in ./$dir"
+    echo "activating py3 virtualenv in ./${dir}"
     source ./${dir}/bin/activate
 }
 
@@ -292,8 +295,8 @@ rgrep () {
 # search entire filesystem for filenames matching glob pattern (case-insensitive)
 # update the mlocate database before searching
 locatefiles () {
-    updatedb --require-visibility 0 --output ~/.locatedb &&
-    locate --existing --ignore-case --database ~/.locatedb "$@"
+    updatedb --require-visibility 0 --output ${HOME}/.locatedb &&
+    locate --existing --ignore-case --database ${HOME}/.locatedb "$@"
 }
 
 
