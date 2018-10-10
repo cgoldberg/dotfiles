@@ -83,6 +83,7 @@ alias squeezeboxserver-restart="service logitechmediaserver restart"
 alias externalip="curl icanhazip.com"
 alias localip="hostname -I"
 alias ips="echo -n 'local ip: ' && localip && echo -n 'external ip: ' && externalip"
+alias myip="ips"
 
 # show disk space available on all mounted ext4 filesystems
 alias diskfree="\df --sync --human-readable --total --type=ext4"
