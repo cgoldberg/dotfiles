@@ -220,7 +220,8 @@ psgrep () {
 
 # watch disk space used by largest directories under the current directory
 diskwatch () {
-    watch --interval=3 echo "Largest directories under ${PWD}:; du -hx ${PWD} 2>/dev/null | sort -h | tail -n 20; echo; echo Total for ${PWD}:; tree -a ${PWD} | tail -n 1"
+    local msg="Largest directories in ${PWD}:"
+    watch --no-title --interval=3 echo "${msg}; echo; du -hx ${PWD} 2>/dev/null | sort -hr | tail -n 20; echo; echo Total:; tree -a ${PWD} | tail -n 1"
 }
 alias dw="diskwatch"
 
