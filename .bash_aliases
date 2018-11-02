@@ -4,6 +4,9 @@
 # shell aliases and functions (Ubuntu) for cgoldberg
 # --------------------------------------------------------
 
+# show the zen
+alias zen="python -c 'import this'"
+
 # expand aliases when run with sudo
 alias sudo="sudo "
 
