@@ -3,13 +3,13 @@
 import os
 import sys
 
-# recursively delete files under the current directory unless they are jpg/jpeg/png/gif.
+# recursively delete files under the current directory that are not images (recursive)
 # restricted to run in a 'Google Photos' directory.
 
 
 if __name__ == '__main__':
 
-    keep_extensions = ('.jpg', '.jpeg', '.png', '.gif')
+    delete_extensions = ('.json', '.js', '.jso', '.mov', '.avi')
 
     cur_dir = os.getcwd()
     if os.path.split(cur_dir)[-1] == 'Google Photos':
@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     for root, _, files in os.walk(dir):
         for f in files:
-            if not f.lower().endswith(keep_extensions):
+            if f.lower().endswith(delete_extensions):
                 path = os.path.join(root, f)
                 print('removing: {}'.format(path))
                 os.unlink(path)

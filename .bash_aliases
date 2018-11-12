@@ -95,16 +95,16 @@ alias df="diskfree"
 # show TCP and UDP sockets that are actively listening
 alias listening="sudo \netstat --listening --program --symbolic --tcp --udp"
 
-# show TCP and UDP sockets that are actively listening
-alias listening="sudo \netstat --listening --program --symbolic --tcp --udp"
-
 # serve current directory over HTTP on port 8080
 alias webserver-py3="python3 -m http.server 8080"
 alias webserver-py2="python -m SimpleHTTPServer 8080"
 alias webserver="webserver-py3"
 
-# count files recursively under current directory
-alias countfiles="find . -type f | wc -l"
+# count all files in current directory (recursive)
+alias filecount="find . -type f | wc -l"
+
+# show counts of file extensions used in currect directory (recursive)
+alias filetypes="find . -type f | grep -v '.git' | sed -e 's/.*\.//' | sed -e 's/.*\///' | sort | uniq -c | sort -rn"
 
 # show last 50 modified files under current dir
 alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | grep -v '.git' | sort -n | tail -n 50"
@@ -183,6 +183,16 @@ venv3 () {
     fi
     echo "activating py3 virtualenv in ./${dir}"
     source ./${dir}/bin/activate
+}
+
+
+# lists contents after changing directory
+cd () {
+    if [[ $# -eq 0 ]]; then
+        builtin cd && ls
+    else
+        builtin cd "$1" && ls
+    fi
 }
 
 
@@ -307,7 +317,7 @@ locatefiles () {
 
 # search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
-    find . -type f -iname "*$1*" | grep -i --color=always "$1"
+    find . -xdev -type f -iname "*$1*" | grep -i --color=always "$1"
 }
 
 
@@ -438,4 +448,17 @@ next () {
 # pause/resume audio from Squeezebox player
 pause () {
     curl -sS -o /dev/null -X POST -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["pause"]]}' "$SQUEEZEBOX_ENDPOINT"
+}
+
+
+ctail () {
+    tail -f -n 80 "$1" |
+        sed --unbuffered \
+        -e 's/\(.*FATAL.*\)/\o033[31m\1\o033[39m/' \
+        -e 's/\(.*ERROR.*\)/\o033[31m\1\o033[39m/' \
+        -e 's/\(.*WARN.*\)/\o033[33m\1\o033[39m/' \
+        -e 's/\(.*INFO.*\)/\o033[32m\1\o033[39m/' \
+        -e 's/\(.*DEBUG.*\)/\o033[34m\1\o033[39m/' \
+        -e 's/\(.*TRACE.*\)/\o033[30m\1\o033[39m/' \
+        -e 's/\(.*[Ee]xception.*\)/\o033[39m\1\o033[39m/'
 }
