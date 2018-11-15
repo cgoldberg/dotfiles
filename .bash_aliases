@@ -200,7 +200,7 @@ cd () {
 open () {
     nohup xdg-open "$@" > /dev/null 2>&1
 }
-alias 0="open"
+alias o="open"
 
 
 # open a file or URL in the preferred application and hide all console output
