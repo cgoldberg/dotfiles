@@ -1,8 +1,23 @@
-# --------------------------------------------------------
-# ~/.bash_aliases: sourced in .bashrc for non-login shells
 #
-# shell aliases and functions (Ubuntu) for cgoldberg
-# --------------------------------------------------------
+# ~/.bash_aliases - bash shell aliases and functions
+#   * customizations for cgoldberg
+#   * sourced in ~/.bashrc for non-login shells
+#
+
+
+# ====================================================== #
+#                                                        #
+#           888 d8b                                      #
+#           888 Y8P                                      #
+#           888                                          #
+#   8888b.  888 888  8888b.  .d8888b   .d88b.  .d8888b   #
+#      "88b 888 888     "88b 88K      d8P  Y8b 88K       #
+#  .d888888 888 888 .d888888 "Y8888b. 88888888 "Y8888b.  #
+#  888  888 888 888 888  888      X88 Y8b.          X88  #
+#  "Y888888 888 888 "Y888888  88888P'  "Y8888   88888P'  #
+#                                                        #
+# ====================================================== #
+
 
 # show the zen
 alias zen="python -c 'import this'"
@@ -16,10 +31,10 @@ alias watch="watch "
 # version control
 alias g="git"
 
-# python
-alias py="python3"
-alias py3="python3"
-alias py2="python"
+# pythons
+alias py="python3.7"
+alias py3="python3.7"
+alias py2="python2.7"
 
 # editors
 alias sublime="subl"
@@ -96,7 +111,7 @@ alias df="diskfree"
 alias listening="sudo \netstat --listening --program --symbolic --tcp --udp"
 
 # serve current directory over HTTP on port 8080
-alias webserver-py3="python3 -m http.server 8080"
+alias webserver-py3="python3.7 -m http.server 8080"
 alias webserver-py2="python -m SimpleHTTPServer 8080"
 alias webserver="webserver-py3"
 
@@ -160,28 +175,41 @@ alias cd......="cd ../../../../.."
 alias cd.......="cd ../../../../../.."
 
 
-#----------------------------------------------------------------
+# ======================================================================================== #
+#                                                                                          #
+#   .o88o.                                       .    o8o                                  #
+#   888 `"                                     .o8    `"'                                  #
+#  o888oo  oooo  oooo  ooo. .oo.    .ooooo.  .o888oo oooo   .ooooo.  ooo. .oo.    .oooo.o  #
+#   888    `888  `888  `888P"Y88b  d88' `"Y8   888   `888  d88' `88b `888P"Y88b  d88(  "8  #
+#   888     888   888   888   888  888         888    888  888   888  888   888  `"Y88b.   #
+#   888     888   888   888   888  888   .o8   888 .  888  888   888  888   888  o.  )88b  #
+#  o888o    `V88V"V8P' o888o o888o `Y8bod8P'   "888" o888o `Y8bod8P' o888o o888o 8""888P'  #
+#                                                                                          #
+# ======================================================================================== #
 
-# create and activate python2.7 virtualenv in ./ENV
+
+# activate Python 2.7 virtual environment in ./ENV (create fresh one if needed)
 venv () {
     local dir="ENV"
+    local pyversion="Python 2.7"
     if [[ ! -d ./${dir} ]]; then
-        echo "creating py2.7 virtualenv in ./${dir}"
+        echo "creating ${pyversion} virtual environment in ./${dir}"
         virtualenv "${dir}"
     fi
-    echo "activating py2 virtualenv in ./${dir}"
+    echo "activating ${pyversion} virtual environment in ./${dir}"
     source ./${dir}/bin/activate
 }
 
 
-# create and activate python3 virtualenv in ./ENV
+# activate Python 3.7 virtual environment in ./ENV (create fresh one if needed)
 venv3 () {
     local dir="ENV"
+    local pyversion="Python 3.7"
     if [[ ! -d ./${dir} ]]; then
-        echo "creating py3 virtualenv in ./${dir}"
-        python3 -m venv "${dir}"
+        echo "creating ${pyversion} virtual environment in ./${dir}"
+        python3.7 -m venv "${dir}"
     fi
-    echo "activating py3 virtualenv in ./${dir}"
+    echo "activating ${pyversion} virtual environment in ./${dir}"
     source ./${dir}/bin/activate
 }
 

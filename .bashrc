@@ -1,7 +1,9 @@
-# ------------------------------------------------
-# ~/.bashrc: executed by bash for non-login shells
-# customizations for cgoldberg
-# ------------------------------------------------
+#!/usr/bin/env bash
+
+# ~/.bashrc
+#   * customizations for cgoldberg
+#   * executed for non-login shells
+#
 
 
 # If not running interactively, don't do anything
@@ -78,17 +80,13 @@ fi
 if [ -f ~/bin/git-completion.bash ]; then
     . ~/bin/git-completion.bash
 fi
-
+__git_complete g _git
 
 # show current git branch name in the prompt when inside a repo directory
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 if [ -f ~/bin/git-prompt.sh ]; then
     . ~/bin/git-prompt.sh
 fi
-
-
-# enable auto-completion for git commands
-__git_complete g _git
 
 
 # enable auto-completion of package names for apt-* aliases
