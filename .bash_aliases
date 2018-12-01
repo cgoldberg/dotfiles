@@ -116,7 +116,7 @@ alias webserver-py2="python -m SimpleHTTPServer 8080"
 alias webserver="webserver-py3"
 
 # count all files in current directory (recursive)
-alias filecount="find . -type f | wc -l"
+alias countfiles="find . -type f | wc -l"
 
 # show counts of file extensions used in currect directory (recursive)
 alias filetypes="find . -type f | grep -v '.git' | sed -e 's/.*\.//' | sed -e 's/.*\///' | sort | uniq -c | sort -rn"
@@ -186,6 +186,31 @@ alias cd.......="cd ../../../../../.."
 #  o888o    `V88V"V8P' o888o o888o `Y8bod8P'   "888" o888o `Y8bod8P' o888o o888o 8""888P'  #
 #                                                                                          #
 # ======================================================================================== #
+
+
+pycheck () {
+    pycodestyle_cmd () { python3 -m pycodestyle "$@"; }
+    pylint_cmd () { python3 -m pylint --output-format="colorized" /
+        --msg-template='{C}, line: {line} column: {column}, {symbol} {msg_id} ({category})' "$@"; }
+    echo "${REVERSEMAGENTA}linting .py files...${RESTORE}"
+    echo
+    echo "${REVERSEMAGENTA}pycodestyle:${RESTORE}"
+    if [[ $# -eq 0 ]]; then
+        pycodestyle_cmd .
+    else
+        pycodestyle_cmd "$@"
+    fi
+    if [[ $? -eq 0 ]]; then
+        echo "no style issues found!"
+    fi
+    echo
+    echo "${REVERSEMAGENTA}pylint:${RESTORE}"
+    if [[ $# -eq 0 ]]; then
+        pylint_cmd *.py
+    else
+        pylint_cmd "$@"
+    fi
+}
 
 
 # activate Python 2.7 virtual environment in ./ENV (create fresh one if needed)
@@ -261,8 +286,16 @@ psgrep () {
 
 # watch disk space used by largest directories under the current directory
 diskwatch () {
-    local msg="Largest directories in ${PWD}:"
-    watch --no-title --interval=3 echo "${msg}; echo; du -hx ${PWD} 2>/dev/null | sort -hr | tail -n 20; echo; echo Total:; tree -a ${PWD} | tail -n 1"
+    local interval="3"
+    local num_dirs="25"
+    local msg="${num_dirs} largest directories in ${PWD} \(updates every ${interval} secs\):"
+    watch --no-title --interval=${interval} \
+        echo "${msg}; echo; du -hx ${PWD} 2>/dev/null |
+            sort -hr |
+            tail -n 20;
+            echo;
+            echo Total:;
+            tree -a ${PWD} | tail -n 1"
 }
 alias dw="diskwatch"
 
