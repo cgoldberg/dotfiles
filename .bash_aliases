@@ -115,6 +115,9 @@ alias webserver-py3="python3.7 -m http.server 8080"
 alias webserver-py2="python -m SimpleHTTPServer 8080"
 alias webserver="webserver-py3"
 
+# scan recursively under home directory and load last modified Python file into editor
+alias edlast="find '${HOME}' -type f -name '*.py' -printf '%T@ %p\n' | sort --numeric --stable --key=1 | tail -n 1 | cut -d' ' -f2 | ed"
+
 # count all files in current directory (recursive)
 alias countfiles="find . -type f | wc -l"
 
