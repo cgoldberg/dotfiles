@@ -48,11 +48,10 @@ alias v="vim"
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 alias more="less"
 
-# directory listings
-alias ls="LC_COLLATE='C' \ls -l --human-readable --almost-all --classify --group-directories-first --no-group --color=auto"
-alias l="ls"
-alias ll="LC_COLLATE='C' \ls --almost-all --classify --group-directories-first --color=auto"
-alias la="ll"
+# directory listings (requires exa)
+alias ls="\exa --all --classify --extended --git --group-directories-first --header --long"
+alias l="\exa --all --classify --group-directories-first --grid"
+alias ll="LC_COLLATE=C \ls -l --human-readable --almost-all --classify --group-directories-first --no-group --color=always"
 
 # extract a tarball
 alias untar="\tar zxvf"
@@ -131,7 +130,7 @@ alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | grep -
 alias purge-trash="gvfs-trash --empty"
 
 # purge thumbnail and icon cache
-alias purge-thumbs="rm -rf ${HOME}/.cache/thumbnails && sudo gtk-update-icon-cache -f /usr/share/icons/hicolor && nautilus -q 2>/dev/null"
+alias purge-thumbs-and-icons="rm -rf ${HOME}/.cache/thumbnails && sudo gtk-update-icon-cache -f /usr/share/icons/hicolor && nautilus -q 2>/dev/null"
 
 # count installed system packages
 alias countpackages="dpkg -l | grep '^ii' | wc -l"
@@ -374,15 +373,16 @@ rgrep () {
 # search entire filesystem for filenames matching glob pattern (case-insensitive)
 # update the mlocate database before searching
 locatefiles () {
-    updatedb --require-visibility 0 --output ${HOME}/.locatedb &&
-    locate --existing --ignore-case --database ${HOME}/.locatedb "$@"
+    updatedb --require-visibility 0 --output "${HOME}"/.locatedb &&
+    locate --existing --ignore-case --database "${HOME}"/.locatedb "$@"
 }
-
+alias lf="locatefiles"
 
 # search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
     find . -xdev -type f -iname "*$1*" | grep -i --color=always "$1"
 }
+alias ff="findfiles"
 
 
 # mount NAS (if needed) and change directory to the mount point

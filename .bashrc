@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 # ~/.bashrc
 #   * customizations for cgoldberg
 #   * executed for non-login shells
@@ -82,6 +82,7 @@ if [ -f ~/bin/git-completion.bash ]; then
 fi
 __git_complete g _git
 
+
 # show current git branch name in the prompt when inside a repo directory
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 if [ -f ~/bin/git-prompt.sh ]; then
@@ -138,7 +139,7 @@ HISTSIZE=10000
 # number of previous commands stored in memory for current session
 HISTFILESIZE=10000
 # don't store these commands in history
-HISTIGNORE='exit:h:history:l:ls:ll:la:pwd:rb:reboot:sd:shutdown:x'
+HISTIGNORE='c:cls:exa:exit:h:history:l:ls:ll:pwd:rb:reboot:sd:shutdown:x'
 
 
 # display Ubuntu logo and system info
