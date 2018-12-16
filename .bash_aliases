@@ -302,10 +302,10 @@ diskwatch () {
 alias dw="diskwatch"
 
 
-# convert all .png images in the current directory to .jpg format
-# save with renamed extensions and delete originals (requires gnu parallel)
-convert-pngs-to-jpgs () {
-    findpngs () { find . -maxdepth 1 -type f -iname "*.png" -prune; }
+# convert all .png and .webp images in the current directory to .jpg format
+# save with renamed extensions and delete originals (requires gnu parallel and webp)
+convert-images-to-jpgs () {
+    findpngs () { find . -maxdepth 1 -type f -iname "*.png" -o -iname "*.webp"; }
     if [[ -n $(findpngs) ]]; then
         ( findpngs | parallel convert -quality 95% {} {.}.jpg ) &&
         ( findpngs | parallel rm {} )
