@@ -2,12 +2,11 @@
 #
 #  master backup script
 #  --------------------
-#    * synchronizes local Dropbox directory to remote NAS
-#    * synchronizes remote NAS to local backup HDD
+#    * sync local Dropbox to remote NAS
+#    * sync remote NAS to local backup HDD
 #
-#  This script uses `rsync` for file transfer.
-#  This first does a recursive scan and generates an incremental list of files
-#  that have changed between the source and destination.  Then it deletes
+#  `rsync` first does a recursive scan and generates an incremental list of
+#  files that have changed between the source and destination.  Then it deletes
 #  extraneous files on the destination.  Finally, it copies new files and
 #  files that have changed (in size or last-modified time) between the source
 #  and destination.
@@ -20,6 +19,7 @@ set -e
 DROPBOX="${HOME}/Dropbox"
 HDD="/mnt/blue"
 NAS="/run/user/${UID}/gvfs/smb-share:server=bytez,share=public,user=${USER}"
+
 SEP="----------------------------------------------------------------"
 
 
