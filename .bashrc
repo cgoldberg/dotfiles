@@ -90,17 +90,6 @@ if [ -f ~/bin/git-prompt.sh ]; then
 fi
 
 
-# enable auto-completion of package names for apt-* aliases
-_pkg_completion () {
-    _init_completion || return
-    mapfile -t COMPREPLY < <(apt-cache --no-generate pkgnames "${COMP_WORDS[COMP_CWORD]}")
-}
-complete -F _pkg_completion apt-install
-complete -F _pkg_completion apt-remove
-complete -F _pkg_completion apt-show
-complete -F _pkg_completion apt-policy
-
-
 # set the title on terminals to user@host:dir
 # this gets executed just before the prompt is displayed
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'

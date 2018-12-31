@@ -135,18 +135,6 @@ alias purge-thumbs-and-icons="rm -rf ${HOME}/.cache/thumbnails && sudo gtk-updat
 # count installed system packages
 alias countpackages="dpkg -l | grep '^ii' | wc -l"
 
-# install packages from distro archive
-alias apt-install="sudo apt-get update && sudo apt-get install"
-
-# remove packages and purge their config files
-alias apt-remove="sudo apt-get remove --purge"
-
-# show package description
-alias apt-show="apt-cache show"
-
-# show package installation status and repository it belongs to
-alias apt-policy="apt-cache policy"
-
 # disable line wrapping in terminal (long lines truncated at terminal width)
 alias nowrap="tput rmam"
 
@@ -297,7 +285,8 @@ diskwatch () {
             tail -n 20;
             echo;
             echo Total:;
-            tree -a ${PWD} | tail -n 1"
+            tree -a ${PWD} |
+            tail -n 1"
 }
 alias dw="diskwatch"
 
@@ -377,6 +366,7 @@ locatefiles () {
     locate --existing --ignore-case --database "${HOME}"/.locatedb "$@"
 }
 alias lf="locatefiles"
+
 
 # search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
@@ -505,7 +495,9 @@ download_selenium_server () {
 
 # skip to next track in Squeezebox playlist
 next () {
-    curl -sS -o /dev/null -X POST -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["button","jump_fwd"]]}' "$SQUEEZEBOX_ENDPOINT"
+    curl -sS -o /dev/null -X POST \
+        -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["button","jump_fwd"]]}' \
+        "http://${SQUEEZEBOX_SERVER}/jsonrpc.js"
 }
 
 
