@@ -88,7 +88,7 @@ alias du="\ncdu -rx"
 alias diskused="du"
 
 #  ¯\_(ツ)_/¯
-alias shrug="echo -n '¯\_(ツ)_/¯' | xclip && echo '¯\_(ツ)_/¯ copied to X clipboard'"
+alias shrug="echo -n '¯\_(ツ)_/¯' | xclip -selection clipboard && echo -n '¯\_(ツ)_/¯' | xclip -selection primary && echo '¯\_(ツ)_/¯ copied to X clipboard'"
 
 # upgrade music server
 alias squeezeboxserver-upgrade="sudo ${HOME}/bin/squeezeboxserver-upgrade"
@@ -123,7 +123,7 @@ alias countfiles="find . -type f | wc -l"
 # show counts of file extensions used in currect directory (recursive)
 alias filetypes="find . -type f | grep -v '.git' | sed -e 's/.*\.//' | sed -e 's/.*\///' | sort | uniq -c | sort -rn"
 
-# show last 50 modified files under current dir
+# show last 50 modified files in current dir (recursive)
 alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | grep -v '.git' | sort -n | tail -n 50"
 
 # purge desktop trash on all gvfs mounted volumes
