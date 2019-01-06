@@ -31,7 +31,7 @@
     s = status
 
     # clone a github repo
-    ghclone = "!f() { git clone "https://github.com/${1}/${2}"; }; f"
+    ghclone = "!f() { git clone https://github.com/${1}/${2}; }; f"
 
     # show diffs piped through a pager
     df = "!f() { git --paginate diff; }; f"
@@ -68,6 +68,9 @@
 
     # cleanup merged branches
     brclean = "!f() { git branch --merged | grep -v master | xargs -r git branch -d; }; f"
+
+    # sync local fork with upstream repo
+    sync-upstream = "!f() { git fetch upstream && git checkout master && git rebase upstream/master && git push origin master; }; f"
 
 [filter "lfs"]
     smudge = git-lfs smudge %f
