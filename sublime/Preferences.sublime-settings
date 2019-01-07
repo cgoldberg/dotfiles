@@ -21,7 +21,7 @@
 	"indent_subsequent_lines": false,
 	"indent_to_bracket": true,
 	"scroll_past_end": false,
-	"scroll_speed": 0.1,
+	"scroll_speed": 2,
 	"shift_tab_unindent": true,
 	"show_encoding": true,
 	"show_line_endings": true,
