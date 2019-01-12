@@ -150,6 +150,9 @@ alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
 # go to blue mount point
 alias blue="cd /mnt/blue && ls"
 
+# Boston weather with 3-day forecast
+alias weather="ansiweather -f 3 -l 4930956 -u imperial -k 1823926ea603031013edbc7b8d2fb104"
+
 # navigate up the directory tree
 alias ..="cd .."
 alias ...="cd ../.."
