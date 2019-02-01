@@ -148,7 +148,7 @@ alias diff="colordiff -s"
 alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
 
 # go to blue mount point
-alias blue="cd /mnt/blue && ls"
+alias blue="cd /mnt/blue"
 
 # Boston weather with 3-day forecast
 alias weather="ansiweather -f 3 -l 4930956 -u imperial -k 1823926ea603031013edbc7b8d2fb104"
@@ -235,9 +235,9 @@ venv3 () {
 # lists contents after changing directory
 cd () {
     if [[ $# -eq 0 ]]; then
-        builtin cd && ls
+        builtin cd && ls && echo
     else
-        builtin cd "$1" && ls
+        builtin cd "$1" && ls && echo
     fi
 }
 
