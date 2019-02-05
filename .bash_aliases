@@ -49,9 +49,9 @@ alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --q
 alias more="less"
 
 # directory listings (requires exa)
-alias ls="\exa --all --classify --git --group-directories-first --header --long"
-alias l="\exa --all --classify --group-directories-first"
-alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
+alias ls="\exa --all --classify --git --group-directories-first --header --long && echo"
+alias l="\exa --all --classify --group-directories-first && echo"
+alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always && echo"
 
 # extract a tarball
 alias untar="\tar zxvf"
@@ -160,12 +160,14 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
 alias .......="cd ../../../../../.."
+alias ........="cd ../../../../../../.."
 alias cd..="cd .."
 alias cd...="cd ../.."
 alias cd....="cd ../../.."
 alias cd.....="cd ../../../.."
 alias cd......="cd ../../../../.."
 alias cd.......="cd ../../../../../.."
+alias cd........="cd ../../../../../../.."
 
 
 # ======================================================================================== #
@@ -235,9 +237,9 @@ venv3 () {
 # lists contents after changing directory
 cd () {
     if [[ $# -eq 0 ]]; then
-        builtin cd && ls && echo
+        builtin cd && ls
     else
-        builtin cd "$1" && ls && echo
+        builtin cd "$1" && ls
     fi
 }
 
