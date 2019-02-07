@@ -49,8 +49,8 @@ alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --q
 alias more="less"
 
 # directory listings (requires exa)
-alias ls="\exa --all --classify --git --group-directories-first --header --long && echo"
-alias l="\exa --all --classify --group-directories-first && echo"
+alias ls="\exa --all --classify --git --group-directories-first --header --long --color=always && echo"
+alias l="\exa --all --classify --group-directories-first --color=always && echo"
 alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always && echo"
 
 # extract a tarball
