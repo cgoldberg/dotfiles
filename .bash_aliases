@@ -373,11 +373,12 @@ locatefiles () {
 alias lf="locatefiles"
 
 
-# search recursively under current directory for filenames matching pattern (case-insensitive)
+# search recursively under current directory for filenames (and directories) matching pattern (case-insensitive)
 findfiles () {
-    find . -xdev -type f -iname "*$1*" | grep -i --color=always "$1"
+    find . -xdev -type f,d -iname "*$1*" | grep -i --color=always "$1"
 }
 alias ff="findfiles"
+alias f="findfiles"
 
 
 # mount NAS (if needed) and change directory to the mount point
