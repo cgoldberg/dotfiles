@@ -49,8 +49,8 @@ alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --q
 alias more="less"
 
 # directory listings (requires exa)
-alias ls="\exa --all --classify --git --group-directories-first --header --long --color=always && echo"
-alias l="\exa --all --classify --group-directories-first --color=always && echo"
+alias ls="exa --all --classify --git --group-directories-first --header --long --color=always && echo"
+alias l="exa --all --classify --group-directories-first --color=always && echo"
 alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always && echo"
 
 # extract a tarball
@@ -63,28 +63,26 @@ alias grep="\grep --color=auto"
 alias ebrc="subl -n ${HOME}/.bashrc ${HOME}/.bash_aliases"
 
 # list public bash functions and aliases defined in the current shell
-alias funcs="\compgen -a -A function | grep -v ^_ | sort"
+alias funcs="compgen -a -A function | grep -v ^_ | sort"
 
 # reload shell configurations
 alias re-source="source ${HOME}/.bashrc"
 
 # system shutdown
-alias shutdown="sudo \poweroff"
-alias sd="shutdown"
+alias sd="sudo poweroff"
 
 # system reboot
-alias reboot="sudo \reboot"
-alias rb="reboot"
+alias reboot="sudo reboot"
 
 # clear terminal
-alias cls="\clear"
+alias cls="clear"
 alias c="cls"
 
 # exit terminal
 alias x="\exit"
 
 # show disk space used by files/dirs under the current directory (ncurses interface)
-alias du="\ncdu -rx"
+alias du="ncdu -rx"
 alias diskused="du"
 
 #  ¯\_(ツ)_/¯
@@ -107,7 +105,7 @@ alias diskfree="\df --sync --human-readable --total --type=ext4"
 alias df="diskfree"
 
 # show TCP and UDP sockets that are actively listening
-alias listening="sudo \netstat --listening --program --symbolic --tcp --udp"
+alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
 
 # serve current directory over HTTP on port 8080
 alias webserver-py3="python3.7 -m http.server 8080"
@@ -246,16 +244,9 @@ cd () {
 
 # open a file or URL in the preferred application and hide all console output
 open () {
-    nohup xdg-open "$@" > /dev/null 2>&1
+    xdg-open "$@" > /dev/null 2>&1
 }
 alias o="open"
-
-
-# open a file or URL in the preferred application and hide all console output
-google () {
-    nohup chromium-browser "$@" > /dev/null 2>&1
-}
-alias goog="google"
 
 
 # open a browser and go to the online Debian man page for the given command
@@ -268,14 +259,14 @@ wman () {
 # search command history by regex (case-insensitive) and show last 200 matches
 # usage: h <pattern>
 h () {
-    history | grep -i --color=always "$1" | tail -n 200
+    history | \grep -i --color=always "$1" | tail -n 200
 }
 
 
 # search process info by regex (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
-    ps -ef | \grep -i --color=always "$1" | grep -v "grep" | sort -n | less
+    ps -ef | \grep -i --color=always "$1" | \grep -v "grep" | sort -n | less
 }
 
 
@@ -360,7 +351,7 @@ squeezeboxserver-fix-permissions () {
 
 # search recursively under current directory for text file contents matching regex (case-insensitive)
 rgrep () {
-    grep -iInr --color=always --exclude-dir='.git' "$1" . | less
+    \grep -iInr --color=always --exclude-dir='.git' "$1" . | less
 }
 
 
@@ -490,7 +481,7 @@ http-profile () {
 
 # download latest Selenium server from official release archive
 # (requires: libxml-xpath-perl)
-download_selenium_server () {
+download-selenium-server () {
     local baseurl="https://selenium-release.storage.googleapis.com"
     local latest=$(curl -sS $baseurl | xpath -q -e "./ListBucketResult/Contents/Key/text()" |
         grep "selenium-server-standalone" | sort -V | tail -n 1)
@@ -499,17 +490,27 @@ download_selenium_server () {
 }
 
 
-# skip to next track in Squeezebox playlist
+# skip to next track in playlist on Squeezebox player
 next () {
     curl -sS -o /dev/null -X POST \
         -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["button","jump_fwd"]]}' \
-        "http://${SQUEEZEBOX_SERVER}/jsonrpc.js"
+        "${SQUEEZEBOX_ENDPOINT}"
 }
 
 
-# pause/resume audio from Squeezebox player
+# play random song mix on Squeezebox player
+mix () {
+    curl -sS -o /dev/null -X POST \
+        -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["randomplay","tracks"]]}' \
+        "${SQUEEZEBOX_ENDPOINT}"
+}
+
+
+# pause/resume audio on Squeezebox player
 pause () {
-    curl -sS -o /dev/null -X POST -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["pause"]]}' "$SQUEEZEBOX_ENDPOINT"
+    curl -sS -o /dev/null -X POST \
+        -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["pause"]]}' \
+        "${SQUEEZEBOX_ENDPOINT}"
 }
 
 
