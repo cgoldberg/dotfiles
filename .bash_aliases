@@ -72,7 +72,7 @@ alias re-source="source ${HOME}/.bashrc"
 alias sd="sudo poweroff"
 
 # system reboot
-alias reboot="sudo reboot"
+alias rb="sudo reboot"
 
 # clear terminal
 alias cls="clear"
