@@ -13,7 +13,7 @@ case $- in
 esac
 
 
-# source shell aliases and functions
+# source bash shell aliases and functions
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -99,6 +99,10 @@ PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1 "(%s)")\]\[$(tput sgr0)\]\$ '
 
 
+# add a newline and indent one space before the prompt
+PS1="\n ${PS1}"
+
+
 # disable suspend and resume feature in terminal
 stty -ixon
 
@@ -124,9 +128,9 @@ HISTCONTROL=ignoredups
 # immediately add commands to history instead of waiting for end of session
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # number of previous commands stored in history file
-HISTSIZE=10000
+HISTSIZE=1000
 # number of previous commands stored in memory for current session
-HISTFILESIZE=10000
+HISTFILESIZE=1000
 # don't store these commands in history
 HISTIGNORE='c:cls:exa:exit:h:history:l:ls:ll:pwd:rb:reboot:sd:shutdown:x'
 

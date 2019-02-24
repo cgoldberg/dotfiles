@@ -49,9 +49,9 @@ alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --q
 alias more="less"
 
 # directory listings (requires exa)
-alias ls="exa --all --classify --git --group-directories-first --header --long --color=always && echo"
-alias l="exa --all --classify --group-directories-first --color=always && echo"
-alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always && echo"
+alias ls="exa --all --classify --git --group-directories-first --header --long --color=always"
+alias l="exa --all --classify --group-directories-first --color=always"
+alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
 
 # extract a tarball
 alias untar="\tar zxvf"
@@ -232,7 +232,7 @@ venv3 () {
 }
 
 
-# lists contents after changing directory
+# redefines `cd` builtin to list contents after     changing directory
 cd () {
     if [[ $# -eq 0 ]]; then
         builtin cd && ls
@@ -256,10 +256,11 @@ wman () {
 }
 
 
-# search command history by regex (case-insensitive) and show last 200 matches
+# search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
-    history | \grep -i --color=always "$1" | tail -n 200
+    local n=200
+    history | \grep -i --color=always "$1" | tail -n "$n"
 }
 
 
