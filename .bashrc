@@ -85,9 +85,9 @@ __git_complete g _git
 
 # show current git branch name in the prompt when inside a repo directory
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-if [ -f ~/bin/git-prompt.sh ]; then
-    . ~/bin/git-prompt.sh
-fi
+#if [ -f ~/bin/git-prompt.sh ]; then
+#    . ~/bin/git-prompt.sh
+#fi
 
 
 # set the title on terminals to user@host:dir
@@ -96,11 +96,11 @@ PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
 
 
 # customize and colorize the prompt
-PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1 "(%s)")\]\[$(tput sgr0)\]\$ '
+PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1)\]\[$(tput sgr0)\]\$ '
 
 
-# add a newline and indent one space before the prompt
-PS1="\n ${PS1}"
+# add a newline before the prompt
+PS1="\n${PS1}"
 
 
 # disable suspend and resume feature in terminal
