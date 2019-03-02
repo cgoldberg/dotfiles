@@ -334,14 +334,16 @@ fix-whitespace () {
 # set permissions in music library so Squeezebox server can scan and play audio files
 squeezeboxserver-fix-permissions () {
     local music_dir="/mnt/blue/Tunes/"
+    local dirs_perm="755"
+    local files_perm="644"
     fix_perms () {
         find "$music_dir" -type d -exec chmod 755 {} \; -print
-        find "$music_dir" -type f -iname '*.flac' -exec chmod 644 {} \; -print
-        find "$music_dir" -type f -iname '*.mp3' -exec chmod 644 {} \; -print
+        find "$music_dir" -type f -iname '*.flac' -exec chmod "${dirs_perm}" {} \; -print
+        find "$music_dir" -type f -iname '*.mp3' -exec chmod "${files_perm}" {} \; -print
     }
-    echo "setting file permissions in Music Library..."
-    echo "  * directories: read/write/execute for owner, read/execute for group/others"
-    echo "  * audio files: read/write for owner, read for group/others"
+    echo "set file permissions for files/dirs in Music Library (${music_dir}):"
+    echo "  * directories: (chmod ${dirs_perm}) read/write/execute for owner, read/execute for group/others"
+    echo "  * audio files: (chmod ${files_perm}) read/write for owner, read for group/others"
     echo
     read -p "are you sure? <y/N> " prompt
     if [[ "$prompt" =~ [yY]$ ]]; then
@@ -360,14 +362,15 @@ rgrep () {
 # update the mlocate database before searching
 locatefiles () {
     updatedb --require-visibility 0 --output "${HOME}"/.locatedb &&
-    locate --existing --ignore-case --database "${HOME}"/.locatedb "$@"
+    locate --existing --ignore-case --database "${HOME}"/.locatedb "$1" |
+    grep -i --color=always "$1"
 }
 alias lf="locatefiles"
 
 
-# search recursively under current directory for filenames (and directories) matching pattern (case-insensitive)
+# search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
-    find . -xdev -type f,d -iname "*$1*" | grep -i --color=always "$1"
+    find . -xdev -type f -iname "*$1*" | grep -i --color=always "$1"
 }
 alias ff="findfiles"
 alias f="findfiles"
@@ -375,8 +378,8 @@ alias f="findfiles"
 
 # mount NAS (if needed) and change directory to the mount point
 nas () {
-    local share="public"
     local server="bytez"
+    local share="public"
     local user="$(id -nu ${UID})"
     local mount_dir="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${user}"
     if [[ ! -d "$mount_dir" ]]; then
