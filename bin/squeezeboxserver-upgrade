@@ -2,8 +2,9 @@
 #
 #  Squeezebox Server (LMS) beta updater for Debian/Ubuntu
 #
-#  - Downloads and installs the latest nightly release of Logitech Media Server (AKA Squeezebox Server)
-#  - Media files and LMS server settings are preserved through an upgrade
+#  - Downloads and installs the latest beta release of Logitech Media Server (Squeezebox Server)
+#  - LMS server settings are preserved during upgrade
+#  - Media files are not touched during upgrade
 #  - Requires root
 
 
@@ -31,18 +32,17 @@ latest_deb="${latest_deb_url##*/}"
 if [[ "${latest_deb}" =~ "${lms_old_installed_version}" ]]; then
   echo "latest version of LMS is already installed: ${lms_old_installed_version}"
   echo "done"
-  exit 1
+  exit 0
 fi
 
 tmp_dir=$(mktemp -d)
 
-echo "downloading: ${latest_deb_url}"
+echo "downloading ${latest_deb_url}"
 curl -s -o "${tmp_dir}/${latest_deb}" "${latest_deb_url}" &
 pid=$!
 spin='-\|/'
 i=0
-while kill -0 "${pid}" > /dev/null 2>&1
-do
+while kill -0 "${pid}" > /dev/null 2>&1; do
   i=$(( (i + 1) % 4 ))
   printf "\r${spin:$i:1}"
   sleep .1
@@ -50,18 +50,31 @@ done
 printf "\r"
 
 if pgrep --exact squeezeboxserver >/dev/null 2>&1; then
-  echo "killing all running instances of LMS"
-  killall -r ^squeezeboxserver$ > /dev/null 2>&1
-  killall -r ^squeezeboxserver_safe$ > /dev/null 2>&1
+  echo "stopping LMS service"
+  service logitechmediaserver stop
 fi
 
-echo "installing: ${latest_deb}"
+if pgrep --exact squeezeboxserver >/dev/null 2>&1; then
+  echo "Terminating all LMS processes"
+  killall -qr ^squeezeboxserver$
+  killall -qr ^squeezeboxserver_safe$
+fi
+
+if pgrep --exact squeezeboxserver >/dev/null 2>&1; then
+  echo "Killing all LMS processes"
+  killall -qr -s SIGKILL ^squeezeboxserver$
+  killall -qr -s SIGKILL ^squeezeboxserver_safe$
+fi
+
+echo "installing ${latest_deb}"
 dpkg -i "${tmp_dir}/${latest_deb}" > /dev/null 2>&1 || { echo "installation FAILED" && exit 1; }
 
 echo "cleaning up after installation"
 rm -rf "${tmp_dir}"
 
+echo "starting LMS service"
+service logitechmediaserver start
+
 lms_installed_version=$(apt-cache show logitechmediaserver | grep "Version" | cut -d " " -f 2)
 echo "update of LMS ${base_version} from ${lms_old_installed_version} to ${lms_installed_version} is complete"
-echo "please restart Squeezebox Server"
-echo "done"
+echo "ready to rock!"
