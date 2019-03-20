@@ -25,6 +25,17 @@ export VISUAL="vim"
 export EDITOR="vim"
 
 
+# export environment variables for termcap colors
+# used by less pager for colors
+export LESS_TERMCAP_mb=$(printf '\e[01;31m')
+export LESS_TERMCAP_md=$(printf '\e[01;38;5;75m')
+export LESS_TERMCAP_me=$(printf '\e[0m')
+export LESS_TERMCAP_se=$(printf '\e[0m')
+export LESS_TERMCAP_so=$(printf '\e[01;33m')
+export LESS_TERMCAP_ue=$(printf '\e[0m')
+export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
+
+
 # set shell variables for Squeezebox (LMS)
 SQUEEZEBOX_SERVER='localhost:9000'
 SQUEEZEBOX_PLAYER='00:04:20:23:82:6f'
@@ -83,13 +94,6 @@ fi
 __git_complete g _git
 
 
-# show current git branch name in the prompt when inside a repo directory
-# https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-#if [ -f ~/bin/git-prompt.sh ]; then
-#    . ~/bin/git-prompt.sh
-#fi
-
-
 # set the title on terminals to user@host:dir
 # this gets executed just before the prompt is displayed
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
@@ -97,10 +101,6 @@ PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
 
 # customize and colorize the prompt
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1)\]\[$(tput sgr0)\]\$ '
-
-
-# add a newline before the prompt
-PS1="\n${PS1}"
 
 
 # disable suspend and resume feature in terminal
