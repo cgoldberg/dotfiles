@@ -370,7 +370,13 @@ alias lf="locatefiles"
 
 # search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
-    find . -xdev -type f -iname "*$1*" | grep -i --color=always "$1"
+    find . -xdev \
+           -type f \
+           -iname "*$1*" \
+           ! -path "./.git/*" \
+           ! -path "./.tox/*" \
+           ! -path "./ENV/*" |
+           grep -i --color=always "$1"
 }
 alias ff="findfiles"
 alias f="findfiles"
