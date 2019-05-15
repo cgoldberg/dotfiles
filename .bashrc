@@ -125,14 +125,16 @@ shopt -s histverify
 shopt -s cmdhist
 # don't show duplicate commands in history
 HISTCONTROL=ignoredups
-# immediately add commands to history instead of waiting for end of session
-PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # number of previous commands stored in history file
-HISTSIZE=1000
+HISTSIZE=9999
 # number of previous commands stored in memory for current session
-HISTFILESIZE=1000
+HISTFILESIZE=9999
 # don't store these commands in history
 HISTIGNORE='c:cls:exa:exit:h:history:l:ls:ll:pwd:rb:reboot:sd:shutdown:x'
+# show timestamp of each command (Weekday Month/Day Hour:Min)
+HISTTIMEFORMAT="%a %m/%d %H:%M "
+# immediately add commands to history instead of waiting for end of session
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 
 # display Ubuntu logo and system info
