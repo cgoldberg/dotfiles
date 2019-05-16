@@ -82,7 +82,7 @@ alias c="cls"
 alias x="\exit"
 
 # show disk space used by files/dirs under the current directory (ncurses interface)
-alias du="ncdu -rx"
+alias du="ncdu -2rx"
 alias diskused="du"
 
 #  ¯\_(ツ)_/¯
