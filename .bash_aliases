@@ -182,8 +182,8 @@ alias cd........="cd ../../../../../../.."
 
 
 pycheck () {
-    pycodestyle_cmd () { python3 -m pycodestyle "$@"; }
-    pylint_cmd () { python3 -m pylint --output-format="colorized" /
+    pycodestyle_cmd () { python3 -m pycodestyle --statistics "$@"; }
+    pylint_cmd () { python3 -m pylint --output-format="colorized" \
         --msg-template='{C}, line: {line} column: {column}, {symbol} {msg_id} ({category})' "$@"; }
     echo "${REVERSEMAGENTA}linting .py files...${RESTORE}"
     echo
