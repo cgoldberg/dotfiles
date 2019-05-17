@@ -250,9 +250,14 @@ alias o="open"
 
 
 # open a browser and go to the online Debian man page for the given command
-# usage: wman <pattern>
 wman () {
     python -c "import webbrowser; webbrowser.open('https://manpages.debian.org/${1}')" > /dev/null 2>&1
+}
+
+
+# open a browser and go to the Ubuntu Packages page for the given package name
+pkg-info () {
+    python -c "import webbrowser; webbrowser.open('https://packages.ubuntu.com/bionic/${1}')" > /dev/null 2>&1
 }
 
 
