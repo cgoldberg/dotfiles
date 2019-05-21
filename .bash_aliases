@@ -359,8 +359,12 @@ squeezeboxserver-fix-permissions () {
 
 # search recursively under current directory for text file contents matching regex (case-insensitive)
 rgrep () {
-    \grep -iInr --color=always --exclude-dir='.git' "$1" . | less
+    \grep \
+    --ignore-case --line-number --no-messages --recursive --with-filename \
+    --color=always --devices=skip --exclude-dir=*.git --binary-files=without-match \
+    "$1" . | less
 }
+alias rg=rgrep
 
 
 # search entire filesystem for filenames matching glob pattern (case-insensitive)
