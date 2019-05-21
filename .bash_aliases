@@ -261,6 +261,12 @@ pkg-info () {
 }
 
 
+# show top 20 most used commands from bash history
+muc () {
+    history | awk 'BEGIN {FS="[ \t]+|\\|"} {print $6}' | sort | uniq -c | sort -nr | head -n 20
+}
+
+
 # search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
