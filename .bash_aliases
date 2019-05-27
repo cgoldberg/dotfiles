@@ -261,12 +261,6 @@ pkg-info () {
 }
 
 
-# show top 20 most used commands from bash history
-muc () {
-    history | awk 'BEGIN {FS="[ \t]+|\\|"} {print $6}' | sort | uniq -c | sort -nr | head -n 20
-}
-
-
 # search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
@@ -351,10 +345,11 @@ squeezeboxserver-fix-permissions () {
         find "$music_dir" -type d -exec chmod 755 {} \; -print
         find "$music_dir" -type f -iname '*.flac' -exec chmod "${dirs_perm}" {} \; -print
         find "$music_dir" -type f -iname '*.mp3' -exec chmod "${files_perm}" {} \; -print
+        find "$music_dir" -type f -iname '*.m3u' -exec chmod "${files_perm}" {} \; -print
     }
     echo "set file permissions for files/dirs in Music Library (${music_dir}):"
     echo "  * directories: (chmod ${dirs_perm}) read/write/execute for owner, read/execute for group/others"
-    echo "  * audio files: (chmod ${files_perm}) read/write for owner, read for group/others"
+    echo "  * files: (chmod ${files_perm}) read/write for owner, read for group/others"
     echo
     read -p "are you sure? <y/N> " prompt
     if [[ "$prompt" =~ [yY]$ ]]; then
