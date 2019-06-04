@@ -151,6 +151,23 @@ alias blue="cd /mnt/blue"
 # Boston weather with 3-day forecast
 alias weather="ansiweather -f 3 -l 4930956 -u imperial -k 1823926ea603031013edbc7b8d2fb104"
 
+# grep recursively with case-insensitive match and other defaults
+alias rgrep="\rgrep \
+        --binary-files=without-match \
+        --color=auto \
+        --devices=skip \
+        --ignore-case \
+        --line-number \
+        --no-messages \
+        --with-filename \
+        --exclude-dir=.cache \
+        --exclude-dir=.git \
+        --exclude-dir=.tox \
+        --exclude=*.css \
+        --exclude=*.js \
+        --exclude=*.svg"
+alias rg="rgrep"
+
 # navigate up the directory tree
 alias ..="cd .."
 alias ...="cd ../.."
@@ -356,16 +373,6 @@ squeezeboxserver-fix-permissions () {
         fix_perms
     fi
 }
-
-
-# search recursively under current directory for text file contents matching regex (case-insensitive)
-rgrep () {
-    \grep \
-    --ignore-case --line-number --no-messages --recursive --with-filename \
-    --color=always --devices=skip --exclude-dir=*.git --binary-files=without-match \
-    "$1" . | less
-}
-alias rg=rgrep
 
 
 # search entire filesystem for filenames matching glob pattern (case-insensitive)
