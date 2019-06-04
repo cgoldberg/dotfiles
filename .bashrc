@@ -37,9 +37,9 @@ export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
 
 
 # set shell variables for Squeezebox (LMS)
-SQUEEZEBOX_SERVER='localhost:9000'
+SQUEEZEBOX_SERVER='http://localhost:9000'
 SQUEEZEBOX_PLAYER='00:04:20:23:82:6f'
-SQUEEZEBOX_ENDPOINT="http://${SQUEEZEBOX_SERVER}/jsonrpc.js"
+SQUEEZEBOX_ENDPOINT="${SQUEEZEBOX_SERVER}/jsonrpc.js"
 
 
 # set shell variables for ANSI text color escape sequences
@@ -125,16 +125,14 @@ shopt -s histverify
 shopt -s cmdhist
 # don't show duplicate commands in history
 HISTCONTROL=ignoredups
-# number of previous commands stored in history file
-HISTSIZE=9999
-# number of previous commands stored in memory for current session
-HISTFILESIZE=9999
-# don't store these commands in history
-HISTIGNORE='c:cls:exa:exit:h:history:l:ls:ll:pwd:rb:reboot:sd:shutdown:x'
-# show timestamp of each command (Weekday Month/Day Hour:Min)
-HISTTIMEFORMAT="%a %m/%d %H:%M "
 # immediately add commands to history instead of waiting for end of session
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+# number of previous commands stored in history file
+HISTSIZE=10000
+# number of previous commands stored in memory for current session
+HISTFILESIZE=10000
+# don't store these commands in history
+HISTIGNORE='c:cls:exa:exit:h:history:l:ls:ll:pwd:rb:reboot:sd:shutdown:x'
 
 
 # display Ubuntu logo and system info

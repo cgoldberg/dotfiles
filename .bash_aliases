@@ -22,11 +22,14 @@
 # show the zen
 alias zen="python -c 'import this'"
 
-# expand aliases when run with sudo
+# expand aliases when running with sudo
 alias sudo="sudo "
 
 # expand aliases when running watch command
 alias watch="watch "
+
+# create directory (make parent directories as needed)
+alias mkdir="mkdir --parents --verbose"
 
 # version control
 alias g="git"
@@ -54,7 +57,7 @@ alias l="exa --all --classify --group-directories-first --color=always"
 alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
 
 # extract a tarball
-alias untar="\tar zxvf"
+alias untar="tar zxvf"
 
 # colored grep output
 alias grep="\grep --color=auto"
@@ -79,7 +82,7 @@ alias cls="clear"
 alias c="cls"
 
 # exit terminal
-alias x="\exit"
+alias x="exit"
 
 # show disk space used by files/dirs under the current directory (ncurses interface)
 alias du="ncdu -2rx"
@@ -101,7 +104,7 @@ alias ips="echo -n 'local ip: ' && localip && echo -n 'external ip: ' && externa
 alias myip="ips"
 
 # show disk space available on all mounted ext4 filesystems
-alias diskfree="\df --sync --human-readable --total --type=ext4"
+alias diskfree="df --sync --human-readable --total --type=ext4"
 alias df="diskfree"
 
 # show TCP and UDP sockets that are actively listening
