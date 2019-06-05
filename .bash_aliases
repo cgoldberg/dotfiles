@@ -84,7 +84,10 @@ alias c="cls"
 # exit terminal
 alias x="exit"
 
-# show disk space used by files/dirs under the current directory (ncurses interface)
+# list dirs/files in tree format
+alias tree="tree -ash -CF --du"
+
+# show disk space used by files/dirs (ncurses)
 alias du="ncdu -2rx"
 alias diskused="du"
 
