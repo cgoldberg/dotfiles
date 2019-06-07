@@ -554,3 +554,8 @@ ctail () {
         -e 's/\(.*TRACE.*\)/\o033[30m\1\o033[39m/' \
         -e 's/\(.*[Ee]xception.*\)/\o033[39m\1\o033[39m/'
 }
+
+# source bash shell aliases and functions for work environment
+if [ -f ~/.bash_aliases_work ]; then
+    . ~/.bash_aliases_work
+fi
