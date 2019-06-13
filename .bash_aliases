@@ -174,6 +174,9 @@ alias rgrep="\rgrep \
         --exclude=*.svg"
 alias rg="rgrep"
 
+# back to previous directory
+alias bk="cd ${OLDPWD}"
+
 # navigate up the directory tree
 alias ..="cd .."
 alias ...="cd ../.."
@@ -288,26 +291,26 @@ pkg-info () {
 # usage: h <pattern>
 h () {
     local n=200
-    history | \grep -i --color=always "$1" | tail -n "$n"
+    history | grep -i --color=always "$1" | tail -n "$n"
 }
 
 
 # search process info by regex (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
-    ps -ef | \grep -i --color=always "$1" | \grep -v "grep" | sort -n | less
+    ps -ef | grep -i --color=always "$1" | grep -v "grep" | sort -n | less
 }
 
 
 # watch disk space used by largest directories under the current directory
 diskwatch () {
     local interval="3"
-    local num_dirs="25"
+    local num_dirs="20"
     local msg="${num_dirs} largest directories in ${PWD} \(updates every ${interval} secs\):"
     watch --no-title --interval=${interval} \
-        echo "${msg}; echo; du -hx ${PWD} 2>/dev/null |
+        echo "${msg}; echo; \du -hx ${PWD} 2>/dev/null |
             sort -hr |
-            tail -n 20;
+            tail -n ${num_dirs};
             echo;
             echo Total:;
             tree -a ${PWD} |
@@ -554,6 +557,7 @@ ctail () {
         -e 's/\(.*TRACE.*\)/\o033[30m\1\o033[39m/' \
         -e 's/\(.*[Ee]xception.*\)/\o033[39m\1\o033[39m/'
 }
+
 
 # source bash shell aliases and functions for work environment
 if [ -f ~/.bash_aliases_work ]; then
