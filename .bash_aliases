@@ -95,10 +95,10 @@ alias diskused="du"
 alias shrug="echo -n '¯\_(ツ)_/¯' | xclip -selection clipboard && echo -n '¯\_(ツ)_/¯' | xclip -selection primary && echo '¯\_(ツ)_/¯ copied to X clipboard'"
 
 # upgrade music server
-alias squeezeboxserver-upgrade="sudo ${HOME}/bin/squeezeboxserver-upgrade"
+alias squeezebox-upgrade="sudo ${HOME}/bin/squeezebox-upgrade"
 
 # bounce music server
-alias squeezeboxserver-restart="service logitechmediaserver restart"
+alias squeezebox-restart="service logitechmediaserver restart"
 
 # ip addresses
 alias externalip="curl icanhazip.com"
@@ -205,31 +205,6 @@ alias cd........="cd ../../../../../../.."
 #  o888o    `V88V"V8P' o888o o888o `Y8bod8P'   "888" o888o `Y8bod8P' o888o o888o 8""888P'  #
 #                                                                                          #
 # ======================================================================================== #
-
-
-pycheck () {
-    pycodestyle_cmd () { python3 -m pycodestyle --statistics "$@"; }
-    pylint_cmd () { python3 -m pylint --output-format="colorized" \
-        --msg-template='{C}, line: {line} column: {column}, {symbol} {msg_id} ({category})' "$@"; }
-    echo "${REVERSEMAGENTA}linting .py files...${RESTORE}"
-    echo
-    echo "${REVERSEMAGENTA}pycodestyle:${RESTORE}"
-    if [[ $# -eq 0 ]]; then
-        pycodestyle_cmd .
-    else
-        pycodestyle_cmd "$@"
-    fi
-    if [[ $? -eq 0 ]]; then
-        echo "no style issues found!"
-    fi
-    echo
-    echo "${REVERSEMAGENTA}pylint:${RESTORE}"
-    if [[ $# -eq 0 ]]; then
-        pylint_cmd *.py
-    else
-        pylint_cmd "$@"
-    fi
-}
 
 
 # activate Python 2.7 virtual environment in ./ENV (create fresh one if needed)
@@ -363,7 +338,7 @@ fix-whitespace () {
 
 
 # set permissions in music library so Squeezebox server can scan and play audio files
-squeezeboxserver-fix-permissions () {
+squeezebox-fix-permissions () {
     local music_dir="/mnt/blue/Tunes/"
     local dirs_perm="755"
     local files_perm="644"
