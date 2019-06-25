@@ -256,6 +256,12 @@ wman () {
 }
 
 
+# open a browser and search with Google
+wman () {
+    python -c "import webbrowser; webbrowser.open('https://www.google.com/search?q=${1}')" > /dev/null 2>&1
+}
+
+
 # open a browser and go to the Ubuntu Packages page for the given package name
 pkg-info () {
     python -c "import webbrowser; webbrowser.open('https://packages.ubuntu.com/bionic/${1}')" > /dev/null 2>&1
@@ -265,7 +271,7 @@ pkg-info () {
 # search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
-    local n=200
+    local n="150"
     history | grep -i --color=always "$1" | tail -n "$n"
 }
 
