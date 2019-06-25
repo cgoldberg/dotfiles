@@ -257,9 +257,10 @@ wman () {
 
 
 # open a browser and search with Google
-wman () {
+google () {
     python -c "import webbrowser; webbrowser.open('https://www.google.com/search?q=${1}')" > /dev/null 2>&1
 }
+alias goog="google"
 
 
 # open a browser and go to the Ubuntu Packages page for the given package name
