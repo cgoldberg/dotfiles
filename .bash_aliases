@@ -106,10 +106,6 @@ alias localip="hostname -I"
 alias ips="echo -n 'local ip: ' && localip && echo -n 'external ip: ' && externalip"
 alias myip="ips"
 
-# show disk space available on all mounted ext4 filesystems
-alias diskfree="df --sync --human-readable --total --type=ext4"
-alias df="diskfree"
-
 # show TCP and UDP sockets that are actively listening
 alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
 
@@ -284,6 +280,23 @@ psgrep () {
 }
 
 
+# show disk space on all local ext4 filesystems and remote NAS (mount NAS if needed)
+diskfree () {
+    local server="bytez"
+    local share="public"
+    local mount_dir="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${USER}"
+    if [[ ! -d "${mount_dir}" ]]; then
+        gvfs-mount "smb://${USER}@${server}/${share}"
+    fi
+    echo
+    \df --sync --human-readable --type=ext4
+    echo
+    \df --sync --human-readable "${mount_dir}"
+    echo
+}
+alias df="diskfree"
+
+
 # watch disk space used by largest directories under the current directory
 diskwatch () {
     local interval="3"
@@ -389,16 +402,15 @@ alias ff="findfiles"
 alias f="findfiles"
 
 
-# mount NAS (if needed) and change directory to the mount point
+# change directory to NAS mount point (mount NAS if needed)
 nas () {
     local server="bytez"
     local share="public"
-    local user="$(id -nu ${UID})"
-    local mount_dir="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${user}"
-    if [[ ! -d "$mount_dir" ]]; then
-        gvfs-mount "smb://${user}@${server}/${share}"
+    local mount_dir="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${USER}"
+    if [[ ! -d "${mount_dir}" ]]; then
+        gvfs-mount "smb://${USER}@${server}/${share}"
     fi
-    cd "$mount_dir"
+    cd "${mount_dir}"
 }
 
 
