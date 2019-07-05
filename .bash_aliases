@@ -282,17 +282,19 @@ psgrep () {
 
 # show disk space on all local ext4 filesystems and remote NAS (mount NAS if needed)
 diskfree () {
-    local server="bytez"
-    local share="public"
-    local mount_dir="/run/user/${UID}/gvfs/smb-share:server=${server},share=${share},user=${USER}"
-    if [[ ! -d "${mount_dir}" ]]; then
-        gvfs-mount "smb://${USER}@${server}/${share}"
+    local nas_server="bytez"
+    local nas_smb_share="public"
+    local nas_mount_dir="/run/user/${UID}/gvfs/smb-share:server=${nas_server},share=${nas_smb_share},user=${USER}"
+    if [[ ! -d "${nas_mount_dir}" ]]; then
+        gvfs-mount "smb://${USER}@${nas_server}/${nas_smb_share}"
     fi
-    echo
+    printf "\nLocal Storage:\n"
+    printf "================================================\n"
     \df --sync --human-readable --type=ext4
-    echo
-    \df --sync --human-readable "${mount_dir}"
-    echo
+    printf "\nRemote Storage (NAS):\n"
+    printf "================================================\n"
+    \df --sync --human-readable "${nas_mount_dir}"
+    printf "\n"
 }
 alias df="diskfree"
 
