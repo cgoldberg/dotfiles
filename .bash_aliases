@@ -1,8 +1,6 @@
+# ~/.bash_aliases - bash shell aliases and functions for cgoldberg
 #
-# ~/.bash_aliases - bash shell aliases and functions
-#   * customizations for cgoldberg
-#   * sourced in ~/.bashrc for non-login shells
-#
+#  sourced from ~/.bashrc
 
 
 # ====================================================== #
@@ -19,9 +17,6 @@
 # ====================================================== #
 
 
-# show the zen
-alias zen="python -c 'import this'"
-
 # expand aliases when running with sudo
 alias sudo="sudo "
 
@@ -31,8 +26,14 @@ alias watch="watch "
 # create directory (make parent directories as needed)
 alias mkdir="mkdir --parents --verbose"
 
+# go back to previous directory
+alias bk="cd ${OLDPWD}"
+
 # version control
 alias g="git"
+
+# show the zen
+alias zen="python -c 'import this'"
 
 # pythons
 alias py="python3.7"
@@ -120,7 +121,7 @@ alias edlast="find '${HOME}' -type f -name '*.py' -printf '%T@ %p\n' | sort --nu
 # count all files in current directory (recursive)
 alias countfiles="find . -type f | wc -l"
 
-# show counts of file extensions used in currect directory (recursive)
+# show counts of file extensions used in current directory (recursive)
 alias filetypes="find . -type f | grep -v '.git' | sed -e 's/.*\.//' | sed -e 's/.*\///' | sort | uniq -c | sort -rn"
 
 # show last 50 modified files in current dir (recursive)
@@ -129,8 +130,8 @@ alias latest="find . -type f -printf '%TY-%Tm-%Td %TR %p\n' 2>/dev/null | grep -
 # purge desktop trash on all gvfs mounted volumes
 alias purge-trash="gvfs-trash --empty"
 
-# purge thumbnail and icon cache
-alias purge-thumbs-and-icons="rm -rf ${HOME}/.cache/thumbnails && sudo gtk-update-icon-cache -f /usr/share/icons/hicolor && nautilus -q 2>/dev/null"
+# purge thumbnail cache
+alias purge-thumbs="rm -rf ${HOME}/.cache/thumbnails"
 
 # count installed system packages
 alias countpackages="dpkg -l | grep '^ii' | wc -l"
@@ -169,9 +170,6 @@ alias rgrep="\rgrep \
         --exclude=*.js \
         --exclude=*.svg"
 alias rg="rgrep"
-
-# back to previous directory
-alias bk="cd ${OLDPWD}"
 
 # navigate up the directory tree
 alias ..="cd .."

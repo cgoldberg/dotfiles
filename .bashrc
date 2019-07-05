@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 #
-# ~/.bashrc
-#   * customizations for cgoldberg
-#   * executed for non-login shells
-#
+# ~/.bashrc - shell customizations for cgoldberg
 
 
-# If not running interactively, don't do anything
+# if not running interactively, don't do anything
 case $- in
     *i*) ;;
       *) return;;
@@ -75,7 +72,7 @@ REVERSEWHITE=$(echo -en '\033[07;37m')
 shopt -s checkwinsize
 
 
-# If set, the pattern "**" used in a pathname expansion context will
+# the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
 
@@ -94,8 +91,7 @@ fi
 __git_complete g _git
 
 
-# set the title on terminals to user@host:dir
-# this gets executed just before the prompt is displayed
+# set the title on terminals to "user@host: dir"
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
 
 
@@ -133,7 +129,7 @@ HISTIGNORE='c:cls:exa:exit:h:history:l:ls:ll:pwd:rb:reboot:sd:shutdown:x'
 # show timestamp of each command (Weekday Month/Day Hour:Min)
 HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
 # immediately add commands to history instead of waiting for end of session
-PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
 
 
 # display Ubuntu logo and system info
