@@ -286,13 +286,8 @@ diskfree () {
     if [[ ! -d "${nas_mount_dir}" ]]; then
         gvfs-mount "smb://${USER}@${nas_server}/${nas_smb_share}"
     fi
-    printf "\nLocal Storage:\n"
-    printf "================================================\n"
     \df --sync --human-readable --type=ext4
-    printf "\nRemote Storage (NAS):\n"
-    printf "================================================\n"
-    \df --sync --human-readable "${nas_mount_dir}"
-    printf "\n"
+    \df --sync --human-readable "${nas_mount_dir}" | sed '1d;'
 }
 alias df="diskfree"
 
