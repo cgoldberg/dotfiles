@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 #
-# image metadata cleaner and timestamp fixer.
-# Corey Goldberg, 2014
+# image metadata cleaner
+# Corey Goldberg, 2014, 2019
 #
 
 
-"""Recursively scan a directory tree for image files and cleanup metadata.
+"""Recursively scan a directory and clear metadata from image files.
 
   * removes all metadata (Exif, IPTC, XMP, GPS Info, comment, thumbnail)
-  * sets metadata and file timestamps to oldest datetime found
   * works with .jpg and .png formats
   * modifications are done in-place
-  * requires gexiv2 (GObject-based wrapper for the Exiv2 library
-    - Install gexiv2 on Ubuntu/Debian: $ sudo apt-get install gir1.2-gexiv2-X
+
+  requires:
+    * gexiv2 (GObject-based wrapper for the Exiv2 library
+        - Install on Ubuntu/Debian: $ sudo apt-get install gir1.2-gexiv2-X
+    * exiv2
+        - Install on Ubuntu/Debian: $ sudo apt-get install exiv2
 """
 
 
@@ -27,55 +30,16 @@ except ImportError:
     sys.exit('gexiv2 not installed')
 
 
-DATE_PATTERN = '%Y:%m:%d %H:%M:%S'
-
-
-def fix_image_dates(img_path):
-    ct = os.path.getctime(img_path)
-    ctime = time.strftime(DATE_PATTERN, time.localtime(ct))
-    mt = os.path.getmtime(img_path)
-    mtime = time.strftime(DATE_PATTERN, time.localtime(mt))
-    exif = GExiv2.Metadata(img_path)
-    try:
-        dtime_image = exif['Exif.Image.DateTime']
-    except KeyError:
-        dtime_image = None
-    try:
-        dtime_image_original = exif['Exif.Image.DateTimeOriginal']
-    except KeyError:
-        dtime_image_original = None
-    try:
-        dtime_image_preview = exif['Exif.Image.PreviewDateTime']
-    except KeyError:
-        dtime_image_preview = None
-    try:
-        dtime_digitized = exif['Exif.Photo.DateTimeDigitized']
-    except KeyError:
-        dtime_digitized = None
-    try:
-        dtime_original = exif['Exif.Photo.DateTimeOriginal']
-    except KeyError:
-        dtime_original = None
-    oldest_time = sorted(
-        [x for x in (ctime, mtime, dtime_image,
-                     dtime_image_original, dtime_image_preview,
-                     dtime_digitized, dtime_original)
-            if x is not None]
-        )[0]
-    exif.clear_comment()
-    exif.clear_exif()
-    exif.clear_iptc()
-    exif.clear_xmp()
-    exif.delete_gps_info()
-    exif.erase_exif_thumbnail()
-    exif.clear()
-    exif['Exif.Image.DateTime'] = oldest_time
-    exif['Exif.Photo.DateTimeDigitized'] = oldest_time
-    exif['Exif.Photo.DateTimeOriginal'] = oldest_time
-    exif.save_file()
-    epoch = int(time.mktime(time.strptime(oldest_time, DATE_PATTERN)))
-    os.utime(img_path, (epoch, epoch))
-    return oldest_time
+def clear_all_metadata(img_path):
+    metadata = GExiv2.Metadata(img_path)
+    metadata.clear_comment()
+    metadata.clear_exif()
+    metadata.clear_iptc()
+    metadata.clear_xmp()
+    metadata.delete_gps_info()
+    metadata.erase_exif_thumbnail()
+    metadata.clear()
+    metadata.save_file()
 
 
 if __name__ == '__main__':
@@ -84,8 +48,8 @@ if __name__ == '__main__':
         for filename in filenames:
             file_path = os.path.join(root, filename)
             if filename.lower().endswith(('jpg', 'png')):
-                # delete all metadata using exiv2
+                # delete all metadata with exiv2
                 subprocess.call(['exiv2', '-d', 'a', 'delete', file_path])
-                # clear metadata fields with gexiv and set dates
-                oldest_time = fix_image_dates(file_path)
-                print('{} [{}]'.format(file_path, oldest_time))
+                # delete all metadata again with gexiv
+                clear_all_metadata(file_path)
+                print(file_path)
