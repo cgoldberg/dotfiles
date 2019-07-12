@@ -42,7 +42,7 @@ check_configuration () {
 
 purge_dropbox_cache () {
     if ! dropbox running; then
-        dropbox stop && sleep 2
+        dropbox stop && sleep 5
     fi
     local cache_dir="${DROPBOX}/.dropbox.cache/"
     if [[ -d "${cache_dir}" ]]; then
@@ -52,6 +52,12 @@ purge_dropbox_cache () {
     else
         echo "no Dropbox cache to purge"
     fi
+}
+
+
+diskfree () {
+    df --sync --human-readable "${HDD}"
+    df --sync --human-readable "${NAS}" | sed '1d;'
 }
 
 
@@ -103,7 +109,7 @@ main () {
     sync
     echo "storage stats:"
     echo
-    df --sync --type=ext4 --block-size=G | grep -e sdb -e Filesystem
+    diskfree
     echo "${SEP}"
     echo
     echo "done"
