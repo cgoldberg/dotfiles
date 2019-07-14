@@ -78,9 +78,8 @@ alias sd="sudo poweroff"
 # system reboot
 alias rb="sudo reboot"
 
-# clear terminal
-alias cls="clear"
-alias c="cls"
+# reset terminal (clears screen and scrollback buffer)
+alias cls="tput reset"
 
 # exit terminal
 alias x="exit"
