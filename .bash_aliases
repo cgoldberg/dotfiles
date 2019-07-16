@@ -29,6 +29,9 @@ alias mkdir="mkdir --parents --verbose"
 # go back to previous directory
 alias bk="cd ${OLDPWD}"
 
+# locate a command/alias/function
+alias which="type"
+
 # version control
 alias g="git"
 
