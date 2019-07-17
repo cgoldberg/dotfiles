@@ -14,8 +14,9 @@ FILES=(
     "bin/git-score"
     "bin/gphoto_clean_exported_library.py"
     "bin/img_metadata_strip_fix.py"
-    "bin/squeezeboxserver-upgrade"
+    "bin/now.sh"
     "bin/prettyping"
+    "bin/squeezebox-upgrade"
 )
 
 if [ ! -d "$BIN" ]; then
@@ -31,7 +32,7 @@ chmod +x "$HOME/bin/screenfetch-ubuntu"
 
 echo
 echo "fetching audio_tag.py"
-wget -nv "https://raw.githubusercontent.com/cgoldberg/audiotools/master/tagging/audio_tag.py" -O "$HOME/bin/audio_tag.py"
+wget -nv "https://raw.githubusercontent.com/cgoldberg/audiotools/master/audio_tag.py" -O "$HOME/bin/audio_tag.py"
 chmod +x "$HOME/bin/audio_tag.py"
 
 echo
