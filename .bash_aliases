@@ -72,8 +72,8 @@ alias ebrc="subl -n ${HOME}/.bashrc ${HOME}/.bash_aliases"
 # list public bash functions and aliases defined in the current shell
 alias funcs="compgen -a -A function | grep -v ^_ | sort"
 
-# reload shell configurations
-alias re-source="source ${HOME}/.bashrc"
+# reload shell configurations and reset shell
+alias re-source="tput reset && source ${HOME}/.bashrc"
 
 # system shutdown
 alias sd="sudo poweroff"

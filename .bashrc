@@ -131,10 +131,12 @@ HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
 # immediately add commands to history instead of waiting for end of session
 PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
 
+
 # display weather/calender/clock
 if [ -f  ~/bin/now.sh ]; then
     ~/bin/now.sh
 fi
+
 
 # display Ubuntu logo and system info
 # https://raw.githubusercontent.com/cgoldberg/screenfetch-ubuntu/master/screenfetch-ubuntu.sh
