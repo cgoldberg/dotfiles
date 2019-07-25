@@ -34,7 +34,7 @@ export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
 
 
 # set shell variables for Squeezebox (LMS)
-SQUEEZEBOX_SERVER='http://localhost:9000'
+SQUEEZEBOX_SERVER='http://127.0.0.1:9000'
 SQUEEZEBOX_PLAYER='00:04:20:23:82:6f'
 SQUEEZEBOX_ENDPOINT="${SQUEEZEBOX_SERVER}/jsonrpc.js"
 
@@ -85,10 +85,10 @@ fi
 
 # enable git command completion
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-if [ -f ~/bin/git-completion.bash ]; then
-    . ~/bin/git-completion.bash
-fi
-__git_complete g _git
+#if [ -f ~/bin/git-completion.bash ]; then
+#    . ~/bin/git-completion.bash
+#fi
+#__git_complete g _git
 
 
 # set the title on terminals to "user@host: dir"

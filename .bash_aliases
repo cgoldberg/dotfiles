@@ -357,17 +357,21 @@ fix-whitespace () {
 # set permissions in music library so Squeezebox server can scan and play audio files
 squeezebox-fix-permissions () {
     local music_dir="/mnt/blue/Tunes/"
+    local artwork_dir="/mnt/blue/Tunes/_Artwork/"
     local dirs_perm="755"
+    local artwork_perm="777"
     local files_perm="644"
     fix_perms () {
-        find "$music_dir" -type d -exec chmod 755 {} \; -print
-        find "$music_dir" -type f -iname '*.flac' -exec chmod "${dirs_perm}" {} \; -print
-        find "$music_dir" -type f -iname '*.mp3' -exec chmod "${files_perm}" {} \; -print
-        find "$music_dir" -type f -iname '*.m3u' -exec chmod "${files_perm}" {} \; -print
+        find "${music_dir}" -type d -exec chmod 755 {} \; -print
+        chmod "${files_perm}" "${artwork_dir}"
+        find "${music_dir}" -type f -iname '*.flac' -exec chmod "${files_perm}" {} \; -print
+        find "${music_dir}" -type f -iname '*.mp3' -exec chmod "${files_perm}" {} \; -print
+        find "${music_dir}" -type f -iname '*.m3u' -exec chmod "${files_perm}" {} \; -print
     }
     echo "set file permissions for files/dirs in Music Library (${music_dir}):"
-    echo "  * directories: (chmod ${dirs_perm}) read/write/execute for owner, read/execute for group/others"
-    echo "  * files: (chmod ${files_perm}) read/write for owner, read for group/others"
+    echo "  * music directories: read/write/execute for owner, read/execute for group/others"
+    echo "  * artwork directory: read/write/execute for owner/group/others"
+    echo "  * files (flac/mp3/m3u): read/write for owner, read for group/others"
     echo
     read -p "are you sure? <y/N> " prompt
     if [[ "$prompt" =~ [yY]$ ]]; then
@@ -452,7 +456,7 @@ purge-apt-configs () {
 # purge all Dropbox files from local cache
 purge-dropbox-cache () {
     if ! dropbox running; then
-        dropbox stop && sleep 2
+        dropbox stop && sleep 3
     fi
     cache_dir="${HOME}/Dropbox/.dropbox.cache/"
     if [[ -d "$cache_dir" ]]; then
