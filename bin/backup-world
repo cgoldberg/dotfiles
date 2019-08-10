@@ -78,7 +78,9 @@ main () {
     # using rsync's --archive option (which is equivalent to -rlptgoD), we
     # pass individual rsync options so the --perms option can be excluded.
     rsync \
+        --checksum \
         --delete \
+        --executability \
         --human-readable \
         --links \
         --progress \
@@ -86,6 +88,7 @@ main () {
         --safe-links \
         --stats \
         --times \
+        --verbose \
         --info=progress2 \
         "${DROPBOX}/" "${NAS}/Dropbox_Backup/"
     echo
@@ -94,7 +97,9 @@ main () {
     echo "syncing remote NAS to local HDD..."
     echo
     rsync \
+        --checksum \
         --delete \
+        --executability \
         --human-readable \
         --links \
         --progress \
@@ -102,6 +107,7 @@ main () {
         --safe-links \
         --stats \
         --times \
+        --verbose \
         --info=progress2 \
         "${NAS}/" "${HDD}/"
     echo
