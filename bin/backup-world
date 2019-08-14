@@ -5,12 +5,11 @@
 #    * sync local Dropbox to remote NAS
 #    * sync remote NAS to local backup HDD
 #
-#  `rsync` first does a recursive scan and generates an incremental list of
+#  rsync first does a recursive scan and generates an incremental list of
 #  files that have changed between the source and destination.  Then it deletes
-#  extraneous files on the destination.  Finally, it copies new files and
-#  files that have changed (in size or last-modified time) between the source
-#  and destination.
-#
+#  extraneous files on the destination.  Finally, it copies new files and files
+#  that have changed (in size or last-modified time) between the source and
+#  destination.
 
 
 set -e
@@ -78,9 +77,7 @@ main () {
     # using rsync's --archive option (which is equivalent to -rlptgoD), we
     # pass individual rsync options so the --perms option can be excluded.
     rsync \
-        --checksum \
         --delete \
-        --executability \
         --human-readable \
         --links \
         --progress \
@@ -97,9 +94,7 @@ main () {
     echo "syncing remote NAS to local HDD..."
     echo
     rsync \
-        --checksum \
         --delete \
-        --executability \
         --human-readable \
         --links \
         --progress \
