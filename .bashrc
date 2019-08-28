@@ -16,7 +16,7 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 
-# export environment variables
+# export some environment variables
 export PAGER="less"
 export VISUAL="vim"
 export EDITOR="vim"
@@ -95,8 +95,13 @@ fi
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
 
 
-# customize and colorize the prompt
+# customize and colorize the shell prompt
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1)\]\[$(tput sgr0)\]\$ '
+
+
+# limit the number of subdirectories displayed in the shell prompt.
+PROMPT_DIRTRIM=4
+
 
 
 # disable suspend and resume feature in terminal
