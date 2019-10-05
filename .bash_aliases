@@ -94,6 +94,10 @@ alias tree="tree -ash -CF --du"
 alias du="ncdu -2rx"
 alias diskused="du"
 
+# copy to clipboard and write to stdout
+# used in a pipeline, like: $ echo "foo" | clip
+alias clip="tee >(xclip -selection clipboard)"
+
 #  ¯\_(ツ)_/¯
 alias shrug="echo -n '¯\_(ツ)_/¯' | xclip -selection clipboard && echo -n '¯\_(ツ)_/¯' | xclip -selection primary && echo '¯\_(ツ)_/¯ copied to X clipboard'"
 
