@@ -182,7 +182,7 @@ h () {
 
 
 # copy command outpout to clipboard and print it to stdout
-# used in a pipeline, like: `$ echo "foo" | clip`
+# used in a pipeline, like: `$ echo -n "foo" | clip`
 alias clip="tee >(pbcopy)"
 
 
