@@ -6,8 +6,16 @@ case $- in
 esac
 
 
+# display bash version
+bash --version | head -n 1
+
+
 # add personal bin to PATH
 export PATH=$PATH:$HOME/bin
+
+
+# limit the number of subdirectories displayed in the shell prompt.
+export PROMPT_DIRTRIM="4"
 
 
 # export environment variables for termcap colors
@@ -27,32 +35,23 @@ export VISUAL="vi"
 export EDITOR="vi"
 
 
-# enable bash command completion
-if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-fi
+# enable bash porogrammable completion
+# `brew install bash-completion`
+source /usr/local/etc/bash_completion
 
 
 # enable git command completion
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-if [ -f ~/bin/git-completion.bash ]; then
-    source ~/bin/git-completion.bash
-fi
+source ~/bin/git-completion.bash
 
 
 # display current git branch name in the prompt when inside a repo directory
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-if [ -f ~/bin/git-prompt.sh ]; then
-    source ~/bin/git-prompt.sh
-fi
+source ~/bin/git-prompt.sh
 
 
 # set shell prompt
 PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;11m\]\h\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[\033[38;5;14m\][\w]\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\[$(__git_ps1)\]\[$(tput sgr0)\]\$ '
-
-
-# limit the number of subdirectories displayed in the shell prompt.
-PROMPT_DIRTRIM="4"
 
 
 # editor aliases
@@ -71,7 +70,7 @@ alias brewupdate="brew update && brew upgrade && brew cleanup"
 alias c="clear"
 alias cls="clear"
 alias x="exit"
-alias dsclean="find . -type f -name '*.DS_Store' -ls -delete"
+alias dsclean="find . -type f -name '*.DS_Store' -print -delete"
 alias dc="docker-compose"
 alias dcu="docker-compose up"
 alias ebrc="edit ${HOME}/.bashrc_mac"
@@ -80,9 +79,6 @@ alias l="LC_COLLATE=C \ls -AFG"
 alias ls="LC_COLLATE=C \gls -l --almost-all --classify --group-directories-first --human-readable --no-group --time-style=long-iso --color=always"
 alias o="open -n --fresh ."
 alias re-source="source ~/.bash_profile"
-alias screensaver="/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine"
-alias ss="screensaver"
-alias afk="screensaver"
 alias screenshot="screencapture -i -T 1 -t jpg -P screenshot.jpg"
 alias webserver="python -m SimpleHTTPServer"
 alias ping="prettyping"
