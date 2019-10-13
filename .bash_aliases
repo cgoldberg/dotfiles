@@ -111,7 +111,6 @@ alias squeezebox-restart="service logitechmediaserver restart"
 alias externalip="curl icanhazip.com"
 alias localip="hostname -I"
 alias ips="echo -n 'local ip: ' && localip && echo -n 'external ip: ' && externalip"
-alias myip="ips"
 
 # show TCP and UDP sockets that are actively listening
 alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
