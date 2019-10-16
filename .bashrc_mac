@@ -6,6 +6,10 @@ case $- in
 esac
 
 
+# expand aliases when running under sudo
+alias sudo="sudo "
+
+
 # display bash version
 bash --version | head -n 1
 
@@ -70,18 +74,22 @@ alias brewupdate="brew update && brew upgrade && brew cleanup"
 alias c="clear"
 alias cls="clear"
 alias x="exit"
-alias dsclean="find . -type f -name '*.DS_Store' -print -delete"
+alias dsclean="gfind . -type f -name '*.DS_Store' -print -delete 2>&1 | grep -v 'Operation not permitted'"
 alias dc="docker-compose"
 alias dcu="docker-compose up"
 alias ebrc="edit ${HOME}/.bashrc_mac"
 alias filecount="find . -type f | \grep -v '.git' | wc -l"
-alias l="LC_COLLATE=C \ls -AFG"
-alias ls="LC_COLLATE=C \gls -l --almost-all --classify --group-directories-first --human-readable --no-group --time-style=long-iso --color=always"
 alias o="open -n --fresh ."
 alias re-source="source ~/.bash_profile"
 alias screenshot="screencapture -i -T 1 -t jpg -P screenshot.jpg"
 alias webserver="python -m SimpleHTTPServer"
 alias ping="prettyping"
+
+
+# directory listings (requires exa)
+alias l="exa --all --classify --group-directories-first --color=always"
+alias ls="exa --all --classify --git --group-directories-first --header --long --color=always"
+alias ll="\ls -al"
 
 
 # color grep output
