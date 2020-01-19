@@ -3,9 +3,9 @@
 #  Squeezebox Server (LMS) beta updater for Debian/Ubuntu
 #
 #  - Downloads and installs the latest beta release of Logitech Media Server (Squeezebox Server)
-#  - LMS server settings are preserved during upgrade
-#  - Media files are not touched during upgrade
-#  - Requires root
+#  - Notes:
+#     * LMS server settings are preserved during upgrade
+#     * Requires permissions (for installing .deb into system packages)
 
 
 set -e
@@ -30,7 +30,7 @@ latest_deb_url=$(curl -s $update_url)
 latest_deb="${latest_deb_url##*/}"
 
 if [[ "${latest_deb}" =~ "${lms_old_installed_version}" ]]; then
-  echo "latest version of LMS is already installed: ${lms_old_installed_version}"
+  echo "latest version of LMS is already installed as ${lms_old_installed_version}"
   echo "done"
   exit 0
 fi
