@@ -285,11 +285,12 @@ psgrep () {
 
 # show disk space on all local ext4 filesystems and remote NAS (mount NAS if needed)
 diskfree () {
-    local nas_server="bytez"
+    local nas_server="bitz"
     local nas_smb_share="public"
     local nas_mount_dir="/run/user/${UID}/gvfs/smb-share:server=${nas_server},share=${nas_smb_share},user=${USER}"
     if [[ ! -d "${nas_mount_dir}" ]]; then
-        gvfs-mount "smb://${USER}@${nas_server}/${nas_smb_share}"
+        gvfs-mount "smb://${USER}@${nas_server}/${nas_smb_share}" -o vers=3.0
+        echo
     fi
     \df --sync --human-readable --type=ext4
     \df --sync --human-readable "${nas_mount_dir}" | sed '1d;'
@@ -526,21 +527,21 @@ download-selenium-server () {
 # skip to next track in playlist on Squeezebox player
 next () {
     curl -sS -o /dev/null -X POST \
-        -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["button","jump_fwd"]]}' "${SQUEEZEBOX_ENDPOINT}"
+        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_PLAYER}"'",["button","jump_fwd"]]}' "${SQUEEZEBOX_ENDPOINT}"
 }
 
 
 # play random song mix on Squeezebox player
 mix () {
     curl -sS -o /dev/null -X POST \
-        -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["randomplay","tracks"]]}' "${SQUEEZEBOX_ENDPOINT}"
+        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_PLAYER}"'",["randomplay","tracks"]]}' "${SQUEEZEBOX_ENDPOINT}"
 }
 
 
 # pause/resume audio on Squeezebox player
 pause () {
     curl -sS -o /dev/null -X POST \
-        -d '{"id":1,"method":"slim.request","params":["'${SQUEEZEBOX_PLAYER}'",["pause"]]}' "${SQUEEZEBOX_ENDPOINT}"
+        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_PLAYER}"'",["pause"]]}' "${SQUEEZEBOX_ENDPOINT}"
 }
 
 
