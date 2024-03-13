@@ -265,8 +265,9 @@ alias goog="google"
 
 
 # open a browser and go to the Ubuntu Packages page for the given package name
+# dynamically fetch from OS == upgrade friendly
 pkg-info () {
-    python -c "import webbrowser; webbrowser.open('https://packages.ubuntu.com/bionic/${1}')" > /dev/null 2>&1
+    python -c "import webbrowser; webbrowser.open('https://packages.ubuntu.com/$(/usr/bin/lsb_release -c | /usr/bin/awk '{print $2}')/${1}')" > /dev/null 2>&1
 }
 
 
