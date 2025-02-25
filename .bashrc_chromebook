@@ -104,13 +104,9 @@ unset color_prompt force_color_prompt
 # set the title to user@host:dir
 PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
 
-# enable color support of ls and also add handy aliases
+# enable color support of grep and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls="ls --color=auto"
-    alias dir="dir --color=auto"
-    alias vdir="{vdir --color=auto"
-
     alias grep="grep --color=auto"
     alias fgrep="fgrep --color=auto"
     alias egrep="egrep --color=auto"
@@ -127,6 +123,13 @@ alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
 alias .......="cd ../../../../../.."
 alias ........="cd ../../../../../../.."
+alias cd..="cd .."
+alias cd...="cd ../.."
+alias cd....="cd ../../.."
+alias cd.....="cd ../../../.."
+alias cd......="cd ../../../../.."
+alias cd.......="cd ../../../../../.."
+alias cd........="cd ../../../../../../.."
 
 # expand aliases when running under sudo
 alias sudo="sudo "
@@ -165,9 +168,10 @@ alias venv="python3 -m venv venv && source ./venv/bin/activate && pip install --
 alias activate="source ./venv/bin/activate"
 
 # more ls aliases
-alias ll="ls -l"
-alias la="ls -A"
-alias l="ls -CF"
+alias ls="ls --almost-all --classify --group-directories-first --color=always"
+alias l="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
+alias la="l"
+alias ll="l"
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
