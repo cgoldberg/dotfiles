@@ -164,7 +164,7 @@ alias tree="tree -ash -CF --du"
 
 # python
 alias python="python3"
-alias venv="python3 -m venv venv && source ./venv/bin/activate && pip install --upgrade pip tox"
+alias venv="python3 -m venv --upgrade-deps venv && source ./venv/bin/activate"
 alias activate="source ./venv/bin/activate"
 
 # more ls aliases
