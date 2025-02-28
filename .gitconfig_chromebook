@@ -1,0 +1,33 @@
+[user]
+    name = Corey Goldberg
+    email = 1113081+cgoldberg@users.noreply.github.com
+
+[push]
+    default = simple
+    autoSetupRemote = true
+
+[color]
+    ui = always
+    branch = always
+    diff = always
+    interactive = always
+    status = always
+
+[alias]
+
+    # basic aliases
+    co = checkout
+    df = diff --staged
+    i = info
+    s = status
+
+    # commit changes with inline message
+    ci = !git commit -a -m $2
+
+    # pretty commit logs
+    ls = log --pretty=format:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
+    ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+
+    # open Github page for current repo
+    open = "!f() { xdg-open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@'`; }; f"
+
