@@ -166,6 +166,8 @@ alias tree="tree -ash -CF --du"
 alias python="python3"
 alias venv="python3 -m venv --upgrade-deps venv && source ./venv/bin/activate"
 alias activate="source ./venv/bin/activate"
+alias act="activate"
+alias deact="deactivate"
 
 # more ls aliases
 alias ls="ls --almost-all --classify --group-directories-first --color=always"
