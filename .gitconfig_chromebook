@@ -16,9 +16,11 @@
 [alias]
 
     # basic aliases
+    b = branch
     co = checkout
     df = diff --staged
     i = info
+    rb = rebase
     s = status
 
     # commit changes with inline message
