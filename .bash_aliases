@@ -72,8 +72,8 @@ alias ebrc="subl -n ${HOME}/.bashrc ${HOME}/.bash_aliases"
 # list public bash functions and aliases defined in the current shell
 alias funcs="compgen -a -A function | grep -v ^_ | sort"
 
-# reload shell configurations and reset shell
-alias re-source="tput reset && source ${HOME}/.bashrc"
+# reset shell and reload shell configurations
+alias re-source="echo 'sourcing ${HOME}/.bashrc ...' && tput reset && source ${HOME}/.bashrc"
 
 # system shutdown
 alias sd="sudo poweroff"
@@ -147,8 +147,10 @@ alias nowrap="tput rmam"
 # enable line wrapping in terminal (long lines wrapped at terminal width)
 alias wrap="tput smam"
 
-# color and side-by-side for diffs (requires colordiff package)
-alias diff="colordiff -s"
+# colored diffs
+if [ -x /usr/bin/dircolors ]; then
+    alias diff="colordiff --report-identical-files"
+fi
 
 # make yourself look all busy and fancy to non-technical people
 alias busy="cat /dev/urandom | hexdump -C | grep --color=always 'ca fe'"
