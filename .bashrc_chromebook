@@ -10,8 +10,8 @@ esac
 
 # export some environment variables
 export PAGER="less"
-export VISUAL="vim"
-export EDITOR="vim"
+export VISUAL="vi"
+export EDITOR="vi"
 
 # export environment variables for termcap colors
 # used by less pager for colors
@@ -135,7 +135,7 @@ alias cd........="cd ../../../../../../.."
 alias sudo="sudo "
 
 # expand aliases when running watch
-alias sudo="watch "
+alias watch="watch "
 
 # create directory (make parent directories as needed)
 alias mkdir="mkdir --parents --verbose"
