@@ -17,10 +17,10 @@
 # ====================================================== #
 
 
-# expand aliases when running with sudo
+# expand aliases when running sudo
 alias sudo="sudo "
 
-# expand aliases when running watch command
+# expand aliases when running watch
 alias watch="watch "
 
 # create directory (make parent directories as needed)

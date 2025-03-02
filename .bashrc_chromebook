@@ -131,8 +131,11 @@ alias cd......="cd ../../../../.."
 alias cd.......="cd ../../../../../.."
 alias cd........="cd ../../../../../../.."
 
-# expand aliases when running under sudo
+# expand aliases when running sudo
 alias sudo="sudo "
+
+# expand aliases when running watch
+alias sudo="watch "
 
 # create directory (make parent directories as needed)
 alias mkdir="mkdir --parents --verbose"
@@ -142,6 +145,12 @@ alias bk="cd ${OLDPWD}"
 
 # version control
 alias g="git"
+
+# editors
+alias sublime="subl"
+alias edit="subl"
+alias ed="subl"
+alias e="subl -n ."
 
 # pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
