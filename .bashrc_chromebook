@@ -54,10 +54,10 @@ shopt -s cmdhist
 HISTCONTROL=ignoredups
 
 # number of previous commands stored in history file
-HISTSIZE=9999
+HISTSIZE=999
 
 # number of previous commands stored in memory for current session
-HISTFILESIZE=9999
+HISTFILESIZE=999
 
 # show timestamp of each command (Weekday Month/Day Hour:Min)
 HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
@@ -195,10 +195,10 @@ fi
 # reload shell configuration
 re-source () {
     echo 'sourcing ~/.bashrc ...'
-    source ${HOME}/.bashrc
+    source "${HOME}/.bashrc"
     # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        export PS1="(${VIRTUAL_ENV_PROMPT}) ${PS1}"
+        source "${VIRTUAL_ENV}/bin/activate"
     fi
     echo
 }
