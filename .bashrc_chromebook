@@ -85,12 +85,12 @@ force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
     else
-	color_prompt=
+        color_prompt=
     fi
 fi
 
@@ -147,10 +147,10 @@ alias bk="cd ${OLDPWD}"
 alias g="git"
 
 # editors
-alias sublime="subl"
+alias subl="\subl --new-window"
 alias edit="subl"
 alias ed="subl"
-alias e="subl -n ."
+alias e="\subl --new-window ."
 
 # pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
@@ -162,8 +162,8 @@ alias untar="tar zxvf"
 # exit shell
 alias x="exit"
 
-# reset shell and reload shell configurations
-alias re-source="echo 'sourcing ${HOME}/.bashrc ...' && tput reset && source ${HOME}/.bashrc"
+# open ~/.bashrc for editing with sublime
+alias ebrc="subl ${HOME}/.bashrc"
 
 # reset terminal (clears screen and scrollback buffer)
 alias cls="tput reset"
@@ -173,6 +173,7 @@ alias tree="tree -ash -CF --du"
 
 # python
 alias python="python3"
+alias py="python3"
 alias activate="source ./venv/bin/activate"
 alias act="activate"
 alias deact="deactivate"
@@ -190,6 +191,17 @@ alias ll="l"
 if [ -x /usr/bin/dircolors ]; then
     alias diff="colordiff --report-identical-files"
 fi
+
+# reload shell configuration
+re-source () {
+    echo 'sourcing ~/.bashrc ...'
+    source ${HOME}/.bashrc
+    # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
+    if [ ! -z "${VIRTUAL_ENV}" ]; then
+        export PS1="(${VIRTUAL_ENV_PROMPT}) ${PS1}"
+    fi
+    echo
+}
 
 # search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
