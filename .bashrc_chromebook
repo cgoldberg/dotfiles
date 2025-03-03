@@ -220,6 +220,12 @@ re-source () {
     echo
 }
 
+# search process info by regex (case-insensitive)
+# usage: psgrep <pattern>
+psgrep () {
+    ps -ef | grep -i --color=always "$1" | grep -v "grep" | sort -n | less
+}
+
 # search recursively under current directory for filenames matching pattern (case-insensitive)
 findfiles () {
     find ${HOME} -xdev \
