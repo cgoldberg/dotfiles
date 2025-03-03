@@ -8,7 +8,7 @@
     "bold_folder_labels": true,
     "caret_extra_bottom": 2,
     "caret_extra_top": 2,
-    "caret_extra_width": 3,
+    "caret_extra_width": 1,
     "close_windows_when_empty": true,
     "drag_text": false,
     "draw_minimap_border": true,
