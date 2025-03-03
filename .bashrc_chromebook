@@ -192,6 +192,22 @@ if [ -x /usr/bin/dircolors ]; then
     alias diff="colordiff --report-identical-files"
 fi
 
+# grep recursively with case-insensitive match and other defaults
+alias rgrep="\rgrep \
+        --binary-files=without-match \
+        --color=auto \
+        --devices=skip \
+        --ignore-case \
+        --line-number \
+        --no-messages \
+        --with-filename \
+        --exclude-dir=.cache \
+        --exclude-dir=.git \
+        --exclude-dir=.tox \
+        --exclude=*.css \
+        --exclude=*.js \
+        --exclude=*.svg"
+
 # reload shell configuration
 re-source () {
     echo 'sourcing ~/.bashrc ...'
