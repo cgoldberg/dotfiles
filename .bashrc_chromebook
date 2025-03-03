@@ -204,6 +204,7 @@ alias rgrep="\rgrep \
         --exclude-dir=.cache \
         --exclude-dir=.git \
         --exclude-dir=.tox \
+        --exclude-dir=venv \
         --exclude=*.css \
         --exclude=*.js \
         --exclude=*.svg"
