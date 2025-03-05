@@ -192,16 +192,17 @@ if [ -x /usr/bin/dircolors ]; then
     alias diff="colordiff --report-identical-files"
 fi
 
-BLOG_SERVER="http://127.0.0.1:4000"
+BLOG_SERVER="127.0.0.1:4000"
 BLOG_PROC="ruby3.1 /usr/local/bin/jekyll s"
 
 # run jekyll server for blog and open local url in browser
 alias blog="\
-    echo 'running server at: ${BLOG_SERVER} ...' && \
+    echo 'running server at: ${BLOG_SERVER}' && \
     cd ${HOME}/code/cgoldberg.github.io && \
     bundle exec jekyll s >/dev/null & disown && \
     sleep 3.5 && \
-    sensible-browser ${BLOG_SERVER} \
+    echo 'opening browser to: http://${BLOG_SERVER}' && \
+    sensible-browser http://${BLOG_SERVER} \
     "
 
 # kill jekyll server for blog
