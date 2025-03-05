@@ -203,33 +203,36 @@ alias rgrep="\
         --exclude=*.svg \
         "
 
-# run Jekyll server for blog and open local url in browser (silence stdout)
-blog () {
-    local blog_dir="${HOME}/code/cgoldberg.github.io"
-    local blog_server="127.0.0.1:4000"
-    if [ -d "${blog_dir}" ]; then
-        echo "running server at: ${blog_server}"
-        cd "${blog_dir}"
-        bundle exec jekyll s >/dev/null & disown
-        sleep 3.5
-        echo "opening browser at: http://${blog_server}"
-        sensible-browser "http://${blog_server}"
-    else
-        echo "${blog_dir} not found"
-    fi
-}
-
 # kill Jekyll server running blog
 killblog () {
     local blog_dir="${HOME}/code/cgoldberg.github.io"
-    local blog_proc="ruby3.1 /usr/local/bin/jekyll s"
-    local blog_server="127.0.0.1:4000"
+    local jekyll_proc="jekyll s"
+    local jekyll_server="127.0.0.1:4000"
     if [ -d "${blog_dir}" ]; then
-        echo "killing server at: ${blog_server}"
-        pkill -9 -f "${blog_proc}" && pidwait -f "${blog_proc}"
-        psgrep "${blog_proc}"
+        if [[ $(psgrep "${jekyll_proc}") ]]; then
+            echo "killing server at: ${jekyll_server}"
+            pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
+            psgrep "${jekyll_proc}"
+        fi
     else
-        echo "${blog_dir} not found. no server running at: ${blog_server}"
+        echo "${blog_dir} not found. no server running."
+    fi
+}
+
+# run Jekyll server for blog and open local url in browser
+blog () {
+    local blog_dir="${HOME}/code/cgoldberg.github.io"
+    local jekyll_server="127.0.0.1:4000"
+    if [ -d "${blog_dir}" ]; then
+        killblog
+        echo "running server at: ${jekyll_server}"
+        cd "${blog_dir}"
+        bundle exec jekyll s >/dev/null & disown # silence stdout
+        sleep 3.5
+        echo "opening browser at: http://${jekyll_server}"
+        sensible-browser "http://${jekyll_server}"
+    else
+        echo "${blog_dir} not found"
     fi
 }
 
@@ -257,9 +260,9 @@ psgrep () {
     ps -aux | grep -i --color=always "$1" | grep -v "grep" | sort -n | less
 }
 
-# search recursively under current directory for filenames matching pattern (case-insensitive)
+# search recursively under the current directory for filenames matching case-insensitive pattern
 findfiles () {
-    find ${HOME} -xdev \
+    find . -xdev \
            -iname "*$1*" \
            ! -path "*/.git/*" \
            ! -path "*/.tox/*" \
