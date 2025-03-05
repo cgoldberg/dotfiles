@@ -54,10 +54,10 @@ shopt -s cmdhist
 HISTCONTROL=ignoredups
 
 # number of previous commands stored in history file
-HISTSIZE=999
+HISTSIZE=9999
 
 # number of previous commands stored in memory for current session
-HISTFILESIZE=999
+HISTFILESIZE=9999
 
 # show timestamp of each command (Weekday Month/Day Hour:Min)
 HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
@@ -192,8 +192,29 @@ if [ -x /usr/bin/dircolors ]; then
     alias diff="colordiff --report-identical-files"
 fi
 
+BLOG_SERVER="http://127.0.0.1:4000"
+BLOG_PROC="ruby3.1 /usr/local/bin/jekyll s"
+
+# run jekyll server for blog and open local url in browser
+alias blog="\
+    echo 'running server at: ${BLOG_SERVER} ...' && \
+    cd ${HOME}/code/cgoldberg.github.io && \
+    bundle exec jekyll s >/dev/null & disown && \
+    sleep 3.5 && \
+    sensible-browser ${BLOG_SERVER} \
+    "
+
+# kill jekyll server for blog
+alias killblog="\
+    echo 'killing server at: ${BLOG_SERVER}' && \
+    pkill -9 -f '${BLOG_PROC}' && \
+    pidwait -f '${BLOG_PROC}'; \
+    psgrep '${BLOG_PROC}' \
+    "
+
 # grep recursively with case-insensitive match and other defaults
-alias rgrep="\rgrep \
+alias rgrep="\
+        \rgrep \
         --binary-files=without-match \
         --color=auto \
         --devices=skip \
@@ -207,23 +228,24 @@ alias rgrep="\rgrep \
         --exclude-dir=venv \
         --exclude=*.css \
         --exclude=*.js \
-        --exclude=*.svg"
+        --exclude=*.svg \
+        "
 
-# reload shell configuration
+# reload shell configuration and reset terminal
 re-source () {
     echo 'sourcing ~/.bashrc ...'
     source "${HOME}/.bashrc"
+    tput reset
     # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
     if [ ! -z "${VIRTUAL_ENV}" ]; then
         source "${VIRTUAL_ENV}/bin/activate"
     fi
-    echo
 }
 
 # search process info by regex (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
-    ps -ef | grep -i --color=always "$1" | grep -v "grep" | sort -n | less
+    ps -aux | grep -i --color=always "$1" | grep -v "grep" | sort -n | less
 }
 
 # search recursively under current directory for filenames matching pattern (case-insensitive)
@@ -273,3 +295,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init - bash)"
 
+# rust
+if [ -d "${HOME}/.cargo" ] ; then
+    PATH="${HOME}/.cargo/bin:$PATH"
+fi
