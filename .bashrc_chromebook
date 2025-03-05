@@ -23,13 +23,6 @@ export LESS_TERMCAP_so=$(printf '\e[01;33m')
 export LESS_TERMCAP_ue=$(printf '\e[0m')
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
 
-# search command history by regex (case-insensitive) show last n matches
-# usage: h <pattern>
-h () {
-    local n="150"
-    history | grep -i --color=always "$1" | tail -n "$n"
-}
-
 # append to the history file, don't overwrite it
 shopt -s histappend
 
@@ -192,27 +185,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias diff="colordiff --report-identical-files"
 fi
 
-BLOG_SERVER="127.0.0.1:4000"
-BLOG_PROC="ruby3.1 /usr/local/bin/jekyll s"
-
-# run jekyll server for blog and open local url in browser
-alias blog="\
-    echo 'running server at: ${BLOG_SERVER}' && \
-    cd ${HOME}/code/cgoldberg.github.io && \
-    bundle exec jekyll s >/dev/null & disown && \
-    sleep 3.5 && \
-    echo 'opening browser to: http://${BLOG_SERVER}' && \
-    sensible-browser http://${BLOG_SERVER} \
-    "
-
-# kill jekyll server for blog
-alias killblog="\
-    echo 'killing server at: ${BLOG_SERVER}' && \
-    pkill -9 -f '${BLOG_PROC}' && \
-    pidwait -f '${BLOG_PROC}'; \
-    psgrep '${BLOG_PROC}' \
-    "
-
 # grep recursively with case-insensitive match and other defaults
 alias rgrep="\
         \rgrep \
@@ -223,7 +195,6 @@ alias rgrep="\
         --line-number \
         --no-messages \
         --with-filename \
-        --exclude-dir=.cache \
         --exclude-dir=.git \
         --exclude-dir=.tox \
         --exclude-dir=venv \
@@ -232,13 +203,50 @@ alias rgrep="\
         --exclude=*.svg \
         "
 
-# reload shell configuration and reset terminal
+# run Jekyll server for blog and open local url in browser (silence stdout)
+blog () {
+    local blog_dir="${HOME}/code/cgoldberg.github.io"
+    local blog_server="127.0.0.1:4000"
+    if [ -d "${blog_dir}" ]; then
+        echo "running server at: ${blog_server}"
+        cd "${blog_dir}"
+        bundle exec jekyll s >/dev/null & disown
+        sleep 3.5
+        echo "opening browser at: http://${blog_server}"
+        sensible-browser "http://${blog_server}"
+    else
+        echo "${blog_dir} not found"
+    fi
+}
+
+# kill Jekyll server running blog
+killblog () {
+    local blog_dir="${HOME}/code/cgoldberg.github.io"
+    local blog_proc="ruby3.1 /usr/local/bin/jekyll s"
+    local blog_server="127.0.0.1:4000"
+    if [ -d "${blog_dir}" ]; then
+        echo "killing server at: ${blog_server}"
+        pkill -9 -f "${blog_proc}" && pidwait -f "${blog_proc}"
+        psgrep "${blog_proc}"
+    else
+        echo "${blog_dir} not found. no server running at: ${blog_server}"
+    fi
+}
+
+# search command history by regex (case-insensitive) show last n matches
+# usage: h <pattern>
+h () {
+    local n="150"
+    history | grep -i --color=always "$1" | tail -n "$n"
+}
+
+# reload shell configuration
 re-source () {
     echo 'sourcing ~/.bashrc ...'
     source "${HOME}/.bashrc"
-    tput reset
     # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
     if [ ! -z "${VIRTUAL_ENV}" ]; then
+        deactivate
         source "${VIRTUAL_ENV}/bin/activate"
     fi
 }
