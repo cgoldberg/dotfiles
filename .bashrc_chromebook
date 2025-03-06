@@ -97,12 +97,10 @@ unset color_prompt force_color_prompt
 # set the title to user@host:dir
 PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
 
-# enable color support of grep and also add handy aliases
+# enable color support for grep
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias grep="grep --color=auto"
-    alias fgrep="fgrep --color=auto"
-    alias egrep="egrep --color=auto"
+    alias grep="\grep --color=auto"
 fi
 
 # colored GCC warnings and errors
@@ -136,11 +134,13 @@ alias bk="cd ${OLDPWD}"
 # version control
 alias g="git"
 
-# editors
-alias subl="\subl --new-window"
-alias edit="subl"
-alias ed="subl"
-alias e="\subl --new-window ."
+# sublime editor
+if [ -d  "/usr/bin/subl" ]; then
+    alias subl="\subl --new-window"
+    alias edit="subl"
+    alias ed="subl"
+    alias e="\subl --new-window ."
+fi
 
 # pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
@@ -148,6 +148,10 @@ alias more="less"
 
 # extract a tarball
 alias untar="tar zxvf"
+
+# disk space
+alias df="\df --human-readable"
+alias ds="\df | \grep /dev/kvm"
 
 # exit shell
 alias x="exit"
@@ -237,7 +241,7 @@ blog () {
 # usage: h <pattern>
 h () {
     local num="150"
-    history | grep -i --color=always "$1" | tail -n "${num}"
+    history | \grep -i --color=always "$1" | tail -n "${num}"
 }
 
 # create directory (make parent directories as needed)
@@ -261,7 +265,7 @@ re-source () {
 # search process info by regex (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
-    ps -aux | grep -i --color=always "$1" | grep -v "grep" | sort -n | less
+    ps -aux | \grep -i --color=always "$1" | grep -v "grep" | sort -n | less
 }
 
 # search recursively under the current directory for filenames matching case-insensitive pattern
@@ -271,7 +275,7 @@ findfiles () {
            ! -path "*/.git/*" \
            ! -path "*/.tox/*" \
            ! -path "*/venv/*" |
-           grep -i --color=always "$1"
+           \grep -i --color=always "$1"
 }
 alias ff="findfiles"
 
