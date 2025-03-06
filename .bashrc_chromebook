@@ -135,7 +135,7 @@ alias bk="cd ${OLDPWD}"
 alias g="git"
 
 # sublime editor
-if [ -d  "/usr/bin/subl" ]; then
+if [ -f  "/usr/bin/subl" ]; then
     alias subl="\subl --new-window"
     alias edit="subl"
     alias ed="subl"
