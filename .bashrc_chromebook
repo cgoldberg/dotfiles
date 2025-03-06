@@ -130,9 +130,6 @@ alias sudo="sudo "
 # expand aliases when running watch
 alias watch="watch "
 
-# create directory (make parent directories as needed)
-alias mkdir="mkdir --parents --verbose"
-
 # go back to previous directory
 alias bk="cd ${OLDPWD}"
 
@@ -239,9 +236,16 @@ blog () {
 # search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
-    local n="150"
-    history | grep -i --color=always "$1" | tail -n "$n"
+    local num="150"
+    history | grep -i --color=always "$1" | tail -n "${num}"
 }
+
+# create directory (make parent directories as needed)
+makedir () {
+    \mkdir --parents --verbose "$1"
+    cd "$1"
+}
+alias mkdir="makedir"
 
 # reload shell configuration
 re-source () {
