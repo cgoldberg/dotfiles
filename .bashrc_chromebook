@@ -246,10 +246,10 @@ h () {
 
 # create directory (make parent directories as needed)
 makedir () {
-    \mkdir --parents --verbose "$1"
+    mkdir --parents --verbose "$1"
     cd "$1"
 }
-alias mkdir="makedir"
+alias md="makedir"
 
 # reload shell configuration
 re-source () {
