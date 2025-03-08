@@ -14,7 +14,7 @@ export VISUAL="vi"
 export EDITOR="vi"
 
 # export environment variables for termcap colors
-# used by less pager for colors
+# used by `less` pager for colors
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')
 export LESS_TERMCAP_md=$(printf '\e[01;38;5;75m')
 export LESS_TERMCAP_me=$(printf '\e[0m')
@@ -23,42 +23,35 @@ export LESS_TERMCAP_so=$(printf '\e[01;33m')
 export LESS_TERMCAP_ue=$(printf '\e[0m')
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
 
-# append to the history file, don't overwrite it
+# better command history handling
+# -------------------------------
+# append to history file, don't overwrite it
 shopt -s histappend
-
-# edit a recalled history line before executing
+# edit recalled history line before executing
 shopt -s histverify
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
 # save each line of a multi-line command in the same history entry
 shopt -s cmdhist
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-shopt -s globstar
-
-# save each line of a multi-line command in the same history entry
-shopt -s cmdhist
-
-# don't show duplicate commands in history
-HISTCONTROL=ignoredups
-
+# don't store these commands in history
+HISTIGNORE="cls:clear:df*:ds:x:exit:h:history:l:la:ls:ll:pwd:cd:cd.*:cd .*:.*"
+# remove duplicate commands from history
+HISTCONTROL=ignoredups:erasedups
 # number of previous commands stored in history file
 HISTSIZE=9999
-
 # number of previous commands stored in memory for current session
 HISTFILESIZE=9999
-
-# show timestamp of each command (Weekday Month/Day Hour:Min)
-HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
-
+# show timestamp [Weekday Month/Day Hour:Min] for each command in history
+#HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
 # immediately add commands to history instead of waiting for end of session
-PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
+PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
-# make less more friendly for non-text input files, see lesspipe(1)
+# check the window size after each command and update the values of LINES and COLUMNS
+shopt -s checkwinsize
+
+# the pattern "**" used in a pathname expansion context will match
+# all files and zero or more directories and subdirectories.
+shopt -s globstar
+
+# make `less` more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
