@@ -1,6 +1,5 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)for examples.
 
 # If not running interactively, don't do anything
 case $- in
@@ -31,8 +30,6 @@ shopt -s histappend
 shopt -s histverify
 # save each line of a multi-line command in the same history entry
 shopt -s cmdhist
-# don't store these commands in history
-HISTIGNORE="cls:clear:df*:ds:x:exit:h:history:l:la:ls:ll:pwd:cd:cd.*:cd .*:.*"
 # remove duplicate commands from history
 HISTCONTROL=ignoredups:erasedups
 # number of previous commands stored in history file
@@ -80,17 +77,18 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# add colored user@host:dir and git branch to prompt
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\033[0;32m$(__git_ps1 " (git:%s)")\033[0m\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
-# set the title to user@host:dir
-PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+# set the title to user@host
+PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h\]$PS1"
 
-# enable color support for grep
+# enable color support for `grep`
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias grep="\grep --color=auto"
