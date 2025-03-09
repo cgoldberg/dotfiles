@@ -32,6 +32,8 @@ shopt -s histverify
 shopt -s cmdhist
 # remove duplicate commands from history
 HISTCONTROL=ignoredups:erasedups
+# don't add entries to history
+HISTIGNORE="x:exit" # we get duplicates of `x` and `exit` because shell is closed immediately
 # number of previous commands stored in history file
 HISTSIZE=9999
 # number of previous commands stored in memory for current session
@@ -142,7 +144,7 @@ alias untar="tar zxvf"
 
 # disk space
 alias df="\df --human-readable"
-alias ds="\df | \grep /dev/kvm"
+alias ds="\df --human-readable | \grep --extended-regexp '(/dev/kvm)|(Filesystem)'"
 
 # exit shell
 alias x="exit"
@@ -177,7 +179,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias diff="colordiff --report-identical-files"
 fi
 
-# grep recursively with case-insensitive match and other defaults
+# grep recursively for pattern (case-insensitive)
+# usage: rgrep <pattern>
 alias rgrep="\
         \rgrep \
         --binary-files=without-match \
@@ -232,7 +235,7 @@ blog () {
 # usage: h <pattern>
 h () {
     local num="150"
-    history | \grep -i --color=always "$1" | tail -n "${num}"
+    history | \grep --ignore-case --color=always "$1" | tail -n "${num}"
 }
 
 # create directory (make parent directories as needed)
@@ -248,25 +251,47 @@ re-source () {
     source "${HOME}/.bashrc"
     # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        deactivate
         source "${VIRTUAL_ENV}/bin/activate"
     fi
 }
 
-# search process info by regex (case-insensitive)
-# usage: psgrep <pattern>
-psgrep () {
-    ps -aux | \grep -i --color=always "$1" | grep -v "grep" | sort -n | less
+# delete selenium cache (browsers and webdrivers) and other browser data
+clean-selenium () {
+    rm -rf "${HOME}/.cache/selenium"
+    rm -rf "${HOME}/.cache/google-chrome-for-testing"
+    rm -rf "${HOME}/.cache/mozilla"
+    rm -rf "${HOME}/.cache/Microsoft"
+    rm -rf "${HOME}/.mozilla"
 }
 
-# search recursively under the current directory for filenames matching case-insensitive pattern
+# chop lines at screen width
+nowrap () {
+    cut -c-$(tput cols)
+}
+
+# search active processes for pattern (case-insensitive)
+# usage: psgrep <pattern>
+psgrep () {
+    if [ ! -v $1 ]; then
+        ps -afux | \
+        \grep --extended-regexp --ignore-case "($1)|(USER.*PID)" | \
+        \grep -v "grep" | sort -n -r | less | nowrap
+    else
+        ps -afux
+    fi
+}
+
+# search recursively under the current directory for filenames matching pattern (case-insensitive)
+# usage: findfiles <pattern>
 findfiles () {
-    find . -xdev \
-           -iname "*$1*" \
-           ! -path "*/.git/*" \
-           ! -path "*/.tox/*" \
-           ! -path "*/venv/*" |
-           \grep -i --color=always "$1"
+    if [ ! -v $1 ]; then
+        find . -xdev \
+               -iname "*$1*" \
+               ! -path "*/.git/*" \
+               ! -path "*/.tox/*" \
+               ! -path "*/venv/*" |
+               \grep --ignore-case --color=always "$1"
+    fi
 }
 alias ff="findfiles"
 
