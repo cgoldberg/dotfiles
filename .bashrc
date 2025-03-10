@@ -272,10 +272,9 @@ nowrap () {
 # search active processes for pattern (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
-    if [ ! -v $1 ]; then
-        ps -afux | \
-        \grep --extended-regexp --ignore-case "($1)|(USER.*PID)" | \
-        \grep -v "grep" | sort -n -r | less | nowrap
+    if [ ! -z "$1" ]; then
+        ps -afux | \grep --extended-regexp --ignore-case "$1" | \grep -v "grep" | \
+        sort -n -r | less | nowrap
     else
         ps -afux
     fi
@@ -315,15 +314,14 @@ apt-up () {
     sudo apt --no-allow-insecure-repositories update && echo
 }
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# enable programmable completion features (you don't need to enable this, if it's
+# already enabled in /etc/bash.bashrc and /etc/profile sources /etc/bash.bashrc)
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 # pyenv
