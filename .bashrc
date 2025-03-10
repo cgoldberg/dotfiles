@@ -273,10 +273,10 @@ nowrap () {
 # usage: psgrep <pattern>
 psgrep () {
     if [ ! -z "$1" ]; then
-        ps -afux | \grep --extended-regexp --ignore-case "$1" | \grep -v "grep" | \
+        ps -ef | \grep --extended-regexp --ignore-case "$1" | \grep -v "grep" | \
         sort -n -r | less | nowrap
     else
-        ps -afux
+        ps -ef
     fi
 }
 
