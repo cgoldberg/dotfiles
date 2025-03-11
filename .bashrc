@@ -286,7 +286,7 @@ clean-selenium-dev () {
     for d in "${dirs[@]}"; do
         if [ -d  "${d}" ]; then
             echo "deleting ${d}"
-            rm -rf "${d}"
+            sudo rm -rf "${d}"
         fi
     done
 }
