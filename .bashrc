@@ -255,13 +255,33 @@ re-source () {
     fi
 }
 
-# delete selenium cache (browsers and webdrivers) and other browser data
-clean-selenium () {
-    rm -rf "${HOME}/.cache/selenium"
-    rm -rf "${HOME}/.cache/google-chrome-for-testing"
-    rm -rf "${HOME}/.cache/mozilla"
-    rm -rf "${HOME}/.cache/Microsoft"
-    rm -rf "${HOME}/.mozilla"
+# clean selenium dev environment, delete selenium cache and other browser data
+clean-selenium-dev () {
+    local sel_home="${HOME}/code/selenium"
+    local dirs=(
+        "${HOME}/.cache/selenium/"
+        "${HOME}/.cache/google-chrome-for-testing/"
+        "${HOME}/.cache/mozilla/"
+        "${HOME}/.cache/Microsoft/"
+        "${HOME}/.mozilla/"
+        "${sel_home}/venv/"
+        "${sel_home}/py/.pytest_cache/"
+        "${sel_home}/py/.tox/"
+        "${sel_home}/py/__pycache__/"
+        "${sel_home}/py/build/"
+        "${sel_home}/py/selenium.egg-info/"
+        "${sel_home}/py/venv/"
+    )
+    if [ ! -z "${VIRTUAL_ENV}" ]; then
+        echo "deactivating venv"
+        deactivate
+    fi
+    for d in "${dirs[@]}"; do
+        if [ -d  "${d}" ]; then
+            echo "deleting ${d}"
+            rm -rf "${d}"
+        fi
+    done
 }
 
 # chop lines at screen width
