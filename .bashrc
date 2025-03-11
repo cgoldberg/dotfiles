@@ -143,14 +143,19 @@ alias more="less"
 alias untar="tar zxvf"
 
 # disk space
-alias df="\df --human-readable"
-alias ds="\df --human-readable | \grep --extended-regexp '(/dev/kvm)|(Filesystem)'"
+alias df="\df --human-readable --sync"
+alias ds="\df --human-readable --sync | \grep --extended-regexp '(/dev/kvm)|(Filesystem)'"
+alias diskspace="ds"
 
 # exit shell
 alias x="exit"
 
 # open ~/.bashrc for editing with sublime
-alias ebrc="subl ${HOME}/.bashrc"
+if [ -f  "/usr/bin/subl" ]; then
+    alias ebrc="subl ${HOME}/.bashrc"
+else
+    alias ebrc="vi ${HOME}/.bashrc"
+fi
 
 # reset terminal (clears screen and scrollback buffer)
 alias cls="tput reset"
@@ -168,10 +173,9 @@ alias deact="deactivate"
 # python - create a virtual env and activate it if none exists, otherwise just activate it
 alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
-# more ls aliases
+# list directory contents
 alias ls="ls --almost-all --classify --group-directories-first --color=always"
 alias l="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
-alias la="l"
 alias ll="l"
 
 # colored diffs
