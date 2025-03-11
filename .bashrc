@@ -214,7 +214,7 @@ killblog () {
             psgrep "${jekyll_proc}"
         fi
     else
-        echo "${blog_dir} not found. no server running."
+        echo "${blog_dir} not found. no server running"
     fi
 }
 
@@ -261,8 +261,11 @@ re-source () {
 
 # clean selenium dev environment, delete selenium cache and other browser data
 clean-selenium-dev () {
+    echo "cleaning up selenium dev environment and all browsers/drivers ..."
     local sel_home="${HOME}/code/selenium"
     local dirs=(
+        "${HOME}/.cache/bazel/"
+        "${HOME}/.cache/bazelisk/"
         "${HOME}/.cache/selenium/"
         "${HOME}/.cache/google-chrome-for-testing/"
         "${HOME}/.cache/mozilla/"
@@ -277,7 +280,7 @@ clean-selenium-dev () {
         "${sel_home}/py/venv/"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv"
+        echo "deactivating venv ..."
         deactivate
     fi
     for d in "${dirs[@]}"; do
