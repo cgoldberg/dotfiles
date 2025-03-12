@@ -312,6 +312,10 @@ clean-selenium-dev () {
         "${sel_home}/py/build/"
         "${sel_home}/py/selenium.egg-info/"
         "${sel_home}/py/venv/"
+        "${sel_home}/py/selenium/webdriver/common/devtools/"
+        "${sel_home}/py/selenium/webdriver/common/linux/"
+        "${sel_home}/py/selenium/webdriver/common/macos/"
+        "${sel_home}/py/selenium/webdriver/common/windows/"
     )
     if [ -d  "${sel_home}" ]; then
         echo "cleaning up selenium dev environment ..."
