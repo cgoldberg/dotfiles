@@ -281,9 +281,12 @@ clean-selenium-dev-full () {
     for d in "${dirs[@]}"; do
         if [ -d  "${d}" ]; then
             echo "deleting ${d}"
-            sudo rm -rf "${d}"
+            sudo rm -rf ${d}
         fi
     done
+    cd "${sel_home}"
+     ./go clean --trace
+    cd ${OLDPWD}
 }
 
 # clean selenium dev environment
@@ -310,7 +313,7 @@ clean-selenium-dev () {
     for d in "${dirs[@]}"; do
         if [ -d  "${d}" ]; then
             echo "deleting ${d}"
-            rm -rf "${d}"
+            rm -rf ${d}
         fi
     done
 }
