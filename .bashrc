@@ -263,6 +263,13 @@ re-source () {
 clean-selenium-dev-full () {
     clean-selenium-dev
     local sel_home="${HOME}/code/selenium"
+    local symlinks=(
+        "${sel_home}/bazel-bin"
+        "${sel_home}/bazel-genfiles"
+        "${sel_home}/bazel-out"
+        "${sel_home}/bazel-selenium"
+        "${sel_home}/bazel-testlogs"
+    )
     local dirs=(
         "${HOME}/.cache/bazel/"
         "${HOME}/.cache/bazelisk/"
@@ -271,13 +278,14 @@ clean-selenium-dev-full () {
         "${HOME}/.cache/mozilla/"
         "${HOME}/.cache/selenium/"
         "${HOME}/.mozilla/"
-        "${sel_home}/bazel-bin/"
-        "${sel_home}/bazel-genfiles/"
-        "${sel_home}/bazel-out/"
-        "${sel_home}/bazel-selenium/"
-        "${sel_home}/bazel-testlogs/"
     )
     echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
+    for s in "${symlinks[@]}"; do
+        if [ -L  "${s}" ]; then
+            echo "deleting ${s}"
+            rm -rf ${s}
+        fi
+    done
     for d in "${dirs[@]}"; do
         if [ -d  "${d}" ]; then
             echo "deleting ${d}"
