@@ -260,28 +260,46 @@ re-source () {
 }
 
 # clean selenium dev environment, delete selenium cache and other browser data
-clean-selenium-dev () {
-    echo "cleaning up selenium dev environment and all browsers/drivers ..."
-    local sel_home="${HOME}/code/selenium"
+clean-selenium-dev-full () {
+    clean-selenium-dev
     local dirs=(
         "${HOME}/.cache/bazel/"
         "${HOME}/.cache/bazelisk/"
-        "${HOME}/.cache/selenium/"
         "${HOME}/.cache/google-chrome-for-testing/"
-        "${HOME}/.cache/mozilla/"
         "${HOME}/.cache/Microsoft/"
+        "${HOME}/.cache/mozilla/"
+        "${HOME}/.cache/selenium/"
         "${HOME}/.mozilla/"
+    )
+    echo "cleaning up build artifacts, browsers and webdrivers ..."
+    for d in "${dirs[@]}"; do
+        if [ -d  "${d}" ]; then
+            echo "deleting ${d}"
+            sudo rm -rf "${d}"
+        fi
+    done
+}
+
+# clean selenium dev environment, delete selenium cache and other browser data
+clean-selenium-dev () {
+    local pyc="__pycache__"
+    local sel_home="${HOME}/code/selenium"
+    local dirs=(
         "${sel_home}/venv/"
         "${sel_home}/py/.pytest_cache/"
         "${sel_home}/py/.tox/"
-        "${sel_home}/py/__pycache__/"
         "${sel_home}/py/build/"
         "${sel_home}/py/selenium.egg-info/"
         "${sel_home}/py/venv/"
     )
+    echo "cleaning up selenium dev environment ..."
     if [ ! -z "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv ..."
         deactivate
+    fi
+    if [ -d  "${sel_home}/py/${pyc}" ]; then
+        echo "recursively deleting ${pyc} directories ..."
+        rm -rf ${sel_home}/py/**/${pyc}
     fi
     for d in "${dirs[@]}"; do
         if [ -d  "${d}" ]; then
