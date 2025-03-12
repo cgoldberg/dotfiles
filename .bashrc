@@ -284,9 +284,12 @@ clean-selenium-dev-full () {
             sudo rm -rf ${d}
         fi
     done
-    cd "${sel_home}"
-     ./go clean --trace
-    cd ${OLDPWD}
+    if [ -d  "${sel_home}" ]; then
+        echo "invoking 'go clean' ... "
+        cd "${sel_home}"
+         ./go clean --trace
+        cd ${OLDPWD}
+    fi
 }
 
 # clean selenium dev environment
@@ -301,21 +304,25 @@ clean-selenium-dev () {
         "${sel_home}/py/selenium.egg-info/"
         "${sel_home}/py/venv/"
     )
-    echo "cleaning up selenium dev environment ..."
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv ..."
-        deactivate
-    fi
-    if [ -d  "${sel_home}/py/${pyc}" ]; then
-        echo "recursively deleting ${pyc} directories"
-        rm -rf ${sel_home}/py/**/${pyc}
-    fi
-    for d in "${dirs[@]}"; do
-        if [ -d  "${d}" ]; then
-            echo "deleting ${d}"
-            rm -rf ${d}
+    if [ -d  "${sel_home}" ]; then
+        echo "cleaning up selenium dev environment ..."
+        if [ ! -z "${VIRTUAL_ENV}" ]; then
+            echo "deactivating venv ..."
+            deactivate
         fi
-    done
+        if [ -d  "${sel_home}/py/${pyc}/" ]; then
+            echo "recursively deleting ${pyc} directories"
+            rm -rf ${sel_home}/py/**/${pyc}/
+        fi
+        for d in "${dirs[@]}"; do
+            if [ -d  "${d}" ]; then
+                echo "deleting ${d}"
+                rm -rf ${d}
+            fi
+        done
+    else
+        echo "can't find ${sel_home}!"
+    fi
 }
 
 # chop lines at screen width
