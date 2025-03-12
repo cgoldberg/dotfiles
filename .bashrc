@@ -280,6 +280,13 @@ clean-selenium-dev-full () {
         "${HOME}/.mozilla/"
     )
     echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
+    if [ -d  "${sel_home}" ]; then
+        echo "invoking 'go clean' and 'bazel clean' ... "
+        cd ${sel_home}
+        ./go clean --trace
+        bazel clean --expunge --async
+        cd ${OLDPWD}
+    fi
     for s in "${symlinks[@]}"; do
         if [ -L  "${s}" ]; then
             echo "deleting ${s}"
@@ -292,12 +299,6 @@ clean-selenium-dev-full () {
             sudo rm -rf ${d}
         fi
     done
-    if [ -d  "${sel_home}" ]; then
-        echo "invoking 'go clean' ... "
-        cd "${sel_home}"
-         ./go clean --trace
-        cd ${OLDPWD}
-    fi
 }
 
 # clean selenium dev environment
