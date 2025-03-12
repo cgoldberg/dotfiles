@@ -259,9 +259,10 @@ re-source () {
     fi
 }
 
-# clean selenium dev environment, delete selenium cache and other browser data
+# clean selenium dev environment, cache, browsers, webdrivers, build artifacts
 clean-selenium-dev-full () {
     clean-selenium-dev
+    local sel_home="${HOME}/code/selenium"
     local dirs=(
         "${HOME}/.cache/bazel/"
         "${HOME}/.cache/bazelisk/"
@@ -270,8 +271,13 @@ clean-selenium-dev-full () {
         "${HOME}/.cache/mozilla/"
         "${HOME}/.cache/selenium/"
         "${HOME}/.mozilla/"
+        "${sel_home}/py/bazel-bin"
+        "${sel_home}/py/bazel-genfiles"
+        "${sel_home}/py/bazel-out"
+        "${sel_home}/py/bazel-selenium"
+        "${sel_home}/py/bazel-testlogs"
     )
-    echo "cleaning up build artifacts, browsers and webdrivers ..."
+    echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
     for d in "${dirs[@]}"; do
         if [ -d  "${d}" ]; then
             echo "deleting ${d}"
@@ -280,7 +286,7 @@ clean-selenium-dev-full () {
     done
 }
 
-# clean selenium dev environment, delete selenium cache and other browser data
+# clean selenium dev environment
 clean-selenium-dev () {
     local pyc="__pycache__"
     local sel_home="${HOME}/code/selenium"
@@ -298,13 +304,13 @@ clean-selenium-dev () {
         deactivate
     fi
     if [ -d  "${sel_home}/py/${pyc}" ]; then
-        echo "recursively deleting ${pyc} directories ..."
+        echo "recursively deleting ${pyc} directories"
         rm -rf ${sel_home}/py/**/${pyc}
     fi
     for d in "${dirs[@]}"; do
         if [ -d  "${d}" ]; then
             echo "deleting ${d}"
-            sudo rm -rf "${d}"
+            rm -rf "${d}"
         fi
     done
 }
