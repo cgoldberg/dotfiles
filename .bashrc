@@ -318,8 +318,8 @@ clean-selenium-dev () {
             echo "deactivating venv ..."
             deactivate
         fi
-        if [ -d  "${sel_home}/py/${pyc}/" ]; then
-            echo "recursively deleting ${pyc} directories"
+        if [ -d  "${sel_home}/py/selenium/${pyc}/" ]; then
+            echo "recursively deleting ${pyc} directories ..."
             rm -rf ${sel_home}/py/**/${pyc}/
         fi
         for d in "${dirs[@]}"; do
