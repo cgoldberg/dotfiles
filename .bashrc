@@ -271,11 +271,11 @@ clean-selenium-dev-full () {
         "${HOME}/.cache/mozilla/"
         "${HOME}/.cache/selenium/"
         "${HOME}/.mozilla/"
-        "${sel_home}/py/bazel-bin"
-        "${sel_home}/py/bazel-genfiles"
-        "${sel_home}/py/bazel-out"
-        "${sel_home}/py/bazel-selenium"
-        "${sel_home}/py/bazel-testlogs"
+        "${sel_home}/bazel-bin/"
+        "${sel_home}/bazel-genfiles/"
+        "${sel_home}/bazel-out/"
+        "${sel_home}/bazel-selenium/"
+        "${sel_home}/bazel-testlogs/"
     )
     echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
     for d in "${dirs[@]}"; do
