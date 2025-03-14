@@ -124,6 +124,9 @@ alias watch="watch "
 # go back to previous directory
 alias bk="cd ${OLDPWD}"
 
+# show TCP and UDP sockets that are actively listening
+alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
+
 # version control
 alias g="git"
 
