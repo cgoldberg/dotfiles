@@ -262,59 +262,12 @@ re-source () {
     fi
 }
 
-# clean selenium dev environment, cache, browsers, webdrivers, build artifacts
-clean-selenium-dev-full () {
-    clean-selenium-dev
-    local sel_home="${HOME}/code/selenium"
-    local symlinks=(
-        "${sel_home}/bazel-bin"
-        "${sel_home}/bazel-genfiles"
-        "${sel_home}/bazel-out"
-        "${sel_home}/bazel-selenium"
-        "${sel_home}/bazel-testlogs"
-    )
-    local dirs=(
-        "${HOME}/.cache/bazel/"
-        "${HOME}/.cache/bazelisk/"
-        "${HOME}/.cache/google-chrome-for-testing/"
-        "${HOME}/.cache/Microsoft/"
-        "${HOME}/.cache/mozilla/"
-        "${HOME}/.cache/selenium/"
-        "${HOME}/.mozilla/"
-    )
-    echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
-    if [ -d  "${sel_home}" ]; then
-        echo "invoking 'go clean' and 'bazel clean' ... "
-        cd ${sel_home}
-        ./go clean --trace
-        bazel clean --expunge --async
-        cd ${OLDPWD}
-    fi
-    for s in "${symlinks[@]}"; do
-        if [ -L  "${s}" ]; then
-            echo "deleting ${s}"
-            rm -rf ${s}
-        fi
-    done
-    for d in "${dirs[@]}"; do
-        if [ -d  "${d}" ]; then
-            echo "deleting ${d}"
-            sudo rm -rf ${d}
-        fi
-    done
-}
-
 # clean selenium dev environment
 clean-selenium-dev () {
-    local pyc="__pycache__"
     local sel_home="${HOME}/code/selenium"
     local dirs=(
-        "${sel_home}/venv/"
-        "${sel_home}/py/.pytest_cache/"
-        "${sel_home}/py/.tox/"
         "${sel_home}/py/build/"
         "${sel_home}/py/selenium.egg-info/"
-        "${sel_home}/py/venv/"
         "${sel_home}/py/selenium/webdriver/common/devtools/"
         "${sel_home}/py/selenium/webdriver/common/linux/"
         "${sel_home}/py/selenium/webdriver/common/macos/"
@@ -326,11 +279,15 @@ clean-selenium-dev () {
             echo "deactivating venv ..."
             deactivate
         fi
-        if [ -d  "${sel_home}/py/selenium/${pyc}/" ]; then
-            echo "recursively deleting ${pyc} directories ..."
-            rm -rf ${sel_home}/py/**/${pyc}/
-        fi
-        for d in "${dirs[@]}"; do
+        echo "recursively deleting __pycache__/ directories ..."
+        rm -rf ${sel_home}/py/**/__pycache__/
+        echo "recursively deleting .pytest_cache/ directories ..."
+        rm -rf ${sel_home}/**/.pytest_cache/
+        echo "recursively deleting .tox/ directories ..."
+        rm -rf ${sel_home}/**/.tox/
+        echo "recursively deleting venv/ directories ..."
+        rm -rf ${sel_home}/**/venv/
+        for d in ${dirs[@]}; do
             if [ -d  "${d}" ]; then
                 echo "deleting ${d}"
                 rm -rf ${d}
@@ -338,6 +295,56 @@ clean-selenium-dev () {
         done
     else
         echo "can't find ${sel_home}!"
+    fi
+}
+
+# clean selenium dev environment, cache, browsers, webdrivers, build artifacts
+clean-selenium-dev-full () {
+    clean-selenium-dev
+    local sel_home="${HOME}/code/selenium"
+    local symlinks=(
+        "${sel_home}/bazel-bin"
+        "${sel_home}/bazel-genfiles"
+        "${sel_home}/bazel-out"
+        "${sel_home}/bazel-selenium"
+        "${sel_home}/bazel-testlogs"
+    )
+    local dot_dirs=(
+        "${HOME}/.cache/bazel/"
+        "${HOME}/.cache/bazelisk/"
+        "${HOME}/.cache/google-chrome-for-testing/"
+        "${HOME}/.cache/Microsoft/"
+        "${HOME}/.cache/mozilla/"
+        "${HOME}/.cache/selenium/"
+        "${HOME}/.mozilla/"
+    )
+    local sel_dirs=(
+        "${sel_home}/build/"
+        "${sel_home}/dist/"
+        "${sel_home}/java/build/"
+    )
+    echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
+    if [ -d  "${sel_home}" ]; then
+        for s in ${symlinks[@]}; do
+            if [ -L  "${s}" ]; then
+                echo "deleting ${s}"
+                rm -rf ${s}
+            fi
+        done
+    fi
+    for d in ${dot_dirs[@]}; do
+        if [ -d  "${d}" ]; then
+            echo "deleting ${d}"
+            sudo rm -rf ${d}
+        fi
+    done
+    if [ -d  "${sel_home}" ]; then
+        for d in ${sel_dirs[@]}; do
+            if [ -d  "${d}" ]; then
+                echo "deleting ${d}"
+                rm -rf ${d}
+            fi
+        done
     fi
 }
 
