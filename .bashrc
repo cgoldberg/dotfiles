@@ -262,6 +262,30 @@ re-source () {
     fi
 }
 
+# clean Python dev/temp files from local directory
+clean-py () {
+    echo "cleaning Python dev/temp files ..."
+    local dirs=(
+        ".mypy_cache/"
+        ".pytest_cache/"
+        ".tox/"
+        "venv/"
+        "*.egg-info/"
+    )
+    if [ ! -z "${VIRTUAL_ENV}" ]; then
+        echo "deactivating venv ..."
+        deactivate
+    fi
+    echo "recursively deleting __pycache__/ directories ..."
+    rm -rf ./**/__pycache__/
+    for d in ${dirs[@]}; do
+        if [ -d  "${d}" ]; then
+            echo "deleting ${d}"
+            rm -rf ${d}
+        fi
+    done
+}
+
 # clean selenium dev environment
 clean-selenium-dev () {
     local sel_home="${HOME}/code/selenium"
