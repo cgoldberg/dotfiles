@@ -135,7 +135,6 @@ if [ -f  "/usr/bin/subl" ]; then
     alias subl="\subl --new-window"
     alias edit="subl"
     alias ed="subl"
-    alias e="\subl --new-window ."
 fi
 
 # pagers
