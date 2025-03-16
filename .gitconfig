@@ -17,18 +17,29 @@
 
     # basic aliases
     b = branch
+    i = info
+    p = pull
+    s = status
+    cl = clone
     co = checkout
     df = diff --staged
-    i = info
     rb = rebase
-    s = status
+
+    # list git aliases
+    alias = "!f() { git config --list | grep alias | cut -c 7- | sort; }; f"
 
     # commit changes with inline message
     ci = !git commit -a -m $2
 
+    # show diff of current branch against master
+    dfm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
+
     # pretty commit logs
     ls = log --pretty=format:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
     ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+
+    # list local branches with last commit date and commit hash, sorted by last modified
+    branches = "!f() { git for-each-ref --sort='-authordate' --format='%(refname)%09%09%(authordate)%09%09%(objectname:short)' refs/heads | sed -e 's-refs/heads/--'; }; f"
 
     # open Github page for current repo
     open = "!f() { xdg-open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#https://#' -e 's@com:@com/@'`; }; f"
