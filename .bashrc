@@ -417,9 +417,21 @@ apt-up () {
     sudo apt --purge autoremove && echo &&
     # remove cached packages
     sudo apt clean && echo &&
+    # purge orphaned configs from removed packages
+    purge-apt-configs && echo &&
     # reload package index files from sources
     sudo apt --no-allow-insecure-repositories update && echo
 }
+
+# purge configuration data from packages marked as removed
+purge-apt-configs () {
+    if dpkg -l | grep --quiet '^rc'; then
+        echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
+        echo "purging package configs from removed packages..."
+        dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
+    fi
+}
+
 
 # enable programmable completion features (you don't need to enable this, if it's
 # already enabled in /etc/bash.bashrc and /etc/profile sources /etc/bash.bashrc)
