@@ -432,6 +432,17 @@ purge-apt-configs () {
     fi
 }
 
+# count tests found under current directory by running pytest discovery
+# usage: count-tests <path> (no arg counts everything under current directory)
+count-tests () {
+    if [ -x "$(command -v pytest)" ]; then
+        echo "running test discovery ..."
+        local num_tests=$(pytest --collect-only -q ${1} | head -n -2 | wc -l)
+        echo "tests found: ${num_tests}"
+    else
+        echo "pytest not found"
+    fi
+}
 
 # enable programmable completion features (you don't need to enable this, if it's
 # already enabled in /etc/bash.bashrc and /etc/profile sources /etc/bash.bashrc)
