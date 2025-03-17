@@ -268,8 +268,9 @@ clean-py () {
         ".mypy_cache/"
         ".pytest_cache/"
         ".tox/"
-        "venv/"
         "*.egg-info/"
+        "dist/"
+        "venv/"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv ..."
