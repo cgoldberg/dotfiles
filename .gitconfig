@@ -18,12 +18,13 @@
     # basic aliases
     b = branch
     i = info
-    p = pull
     s = status
+    br = branch -a
     cl = clone
     co = checkout
     df = diff --staged
     rb = rebase
+    clb = clone --filter=blob:none
 
     # list git aliases
     alias = "!f() { git config --list | grep alias | cut -c 7- | sort; }; f"
