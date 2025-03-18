@@ -127,6 +127,10 @@ alias bk="cd ${OLDPWD}"
 # show TCP and UDP sockets that are actively listening
 alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
 
+# default browser
+alias browse="sensible-browser"
+alias web="sensible-browser"
+
 # version control
 alias g="git"
 
