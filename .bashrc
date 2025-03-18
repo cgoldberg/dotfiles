@@ -291,7 +291,6 @@ clean-selenium-dev () {
     local sel_home="${HOME}/code/selenium"
     local dirs=(
         "${sel_home}/py/build/"
-        "${sel_home}/py/docs/"
         "${sel_home}/py/selenium.egg-info/"
         "${sel_home}/py/selenium/webdriver/common/devtools/"
         "${sel_home}/py/selenium/webdriver/common/linux/"
