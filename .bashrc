@@ -344,6 +344,7 @@ clean-selenium-dev-full () {
     )
     local sel_dirs=(
         "${sel_home}/build/"
+        "${sel_home}/docs/"
         "${sel_home}/dist/"
         "${sel_home}/java/build/"
     )
