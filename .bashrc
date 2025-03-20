@@ -302,10 +302,6 @@ clean-selenium-dev () {
     local dirs=(
         "${sel_home}/py/build/"
         "${sel_home}/py/selenium.egg-info/"
-        "${sel_home}/py/selenium/webdriver/common/devtools/"
-        "${sel_home}/py/selenium/webdriver/common/linux/"
-        "${sel_home}/py/selenium/webdriver/common/macos/"
-        "${sel_home}/py/selenium/webdriver/common/windows/"
     )
     if [ -d  "${sel_home}" ]; then
         echo "cleaning up selenium dev environment ..."
@@ -356,6 +352,10 @@ clean-selenium-dev-full () {
         "${sel_home}/build/"
         "${sel_home}/dist/"
         "${sel_home}/java/build/"
+        "${sel_home}/py/selenium/webdriver/common/devtools/"
+        "${sel_home}/py/selenium/webdriver/common/linux/"
+        "${sel_home}/py/selenium/webdriver/common/macos/"
+        "${sel_home}/py/selenium/webdriver/common/windows/"
     )
     echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
     if [ -d  "${sel_home}" ]; then
