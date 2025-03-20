@@ -190,8 +190,11 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # grep recursively for pattern (case-insensitive)
-# usage: rgrep <pattern>
-alias rgrep="\
+# usage: rg <pattern>
+rg () {
+    if [ -z "$1" ]; then
+        echo "please enter a search pattern"
+    else
         \rgrep \
         --binary-files=without-match \
         --color=auto \
@@ -206,7 +209,10 @@ alias rgrep="\
         --exclude=*.css \
         --exclude=*.js \
         --exclude=*.svg \
-        "
+        "$1"
+    fi
+}
+alias rgrep="rg"
 
 # kill Jekyll server running blog
 killblog () {
@@ -442,7 +448,7 @@ purge-apt-configs () {
 count-tests () {
     if [ -x "$(command -v pytest)" ]; then
         echo "running test discovery ..."
-        local num_tests=$(pytest --collect-only -q ${1} | head -n -2 | wc -l)
+        local num_tests=$(pytest --collect-only -q $1 | head -n -2 | wc -l)
         echo "tests found: ${num_tests}"
     else
         echo "pytest not found"
