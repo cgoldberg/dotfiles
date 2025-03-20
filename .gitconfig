@@ -2,6 +2,9 @@
     name = Corey Goldberg
     email = 1113081+cgoldberg@users.noreply.github.com
 
+[pull]
+    rebase = true
+
 [push]
     default = simple
     autoSetupRemote = true
