@@ -43,7 +43,7 @@
     ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
     # list local branches with last commit date and commit hash, sorted by last modified
-    branches = "!f() { git for-each-ref --sort='-authordate' --format='%(refname)%09%09%(authordate)%09%09%(objectname:short)' refs/heads | sed -e 's-refs/heads/--'; }; f"
+    branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads | sed -e 's-refs/heads/--'; }; f"
 
     # open Github page for current repo
     open = "!f() { xdg-open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#https://#' -e 's@com:@com/@'`; }; f"
