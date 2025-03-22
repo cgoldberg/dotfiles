@@ -35,6 +35,9 @@
     # commit changes with inline message
     ci = !git commit -a -m $2
 
+    # remove objects that are no longer referenced and deleted remote references
+    pr = "!f() { git prune --progress --verbose && git remote prune origin; }; f"
+
     # show diff of current branch against master
     dfm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
 
