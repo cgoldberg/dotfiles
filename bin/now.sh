@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 #
-# now - display current weather, calendar, and time
+# now.sh - display current weather, calendar, and time
+#
 # this version was forked from original code posted on https://askubuntu.com/a/1020693
 # by user @WinEunuuchs2Unix (2017-2019)
 #
 # requirements:
-#  * bash shell
-#  * `toilet` package for clock font ($ sudo apt-get install toilet)
+#  * `ncal` package for calendar (sudo apt install ncal)
+#  * `toilet` package for clock font (sudo apt install toilet)
 
-# Rreplace Boston with your city name, GPS, etc. See: curl wttr.in/:help
+if [ ! -x "$(command -v cal)" ]; then
+    echo "Command not found. Please install the 'ncal' package"
+    exit 1
+fi
+
+if [ ! -x "$(command -v toilet)" ]; then
+    echo "Command not found. Please install the 'toilet' package"
+    exit 1
+fi
+
+# Replace Boston with your city name, GPS, etc. See: curl wttr.in/:help
 LOCATION="Boston"
 
 # setup for 92 character wide terminal
@@ -35,8 +46,8 @@ else
 fi
 echo
 
-#--------- DATE -------------------------------------------------------------
-# calendar current month with today highlighted
+#-------- DATE --------------------------------------------------------------
+# calendar, current month with today highlighted
 
 tput sc  # save cursor position.
 
@@ -109,13 +120,7 @@ done
 
 tput cuf $TimeColumn # move 49 columns right
 
-# do we have the toilet package?
-if hash toilet 2>/dev/null; then
-    echo " $(date +"%I:%M %P") " | \
-        toilet -f future --filter border > /tmp/terminal
-else  # use standard font
-    date +"%I:%M %P" > /tmp/terminal
-fi
+echo " $(date +"%I:%M %P") " | toilet -f future --filter border > /tmp/terminal
 
 while IFS= read -r Time; do
     printf "\033[01;92m"  # color intense green
