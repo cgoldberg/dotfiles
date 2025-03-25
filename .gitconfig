@@ -20,6 +20,7 @@
 
     # basic aliases
     b = branch
+    i = info
     s = status
     br = branch -a
     cl = clone
@@ -37,9 +38,6 @@
     # remove objects that are no longer referenced and deleted remote references
     pr = "!f() { git prune --progress --verbose && git remote prune origin; }; f"
 
-    # show diff of current branch against master
-    dfm = "!f() { git diff master...\"$(git rev-parse --abbrev-ref HEAD)\"; }; f"
-
     # pretty commit logs
     ls = log --pretty=format:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
     ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
@@ -48,5 +46,5 @@
     branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads | sed -e 's-refs/heads/--'; }; f"
 
     # open Github page for current repo
-    open = "!f() { xdg-open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#https://#' -e 's@com:@com/@'`; }; f"
+    open = "!f() { xdg-open $(git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#https://#' -e 's@com:@com/@'); }; f"
 
