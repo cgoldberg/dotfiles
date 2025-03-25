@@ -128,7 +128,6 @@ alias bk="cd ${OLDPWD}"
 alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
 
 # default browser
-alias browse="sensible-browser"
 alias web="sensible-browser"
 
 # version control
@@ -241,7 +240,7 @@ blog () {
         bundle exec jekyll s >/dev/null & disown # silence stdout
         sleep 3.5
         echo "opening browser at: http://${jekyll_server}"
-        sensible-browser "http://${jekyll_server}"
+        xdg-open "http://${jekyll_server}"
     else
         echo "${blog_dir} not found"
     fi
