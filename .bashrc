@@ -278,6 +278,7 @@ clean-py () {
         ".pytest_cache/"
         ".tox/"
         "*.egg-info/"
+        "build/"
         "dist/"
         "venv/"
     )
