@@ -283,10 +283,10 @@ clean-py () {
         "venv/"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv ..."
+        echo "deactivating venv"
         deactivate
     fi
-    echo "recursively deleting __pycache__/ directories ..."
+    echo "recursively deleting __pycache__/ directories"
     rm -rf ./**/__pycache__/
     for d in ${dirs[@]}; do
         if [ -d  "${d}" ]; then
@@ -309,13 +309,13 @@ clean-selenium-dev () {
             echo "deactivating venv ..."
             deactivate
         fi
-        echo "recursively deleting __pycache__/ directories ..."
+        echo "recursively deleting __pycache__/ directories"
         rm -rf ${sel_home}/py/**/__pycache__/
-        echo "recursively deleting .pytest_cache/ directories ..."
+        echo "recursively deleting .pytest_cache/ directories"
         rm -rf ${sel_home}/**/.pytest_cache/
-        echo "recursively deleting .tox/ directories ..."
+        echo "recursively deleting .tox/ directories"
         rm -rf ${sel_home}/**/.tox/
-        echo "recursively deleting venv/ directories ..."
+        echo "recursively deleting venv/ directories"
         rm -rf ${sel_home}/**/venv/
         for d in ${dirs[@]}; do
             if [ -d  "${d}" ]; then
