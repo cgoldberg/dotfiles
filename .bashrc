@@ -162,8 +162,9 @@ else
     alias ebrc="vi ${HOME}/.bashrc"
 fi
 
-# reset terminal (clears screen and scrollback buffer)
-alias cls="tput reset"
+# clear screen and scrollback buffer
+alias cls="clear"
+alias c="clear"
 
 # list dirs/files in tree format
 alias tree="tree -ash -CF --du"
@@ -179,9 +180,9 @@ alias deact="deactivate"
 alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
 # list directory contents
-alias ls="ls --almost-all --classify --group-directories-first --color=always"
-alias l="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
-alias ll="l"
+alias ls="LC_COLLATE=C \ls --almost-all --classify --group-directories-first --color=always"
+alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
+alias l="ll"
 
 # colored diffs
 if [ -x /usr/bin/dircolors ]; then
@@ -469,3 +470,6 @@ fi
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init - bash)"
+
+# pipx
+eval "$(register-python-argcomplete pipx)"
