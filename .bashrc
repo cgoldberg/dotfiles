@@ -271,6 +271,22 @@ re-source () {
     fi
 }
 
+# clean pip and pipx cache
+clean-pip () {
+    echo "cleaning pip and pipx cache ..."
+    local dirs=(
+        "${HOME}/.cache/pip/"
+        "${HOME}/.cache/pip-tools/"
+        "${HOME}/.local/pipx/.cache/"
+    )
+    for d in ${dirs[@]}; do
+        if [ -d  "${d}" ]; then
+            echo "deleting ${d}"
+            rm -rf ${d}
+        fi
+    done
+}
+
 # clean Python dev/temp files from local directory
 clean-py () {
     echo "cleaning Python dev/temp files ..."
@@ -346,6 +362,7 @@ clean-selenium-dev-full () {
         "${HOME}/.cache/google-chrome-for-testing/"
         "${HOME}/.cache/Microsoft/"
         "${HOME}/.cache/mozilla/"
+        "${HOME}/.cache/pnpm/"
         "${HOME}/.cache/selenium/"
         "${HOME}/.mozilla/"
     )
