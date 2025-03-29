@@ -132,6 +132,9 @@ alias web="sensible-browser"
 
 # version control
 alias g="git"
+if [ -x "$(command -v gh)" ]; then
+    alias preview="gh markdown-preview --light-mode"
+fi
 
 # sublime editor
 if [ -f  "/usr/bin/subl" ]; then
@@ -189,28 +192,59 @@ if [ -x /usr/bin/dircolors ]; then
     alias diff="colordiff --report-identical-files"
 fi
 
+# sync branch in forked git repo with upstream and push to origin
+# to run this, you must first add the upstream repo:
+#     git remote add upstream git@github.com:<username>/<repo>.git
+# usage: sync-repo <branch>
+sync-repo() {
+    if [ -z "$1" ]; then
+        echo "usage: sync-repo <branch>"
+        return 1
+    fi
+    if [ ! -d ".git" ]; then
+        echo "not in a top-level directory of a git repo"
+        return 1
+    fi
+    git checkout "$1"
+    if [ $? -ne 0 ]; then
+        return 1
+    fi
+    git fetch upstream
+    if [ $? -ne 0 ]; then
+        echo && echo "upstream not set"
+        return 1
+    else
+        git pull upstream "$1"
+        if [ $? -ne 0 ]; then
+            return 1
+        else
+            git push origin "$1"
+        fi
+    fi
+}
+
 # grep recursively for pattern (case-insensitive)
 # usage: rg <pattern>
 rg () {
     if [ -z "$1" ]; then
         echo "please enter a search pattern"
-    else
-        \rgrep \
-        --binary-files=without-match \
-        --color=auto \
-        --devices=skip \
-        --ignore-case \
-        --line-number \
-        --no-messages \
-        --with-filename \
-        --exclude-dir=.git \
-        --exclude-dir=.tox \
-        --exclude-dir=venv \
-        --exclude=*.css \
-        --exclude=*.js \
-        --exclude=*.svg \
-        "$1"
+        return 1
     fi
+    \rgrep \
+    --binary-files=without-match \
+    --color=auto \
+    --devices=skip \
+    --ignore-case \
+    --line-number \
+    --no-messages \
+    --with-filename \
+    --exclude-dir=.git \
+    --exclude-dir=.tox \
+    --exclude-dir=venv \
+    --exclude=*.css \
+    --exclude=*.js \
+    --exclude=*.svg \
+    "$1"
 }
 alias rgrep="rg"
 
@@ -419,14 +453,16 @@ psgrep () {
 # search recursively under the current directory for filenames matching pattern (case-insensitive)
 # usage: findfiles <pattern>
 findfiles () {
-    if [ ! -v $1 ]; then
-        find . -xdev \
-               -iname "*$1*" \
-               ! -path "*/.git/*" \
-               ! -path "*/.tox/*" \
-               ! -path "*/venv/*" |
-               \grep --ignore-case --color=always "$1"
+    if [ -z "$1" ]; then
+        echo "usage: findfiles <pattern>"
+        return 1
     fi
+    find . -xdev \
+           -iname "*$1*" \
+           ! -path "*/.git/*" \
+           ! -path "*/.tox/*" \
+           ! -path "*/venv/*" |
+           \grep --ignore-case --color=always "$1"
 }
 alias ff="findfiles"
 
