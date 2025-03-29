@@ -192,35 +192,41 @@ if [ -x /usr/bin/dircolors ]; then
     alias diff="colordiff --report-identical-files"
 fi
 
-# sync branch in forked git repo with upstream and push to origin
-# to run this, you must first add the upstream repo:
-#     git remote add upstream git@github.com:<username>/<repo>.git
-# usage: sync-repo <branch>
-sync-repo() {
-    if [ -z "$1" ]; then
-        echo "usage: sync-repo <branch>"
-        return 1
-    fi
+# sync current branch in a git repo with upstream
+#     to run this, you must first add the upstream repo:
+#         git remote add upstream git@github.com:<USERNAME>/<REPO>.git
+# usage: git-sync
+git-sync() {
     if [ ! -d ".git" ]; then
         echo "not in a top-level directory of a git repo"
         return 1
     fi
-    git checkout "$1"
-    if [ $? -ne 0 ]; then
-        return 1
+    if [ "$(git rev-parse HEAD)" != "$(git rev-parse @{u})" ]; then
+        git pull --rebase
+        if [ $? -ne 0 ]; then
+            echo && echo "cannot sync branch with upstream due to local cghanges"
+            return 1
+        fi
     fi
     git fetch upstream
     if [ $? -ne 0 ]; then
         echo && echo "upstream not set"
+        local repo_name=$(basename $(git rev-parse --show-toplevel))
+        echo && echo "please run: git remote add upstream git@github.com:<USERNAME>/${repo_name}.git"
         return 1
-    else
-        git pull upstream "$1"
-        if [ $? -ne 0 ]; then
-            return 1
-        else
-            git push origin "$1"
-        fi
     fi
+    local current_branch=$(git branch --show-current)
+    if [ "$(git rev-parse HEAD)" == "$(git rev-parse upstream/${current_branch})" ]; then
+        git status
+        echo && echo "nothing to sync, but you have local changes"
+        return 1
+    fi
+    git pull upstream ${current_branch}
+    if [ $? -ne 0 ]; then
+        echo && echo "failed pulling upstream"
+        return 1
+    fi
+    echo && echo "synced '${current_branch}' with upstream. don't forget to push your changes"
 }
 
 # grep recursively for pattern (case-insensitive)
