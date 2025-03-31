@@ -154,6 +154,8 @@ alias untar="tar zxvf"
 alias df="\df --human-readable --sync"
 alias ds="\df --human-readable --sync | \grep --extended-regexp '(/dev/kvm)|(Filesystem)'"
 alias diskspace="ds"
+alias du="du --human-readable --total"
+alias diskused="du"
 
 # exit shell
 alias x="exit"
