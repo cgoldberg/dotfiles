@@ -1,8 +1,15 @@
+// ------------------------------
+// Sublime Text - editor settings
+// ------------------------------
+//
+// ~/.config/sublime-text/Packages/User/Preferences.sublime-settings
+//
 // Settings in here override those in "Default/Preferences.sublime-settings",
 // and are overridden in turn by syntax-specific settings.
+//
 {
     "always_show_minimap_viewport": true,
-    "auto_close_tags": true,
+    "auto_close_tags": false,
     "auto_complete_commit_on_tab": true,
     "auto_match_enabled": true,
     "bold_folder_labels": true,
@@ -14,8 +21,8 @@
     "draw_minimap_border": true,
     "ensure_newline_at_eof_on_save": true,
     "fold_buttons": false,
-    "folder_exclude_patterns": [".svn", ".git", ".hg", "CVS", ".tox", "venv"],
-    "font_size": 9,
+    "folder_exclude_patterns": ["__pycache__", ".git", ".tox", ".venv", "venv", "VENV", ".env", "env", "ENV"],
+    "font_size": 8,
     "highlight_line": true,
     "highlight_modified_tabs": true,
     "hot_exit": "disabled",
@@ -29,5 +36,5 @@
     "show_line_endings": true,
     "tab_size": 4,
     "translate_tabs_to_spaces": true,
-    "trim_trailing_white_space_on_save": true
+    "trim_trailing_white_space_on_save": "all",
 }
