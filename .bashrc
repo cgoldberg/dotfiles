@@ -1,5 +1,6 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)for examples.
+# ~/.bashrc
+# - executed by bash for non-login shells
+# - see: /usr/share/doc/bash/examples/startup-files for examples (requires `bash-doc` package)
 
 # If not running interactively, don't do anything
 case $- in
@@ -7,13 +8,12 @@ case $- in
       *) return;;
 esac
 
-# export some environment variables
+# export environment variables
 export PAGER="less"
 export VISUAL="vi"
 export EDITOR="vi"
 
-# export environment variables for termcap colors
-# used by `less` pager for colors
+# export environment variables for termcap colors (used by `less` pager)
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')
 export LESS_TERMCAP_md=$(printf '\e[01;38;5;75m')
 export LESS_TERMCAP_me=$(printf '\e[0m')
@@ -63,11 +63,8 @@ case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
+# colored prompt
 force_color_prompt=yes
-
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
         # We have color support; assume it's compliant with Ecma-48
@@ -91,13 +88,7 @@ unset color_prompt force_color_prompt
 PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h\]$PS1"
 
 # enable color support for `grep`
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias grep="\grep --color=auto"
-fi
-
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+alias grep="grep --color=always"
 
 # navigate up the directory tree
 alias ..="cd .."
@@ -121,9 +112,6 @@ alias sudo="sudo "
 # expand aliases when running watch
 alias watch="watch "
 
-# go back to previous directory
-alias bk="cd ${OLDPWD}"
-
 # show TCP and UDP sockets that are actively listening
 alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
 
@@ -132,15 +120,22 @@ alias web="sensible-browser"
 
 # version control
 alias g="git"
+
+# preview markdown with GitHub CLI
+# - https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+# - gh extension install yusukebe/gh-markdown-preview
 if [ -x "$(command -v gh)" ]; then
     alias preview="gh markdown-preview --light-mode"
 fi
 
 # sublime editor
-if [ -f  "/usr/bin/subl" ]; then
+if [ -f /usr/bin/subl ]; then
     alias subl="\subl --new-window"
     alias edit="subl"
     alias ed="subl"
+else
+    alias edit="vi"
+    alias ed="vi"
 fi
 
 # pagers
@@ -153,15 +148,15 @@ alias untar="tar zxvf"
 # disk space
 alias df="\df --human-readable --sync"
 alias ds="\df --human-readable --sync | \grep --extended-regexp '(/dev/kvm)|(Filesystem)'"
-alias diskspace="ds"
-alias du="du --human-readable --total"
-alias diskused="du"
+
+# directory sizes
+alias du="du --human-readable --time --max-depth=1"
 
 # exit shell
 alias x="exit"
 
 # open ~/.bashrc for editing with sublime
-if [ -f  "/usr/bin/subl" ]; then
+if [ -f /usr/bin/subl ]; then
     alias ebrc="subl ${HOME}/.bashrc"
 else
     alias ebrc="vi ${HOME}/.bashrc"
@@ -175,13 +170,12 @@ alias c="clear"
 alias tree="tree -ash -CF --du"
 
 # python
-alias python="python3"
 alias py="python3"
 alias activate="source ./venv/bin/activate"
 alias act="activate"
 alias deact="deactivate"
 
-# python - create a virtual env and activate it if none exists, otherwise just activate it
+# create a python virtual env and activate it if none exists, otherwise just activate it
 alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
 # list directory contents
@@ -190,9 +184,14 @@ alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first 
 alias l="ll"
 
 # colored diffs
-if [ -x /usr/bin/dircolors ]; then
-    alias diff="colordiff --report-identical-files"
-fi
+dff () {
+    if [ -z "$1" ]  || [ -z "$2" ]; then
+        echo "please enter 2 files to diff"
+        return 1
+    fi
+    \diff --color=always --report-identical-files "$1" "$2" | less
+}
+alias diff="dff"
 
 # grep recursively for pattern (case-insensitive)
 # usage: rg <pattern>
@@ -203,7 +202,7 @@ rg () {
     fi
     \rgrep \
     --binary-files=without-match \
-    --color=auto \
+    --color=always \
     --devices=skip \
     --ignore-case \
     --line-number \
@@ -211,10 +210,10 @@ rg () {
     --with-filename \
     --exclude-dir=.git \
     --exclude-dir=.tox \
+    --exclude-dir=.pytest_cache \
+    --exclude-dir=__pycache__ \
+    --exclude-dir=.venv \
     --exclude-dir=venv \
-    --exclude=*.css \
-    --exclude=*.js \
-    --exclude=*.svg \
     "$1"
 }
 alias rgrep="rg"
@@ -269,6 +268,7 @@ alias md="makedir"
 # reload shell configuration
 re-source () {
     echo 'sourcing ~/.bashrc ...'
+    unalias -a # remove all aliases
     source "${HOME}/.bashrc"
     # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
     if [ ! -z "${VIRTUAL_ENV}" ]; then
