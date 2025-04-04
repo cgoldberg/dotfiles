@@ -22,26 +22,15 @@ export LESS_TERMCAP_so=$(printf '\e[01;33m')
 export LESS_TERMCAP_ue=$(printf '\e[0m')
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
 
-# better command history handling
-# -------------------------------
-# append to history file, don't overwrite it
-shopt -s histappend
-# edit recalled history line before executing
-shopt -s histverify
-# save each line of a multi-line command in the same history entry
-shopt -s cmdhist
-# remove duplicate commands from history
-HISTCONTROL=ignoredups:erasedups
-# don't add entries to history
-HISTIGNORE="x:exit" # we get duplicates of `x` and `exit` because shell is closed immediately
-# number of previous commands stored in history file
-HISTSIZE=9999
-# number of previous commands stored in memory for current session
-HISTFILESIZE=9999
-# show timestamp [Weekday Month/Day Hour:Min] for each command in history
-#HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
-# immediately add commands to history instead of waiting for end of session
-PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
+# enable programmable completion features (you don't need to enable this, if it's
+# already enabled in /etc/bash.bashrc and /etc/profile sources /etc/bash.bashrc)
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+fi
 
 # check the window size after each command and update the values of LINES and COLUMNS
 shopt -s checkwinsize
@@ -86,6 +75,27 @@ unset color_prompt force_color_prompt
 
 # set the title to user@host
 PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h\]$PS1"
+
+# better command history handling
+# -------------------------------
+# append to history file, don't overwrite it
+shopt -s histappend
+# edit recalled history line before executing
+shopt -s histverify
+# save each line of a multi-line command in the same history entry
+shopt -s cmdhist
+# remove duplicate commands from history
+HISTCONTROL=ignoredups:erasedups
+# don't add entries to history
+HISTIGNORE="x:exit" # we get duplicates of `x` and `exit` because shell is closed immediately
+# number of previous commands stored in history file
+HISTSIZE=9999
+# number of previous commands stored in memory for current session
+HISTFILESIZE=9999
+# show timestamp [Weekday Month/Day Hour:Min] for each command in history
+#HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
+# immediately add commands to history instead of waiting for end of session
+PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
 # enable color support for `grep`
 alias grep="grep --color=always"
@@ -480,15 +490,27 @@ count-tests () {
     fi
 }
 
-# enable programmable completion features (you don't need to enable this, if it's
-# already enabled in /etc/bash.bashrc and /etc/profile sources /etc/bash.bashrc)
-if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-        . /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-        . /etc/bash_completion
+# upgrade pip in every Python installation from pyenv
+upgrade-pip () {
+    local py_versions=(
+        "3.8"
+        "3.9"
+        "3.10"
+        "3.11"
+        "3.12"
+        "3.13"
+        "pypy3.11"
+    )
+    if [ ! -d ~/.pyenv ]; then
+        echo "pyenv is not installed"
+        return 1
     fi
-fi
+    for py_version in ${py_versions[@]}; do
+        pyenv global ${py_version}
+        python3 -m pip install --upgrade pip
+    done
+    pyenv global 3.13
+}
 
 # pyenv
 if [ -d ~/.pyenv ]; then
