@@ -21,7 +21,7 @@
     "draw_minimap_border": true,
     "ensure_newline_at_eof_on_save": true,
     "fold_buttons": false,
-    "folder_exclude_patterns": ["__pycache__", ".git", ".tox", ".venv", "venv", "VENV", ".env", "env", "ENV"],
+    "folder_exclude_patterns": ["__pycache__", ".pytest_cache", ".git", ".tox", ".venv", "venv"],
     "font_size": 8,
     "highlight_line": true,
     "highlight_modified_tabs": true,
