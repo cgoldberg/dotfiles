@@ -491,9 +491,14 @@ if ! shopt -oq posix; then
 fi
 
 # pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - bash)"
+if [ -d ~/.pyenv ]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init - bash)"
+fi
 
 # pipx
-eval "$(register-python-argcomplete pipx)"
+if [ -f /usr/bin/pipx ]; then
+    eval "$(register-python-argcomplete pipx)"
+fi
+
