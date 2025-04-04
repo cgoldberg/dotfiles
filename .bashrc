@@ -233,14 +233,14 @@ killblog () {
     local blog_dir="${HOME}/code/cgoldberg.github.io"
     local jekyll_proc="jekyll s"
     local jekyll_server="127.0.0.1:4000"
-    if [ -d "${blog_dir}" ]; then
-        if [[ $(psgrep "${jekyll_proc}") ]]; then
-            echo "killing server at: ${jekyll_server}"
-            pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
-            psgrep "${jekyll_proc}"
-        fi
-    else
+    if [ ! -d "${blog_dir}" ]; then
         echo "${blog_dir} not found. no server running"
+        return 1
+    fi
+    if [[ $(psgrep "${jekyll_proc}") ]]; then
+        echo "killing server at: ${jekyll_server}"
+        pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
+        psgrep "${jekyll_proc}"
     fi
 }
 
@@ -248,23 +248,26 @@ killblog () {
 blog () {
     local blog_dir="${HOME}/code/cgoldberg.github.io"
     local jekyll_server="127.0.0.1:4000"
-    if [ -d "${blog_dir}" ]; then
-        killblog
-        echo "running server at: ${jekyll_server}"
-        cd "${blog_dir}"
-        bundle exec jekyll s >/dev/null & disown # silence stdout
-        sleep 3.5
-        echo "opening browser at: http://${jekyll_server}"
-        xdg-open "http://${jekyll_server}"
-    else
+    if [ ! -d "${blog_dir}" ]; then
         echo "${blog_dir} not found"
+        return 1
+    elif [ ! -x "$(command -v bundle)" ]; then
+        echo "bundler not found"
+        return 1
     fi
+    killblog
+    echo "running server at: ${jekyll_server}"
+    cd "${blog_dir}"
+    bundle exec jekyll s >/dev/null & disown # silence stdout
+    sleep 3.5
+    echo "opening browser at: http://${jekyll_server}"
+    xdg-open "http://${jekyll_server}"
 }
 
 # search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
-    local num="150"
+    local num="100"
     history | \grep --ignore-case --color=always "$1" | tail -n "${num}"
 }
 
@@ -511,6 +514,10 @@ upgrade-pip () {
     done
     pyenv global 3.13
 }
+
+# Install Ruby Gems to ~/gems
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH"
 
 # pyenv
 if [ -d ~/.pyenv ]; then
