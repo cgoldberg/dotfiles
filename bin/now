@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 #
-# now.sh - display current weather, calendar, and time
+# now - display current weather, calendar, and time
 #
-# this version was forked from original code posted on https://askubuntu.com/a/1020693
+# Original version of this code was posted at: https://askubuntu.com/a/1020693
 # by user @WinEunuuchs2Unix (2017-2019)
+#
+# Updates by: Corey Goldberg (2019-2025)
 #
 # requirements:
 #  * `ncal` package for calendar (sudo apt install ncal)
@@ -19,7 +21,7 @@ if [ ! -x "$(command -v toilet)" ]; then
     exit 1
 fi
 
-# Replace Boston with your city name, GPS, etc. See: curl wttr.in/:help
+# Replace with your city name, GPS, etc. See: curl wttr.in/:help
 LOCATION="Boston"
 
 # setup for 92 character wide terminal
