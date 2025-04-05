@@ -445,7 +445,6 @@ findfiles () {
         return 1
     fi
     find \
-        -L \
         -xdev \
         -iname "*$1*" \
         ! -path "*/.git/*" \
