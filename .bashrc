@@ -444,12 +444,17 @@ findfiles () {
         echo "usage: findfiles <pattern>"
         return 1
     fi
-    find . -xdev \
-           -iname "*$1*" \
-           ! -path "*/.git/*" \
-           ! -path "*/.tox/*" \
-           ! -path "*/venv/*" |
-           \grep --ignore-case --color=always "$1" | less
+    find \
+        -L \
+        -xdev \
+        -iname "*$1*" \
+        ! -path "*/.git/*" \
+        ! -path "*/.tox/*" \
+        ! -path "*/.venv/*" \
+        ! -path "*/.pytest_cache/*" \
+        ! -path "*/__pycache__/*" \
+        ! -path "*/venv/*" \
+        | \grep --ignore-case --color=always "$1"
 }
 alias ff="findfiles"
 
