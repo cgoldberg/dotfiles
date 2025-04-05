@@ -162,10 +162,13 @@ alias ds="\df --human-readable --sync | \grep --extended-regexp '(/dev/kvm)|(Fil
 # directory sizes
 alias du="du --human-readable --time --max-depth=1"
 
+# memory
+alias mem="free --human --si"
+
 # exit shell
 alias x="exit"
 
-# open ~/.bashrc for editing with sublime
+# open ~/.bashrc for editing
 if [ -f /usr/bin/subl ]; then
     alias ebrc="subl ${HOME}/.bashrc"
 else
@@ -515,9 +518,9 @@ upgrade-pip () {
     pyenv global 3.13
 }
 
-# Install Ruby Gems to ~/gems
-export GEM_HOME="$HOME/gems"
-export PATH="$HOME/gems/bin:$PATH"
+# Install Ruby Gems to ~/.gems
+export GEM_HOME="$HOME/.gems"
+export PATH="$HOME/.gems/bin:$PATH"
 
 # pyenv
 if [ -d ~/.pyenv ]; then
