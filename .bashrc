@@ -227,7 +227,7 @@ rg () {
     --exclude-dir=__pycache__ \
     --exclude-dir=.venv \
     --exclude-dir=venv \
-    "$1"
+    "$1" | less
 }
 alias rgrep="rg"
 
@@ -449,7 +449,7 @@ findfiles () {
            ! -path "*/.git/*" \
            ! -path "*/.tox/*" \
            ! -path "*/venv/*" |
-           \grep --ignore-case --color=always "$1"
+           \grep --ignore-case --color=always "$1" | less
 }
 alias ff="findfiles"
 
