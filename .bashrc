@@ -557,8 +557,8 @@ count-tests () {
     fi
 }
 
-# upgrade pip in every python installation from pyenv
-upgrade-pip () {
+# update pyenv, plugins, and pip in every python installation
+update-pyenv () {
     local py_versions=(
         "3.8"
         "3.9"
@@ -572,9 +572,17 @@ upgrade-pip () {
         echo "pyenv is not installed"
         return 1
     fi
+    echo "updating pyenv and plugins ..."
+    pyenv update
+    pyenv rehash
+    echo
     for py_version in ${py_versions[@]}; do
         pyenv global ${py_version}
+        echo "version installed: $(python --version)"
+        echo "version available: Python $(pyenv latest ${py_version})"
+        echo "updating pip ..."
         python3 -m pip install --upgrade pip
+        echo
     done
     pyenv global 3.13
 }
