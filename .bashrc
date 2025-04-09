@@ -267,6 +267,28 @@ blog () {
     xdg-open "http://${jekyll_server}"
 }
 
+# show spinner for indicating progress
+spinner() {
+    local shs=( - \\ \| / ) pnt=0
+    printf '\e7'
+    while ! read -rsn1 -t .2 _; do
+        printf '%b\e8' "${shs[pnt++%${#shs[@]}]}"
+    done
+}
+
+# start spinner background task
+start_spinner () {
+    tput civis;
+    exec {doSpinner}> >(spinner "$@")
+}
+
+# stop spinner background task
+stop_spinner () {
+    echo >&"$doSpinner" && exec {doSpinner}>&-;
+    tput cnorm;
+    echo
+}
+
 # search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
@@ -308,7 +330,7 @@ clean-pip () {
     done
 }
 
-# clean Python dev/temp files from local directory
+# clean python dev/temp files from local directory
 clean-py () {
     echo "cleaning Python dev/temp files ..."
     local dirs=(
@@ -422,6 +444,7 @@ clean-selenium-dev-full () {
 }
 
 # chop lines at screen width
+# usage example: echo $really_long_line | nowrap
 nowrap () {
     cut -c-$(tput cols)
 }
@@ -430,8 +453,7 @@ nowrap () {
 # usage: psgrep <pattern>
 psgrep () {
     if [ ! -z "$1" ]; then
-        ps -ef | \grep --extended-regexp --ignore-case "$1" | \grep -v "grep" | \
-        sort -n -r | less | nowrap
+        ps -ef | \grep --extended-regexp --ignore-case "$1" | \grep -v "grep" | sort -n -r | nowrap
     else
         ps -ef
     fi
@@ -500,7 +522,7 @@ count-tests () {
     fi
 }
 
-# upgrade pip in every Python installation from pyenv
+# upgrade pip in every python installation from pyenv
 upgrade-pip () {
     local py_versions=(
         "3.8"
@@ -522,7 +544,7 @@ upgrade-pip () {
     pyenv global 3.13
 }
 
-# Install Ruby Gems to ~/.gems
+# install ruby gems to ~/.gems
 export GEM_HOME="$HOME/.gems"
 export PATH="$HOME/.gems/bin:$PATH"
 
