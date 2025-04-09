@@ -488,7 +488,7 @@ nowrap () {
 # usage: psgrep <pattern>
 psgrep () {
     if [ ! -z "$1" ]; then
-        ps -ef | \grep --extended-regexp --ignore-case "$1" | \grep -v "grep" | sort -n -r | nowrap
+        ps -ef | \grep -v "grep" | \grep --color=always --extended-regexp --ignore-case "$1" | nowrap
     else
         ps -ef
     fi
