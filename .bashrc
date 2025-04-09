@@ -443,6 +443,41 @@ clean-selenium-dev-full () {
     fi
 }
 
+# delete and re-install all webdrivers and browsers used by Selenium
+update-selenium-drivers () {
+    local sel_mgr_path="${HOME}/code/selenium/py/selenium/webdriver/common/linux"
+    if [ ! -d "${sel_mgr_path}" ]; then
+        echo "selenium manager not found"
+        return 1
+    fi
+    local dirs=(
+        "${HOME}/.cache/google-chrome-for-testing/"
+        "${HOME}/.cache/Microsoft/"
+        "${HOME}/.cache/mozilla/"
+        "${HOME}/.cache/selenium/"
+        "${HOME}/.mozilla/"
+    )
+    for d in ${dirs[@]}; do
+        if [ -d  "${d}" ]; then
+            echo "deleting ${d}"
+            rm -rf ${d}
+        fi
+    done
+    echo
+    echo "updating chrome/chromedriver ..."
+    start_spinner
+    ${sel_mgr_path}/selenium-manager --browser=chrome --driver=chromedriver
+    stop_spinner
+    echo "updating edge/edgedriver ..."
+    start_spinner
+    ${sel_mgr_path}/selenium-manager --browser=edge --driver=edgedriver
+    stop_spinner
+    echo "updating firefox/geckodriver ..."
+    start_spinner
+    ${sel_mgr_path}/selenium-manager --browser=firefox --driver=geckodriver
+    stop_spinner
+}
+
 # chop lines at screen width
 # usage example: echo $really_long_line | nowrap
 nowrap () {
