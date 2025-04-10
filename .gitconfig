@@ -22,7 +22,7 @@
     b = branch
     i = info # ~/bin/git-info
     s = status
-    br = branch -a # local and remote-tracking branches
+    br = branch --all --list # show local and remote-tracking branches
     co = checkout
     df = diff --staged
     rb = rebase
