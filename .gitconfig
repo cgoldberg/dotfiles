@@ -22,7 +22,7 @@
     b = branch
     i = info # ~/bin/git-info
     s = status
-    br = branch --all --list # show local and remote-tracking branches
+    br = branch --all --list # list local and remote-tracking branches
     co = checkout
     df = diff --staged
     rb = rebase
@@ -40,7 +40,7 @@
     alias = "!f() { git config --list | grep alias | cut -c 7- | sort; }; f"
 
     # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
-    pr = "!f() { git prune --progress --verbose && git remote prune origin && git gc; }; f"
+    tidy = "!f() { git prune --progress --verbose && git remote prune origin && git gc; }; f"
 
     # list local branches with last commit date and commit hash, sorted by last modified
     branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads | sed -e 's-refs/heads/--'; }; f"
