@@ -572,6 +572,10 @@ update-pyenv () {
         echo "pyenv is not installed"
         return 1
     fi
+    if [ ! -z "${VIRTUAL_ENV}" ]; then
+        echo "deactivating venv"
+        deactivate
+    fi
     echo "updating pyenv and plugins ..."
     pyenv update
     pyenv rehash
