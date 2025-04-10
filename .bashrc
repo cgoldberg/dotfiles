@@ -189,7 +189,7 @@ alias act="activate"
 alias deact="deactivate"
 
 # create a python virtual env and activate it if none exists, otherwise just activate it
-alias venv="[ ! -d './venv' ] && python3 -m venv venv && source ./venv/bin/activate || activate"
+alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && source ./venv/bin/activate || activate"
 
 # list directory contents
 alias ls="LC_COLLATE=C \ls --almost-all --classify --group-directories-first --color=always"
