@@ -97,9 +97,6 @@ HISTFILESIZE=9999
 # immediately add commands to history instead of waiting for end of session
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
-# enable color support for `grep`
-alias grep="grep --color=always"
-
 # navigate up the directory tree
 alias ..="cd .."
 alias ...="cd ../.."
@@ -116,6 +113,9 @@ alias cd......="cd ../../../../.."
 alias cd.......="cd ../../../../../.."
 alias cd........="cd ../../../../../../.."
 
+# enable color support for `grep`
+alias grep="grep --color=always"
+
 # expand aliases when running sudo
 alias sudo="sudo "
 
@@ -131,22 +131,8 @@ alias web="sensible-browser"
 # version control
 alias g="git"
 
-# preview markdown with GitHub CLI
-# - https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-# - gh extension install yusukebe/gh-markdown-preview
-if [ -x "$(command -v gh)" ]; then
-    alias preview="gh markdown-preview --light-mode"
-fi
-
-# sublime editor
-if [ -f /usr/bin/subl ]; then
-    alias subl="\subl --new-window"
-    alias edit="subl"
-    alias ed="subl"
-else
-    alias edit="vi"
-    alias ed="vi"
-fi
+# exit shell
+alias x="exit"
 
 # pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
@@ -157,23 +143,13 @@ alias untar="tar zxvf"
 
 # disk space
 alias df="\df --human-readable --sync"
-alias ds="\df --human-readable --sync | \grep --extended-regexp '(/dev/kvm)|(Filesystem)'"
+alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
 
 # directory sizes
 alias du="du --human-readable --time --max-depth=1"
 
-# memory
-alias mem="free --human --si"
-
-# exit shell
-alias x="exit"
-
-# open ~/.bashrc for editing
-if [ -f /usr/bin/subl ]; then
-    alias ebrc="subl ${HOME}/.bashrc"
-else
-    alias ebrc="vi ${HOME}/.bashrc"
-fi
+# memory usage
+alias mem="free --human --si | \grep --extended-regex 'Mem|total'"
 
 # clear screen and scrollback buffer
 alias cls="clear"
@@ -195,6 +171,23 @@ alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && source .
 alias ls="LC_COLLATE=C \ls --almost-all --classify --group-directories-first --color=always"
 alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
 alias l="ll"
+
+# open ~/.bashrc for editing
+if [ -f /usr/bin/subl ]; then
+    alias ebrc="subl ${HOME}/.bashrc"
+else
+    alias ebrc="vi ${HOME}/.bashrc"
+fi
+
+# sublime editor
+if [ -f /usr/bin/subl ]; then
+    alias subl="\subl --new-window"
+    alias edit="subl"
+    alias ed="subl"
+else
+    alias edit="vi"
+    alias ed="vi"
+fi
 
 # colored diffs
 dff () {
@@ -230,6 +223,18 @@ rg () {
     "$1" | less
 }
 alias rgrep="rg"
+
+# preview markdown with GitHub CLI
+# requires GitHub CLI and `gh-markdown-preview` extension
+#   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+#   - run: `gh extension install yusukebe/gh-markdown-preview``
+preview-md () {
+    if [ -x "$(command -v gh)" ]; then
+        gh markdown-preview --light-mode
+    else:
+        echo "github cli is not installed"
+    fi
+}
 
 # kill Jekyll server running blog
 killblog () {
