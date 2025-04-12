@@ -1,6 +1,25 @@
 # ~/.bashrc
-# - executed by bash for non-login shells
-# - see: /usr/share/doc/bash/examples/startup-files for examples (requires `bash-doc` package)
+# - bash shell configurations, aliases, functions
+# - sourced for non-login shells
+#
+#    bbbbbbbb
+#    b::::::b                                             hhhhhhh
+#    b::::::b                                             h:::::h
+#    b::::::b                                             h:::::h
+#     b:::::b                                             h:::::h
+#     b:::::bbbbbbbbb      aaaaaaaaaaaaa      ssssssssss   h::::h hhhhh
+#     b::::::::::::::bb    a::::::::::::a   ss::::::::::s  h::::hh:::::hhh
+#     b::::::::::::::::b   aaaaaaaaa:::::ass:::::::::::::s h::::::::::::::hh
+#     b:::::bbbbb:::::::b           a::::as::::::ssss:::::sh:::::::hhh::::::h
+#     b:::::b    b::::::b    aaaaaaa:::::a s:::::s  ssssss h::::::h   h::::::h
+#     b:::::b     b:::::b  aa::::::::::::a   s::::::s      h:::::h     h:::::h
+#     b:::::b     b:::::b a::::aaaa::::::a      s::::::s   h:::::h     h:::::h
+#     b:::::b     b:::::ba::::a    a:::::assssss   s:::::s h:::::h     h:::::h
+#     b:::::bbbbbb::::::ba::::a    a:::::as:::::ssss::::::sh:::::h     h:::::h
+#     b::::::::::::::::b a:::::aaaa::::::as::::::::::::::s h:::::h     h:::::h
+#     b:::::::::::::::b   a::::::::::aa:::as:::::::::::ss  h:::::h     h:::::h
+#     bbbbbbbbbbbbbbbb     aaaaaaaaaa  aaaa sssssssssss    hhhhhhh     hhhhhhh
+
 
 # If not running interactively, don't do anything
 case $- in
@@ -89,9 +108,9 @@ HISTCONTROL=ignoredups:erasedups
 # don't add entries to history
 HISTIGNORE="x:exit" # we get duplicates of `x` and `exit` because shell is closed immediately
 # number of previous commands stored in history file
-HISTSIZE=9999
+HISTSIZE=999
 # number of previous commands stored in memory for current session
-HISTFILESIZE=9999
+HISTFILESIZE=999
 # show timestamp [Weekday Month/Day Hour:Min] for each command in history
 #HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
 # immediately add commands to history instead of waiting for end of session
@@ -114,7 +133,7 @@ alias cd.......="cd ../../../../../.."
 alias cd........="cd ../../../../../../.."
 
 # enable color support for `grep`
-alias grep="grep --color=always"
+alias grep="\grep --color=always"
 
 # expand aliases when running sudo
 alias sudo="sudo "
@@ -145,18 +164,28 @@ alias untar="tar zxvf"
 alias df="\df --human-readable --sync"
 alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
 
-# directory sizes
+# disk usage (directory sizes)
 alias du="du --human-readable --time --max-depth=1"
+
+# ncurses disk usage (requires `ncdu` package)
+alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
 
 # memory usage
 alias mem="free --human --si | \grep --extended-regex 'Mem|total'"
+
+# count all files in current directory (recursive)
+alias countfiles="find . -type f | wc -l"
+
+# list directories and files in tree format
+alias tree="tree -ash -CF --du"
 
 # clear screen and scrollback buffer
 alias cls="clear"
 alias c="clear"
 
-# list dirs/files in tree format
-alias tree="tree -ash -CF --du"
+# ip addresses
+alias internalip="echo 'internal ip addresss:' && echo '---------------------' && hostname --all-ip-addresses | awk '{print \$1}'"
+alias externalip="echo 'external ip addresses:' && echo '----------------------' && curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
 
 # python
 alias py="python3"
@@ -164,8 +193,14 @@ alias activate="source ./venv/bin/activate"
 alias act="activate"
 alias deact="deactivate"
 
+# show the zen of python
+alias zen="python -c 'import this'"
+
 # create a python virtual env and activate it if none exists, otherwise just activate it
 alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && source ./venv/bin/activate || activate"
+
+# serve current directory over HTTP on port 8000 (bind all interfaces)
+alias webserver="python3 -m http.server"
 
 # list directory contents
 alias ls="LC_COLLATE=C \ls --almost-all --classify --group-directories-first --color=always"
@@ -297,7 +332,7 @@ stop_spinner () {
 # search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
-    local num="100"
+    local num="50"
     history | \grep --ignore-case --color=always "$1" | tail -n "${num}"
 }
 
@@ -552,7 +587,7 @@ purge-apt-configs () {
 
 # count tests found under current directory by running pytest discovery
 # usage: count-tests <path> (no arg counts everything under current directory)
-count-tests () {
+counttests () {
     if [ -x "$(command -v pytest)" ]; then
         echo "running test discovery ..."
         local num_tests=$(pytest --collect-only -q $1 | head -n -2 | wc -l)
