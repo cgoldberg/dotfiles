@@ -684,4 +684,3 @@ fi
 if [ -f /usr/bin/pipx ]; then
     eval "$(register-python-argcomplete pipx)"
 fi
-
