@@ -132,20 +132,20 @@ alias cd......="cd ../../../../.."
 alias cd.......="cd ../../../../../.."
 alias cd........="cd ../../../../../../.."
 
+# expand aliases when running `sudo`
+alias sudo="sudo "
+
+# expand aliases when running `watch``
+alias watch="watch "
+
 # enable color support for `grep`
 alias grep="\grep --color=always"
 
-# expand aliases when running sudo
-alias sudo="sudo "
-
-# expand aliases when running watch
-alias watch="watch "
+# kill process group by name
+alias killall="\killall --ignore-case --process-group --wait"
 
 # show TCP and UDP sockets that are actively listening
 alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
-
-# default browser
-alias web="sensible-browser"
 
 # version control
 alias g="git"
@@ -159,6 +159,9 @@ alias more="less"
 
 # extract a tarball
 alias untar="tar zxvf"
+
+# open url in default browser
+alias web="sensible-browser"
 
 # disk space
 alias df="\df --human-readable --sync"
@@ -537,6 +540,21 @@ selenium-server () {
     fi
     java -jar ${jar} standalone
 }
+
+# kill all webdrivers started by selenium
+kill-webdrivers () {
+    \killall --ignore-case --process-group --quiet chromedriver
+    \killall --ignore-case --process-group --quiet geckodriver
+    \killall --ignore-case --process-group --quiet msedgedriver
+    \killall --ignore-case --process-group --quiet webkitwebdriver
+    sleep 1
+    \killall -9 --ignore-case --process-group --quiet --wait chromedriver
+    \killall -9 --ignore-case --process-group --quiet --wait geckodriver
+    \killall -9 --ignore-case --process-group --quiet --wait msedgedriver
+    \killall -9 --ignore-case --process-group --quiet --wait webkitwebdriver
+}
+
+
 
 # chop lines at screen width
 # usage example: echo $really_long_line | nowrap
