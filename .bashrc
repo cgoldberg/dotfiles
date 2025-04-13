@@ -300,7 +300,7 @@ blog () {
     fi
     killblog
     echo "running server at: ${jekyll_server}"
-    cd "${blog_dir}"
+    cd ${blog_dir}
     bundle exec jekyll s >/dev/null & disown # silence stdout
     sleep 3.5
     echo "opening browser at: http://${jekyll_server}"
@@ -516,6 +516,26 @@ update-selenium-drivers () {
     start_spinner
     ${sel_mgr_path}/selenium-manager --browser=firefox --driver=geckodriver
     stop_spinner
+}
+
+# run selenium server in standalone mode (port 4444)
+# download server first with github cli if it's not found
+selenium-server () {
+    local sel_home="${HOME}/code/selenium"
+    local jar="selenium-server.jar"
+    if [ ! -x "$(command -v gh)" ]; then
+        echo "github cli is not installed"
+        return 1
+    fi
+    if [ !  -d  "${sel_home}" ]; then
+        echo "can't find selenium repo at: ${sel_home}"
+        return 1
+    fi
+    cd ${sel_home}
+    if [ ! -f  "${jar}" ]; then
+        gh release download --pattern=selenium-server*.jar --output=${jar}
+    fi
+    java -jar ${jar} standalone
 }
 
 # chop lines at screen width
