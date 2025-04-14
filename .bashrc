@@ -268,8 +268,8 @@ alias rgrep="rg"
 #   - run: `gh extension install yusukebe/gh-markdown-preview``
 preview-md () {
     if [ -x "$(command -v gh)" ]; then
-        gh markdown-preview --light-mode
-    else:
+        gh markdown-preview --light-mode "$1"
+    else
         echo "github cli is not installed"
     fi
 }
