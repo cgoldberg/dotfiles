@@ -19,6 +19,8 @@
 #     b::::::::::::::::b a:::::aaaa::::::as::::::::::::::s h:::::h     h:::::h
 #     b:::::::::::::::b   a::::::::::aa:::as:::::::::::ss  h:::::h     h:::::h
 #     bbbbbbbbbbbbbbbb     aaaaaaaaaa  aaaa sssssssssss    hhhhhhh     hhhhhhh
+#
+# ============================================================================
 
 
 # If not running interactively, don't do anything
@@ -27,10 +29,12 @@ case $- in
       *) return;;
 esac
 
+
 # export environment variables
 export PAGER="less"
 export VISUAL="vi"
 export EDITOR="vi"
+
 
 # export environment variables for termcap colors (used by `less` pager)
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')
@@ -40,6 +44,7 @@ export LESS_TERMCAP_se=$(printf '\e[0m')
 export LESS_TERMCAP_so=$(printf '\e[01;33m')
 export LESS_TERMCAP_ue=$(printf '\e[0m')
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
+
 
 # enable programmable completion features (you don't need to enable this, if it's
 # already enabled in /etc/bash.bashrc and /etc/profile sources /etc/bash.bashrc)
@@ -51,25 +56,31 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# check the window size after each command and update the values of LINES and COLUMNS
+
+# check window size after each command and update the values of LINES and COLUMNS
 shopt -s checkwinsize
+
 
 # the pattern "**" used in a pathname expansion context will match
 # all files and zero or more directories and subdirectories.
 shopt -s globstar
 
-# make `less` more friendly for non-text input files, see lesspipe(1)
+
+# make `less` more friendly for non-text input files
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
+
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
+
 
 # colored prompt
 force_color_prompt=yes
@@ -84,16 +95,15 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-# add colored user@host:dir and git branch to prompt
+
+# add user@host:dir and git branch to prompt
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\033[0;34m$(__git_ps1 " (%s) ")\033[0m\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(__git_ps1 " (%s) ")\033[0m\$ '
 fi
 unset color_prompt force_color_prompt
 
-# set the title to user@host
-PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h\]$PS1"
 
 # better command history handling
 # -------------------------------
@@ -116,6 +126,7 @@ HISTFILESIZE=999
 # immediately add commands to history instead of waiting for end of session
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
+
 # navigate up the directory tree
 alias ..="cd .."
 alias ...="cd ../.."
@@ -132,63 +143,82 @@ alias cd......="cd ../../../../.."
 alias cd.......="cd ../../../../../.."
 alias cd........="cd ../../../../../../.."
 
+
 # expand aliases when running `sudo`
 alias sudo="sudo "
+
 
 # expand aliases when running `watch``
 alias watch="watch "
 
+
 # enable color support for `grep`
 alias grep="\grep --color=always"
 
-# kill process group by name
+
+# kill process group by name (case-insensitive)
 alias killall="\killall --ignore-case --process-group --wait"
+
 
 # show TCP and UDP sockets that are actively listening
 alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
 
+
 # version control
 alias g="git"
 
+
 # exit shell
 alias x="exit"
+
 
 # pagers
 alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
 alias more="less"
 
+
 # extract a tarball
 alias untar="tar zxvf"
 
+
 # open url in default browser
 alias web="sensible-browser"
+
 
 # disk space
 alias df="\df --human-readable --sync"
 alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
 
+
 # disk usage (directory sizes)
 alias du="du --human-readable --time --max-depth=1"
+
 
 # ncurses disk usage (requires `ncdu` package)
 alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
 
+
 # memory usage
 alias mem="free --human --si | \grep --extended-regex 'Mem|total'"
+
 
 # count all files in current directory (recursive)
 alias countfiles="find . -type f | wc -l"
 
+
 # list directories and files in tree format
 alias tree="tree -ash -CF --du"
+
 
 # clear screen and scrollback buffer
 alias cls="clear"
 alias c="clear"
 
+
 # ip addresses
 alias internalip="echo 'internal ip addresss:' && echo '---------------------' && hostname --all-ip-addresses | awk '{print \$1}'"
 alias externalip="echo 'external ip addresses:' && echo '----------------------' && curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
+
 
 # python
 alias py="python3"
@@ -196,19 +226,24 @@ alias activate="source ./venv/bin/activate"
 alias act="activate"
 alias deact="deactivate"
 
+
 # show the zen of python
 alias zen="python -c 'import this'"
 
-# create a python virtual env and activate it if none exists, otherwise just activate it
+
+# create a python virtual environment and activate it if none exists, otherwise just activate it
 alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && source ./venv/bin/activate || activate"
+
 
 # serve current directory over HTTP on port 8000 (bind all interfaces)
 alias webserver="python3 -m http.server"
+
 
 # list directory contents
 alias ls="LC_COLLATE=C \ls --almost-all --classify --group-directories-first --color=always"
 alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
 alias l="ll"
+
 
 # open ~/.bashrc for editing
 if [ -f /usr/bin/subl ]; then
@@ -217,7 +252,8 @@ else
     alias ebrc="vi ${HOME}/.bashrc"
 fi
 
-# sublime editor
+
+# editors (sublime/vim)
 if [ -f /usr/bin/subl ]; then
     alias subl="\subl --new-window"
     alias edit="subl"
@@ -226,6 +262,7 @@ else
     alias edit="vi"
     alias ed="vi"
 fi
+
 
 # colored diffs
 dff () {
@@ -236,6 +273,7 @@ dff () {
     \diff --color=always --report-identical-files "$1" "$2" | less
 }
 alias diff="dff"
+
 
 # grep recursively for pattern (case-insensitive)
 # usage: rg <pattern>
@@ -262,6 +300,7 @@ rg () {
 }
 alias rgrep="rg"
 
+
 # preview markdown with GitHub CLI
 # requires GitHub CLI and `gh-markdown-preview` extension
 #   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
@@ -274,23 +313,8 @@ preview-md () {
     fi
 }
 
-# kill Jekyll server running blog
-killblog () {
-    local blog_dir="${HOME}/code/cgoldberg.github.io"
-    local jekyll_proc="jekyll s"
-    local jekyll_server="127.0.0.1:4000"
-    if [ ! -d "${blog_dir}" ]; then
-        echo "${blog_dir} not found. no server running"
-        return 1
-    fi
-    if [[ $(psgrep "${jekyll_proc}") ]]; then
-        echo "killing server at: ${jekyll_server}"
-        pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
-        psgrep "${jekyll_proc}"
-    fi
-}
 
-# run Jekyll server for blog and open local url in browser
+# run jekyll server for blog and open local url in browser
 blog () {
     local blog_dir="${HOME}/code/cgoldberg.github.io"
     local jekyll_server="127.0.0.1:4000"
@@ -310,6 +334,24 @@ blog () {
     xdg-open "http://${jekyll_server}"
 }
 
+
+# kill jekyll server running blog
+killblog () {
+    local blog_dir="${HOME}/code/cgoldberg.github.io"
+    local jekyll_proc="jekyll s"
+    local jekyll_server="127.0.0.1:4000"
+    if [ ! -d "${blog_dir}" ]; then
+        echo "${blog_dir} not found. no server running"
+        return 1
+    fi
+    if [[ $(psgrep "${jekyll_proc}") ]]; then
+        echo "killing server at: ${jekyll_server}"
+        pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
+        psgrep "${jekyll_proc}"
+    fi
+}
+
+
 # show spinner for indicating progress
 spinner() {
     local shs=( - \\ \| / ) pnt=0
@@ -319,11 +361,13 @@ spinner() {
     done
 }
 
+
 # start spinner background task
 start_spinner () {
     tput civis;
     exec {doSpinner}> >(spinner "$@")
 }
+
 
 # stop spinner background task
 stop_spinner () {
@@ -332,6 +376,7 @@ stop_spinner () {
     echo
 }
 
+
 # search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
@@ -339,12 +384,14 @@ h () {
     history | \grep --ignore-case --color=always "$1" | tail -n "${num}"
 }
 
+
 # create directory (make parent directories as needed)
 makedir () {
     mkdir --parents --verbose "$1"
     cd "$1"
 }
 alias md="makedir"
+
 
 # reload shell configuration
 re-source () {
@@ -357,7 +404,8 @@ re-source () {
     fi
 }
 
-# clean pip and pipx cache
+
+# clean `pip`` and `pipx` cache
 clean-pip () {
     echo "cleaning pip and pipx cache ..."
     local dirs=(
@@ -372,6 +420,7 @@ clean-pip () {
         fi
     done
 }
+
 
 # clean python dev/temp files from local directory
 clean-py () {
@@ -398,6 +447,7 @@ clean-py () {
         fi
     done
 }
+
 
 # clean selenium dev environment
 clean-selenium-dev () {
@@ -430,6 +480,7 @@ clean-selenium-dev () {
         echo "can't find ${sel_home}!"
     fi
 }
+
 
 # clean selenium dev environment, cache, browsers, webdrivers, build artifacts
 clean-selenium-dev-full () {
@@ -486,6 +537,7 @@ clean-selenium-dev-full () {
     fi
 }
 
+
 # run selenium server in standalone mode (port 4444)
 # download server first with github cli if it's not found
 selenium-server () {
@@ -506,6 +558,7 @@ selenium-server () {
     java -jar ${jar} standalone
 }
 
+
 # kill all webdrivers started by selenium
 kill-webdrivers () {
     \killall --ignore-case --process-group --quiet chromedriver
@@ -518,6 +571,7 @@ kill-webdrivers () {
     \killall -9 --ignore-case --process-group --quiet --wait msedgedriver
     \killall -9 --ignore-case --process-group --quiet --wait webkitwebdriver
 }
+
 
 # delete and re-install all webdrivers and browsers used by selenium
 update-webrivers () {
@@ -555,11 +609,13 @@ update-webrivers () {
     stop_spinner
 }
 
+
 # chop lines at screen width
 # usage example: echo $really_long_line | nowrap
 nowrap () {
     cut -c-$(tput cols)
 }
+
 
 # search active processes for pattern (case-insensitive)
 # usage: psgrep <pattern>
@@ -570,6 +626,7 @@ psgrep () {
         ps -ef
     fi
 }
+
 
 # search recursively under the current directory for filenames matching pattern (case-insensitive)
 # usage: findfiles <pattern>
@@ -590,6 +647,7 @@ findfiles () {
         | \grep --ignore-case --color=always "$1"
 }
 alias ff="findfiles"
+
 
 # package maintenance
 apt-up () {
@@ -613,6 +671,7 @@ apt-up () {
     sudo apt --no-allow-insecure-repositories update && echo
 }
 
+
 # purge configuration data from packages marked as removed
 purge-apt-configs () {
     if dpkg -l | grep --quiet '^rc'; then
@@ -621,6 +680,7 @@ purge-apt-configs () {
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
     fi
 }
+
 
 # count tests found under current directory by running pytest discovery
 # usage: count-tests <path> (no arg counts everything under current directory)
@@ -633,6 +693,7 @@ counttests () {
         echo "pytest not found"
     fi
 }
+
 
 # update pyenv, plugins, and pip in every python installation
 update-pyenv () {
@@ -668,9 +729,11 @@ update-pyenv () {
     pyenv global 3.13
 }
 
+
 # install ruby gems to ~/.gems
 export GEM_HOME="$HOME/.gems"
 export PATH="$HOME/.gems/bin:$PATH"
+
 
 # pyenv
 if [ -d ~/.pyenv ]; then
@@ -678,6 +741,7 @@ if [ -d ~/.pyenv ]; then
     [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init - bash)"
 fi
+
 
 # pipx
 if [ -f /usr/bin/pipx ]; then
