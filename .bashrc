@@ -404,6 +404,7 @@ clean-py () {
         ".mypy_cache/"
         ".pytest_cache/"
         ".tox/"
+        ".venv/"
         "*.egg-info/"
         "build/"
         "dist/"
