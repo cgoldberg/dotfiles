@@ -706,7 +706,7 @@ update-pyenv () {
 }
 
 
-# install ruby gems to ~/.gems
+# ruby gems
 export GEM_HOME="$HOME/.gems"
 export PATH="$HOME/.gems/bin:$PATH"
 
@@ -722,4 +722,13 @@ fi
 # pipx
 if [ -f /usr/bin/pipx ]; then
     eval "$(register-python-argcomplete pipx)"
+fi
+
+
+# atuin - shell history/search (https://atuin.sh)
+# ctrl-r to activate
+if [ -d ~/.atuin ]; then
+    source "$HOME/.atuin/bin/env"
+    [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+    eval "$(atuin init bash --disable-up-arrow)"
 fi
