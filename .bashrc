@@ -131,8 +131,18 @@ alias watch="watch "
 alias grep="\grep --color=always"
 
 
+# pagers
+alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
+alias more="less"
+
+
 # kill process group by name (case-insensitive)
 alias killall="\killall --ignore-case --process-group --wait"
+
+
+# show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
+alias which="type"
+
 
 
 # show TCP and UDP sockets that are actively listening
@@ -147,17 +157,16 @@ alias g="git"
 alias x="exit"
 
 
-# pagers
-alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
-alias more="less"
-
-
 # extract a tarball
 alias untar="tar zxvf"
 
 
-# open url in default browser
-alias web="sensible-browser"
+# open url in default browser (also opens files in default application)
+alias web="xdg-open"
+
+
+# open my github profile in default browser
+alias github="xdg-open 'https://github.com/cgoldberg'"
 
 
 # disk space
