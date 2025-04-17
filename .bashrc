@@ -165,8 +165,8 @@ alias untar="tar zxvf"
 alias web="xdg-open"
 
 
-# open my github profile in default browser
-alias github="xdg-open 'https://github.com/cgoldberg'"
+# open github dashboard in default browser
+alias github="xdg-open 'https://github.com'"
 
 
 # disk space
