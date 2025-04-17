@@ -166,7 +166,7 @@ alias web="xdg-open"
 
 
 # open github dashboard in default browser
-alias github="xdg-open 'https://github.com'"
+alias ghb="xdg-open 'https://github.com'"
 
 
 # disk space
@@ -540,6 +540,7 @@ selenium-server () {
     if [ ! -f  "${jar}" ]; then
         gh release download --pattern=selenium-server*.jar --output=${jar}
     fi
+    cp ${jar} "${sel_home}/java/src/org/openqa/selenium/grid/selenium_server_deploy.jar"
     java -jar ${jar} standalone
 }
 
