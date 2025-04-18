@@ -257,6 +257,13 @@ err() {
 }
 
 
+# chop lines at screen width
+# usage example: echo $really_long_line | nowrap
+nowrap () {
+    cut -c-$(tput cols)
+}
+
+
 # colored diffs
 dff () {
     if [ -z "$1" ]  || [ -z "$2" ]; then
@@ -605,18 +612,13 @@ update-webrivers () {
 }
 
 
-# chop lines at screen width
-# usage example: echo $really_long_line | nowrap
-nowrap () {
-    cut -c-$(tput cols)
-}
-
-
 # search active processes for pattern (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
     if [ ! -z "$1" ]; then
-        ps -ef | \grep -v "grep" | \grep --color=always --extended-regexp --ignore-case "$1" | nowrap
+        ps -ef | \grep -v "grep" \
+            | \grep --color=always --extended-regexp --ignore-case "$1" \
+            | nowrap
     else
         ps -ef
     fi
