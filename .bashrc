@@ -248,10 +248,19 @@ else
 fi
 
 
+# --------------------------------- FUNCTIONS ---------------------------------
+
+
+# print messages to stderr along with date/time
+err() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S%z')]: $*" >&2
+}
+
+
 # colored diffs
 dff () {
     if [ -z "$1" ]  || [ -z "$2" ]; then
-        echo "please enter 2 files to diff"
+        err "please enter 2 files to diff"
         return 1
     fi
     \diff --color=always --report-identical-files "$1" "$2" | less
@@ -263,7 +272,7 @@ alias diff="dff"
 # usage: rg <pattern>
 rg () {
     if [ -z "$1" ]; then
-        echo "please enter a search pattern"
+        err "please enter a search pattern"
         return 1
     fi
     \rgrep \
@@ -303,10 +312,10 @@ blog () {
     local blog_dir="${HOME}/code/cgoldberg.github.io"
     local jekyll_server="127.0.0.1:4000"
     if [ ! -d "${blog_dir}" ]; then
-        echo "${blog_dir} not found"
+        err "${blog_dir} not found"
         return 1
     elif [ ! -x "$(command -v bundle)" ]; then
-        echo "bundler not found"
+        err "bundler not found"
         return 1
     fi
     killblog
@@ -325,7 +334,7 @@ killblog () {
     local jekyll_proc="jekyll s"
     local jekyll_server="127.0.0.1:4000"
     if [ ! -d "${blog_dir}" ]; then
-        echo "${blog_dir} not found. no server running"
+        err "${blog_dir} not found. no server running"
         return 1
     fi
     if [[ $(psgrep "${jekyll_proc}") ]]; then
@@ -529,11 +538,11 @@ selenium-server () {
     local sel_home="${HOME}/code/selenium"
     local jar="selenium-server.jar"
     if [ ! -x "$(command -v gh)" ]; then
-        echo "github cli is not installed"
+        err "github cli is not installed"
         return 1
     fi
     if [ !  -d  "${sel_home}" ]; then
-        echo "can't find selenium repo at: ${sel_home}"
+        err "can't find selenium repo at: ${sel_home}"
         return 1
     fi
     cd ${sel_home}
@@ -563,7 +572,7 @@ kill-webdrivers () {
 update-webrivers () {
     local sel_mgr_path="${HOME}/code/selenium/py/selenium/webdriver/common/linux"
     if [ ! -d "${sel_mgr_path}" ]; then
-        echo "selenium manager not found"
+        err "selenium manager not found"
         return 1
     fi
     local dirs=(
@@ -618,7 +627,7 @@ psgrep () {
 # usage: findfiles <pattern>
 findfiles () {
     if [ -z "$1" ]; then
-        echo "usage: findfiles <pattern>"
+        err "usage: findfiles <pattern>"
         return 1
     fi
     find \
@@ -693,7 +702,7 @@ update-pyenv () {
         "pypy3.11"
     )
     if [ ! -d ~/.pyenv ]; then
-        echo "pyenv is not installed"
+        err "pyenv is not installed"
         return 1
     fi
     if [ ! -z "${VIRTUAL_ENV}" ]; then
