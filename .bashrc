@@ -684,7 +684,7 @@ purge-apt-configs () {
 counttests () {
     if [ -x "$(command -v pytest)" ]; then
         echo "running test discovery ..."
-        local num_tests=$(pytest --collect-only -q $1 | head -n -2 | wc -l)
+        local num_tests=$(pytest --collect-only -q "$1" | head -n -2 | wc -l)
         echo "tests found: ${num_tests}"
     else
         echo "pytest not found"
