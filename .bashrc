@@ -161,8 +161,8 @@ alias x="exit"
 alias untar="tar zxvf"
 
 
-# open url in default browser (also opens files in default application)
-alias web="xdg-open"
+# open url or file in default browser
+alias web="sensible-browser"
 
 
 # open github dashboard in default browser
