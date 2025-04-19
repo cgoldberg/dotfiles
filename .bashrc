@@ -303,8 +303,8 @@ rg () {
 alias rgrep="rg"
 
 
-# preview markdown with GitHub CLI
-# requires GitHub CLI and gh-markdown-preview extension
+# preview markdown with github cli
+# requires github cli and gh-markdown-preview extension
 #   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 #   - run: gh extension install yusukebe/gh-markdown-preview
 preview-md () {
