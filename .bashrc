@@ -384,7 +384,7 @@ stop_spinner () {
 h () {
     local num="50"
     history -n; history -w; history -c; history -r;
-    history | \grep --ignore-case --color=always "$1" | tail -n "${num}"
+    history | \grep -v "  h " | \grep --ignore-case --color=always "$1" | tail -n "${num}"
 }
 
 
@@ -429,14 +429,16 @@ clean-pip () {
 clean-py () {
     echo "cleaning python dev/temp files ..."
     local dirs=(
+        "build/"
+        "dist/"
+    )
+    local recurse_dirs=(
         "*.egg-info/"
         ".mypy_cache/"
         ".pytest_cache/"
         ".tox/"
         ".venv/"
         "__pycache__/"
-        "build/"
-        "dist/"
         "venv/"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
@@ -444,6 +446,12 @@ clean-py () {
         deactivate
     fi
     for d in ${dirs[@]}; do
+        if [ -d "${d}" ]; then
+            echo "deleting ${d}"
+            rm -rf "${d}"
+        fi
+    done
+    for d in ${recurse_dirs[@]}; do
         echo "recursively deleting ${d}"
         rm -rf ./**/${d}/
     done
@@ -454,14 +462,16 @@ clean-py () {
 clean-selenium-dev () {
     local sel_home="${HOME}/code/selenium"
     local dirs=(
+        "build/"
+        "dist/"
+    )
+    local recurse_dirs=(
         "*.egg-info/"
         ".mypy_cache/"
         ".pytest_cache/"
         ".tox/"
         ".venv/"
         "__pycache__/"
-        "build/"
-        "dist/"
         "venv/"
     )
     if [ -d "${sel_home}" ]; then
@@ -471,8 +481,14 @@ clean-selenium-dev () {
             deactivate
         fi
         for d in ${dirs[@]}; do
-            echo "recursively deleting ${d}"
-            rm -rf ${sel_home}/py/**/${d}
+            if [ -d "${d}" ]; then
+                echo "deleting ${d}"
+                rm -rf "${d}"
+            fi
+        done
+        for rd in ${recurse_dirs[@]}; do
+            echo "recursively deleting ${rd}"
+            rm -rf ${sel_home}/py/**/${rd}
         done
     else
         echo "can't find ${sel_home}!"
@@ -509,25 +525,25 @@ clean-selenium-dev-full () {
     )
     echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
     if [ -d "${sel_home}" ]; then
-        for d in ${sel_dirs[@]}; do
-            if [ -d "${d}" ]; then
-                echo "deleting ${d}"
-                rm -rf "${d}"
+        for sd in ${sel_dirs[@]}; do
+            if [ -d "${sd}" ]; then
+                echo "deleting ${sd}"
+                rm -rf "${sd}"
             fi
         done
     fi
     if [ -d "${sel_home}" ]; then
-        for s in ${symlinks[@]}; do
-            if [ -L "${s}" ]; then
-                echo "deleting ${s}"
-                sudo rm -rf "${s}"
+        for sl in ${symlinks[@]}; do
+            if [ -L "${sl}" ]; then
+                echo "deleting ${sl}"
+                sudo rm -rf "${sl}"
             fi
         done
     fi
-    for d in ${dot_dirs[@]}; do
-        if [ -d "${d}" ]; then
-            echo "deleting ${d}"
-            sudo rm -rf "${d}"
+    for dd in ${dot_dirs[@]}; do
+        if [ -d "${dd}" ]; then
+            echo "deleting ${dd}"
+            sudo rm -rf "${dd}"
         fi
     done
 }
