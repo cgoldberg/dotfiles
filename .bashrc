@@ -743,6 +743,7 @@ fi
 
 # atuin - shell history/search (https://atuin.sh)
 # ctrl-r to activate
+# run autuin-update to update the binary
 if [ -d ~/.atuin ]; then
     source "$HOME/.atuin/bin/env"
     [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
