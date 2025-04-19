@@ -119,6 +119,11 @@ alias cd.......="cd ../../../../../.."
 alias cd........="cd ../../../../../../.."
 
 
+# run sudo with existing environment variables and tab-completion enabled (needed for gui apps)
+alias gsudo="sudo --preserve-env"
+complete -F _root_command gsudo
+
+
 # expand aliases when running `sudo`
 alias sudo="sudo "
 
