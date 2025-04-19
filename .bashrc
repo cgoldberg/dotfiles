@@ -95,9 +95,7 @@ HISTIGNORE="x:exit" # we get duplicates of 'x' and 'exit' because shell is close
 # number of previous commands stored in memory for current session
 HISTSIZE=999
 # number of previous commands stored in history file
-HISTFILESIZE=2000
-# show timestamp [Weekday Month/Day Hour:Min] for each command in history
-#HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
+HISTFILESIZE=999
 # immediately add commands to history instead of waiting for end of session
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
@@ -385,6 +383,7 @@ stop_spinner () {
 # usage: h <pattern>
 h () {
     local num="50"
+    history -n; history -w; history -c; history -r;
     history | \grep --ignore-case --color=always "$1" | tail -n "${num}"
 }
 
