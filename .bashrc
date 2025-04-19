@@ -99,7 +99,7 @@ HISTFILESIZE=999
 # show timestamp [Weekday Month/Day Hour:Min] for each command in history
 #HISTTIMEFORMAT="[%a %m/%d %H:%M]  "
 # immediately add commands to history instead of waiting for end of session
-PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
+PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
 
 
 # navigate up the directory tree
