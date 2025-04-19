@@ -2,7 +2,8 @@
 # -------------------------------------------------------------
 # Atuin configuration - shell history/search (https://atuin.sh)
 # -------------------------------------------------------------
-# activate interactive TUI with ctrl-r
+# activate interactive TUI with `ctrl-r`
+# update the binary with `atuin-update`
 
 
 ## where to store your database, default is your system data directory
