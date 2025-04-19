@@ -46,7 +46,7 @@ export VISUAL="vi"
 export EDITOR="vi"
 
 
-# export environment variables for termcap colors (used by `less` pager)
+# export environment variables for termcap colors (used by less pager)
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')
 export LESS_TERMCAP_md=$(printf '\e[01;38;5;75m')
 export LESS_TERMCAP_me=$(printf '\e[0m')
@@ -76,7 +76,7 @@ shopt -s checkwinsize
 shopt -s globstar
 
 
-# make `less` more friendly for non-text input files
+# make less more friendly for non-text input files
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 
@@ -91,7 +91,7 @@ shopt -s cmdhist
 # remove duplicate commands from history
 HISTCONTROL=ignoredups:erasedups
 # don't add entries to history
-HISTIGNORE="x:exit" # we get duplicates of `x` and `exit` because shell is closed immediately
+HISTIGNORE="x:exit" # we get duplicates of 'x' and 'exit' because shell is closed immediately
 # number of previous commands stored in history file
 HISTSIZE=999
 # number of previous commands stored in memory for current session
@@ -124,15 +124,15 @@ alias gsudo="sudo --preserve-env"
 complete -F _root_command gsudo
 
 
-# expand aliases when running `sudo`
+# expand aliases when running sudo
 alias sudo="sudo "
 
 
-# expand aliases when running `watch``
+# expand aliases when running watch
 alias watch="watch "
 
 
-# enable color support for `grep`
+# enable color support for grep
 alias grep="\grep --color=always"
 
 
@@ -147,7 +147,6 @@ alias killall="\killall --ignore-case --process-group --wait"
 
 # show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
 alias which="type"
-
 
 
 # show TCP and UDP sockets that are actively listening
@@ -183,7 +182,7 @@ alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesy
 alias du="du --human-readable --time --max-depth=1"
 
 
-# ncurses disk usage (requires `ncdu` package)
+# ncurses disk usage (requires ncdu package)
 alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
 
 
@@ -307,9 +306,9 @@ alias rgrep="rg"
 
 
 # preview markdown with GitHub CLI
-# requires GitHub CLI and `gh-markdown-preview` extension
+# requires GitHub CLI and gh-markdown-preview extension
 #   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-#   - run: `gh extension install yusukebe/gh-markdown-preview``
+#   - run: gh extension install yusukebe/gh-markdown-preview
 preview-md () {
     if [ -x "$(command -v gh)" ]; then
         gh markdown-preview --light-mode "$1"
@@ -376,7 +375,7 @@ start_spinner () {
 
 # stop spinner background task
 stop_spinner () {
-    echo >&"$doSpinner" && exec {doSpinner}>&-;
+    echo >&"${doSpinner}" && exec {doSpinner}>&-;
     tput cnorm;
     echo
 }
@@ -410,7 +409,7 @@ re-source () {
 }
 
 
-# clean `pip`` and `pipx` cache
+# clean pip, pipx, poetry cache
 clean-pip () {
     echo "cleaning pip and pipx cache ..."
     local dirs=(
@@ -419,23 +418,24 @@ clean-pip () {
         "${HOME}/.local/pipx/.cache/"
     )
     for d in ${dirs[@]}; do
-        if [ -d  "${d}" ]; then
+        if [ -d "${d}" ]; then
             echo "deleting ${d}"
-            rm -rf ${d}
+            rm -rf "${d}"
         fi
     done
 }
 
 
-# clean python dev/temp files from local directory
+# clean python dev/temp files from local directory (recurse subdirectories)
 clean-py () {
-    echo "cleaning Python dev/temp files ..."
+    echo "cleaning python dev/temp files ..."
     local dirs=(
+        "*.egg-info/"
         ".mypy_cache/"
         ".pytest_cache/"
         ".tox/"
         ".venv/"
-        "*.egg-info/"
+        "__pycache__/"
         "build/"
         "dist/"
         "venv/"
@@ -444,13 +444,9 @@ clean-py () {
         echo "deactivating venv"
         deactivate
     fi
-    echo "recursively deleting __pycache__/ directories"
-    rm -rf ./**/__pycache__/
     for d in ${dirs[@]}; do
-        if [ -d  "${d}" ]; then
-            echo "deleting ${d}"
-            rm -rf ${d}
-        fi
+        echo "recursively deleting ${d}"
+        rm -rf ./**/${d}/
     done
 }
 
@@ -459,28 +455,25 @@ clean-py () {
 clean-selenium-dev () {
     local sel_home="${HOME}/code/selenium"
     local dirs=(
-        "${sel_home}/py/build/"
-        "${sel_home}/py/selenium.egg-info/"
+        "*.egg-info/"
+        ".mypy_cache/"
+        ".pytest_cache/"
+        ".tox/"
+        ".venv/"
+        "__pycache__/"
+        "build/"
+        "dist/"
+        "venv/"
     )
-    if [ -d  "${sel_home}" ]; then
+    if [ -d "${sel_home}" ]; then
         echo "cleaning up selenium dev environment ..."
         if [ ! -z "${VIRTUAL_ENV}" ]; then
             echo "deactivating venv ..."
             deactivate
         fi
-        echo "recursively deleting __pycache__/ directories"
-        rm -rf ${sel_home}/py/**/__pycache__/
-        echo "recursively deleting .pytest_cache/ directories"
-        rm -rf ${sel_home}/**/.pytest_cache/
-        echo "recursively deleting .tox/ directories"
-        rm -rf ${sel_home}/**/.tox/
-        echo "recursively deleting venv/ directories"
-        rm -rf ${sel_home}/**/venv/
         for d in ${dirs[@]}; do
-            if [ -d  "${d}" ]; then
-                echo "deleting ${d}"
-                rm -rf ${d}
-            fi
+            echo "recursively deleting ${d}"
+            rm -rf ${sel_home}/py/**/${d}
         done
     else
         echo "can't find ${sel_home}!"
@@ -492,6 +485,12 @@ clean-selenium-dev () {
 clean-selenium-dev-full () {
     clean-selenium-dev
     local sel_home="${HOME}/code/selenium"
+    local sel_dirs=(
+        "${sel_home}/py/selenium/webdriver/common/devtools/"
+        "${sel_home}/py/selenium/webdriver/common/linux/"
+        "${sel_home}/py/selenium/webdriver/common/macos/"
+        "${sel_home}/py/selenium/webdriver/common/windows/"
+    )
     local symlinks=(
         "${sel_home}/bazel-bin"
         "${sel_home}/bazel-genfiles"
@@ -509,38 +508,29 @@ clean-selenium-dev-full () {
         "${HOME}/.cache/selenium/"
         "${HOME}/.mozilla/"
     )
-    local sel_dirs=(
-        "${sel_home}/build/"
-        "${sel_home}/dist/"
-        "${sel_home}/java/build/"
-        "${sel_home}/py/selenium/webdriver/common/devtools/"
-        "${sel_home}/py/selenium/webdriver/common/linux/"
-        "${sel_home}/py/selenium/webdriver/common/macos/"
-        "${sel_home}/py/selenium/webdriver/common/windows/"
-    )
     echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
-    if [ -d  "${sel_home}" ]; then
+    if [ -d "${sel_home}" ]; then
+        for d in ${sel_dirs[@]}; do
+            if [ -d "${d}" ]; then
+                echo "deleting ${d}"
+                rm -rf "${d}"
+            fi
+        done
+    fi
+    if [ -d "${sel_home}" ]; then
         for s in ${symlinks[@]}; do
-            if [ -L  "${s}" ]; then
+            if [ -L "${s}" ]; then
                 echo "deleting ${s}"
-                rm -rf ${s}
+                sudo rm -rf "${s}"
             fi
         done
     fi
     for d in ${dot_dirs[@]}; do
-        if [ -d  "${d}" ]; then
+        if [ -d "${d}" ]; then
             echo "deleting ${d}"
-            sudo rm -rf ${d}
+            sudo rm -rf "${d}"
         fi
     done
-    if [ -d  "${sel_home}" ]; then
-        for d in ${sel_dirs[@]}; do
-            if [ -d  "${d}" ]; then
-                echo "deleting ${d}"
-                rm -rf ${d}
-            fi
-        done
-    fi
 }
 
 
@@ -553,12 +543,12 @@ selenium-server () {
         err "github cli is not installed"
         return 1
     fi
-    if [ !  -d  "${sel_home}" ]; then
+    if [ ! -d "${sel_home}" ]; then
         err "can't find selenium repo at: ${sel_home}"
         return 1
     fi
     cd ${sel_home}
-    if [ ! -f  "${jar}" ]; then
+    if [ ! -f "${jar}" ]; then
         gh release download --pattern=selenium-server*.jar --output=${jar}
     fi
     cp ${jar} "${sel_home}/java/src/org/openqa/selenium/grid/selenium_server_deploy.jar"
@@ -595,9 +585,9 @@ update-webrivers () {
         "${HOME}/.mozilla/"
     )
     for d in ${dirs[@]}; do
-        if [ -d  "${d}" ]; then
+        if [ -d "${d}" ]; then
             echo "deleting ${d}"
-            rm -rf ${d}
+            rm -rf "${d}"
         fi
     done
     echo
