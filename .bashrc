@@ -168,6 +168,10 @@ alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
 alias g="git"
 
 
+# open github website in default browser
+alias ghb="xdg-open 'https://github.com'"
+
+
 # exit shell
 alias x="exit"
 
@@ -178,10 +182,6 @@ alias untar="tar zxvf"
 
 # open url or file in default browser
 alias web="sensible-browser"
-
-
-# open github dashboard in default browser
-alias ghb="xdg-open 'https://github.com'"
 
 
 # disk space
@@ -414,6 +414,20 @@ re-source () {
     # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
     if [ ! -z "${VIRTUAL_ENV}" ]; then
         source "${VIRTUAL_ENV}/bin/activate"
+    fi
+}
+
+
+# pull all local git branches in current repo
+git-sync () {
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        branches=($(git branch --format="%(refname:short)"))
+        for branch in "${branches[@]}"; do
+            echo "pulling branch '$branch':"
+            git checkout "$branch"
+            git pull --autostash --ff-only --stat
+            echo
+        done
     fi
 }
 
