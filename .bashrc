@@ -423,8 +423,9 @@ git-sync () {
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         branches=($(git branch --format="%(refname:short)"))
         for branch in "${branches[@]}"; do
-            echo "pulling branch '$branch':"
-            git checkout "$branch"
+            echo "switching to branch '$branch'"
+            git checkout --quiet "$branch"
+            echo "pulling '$branch'"
             git pull --autostash --ff-only --stat
             echo
         done
