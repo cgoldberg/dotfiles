@@ -1,13 +1,9 @@
+# ~/.gitconfig
+# git configuration
+
 [user]
     name = Corey Goldberg
     email = 1113081+cgoldberg@users.noreply.github.com
-
-[pull]
-    rebase = true
-
-[push]
-    default = simple
-    autoSetupRemote = true
 
 [color]
     ui = always
@@ -16,8 +12,17 @@
     interactive = always
     status = always
 
-[alias]
+[rebase]
+    autoStash = true
 
+[pull]
+    rebase = true
+
+[push]
+    default = simple
+    autoSetupRemote = true
+
+[alias]
     # basic aliases
     b = branch
     i = info # ~/bin/git-info

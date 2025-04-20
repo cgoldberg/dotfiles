@@ -426,7 +426,7 @@ git-sync () {
             echo "switching to branch '$branch'"
             git checkout --quiet "$branch"
             echo "pulling '$branch'"
-            git pull --autostash --ff-only --stat
+            git pull --stat
             echo
         done
     fi
