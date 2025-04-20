@@ -579,17 +579,19 @@ selenium-server () {
 }
 
 
-# kill all webdrivers started by selenium
-kill-webdrivers () {
+# kill all webdrivers and remote server started by selenium
+kill-webdriver () {
     \killall --ignore-case --process-group --quiet chromedriver
     \killall --ignore-case --process-group --quiet geckodriver
     \killall --ignore-case --process-group --quiet msedgedriver
     \killall --ignore-case --process-group --quiet webkitwebdriver
+    \killall --ignore-case --process-group --quiet java
     sleep 1
     \killall -9 --ignore-case --process-group --quiet --wait chromedriver
     \killall -9 --ignore-case --process-group --quiet --wait geckodriver
     \killall -9 --ignore-case --process-group --quiet --wait msedgedriver
     \killall -9 --ignore-case --process-group --quiet --wait webkitwebdriver
+    \killall -9 --ignore-case --process-group --quiet --wait java
 }
 
 
