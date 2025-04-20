@@ -46,6 +46,10 @@ export VISUAL="vi"
 export EDITOR="vi"
 
 
+# don't leave .lesshst files in home directory
+export LESSHISTFILE=-
+
+
 # export environment variables for termcap colors (used by less pager)
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')
 export LESS_TERMCAP_md=$(printf '\e[01;38;5;75m')
@@ -145,6 +149,10 @@ alias killall="\killall --ignore-case --process-group --wait"
 
 # show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
 alias which="type"
+
+
+# don't leave .wget-hsts file in home directory
+alias wget="wget --hsts-file=/dev/null"
 
 
 # show TCP and UDP sockets that are actively listening
