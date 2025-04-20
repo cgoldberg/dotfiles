@@ -30,30 +30,32 @@ case $- in
 esac
 
 
-# set variable identifying the chroot you work in (used in the prompt below)
+# set a color prompt with: chroot (if in a chroot), user@host:dir, git branch (if in a git repo)
+custom_prompt='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;34m\]$(__git_ps1 " (%s) ")\[\033[0m\]\$ '
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
+    custom_prompt="\[\033[00;31m\]${debian_chroot:+($debian_chroot)} $custom_prompt"
 fi
-
-
-# set a fancy color prompt with user@host:dir and git branch
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\033[0;34m$(__git_ps1 " (%s) ")\033[0m\$ '
+PS1="$custom_prompt"
 
 
 # export environment variables
-export PAGER="less"
-export VISUAL="vi"
-export EDITOR="vi"
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_COLLATE=en_US.UTF-8
+export PAGER=less
+export EDITOR=vi
+export VISUAL=vi
+if [ -f /usr/bin/subl ]; then
+    export VISUAL="subl --new-window --wait"
+fi
 
 
 # don't leave .lesshst files in home directory
 export LESSHISTFILE=-
 
 
-# export environment variables for termcap colors (used by less pager)
+# set termcap colors (used by less pager)
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')
 export LESS_TERMCAP_md=$(printf '\e[01;38;5;75m')
 export LESS_TERMCAP_me=$(printf '\e[0m')
@@ -242,23 +244,20 @@ alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first 
 alias l="ll"
 
 
-# open ~/.bashrc for editing
-if [ -f /usr/bin/subl ]; then
-    alias ebrc="subl ${HOME}/.bashrc"
-else
-    alias ebrc="vi ${HOME}/.bashrc"
-fi
-
-
 # editors (sublime/vim)
 if [ -f /usr/bin/subl ]; then
-    alias subl="\subl --new-window"
     alias edit="subl"
     alias ed="subl"
+    alias e="subl --new-window ."
 else
     alias edit="vi"
     alias ed="vi"
+    alias e="vi ."
 fi
+
+
+# open ~/.bashrc for editing
+alias ebrc="edit ${HOME}/.bashrc"
 
 
 # --------------------------------- FUNCTIONS ---------------------------------
