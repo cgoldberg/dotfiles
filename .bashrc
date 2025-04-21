@@ -40,12 +40,13 @@ PS1="$custom_prompt"
 
 
 # export environment variables
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_COLLATE=en_US.UTF-8
-export PAGER=less
-export EDITOR=vi
-export VISUAL=vi
+export GITHUB_USERNAME="cgoldberg"
+export LANG="en_US.UTF-8"
+export LANGUAGE="en_US.UTF-8"
+export LC_COLLATE="en_US.UTF-8"
+export PAGER="less"
+export EDITOR="vi"
+export VISUAL="vi"
 if [ -f /usr/bin/subl ]; then
     export VISUAL="subl --new-window --wait"
 fi
@@ -169,8 +170,8 @@ alias g="git"
 
 
 # open github website in default browser
-alias gith="xdg-open 'https://github.com'"
-alias gist="xdg-open 'https://gist.github.com/cgoldberg'"
+alias gith="xdg-open https://github.com"
+alias gist="xdg-open https://gist.github.com/${GITHUB_USERNAME}"
 
 
 # exit shell
