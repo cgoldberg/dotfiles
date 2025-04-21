@@ -25,6 +25,7 @@
 [alias]
     # basic aliases
     b = branch
+    d = diff
     i = info # ~/bin/git-info
     s = status
     br = branch --all --list # list local and remote-tracking branches
