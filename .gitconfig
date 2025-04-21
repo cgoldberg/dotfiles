@@ -29,6 +29,7 @@
     i = info # ~/bin/git-info
     s = status
     br = branch --all --list # list local and remote-tracking branches
+    db = branch -D # delete branch (even if not merged)
     co = checkout
     df = diff --staged
     rb = rebase
