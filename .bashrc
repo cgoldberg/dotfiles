@@ -422,6 +422,7 @@ re-source () {
 git-sync () {
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         echo
+        local current_branch=$(git branch --show-current)
         local default_branch=$(git remote show origin | sed -n "/HEAD branch/s/.*: //p")
         echo "switching to branch '$default_branch'"
         git checkout --quiet "$default_branch"
@@ -437,6 +438,7 @@ git-sync () {
             git pull --autostash -rebase --stat
             echo
         done
+        git checkout --quiet "$current_branch"
     fi
 }
 
