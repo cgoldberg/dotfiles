@@ -169,7 +169,8 @@ alias g="git"
 
 
 # open github website in default browser
-alias ghb="xdg-open 'https://github.com'"
+alias gith="xdg-open 'https://github.com'"
+alias gist="xdg-open 'https://gist.github.com/cgoldberg'"
 
 
 # exit shell
