@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# pull all local git branches in current repo
+#  - stashes uncommitted changes
+#  - switches to default branch and does pull/rebase
+#  - switches to every other local branch and does pull/rebase
+#  - switches back to original branch
+#  - only works if in a git repo (otherwise does nothing)
+
+set -e
+
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo
+    current_branch=$(git branch --show-current)
+    default_branch=$(git remote show origin | sed -n "/HEAD branch/s/.*: //p")
+    git stash --quiet
+    echo "switching to branch '$default_branch'"
+    git checkout --quiet "$default_branch"
+    echo "pulling '$default_branch'"
+    git pull --rebase --stat
+    echo
+    branches=($(git branch --format="%(refname:short)"))
+    branches_without_default=(${branches[@]/${default_branch}})
+    for branch in "${branches_without_default[@]}"; do
+        echo "switching to branch '$branch'"
+        git checkout --quiet "$branch"
+        echo "pulling '$branch'"
+        git pull --rebase --stat
+        echo
+    done
+    git checkout --quiet "$current_branch"
+    git stash pop --quiet 2>/dev/null || true
+fi
