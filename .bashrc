@@ -418,33 +418,6 @@ re-source () {
 }
 
 
-# pull all local git branches in current repo
-git-sync () {
-    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-        echo
-        local current_branch=$(git branch --show-current)
-        local default_branch=$(git remote show origin | sed -n "/HEAD branch/s/.*: //p")
-        git stash --quiet
-        echo "switching to branch '$default_branch'"
-        git checkout --quiet "$default_branch"
-        echo "pulling '$default_branch'"
-        git pull --rebase --stat
-        echo
-        local branches=($(git branch --format="%(refname:short)"))
-        local branches_without_default=(${branches[@]/${default_branch}})
-        for branch in "${branches_without_default[@]}"; do
-            echo "switching to branch '$branch'"
-            git checkout --quiet "$branch"
-            echo "pulling '$branch'"
-            git pull --rebase --stat
-            echo
-        done
-        git checkout --quiet "$current_branch"
-        git stash pop --quiet
-    fi
-}
-
-
 # clean pip, pipx, poetry cache
 clean-pip () {
     echo "cleaning pip and pipx cache ..."
