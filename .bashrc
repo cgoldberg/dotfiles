@@ -426,7 +426,7 @@ git-sync () {
         echo "switching to branch '$default_branch'"
         git checkout --quiet "$default_branch"
         echo "pulling '$default_branch'"
-        git pull --stat
+        git pull --autostash -rebase --stat
         echo
         local branches=($(git branch --format="%(refname:short)"))
         local branches_without_default=(${branches[@]/${default_branch}})
@@ -434,7 +434,7 @@ git-sync () {
             echo "switching to branch '$branch'"
             git checkout --quiet "$branch"
             echo "pulling '$branch'"
-            git pull --stat
+            git pull --autostash -rebase --stat
             echo
         done
     fi
