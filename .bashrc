@@ -600,7 +600,7 @@ kill-webdriver () {
 
 
 # delete and re-install all webdrivers and browsers used by selenium
-update-webrivers () {
+update-webriver () {
     local sel_mgr_path="${HOME}/code/selenium/py/selenium/webdriver/common/linux"
     if [ ! -d "${sel_mgr_path}" ]; then
         err "selenium manager not found"
@@ -620,7 +620,7 @@ update-webrivers () {
         fi
     done
     echo
-    kill-webdrivers
+    kill-webdriver
     echo "updating chrome/chromedriver ..."
     start_spinner
     ${sel_mgr_path}/selenium-manager --browser=chrome --driver=chromedriver
