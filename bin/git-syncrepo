@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+# GitHub remote repo sync
+#
+# sync all git branches on remote fork from their parent repo
+#  - only works if in a local git repo that was cloned from a fork
+#  - requires GitHub CLI (https://github.com/cli/cli/blob/trunk/docs/install_linux.md)
+
+GITHUB_USERNAME="cgoldberg"
+
+die() { echo "$*" 1>&2 ; exit 1; }
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    die "not in a git repo"
+fi
+
+repo=$(basename $(basename $(git remote get-url origin)) ".git")
+default_branch=$(git remote show origin | sed -n "/HEAD branch/s/.*: //p")
+echo
+echo "syncing '${default_branch}' branch on remote fork from its parent"
+gh repo sync "${GITHUB_USERNAME}/${repo}" --branch "${default_branch}" || die
+echo
+branches=($(git branch --format="%(refname:short)"))
+branches_without_default=(${branches[@]/${default_branch}})
+for branch in "${branches_without_default[@]}"; do
+    echo "syncing '${branch}' branch on remote fork from its parent"
+    gh repo sync "${GITHUB_USERNAME}/${repo}" --branch "${branch}"
+done
