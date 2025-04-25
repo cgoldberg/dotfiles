@@ -48,6 +48,9 @@
     # commit changes with inline message
     ci = !git commit -a -m $2
 
+    # open Github page for current repo, or parent if it's a fork (requires GitHub CLI))
+    open = !gh repo view --web
+
     # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
     tidy = "!f() { git prune --progress --verbose && git remote prune origin && git gc; }; f"
 
@@ -59,6 +62,3 @@
     # list local branches with last commit date and commit hash, sorted by last modified
     branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads | \
         sed -e 's-refs/heads/--'; }; f"
-
-    # open Github page for current repo
-    open = "!f() { xdg-open $(git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#https://#' -e 's@com:@com/@'); }; f"
