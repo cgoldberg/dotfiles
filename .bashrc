@@ -267,7 +267,7 @@ alias ebrc="edit ${HOME}/.bashrc"
 
 # print messages to stderr along with date/time
 err() {
-    echo "[$(date +'%Y-%m-%d %H:%M:%S%z')]: $*" >&2
+    echo "[$(date +'%Y-%m-%d %H:%M:%S%z')]: $*" 1>&2
 }
 
 
