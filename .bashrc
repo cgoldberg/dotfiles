@@ -320,11 +320,11 @@ alias rgrep="rg"
 #   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 #   - run: gh extension install yusukebe/gh-markdown-preview
 preview-md () {
-    if [ -x "$(command -v gh)" ]; then
-        gh markdown-preview --light-mode "$1"
-    else
+    if [ ! -f /usr/bin/gh ]; then
         echo "github cli is not installed"
+        return 1
     fi
+    gh markdown-preview --light-mode "$1"
 }
 
 
@@ -566,7 +566,7 @@ clean-selenium-dev-full () {
 selenium-server () {
     local sel_home="${HOME}/code/selenium"
     local jar="selenium-server.jar"
-    if [ ! -x "$(command -v gh)" ]; then
+    if [ ! -f /usr/bin/gh ]; then
         err "github cli is not installed"
         return 1
     fi
