@@ -578,7 +578,6 @@ selenium-server () {
     if [ ! -f "${jar}" ]; then
         gh release download --pattern=selenium-server*.jar --output=${jar}
     fi
-    cp ${jar} "${sel_home}/java/src/org/openqa/selenium/grid/selenium_server_deploy.jar"
     java -jar ${jar} standalone
 }
 
