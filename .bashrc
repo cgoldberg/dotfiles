@@ -561,7 +561,7 @@ clean-selenium-dev-full () {
 }
 
 
-# run selenium server in standalone mode (port 4444)
+# run selenium grid server in standalone mode (on port 4444)
 # download server first with github cli if it's not found
 selenium-server () {
     local sel_home="${HOME}/code/selenium"
