@@ -12,9 +12,6 @@
     interactive = always
     status = always
 
-[rebase]
-    autoStash = true
-
 [pull]
     rebase = true
 
@@ -22,17 +19,22 @@
     default = simple
     autoSetupRemote = true
 
+[rebase]
+    autoStash = true
+
+[status]
+    showStash = true
+
 [alias]
-    # basic aliases
     b = branch
     d = diff
-    i = info # ~/bin/git-info
     s = status
     br = branch --all --list # list local and remote-tracking branches
     db = branch -D # delete branch (even if not merged)
     co = checkout
     df = diff --staged
     rb = rebase
+    undo = reset --soft HEAD~1 # reset current branch to previous commit, preserving all changes
     clone-b = clone --filter=blob:none # blobless clone
     clone-s = clone --depth=1 # shallow clone
 
@@ -45,8 +47,8 @@
     # list git aliases
     alias = !git config --list | grep alias | cut -c 7- | sort
 
-    # commit changes with inline message
-    ci = !git commit -a -m $2
+    # commit all staged/unstaged changes with inline message
+    ci = !git commit --all --message $2
 
     # open Github page for current repo, or parent if it's a fork (requires GitHub CLI))
     open = !gh repo view --web
@@ -54,7 +56,7 @@
     # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
     tidy = "!f() { git prune --progress --verbose && git remote prune origin && git gc; }; f"
 
-    # show contributor stats (simiular to ` git-score`). displays loc delta/added/removed for each author
+    # show contributor stats (similar to `git-score`). displays lines delta/added/removed for each author
     contrib-stats = "!f() { git log --no-merges --no-show-signature --pretty=format:%an --numstat | \
         awk '/./ && !author { author = $0; next } author { ins[author] += $1; del[author] += $2 } /^$/ { author = \"\"; next } END { for (a in ins) { printf \"%10d %10d %10d %s\\n\", ins[a] - del[a], ins[a], del[a], a } }' | \
         sort -rn; }; f"
