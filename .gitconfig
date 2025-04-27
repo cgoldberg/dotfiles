@@ -50,7 +50,7 @@
     # commit all staged/unstaged changes with inline message
     ci = !git commit --all --message $2
 
-    # open Github page for current repo, or parent if it's a fork (requires GitHub CLI))
+    # open Github page for default remote repository (requires GitHub CLI))
     open = !gh repo view --web
 
     # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
