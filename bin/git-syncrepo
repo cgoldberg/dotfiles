@@ -25,4 +25,5 @@ branches_without_default=(${branches[@]/${default_branch}})
 for branch in "${branches_without_default[@]}"; do
     echo "syncing '${branch}' branch on remote fork from its parent"
     gh repo sync "${GITHUB_USERNAME}/${repo}" --branch "${branch}"
+    echo
 done
