@@ -486,7 +486,10 @@ clean-selenium-dev () {
         "__pycache__/"
         "venv/"
     )
-    if [ -d "${sel_home}" ]; then
+    if [ ! -d "${sel_home}" ]; then
+        err "selenium repo not found at: ${sel_home}"
+        return 1
+    else
         echo "cleaning up selenium dev environment ..."
         if [ ! -z "${VIRTUAL_ENV}" ]; then
             echo "deactivating venv ..."
@@ -502,8 +505,6 @@ clean-selenium-dev () {
             echo "recursively deleting ${rd}"
             rm -rf ${sel_home}/py/**/${rd}
         done
-    else
-        echo "can't find ${sel_home}!"
     fi
 }
 
@@ -533,6 +534,8 @@ clean-selenium-dev-full () {
         "${HOME}/.cache/mozilla/"
         "${HOME}/.cache/pnpm/"
         "${HOME}/.cache/selenium/"
+        "${HOME}/.config/google-chrome-for-testing/"
+        "${HOME}/.config/microsoft-edge/"
         "${HOME}/.mozilla/"
     )
     echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
@@ -571,7 +574,7 @@ selenium-server () {
         return 1
     fi
     if [ ! -d "${sel_home}" ]; then
-        err "can't find selenium repo at: ${sel_home}"
+        err "selenium repo not found at: ${sel_home}"
         return 1
     fi
     cd ${sel_home}
@@ -599,27 +602,41 @@ kill-webdriver () {
 
 
 # delete and re-install all webdrivers and browsers used by selenium
+# also delete and re-download selenium grid server
 update-webriver () {
-    local sel_mgr_path="${HOME}/code/selenium/py/selenium/webdriver/common/linux"
-    if [ ! -d "${sel_mgr_path}" ]; then
-        err "selenium manager not found"
-        return 1
-    fi
+    kill-webdriver
+    local sel_home="${HOME}/code/selenium"
+    local sel_mgr_path="${sel_home}/py/selenium/webdriver/common/linux"
+    local jar="selenium-server.jar"
     local dirs=(
         "${HOME}/.cache/google-chrome-for-testing/"
         "${HOME}/.cache/Microsoft/"
         "${HOME}/.cache/mozilla/"
         "${HOME}/.cache/selenium/"
+        "${HOME}/.config/google-chrome-for-testing/"
+        "${HOME}/.config/microsoft-edge/"
         "${HOME}/.mozilla/"
     )
+    if [ ! -d "${sel_home}" ]; then
+        err "selenium repo not found at: ${sel_home}"
+        return 1
+    fi
+    if [ ! -d "${sel_mgr_path}" ]; then
+        err "selenium-manager not found in: ${sel_mgr_path}"
+        return 1
+    fi
     for d in ${dirs[@]}; do
         if [ -d "${d}" ]; then
             echo "deleting ${d}"
             rm -rf "${d}"
         fi
     done
+    cd ${sel_home}
+    if [ -f "${jar}" ]; then
+        echo "deleting ${sel_home}/${jar}"
+        rm "./${jar}"
+    fi
     echo
-    kill-webdriver
     echo "updating chrome/chromedriver ..."
     start_spinner
     ${sel_mgr_path}/selenium-manager --browser=chrome --driver=chromedriver
@@ -632,6 +649,14 @@ update-webriver () {
     start_spinner
     ${sel_mgr_path}/selenium-manager --browser=firefox --driver=geckodriver
     stop_spinner
+    echo
+    if [ ! -f /usr/bin/gh ]; then
+        err "github cli is not installed"
+        return 1
+    fi
+    gh release download --pattern=selenium-server*.jar --output=${jar}
+    cd ${OLDPWD}
+    echo
 }
 
 
