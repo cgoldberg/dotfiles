@@ -743,7 +743,6 @@ counttests () {
 # update pyenv, plugins, and pip in every python installation
 update-pyenv () {
     local py_versions=(
-        "3.8"
         "3.9"
         "3.10"
         "3.11"
