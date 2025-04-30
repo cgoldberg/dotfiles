@@ -287,6 +287,20 @@ nowrap () {
 }
 
 
+# remove metadata from image
+clean-metadata () {
+    if [ -z "$1" ]; then
+        err "usage: clean-metadata <image_file>"
+        return 1
+    fi
+    if [ -f /usr/bin/exiv2 ]; then
+        exiv2 -k -v delete "$1"
+    else
+        err "exiv2 not installed"
+    fi
+}
+
+
 # colored diffs
 dff () {
     if [ -z "$1" ]  || [ -z "$2" ]; then
@@ -781,6 +795,9 @@ update-pyenv () {
     done
     pyenv global 3.13
 }
+
+
+# -----------------------------------------------------------------------------
 
 
 # ruby gems
