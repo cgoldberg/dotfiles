@@ -30,13 +30,22 @@ case $- in
 esac
 
 
+# set PATH so it includes user's private bins if they exist
+if [ -d "${HOME}/bin" ] ; then
+    export PATH="${PATH}:${HOME}/bin"
+fi
+if [ -d "${HOME}/.local/bin" ] ; then
+    export PATH="${PATH}:${HOME}/.local/bin"
+fi
+
+
 # set a color prompt with: chroot (if in a chroot), user@host:dir, git branch (if in a git repo)
 custom_prompt='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;34m\]$(__git_ps1 " (%s) ")\[\033[0m\]\$ '
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
-    custom_prompt="\[\033[00;31m\]${debian_chroot:+($debian_chroot)} $custom_prompt"
+    custom_prompt="\[\033[00;31m\]${debian_chroot:+($debian_chroot)} ${custom_prompt}"
 fi
-PS1="$custom_prompt"
+PS1="${custom_prompt}"
 
 
 # export environment variables
@@ -775,14 +784,14 @@ update-pyenv () {
 
 
 # ruby gems
-export GEM_HOME="$HOME/.gems"
-export PATH="$HOME/.gems/bin:$PATH"
+export GEM_HOME="${HOME}/.gems"
+export PATH="${PATH}:${HOME}/.gems/bin"
 
 
 # pyenv
 if [ -d ~/.pyenv ]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+    export PYENV_ROOT="${HOME}/.pyenv"
+    [[ -d ${PYENV_ROOT}/bin ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init - bash)"
 fi
 
@@ -794,10 +803,10 @@ fi
 
 
 # atuin - shell history/search (https://atuin.sh)
-# ctrl-r to activate
-# run autuin-update to update the binary
+#   - ctrl-r to activate
+#   - run autuin-update to update the binary
 if [ -d ~/.atuin ]; then
-    source "$HOME/.atuin/bin/env"
+    source "${HOME}/.atuin/bin/env"
     [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
     eval "$(atuin init bash --disable-up-arrow)"
 fi
