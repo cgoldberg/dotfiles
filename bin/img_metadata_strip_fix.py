@@ -12,7 +12,7 @@
 
 requires:
   * gexiv2 (GObject-based wrapper for the Exiv2 library
-      - Install on Ubuntu/Debian: $ sudo apt install gir1.2-gexiv2*
+      - Install on Ubuntu/Debian: $ sudo apt install gir1.2-gexiv2-0.10
   * exiv2
       - Install on Ubuntu/Debian: $ sudo apt install exiv2
 """
