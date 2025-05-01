@@ -737,9 +737,9 @@ apt-up () {
     # purge packages that are no longer needed
     sudo apt --purge autoremove && echo &&
     # remove cached packages
-    sudo apt clean && echo &&
+    sudo apt clean &&
     # purge orphaned configs from removed packages
-    purge-apt-configs && echo &&
+    purge-apt-configs &&
     # reload package index files from sources
     sudo apt --no-allow-insecure-repositories update && echo
 }
