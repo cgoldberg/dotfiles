@@ -769,14 +769,6 @@ counttests () {
 
 # update pyenv, plugins, and pip in every python installation
 update-pyenv () {
-    local py_versions=(
-        "3.9"
-        "3.10"
-        "3.11"
-        "3.12"
-        "3.13"
-        "pypy3.11"
-    )
     if [ ! -d ~/.pyenv ]; then
         err "pyenv is not installed"
         return 1
@@ -797,7 +789,7 @@ update-pyenv () {
         python3 -m pip install --upgrade pip
         echo
     done
-    pyenv global 3.13
+    eval "pyenv global ${py_versions[*]}"
 }
 
 
@@ -814,6 +806,8 @@ if [ -d ~/.pyenv ]; then
     export PYENV_ROOT="${HOME}/.pyenv"
     [[ -d "${PYENV_ROOT}/bin" ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init - bash)"
+    py_versions=("3.13" "3.12" "3.11" "3.10" "3.9" "pypy3.11")
+    eval "pyenv global ${py_versions[*]}"
 fi
 
 
