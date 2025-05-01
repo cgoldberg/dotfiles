@@ -241,6 +241,10 @@ alias deact="deactivate"
 alias zen="python -c 'import this'"
 
 
+# uninstall all python packages in current environment
+alias pip-uninstall-all="pip freeze | xargs pip uninstall -y"
+
+
 # create a python virtual environment and activate it if none exists, otherwise just activate it
 alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && source ./venv/bin/activate || activate"
 
@@ -808,7 +812,7 @@ export PATH="${PATH}:${HOME}/.gems/bin"
 # pyenv
 if [ -d ~/.pyenv ]; then
     export PYENV_ROOT="${HOME}/.pyenv"
-    [[ -d ${PYENV_ROOT}/bin ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
+    [[ -d "${PYENV_ROOT}/bin" ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init - bash)"
 fi
 
