@@ -702,6 +702,7 @@ psgrep () {
 
 
 # search recursively under the current directory for filenames matching pattern (case-insensitive)
+# - skips unreadable files/directories
 # usage: findfiles <pattern>
 findfiles () {
     if [ -z "$1" ]; then
@@ -710,6 +711,8 @@ findfiles () {
     fi
     find \
         -xdev \
+        ! -readable -prune \
+        -o \
         -iname "*$1*" \
         ! -path "*/.git/*" \
         ! -path "*/.tox/*" \
@@ -717,6 +720,7 @@ findfiles () {
         ! -path "*/.pytest_cache/*" \
         ! -path "*/__pycache__/*" \
         ! -path "*/venv/*" \
+        -print \
         | \grep --ignore-case --color=always "$1"
 }
 alias ff="findfiles"
