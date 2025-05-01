@@ -1,6 +1,7 @@
 # ~/.bashrc
 # - bash shell configurations, aliases, functions
-# - sourced for non-login shells
+#
+# ============================================================================
 #
 #    bbbbbbbb
 #    b::::::b                                             hhhhhhh
@@ -751,6 +752,37 @@ purge-apt-configs () {
         echo "purging package configs from removed packages..."
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
     fi
+}
+
+
+# backup public github repos and google drive and store in a tarball in ~/backup
+backup-all () {
+    local backup_dir="${HOME}/backup"
+    if [ ! ${backup_dir} ]; then
+        err "backup directory not found"
+        return 1
+    fi
+    if [ ! -x "$(command -v google_drive_export)" ]; then
+        err "google_drive_export not found"
+        return 1
+    fi
+    if [ ! -x "$(command -v githubtakeout)" ]; then
+        err "githubtakeout not found"
+        return 1
+    fi
+    cd ${backup_dir}
+    rm -f ./backups.tar.gz
+    rm -rf ./exported_files
+    rm -rf ./backups
+    rm -rf ./google_drive_files
+    rm -rf ./github_archives
+    google_drive_export
+    echo
+    githubtakeout cgoldberg --format=tar
+    mv ./exported_files ./google_drive_files
+    mv ./backups ./github_archives
+    tar cvzf backups.tar.gz *
+    cd ${OLDPWD}
 }
 
 
