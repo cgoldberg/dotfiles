@@ -682,6 +682,7 @@ update-webriver () {
         err "github cli is not installed"
         return 1
     fi
+    echo "updating grid server ..."
     gh release download --pattern=selenium-server*.jar --output=${jar}
     cd ${OLDPWD}
     echo
@@ -805,7 +806,7 @@ counttests () {
 
 # update pyenv, plugins, and pip in every python installation
 update-pyenv () {
-    if [ ! -d ~/.pyenv ]; then
+    if [ ! -d "${HOME}/.pyenv" ]; then
         err "pyenv is not installed"
         return 1
     fi
@@ -833,12 +834,14 @@ update-pyenv () {
 
 
 # ruby gems
-export GEM_HOME="${HOME}/.gems"
-export PATH="${PATH}:${HOME}/.gems/bin"
+if [ -d "${HOME}/.gems" ]; then
+    export GEM_HOME="${HOME}/.gems"
+    export PATH="${PATH}:${HOME}/.gems/bin"
+fi
 
 
 # pyenv
-if [ -d ~/.pyenv ]; then
+if [ -d "${HOME}/.pyenv" ]; then
     export PYENV_ROOT="${HOME}/.pyenv"
     [[ -d "${PYENV_ROOT}/bin" ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init - bash)"
@@ -856,8 +859,8 @@ fi
 # atuin - shell history/search (https://atuin.sh)
 #   - ctrl-r to activate
 #   - run autuin-update to update the binary
-if [ -d ~/.atuin ]; then
+if [ -d "${HOME}/.atuin" ]; then
     source "${HOME}/.atuin/bin/env"
-    [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+    [[ -f "${HOME}/.bash-preexec.sh" ]] && source "${HOME}/.bash-preexec.sh"
     eval "$(atuin init bash --disable-up-arrow)"
 fi
