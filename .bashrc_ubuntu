@@ -103,7 +103,6 @@ PS1='\[$(tput bold)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[3
 PROMPT_DIRTRIM=4
 
 
-
 # disable suspend and resume feature in terminal
 stty -ixon
 
@@ -114,6 +113,7 @@ tput smam
 
 # disable the 'Caps Lock' key in terminals (map an extra Escape key instead)
 xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+
 
 # better command history handling
 # -------------------------------
