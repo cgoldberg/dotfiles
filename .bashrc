@@ -526,7 +526,6 @@ findfiles () {
         -iname "*$1*" \
         ! -path "*/.git/*" \
         ! -path "*/.tox/*" \
-        ! -path "*/.venv/*" \
         ! -path "*/.pytest_cache/*" \
         ! -path "*/__pycache__/*" \
         ! -path "*/venv/*" \
@@ -534,6 +533,55 @@ findfiles () {
         | \grep --ignore-case --color=always "$1"
 }
 alias ff="findfiles"
+
+
+# run pyupgrade against all python files in current directory (recursive), and fix recommendations in-place
+py-upgrade () {
+    if [ ! -x "$(command -v pyupgrade)" ]; then
+        err "pyupgrade not found"
+        return 1
+    fi
+    find \
+        -name "*.py" \
+        ! -path "*/.git/*" \
+        ! -path "*/.tox/*" \
+        ! -path "*/.pytest_cache/*" \
+        ! -path "*/__pycache__/*" \
+        ! -path "*/selenium/webdriver/common/devtools/*" \
+        ! -path "*/venv/*" \
+        -print \
+        | xargs pyupgrade --py39-plus
+}
+
+
+# run refurb against all python files in current directory (recursive), and display recommendations
+py-refurb () {
+    if [ ! -x "$(command -v refurb)" ]; then
+        err "refurb not found"
+        return 1
+    fi
+    find \
+        -name "*.py" \
+        ! -path "*/.git/*" \
+        ! -path "*/.tox/*" \
+        ! -path "*/.pytest_cache/*" \
+        ! -path "*/__pycache__/*" \
+        ! -path "*/selenium/webdriver/common/devtools/*" \
+        ! -path "*/venv/*" \
+        -print \
+        | xargs refurb \
+            --python-version 3.9 \
+            --disable FURB101 \
+            --disable FURB103 \
+            --disable FURB104 \
+            --disable FURB107 \
+            --disable FURB141 \
+            --disable FURB144 \
+            --disable FURB146 \
+            --disable FURB150 \
+            --disable FURB183 \
+            --disable FURB184
+}
 
 
 # package maintenance
@@ -585,7 +633,9 @@ backup-all () {
         err "githubtakeout not found"
         return 1
     fi
-    cd ${backup_dir}
+    echo
+    echo "Changing directory to: ${backup_dir}"
+    cd "${backup_dir}"
     rm -f "${backup_archive}"
     rm -rf ./exported_files
     rm -rf ./backups
@@ -597,7 +647,9 @@ backup-all () {
     mv ./exported_files ./google_drive_files
     mv ./backups ./github_archives
     tar cvzf "${backup_archive}" *
-    cd ${OLDPWD}
+    echo
+    echo "Changing directory back to: ${OLDPWD}"
+    cd "${OLDPWD}"
 }
 
 
