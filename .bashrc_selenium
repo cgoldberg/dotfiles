@@ -5,6 +5,7 @@
 SELENIUM_DEV_HOME="${HOME}/code/selenium"
 
 
+# only activate these functions if we have the selenium repo cloned
 if [ ! -d "${SELENIUM_DEV_HOME}" ]; then
     return
 fi
@@ -16,19 +17,22 @@ err() {
 }
 
 
-# kill all webdrivers and remote server started by selenium
-kill-webdriver () {
-    \killall --ignore-case --process-group --quiet chromedriver
-    \killall --ignore-case --process-group --quiet geckodriver
-    \killall --ignore-case --process-group --quiet msedgedriver
-    \killall --ignore-case --process-group --quiet webkitwebdriver
-    \killall --ignore-case --process-group --quiet java
-    sleep 1
-    \killall -9 --ignore-case --process-group --quiet --wait chromedriver
-    \killall -9 --ignore-case --process-group --quiet --wait geckodriver
-    \killall -9 --ignore-case --process-group --quiet --wait msedgedriver
-    \killall -9 --ignore-case --process-group --quiet --wait webkitwebdriver
-    \killall -9 --ignore-case --process-group --quiet --wait java
+# kill all running webdrivers and selenium grid server
+kill-webdrivers () {
+    local processes=(
+        "chromedriver"
+        "geckodriver"
+        "msedgedriver"
+        "webkitwebdriver"
+        "java"
+    )
+    for process in ${processes[@]}; do
+        \killall --ignore-case --process-group --quiet --wait "${process}"
+    done
+    sleep 0.5
+    for process in ${processes[@]}; do
+        \killall -9 --ignore-case --process-group --quiet --wait "${process}"
+    done
 }
 
 
@@ -103,10 +107,6 @@ clean-selenium-dev () {
         "__pycache__/"
         "venv/"
     )
-    if [ ! -d "${sel_home}" ]; then
-        err "selenium repo not found at: ${sel_home}"
-        return 1
-    fi
     echo "cleaning up selenium dev environment ..."
     if [ ! -z "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv ..."
@@ -133,10 +133,6 @@ selenium-server () {
     local jar="selenium-server.jar"
     if [ ! -f /usr/bin/gh ]; then
         err "github cli is not installed"
-        return 1
-    fi
-    if [ ! -d "${sel_home}" ]; then
-        err "selenium repo not found at: ${sel_home}"
         return 1
     fi
     cd ${sel_home}
@@ -169,10 +165,6 @@ update-webrivers () {
         "${HOME}/.config/microsoft-edge/"
         "${HOME}/.mozilla/"
     )
-    if [ ! -d "${sel_home}" ]; then
-        err "selenium repo not found at: ${sel_home}"
-        return 1
-    fi
     if [ ! -d "${sel_mgr_path}" ]; then
         err "selenium-manager not found in: ${sel_mgr_path}"
         return 1

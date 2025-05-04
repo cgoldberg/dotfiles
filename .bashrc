@@ -572,6 +572,7 @@ purge-apt-configs () {
 # backup public github repos and google drive and store in a tarball in ~/backup
 backup-all () {
     local backup_dir="${HOME}/backup"
+    local backup_archive="./backups.tar.gz"
     if [ ! ${backup_dir} ]; then
         err "backup directory not found"
         return 1
@@ -585,17 +586,17 @@ backup-all () {
         return 1
     fi
     cd ${backup_dir}
-    rm -f ./backups.tar.gz
+    rm -f "${backup_archive}"
     rm -rf ./exported_files
     rm -rf ./backups
     rm -rf ./google_drive_files
     rm -rf ./github_archives
     google_drive_export
     echo
-    githubtakeout cgoldberg --format=tar
+    githubtakeout "${GITHUB_USERNAME}" --format=tar
     mv ./exported_files ./google_drive_files
     mv ./backups ./github_archives
-    tar cvzf backups.tar.gz *
+    tar cvzf "${backup_archive}" *
     cd ${OLDPWD}
 }
 
