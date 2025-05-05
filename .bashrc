@@ -476,6 +476,7 @@ clean-py () {
         "*.egg-info/"
         ".mypy_cache/"
         ".pytest_cache/"
+        ".ruff_cache/"
         ".tox/"
         ".venv/"
         "__pycache__/"
