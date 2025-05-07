@@ -31,6 +31,16 @@ case $- in
 esac
 
 
+# load additional configurations if they exist
+if [ -f "${HOME}/.bashrc_win" ]; then
+    source "${HOME}/.bashrc_win"
+fi
+# selenium
+if [ -f "${HOME}/.bashrc_selenium" ]; then
+    source "${HOME}/.bashrc_selenium"
+fi
+
+
 # set PATH so it includes user's private bins if they exist
 if [ -d "${HOME}/bin" ] ; then
     export PATH="${PATH}:${HOME}/bin"
@@ -694,12 +704,6 @@ update-pyenv () {
 
 
 # -----------------------------------------------------------------------------
-
-
-# selenium
-if [ -f "${HOME}/.bashrc_selenium" ]; then
-    source "${HOME}/.bashrc_selenium"
-fi
 
 
 # ruby gems
