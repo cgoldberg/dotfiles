@@ -158,7 +158,7 @@ alias c="clear"
 
 
 # python
-alias py="python3"
+alias py="python"
 
 
 # show the zen of python
