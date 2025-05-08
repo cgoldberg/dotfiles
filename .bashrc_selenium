@@ -1,5 +1,7 @@
 # ~/.bashrc_selenium
-# bash functions usesed for selenium development and management
+# - bash shell configuration
+#
+# ============================================================================
 
 
 SELENIUM_DEV_HOME="${HOME}/code/selenium"

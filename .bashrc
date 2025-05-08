@@ -1,5 +1,5 @@
 # ~/.bashrc
-# - bash shell configurations, aliases, functions
+# - bash shell configuration
 #
 # ============================================================================
 #
@@ -31,17 +31,7 @@ case $- in
 esac
 
 
-# load additional configurations if they exist
-if [ -f "${HOME}/.bashrc_win" ]; then
-    source "${HOME}/.bashrc_win"
-fi
-# selenium
-if [ -f "${HOME}/.bashrc_selenium" ]; then
-    source "${HOME}/.bashrc_selenium"
-fi
-
-
-# set PATH so it includes user's private bins if they exist
+# set PATH so it includes private bins if they exist
 if [ -d "${HOME}/bin" ] ; then
     export PATH="${PATH}:${HOME}/bin"
 fi
@@ -50,17 +40,7 @@ if [ -d "${HOME}/.local/bin" ] ; then
 fi
 
 
-# set a color prompt with: chroot (if in a chroot), user@host:dir, git branch (if in a git repo)
-custom_prompt='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;34m\]$(__git_ps1 " (%s) ")\[\033[0m\]\$ '
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-    custom_prompt="\[\033[00;31m\]${debian_chroot:+($debian_chroot)} ${custom_prompt}"
-fi
-PS1="${custom_prompt}"
-
-
 # export environment variables
-export GITHUB_USERNAME="cgoldberg"
 export LANG="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
@@ -106,10 +86,6 @@ shopt -s checkwinsize
 shopt -s globstar
 
 
-# make less more friendly for non-text input files
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-
 # better command history handling
 # -------------------------------
 # append to history file, don't overwrite it
@@ -147,19 +123,6 @@ alias cd.......="cd ../../../../../.."
 alias cd........="cd ../../../../../../.."
 
 
-# run sudo with existing environment variables and tab-completion enabled (needed for gui apps)
-alias gsudo="sudo --preserve-env"
-complete -F _root_command gsudo
-
-
-# expand aliases when running sudo
-alias sudo="sudo "
-
-
-# expand aliases when running watch
-alias watch="watch "
-
-
 # enable color support for grep
 alias grep="\grep --color=always"
 
@@ -169,29 +132,12 @@ alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --q
 alias more="less"
 
 
-# kill process group by name (case-insensitive)
-alias killall="\killall --ignore-case --process-group --wait"
-
-
 # show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
 alias which="type"
 
 
-# don't leave .wget-hsts file in home directory
-alias wget="wget --hsts-file=/dev/null"
-
-
-# show TCP and UDP sockets that are actively listening
-alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
-
-
 # version control
 alias g="git"
-
-
-# open github website in default browser
-alias gith="xdg-open https://github.com"
-alias gist="xdg-open https://gist.github.com/${GITHUB_USERNAME}"
 
 
 # exit shell
@@ -202,33 +148,8 @@ alias x="exit"
 alias untar="tar zxvf"
 
 
-# open url or file in default browser
-alias web="sensible-browser"
-
-
-# disk space
-alias df="\df --human-readable --sync"
-alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
-
-
-# disk usage (directory sizes)
-alias du="du --human-readable --time --max-depth=1"
-
-
-# ncurses disk usage (requires ncdu package)
-alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
-
-
-# memory usage
-alias mem="free --human --si | \grep --extended-regex 'Mem|total'"
-
-
 # count all files in current directory (recursive)
 alias countfiles="find . -type f | wc -l"
-
-
-# list directories and files in tree format
-alias tree="tree -ash -CF --du"
 
 
 # clear screen and scrollback buffer
@@ -236,16 +157,8 @@ alias cls="clear"
 alias c="clear"
 
 
-# ip addresses
-alias internalip="echo 'internal ip addresss:' && echo '---------------------' && hostname --all-ip-addresses | awk '{print \$1}'"
-alias externalip="echo 'external ip addresses:' && echo '----------------------' && curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
-
-
 # python
 alias py="python3"
-alias activate="source ./venv/bin/activate"
-alias act="activate"
-alias deact="deactivate"
 
 
 # show the zen of python
@@ -254,10 +167,6 @@ alias zen="python -c 'import this'"
 
 # uninstall all python packages in current environment
 alias pip-uninstall-all="pip freeze | xargs pip uninstall -y"
-
-
-# create a python virtual environment and activate it if none exists, otherwise just activate it
-alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && source ./venv/bin/activate || activate"
 
 
 # serve current directory over HTTP on port 8000 (bind all interfaces)
@@ -271,7 +180,7 @@ alias l="ll"
 
 
 # editors (sublime/vim)
-if [ -f /usr/bin/subl ]; then
+if [ -x "$(command -v subl)" ]; then
     alias edit="subl"
     alias ed="subl"
     alias e="subl --new-window ."
@@ -302,108 +211,6 @@ nowrap () {
 }
 
 
-# remove metadata from image
-clean-metadata () {
-    if [ -z "$1" ]; then
-        err "usage: clean-metadata <image_file>"
-        return 1
-    fi
-    if [ -f /usr/bin/exiv2 ]; then
-        exiv2 -k -v delete "$1"
-    else
-        err "exiv2 not installed"
-    fi
-}
-
-
-# colored diffs
-dff () {
-    if [ -z "$1" ]  || [ -z "$2" ]; then
-        err "please enter 2 files to diff"
-        return 1
-    fi
-    \diff --color=always --report-identical-files "$1" "$2" | less
-}
-alias diff="dff"
-
-
-# grep recursively for pattern (case-insensitive)
-# usage: rg <pattern>
-rg () {
-    if [ -z "$1" ]; then
-        err "please enter a search pattern"
-        return 1
-    fi
-    \rgrep \
-    --binary-files=without-match \
-    --color=always \
-    --devices=skip \
-    --ignore-case \
-    --line-number \
-    --no-messages \
-    --with-filename \
-    --exclude-dir=.git \
-    --exclude-dir=.tox \
-    --exclude-dir=.pytest_cache \
-    --exclude-dir=__pycache__ \
-    --exclude-dir=.venv \
-    --exclude-dir=venv \
-    "$1" | less
-}
-alias rgrep="rg"
-
-
-# preview markdown with github cli
-# requires github cli and gh-markdown-preview extension
-#   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-#   - run: gh extension install yusukebe/gh-markdown-preview
-preview-md () {
-    if [ ! -f /usr/bin/gh ]; then
-        echo "github cli is not installed"
-        return 1
-    fi
-    gh markdown-preview --light-mode "$1"
-}
-
-
-# run jekyll server for blog and open local url in browser
-blog () {
-    local blog_dir="${HOME}/code/cgoldberg.github.io"
-    local jekyll_server="127.0.0.1:4000"
-    if [ ! -d "${blog_dir}" ]; then
-        err "${blog_dir} not found"
-        return 1
-    elif [ ! -x "$(command -v bundle)" ]; then
-        err "bundler not found"
-        return 1
-    fi
-    killblog
-    echo "running server at: ${jekyll_server}"
-    cd ${blog_dir}
-    bundle exec jekyll s >/dev/null & disown # silence stdout
-    sleep 3.5
-    echo "opening browser at: http://${jekyll_server}"
-    xdg-open "http://${jekyll_server}"
-}
-
-
-# kill jekyll server running blog
-killblog () {
-    local blog_dir="${HOME}/code/cgoldberg.github.io"
-    local jekyll_proc="jekyll s"
-    local jekyll_server="127.0.0.1:4000"
-    if [ ! -d "${blog_dir}" ]; then
-        err "${blog_dir} not found. no server running"
-        return 1
-    fi
-    if [[ $(psgrep "${jekyll_proc}") ]]; then
-        echo "killing server at: ${jekyll_server}"
-        pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
-        psgrep "${jekyll_proc}"
-    fi
-}
-
-
 # show spinner for indicating progress
 spinner() {
     local shs=( - \\ \| / ) pnt=0
@@ -427,6 +234,43 @@ stop_spinner () {
     tput cnorm;
     echo
 }
+
+
+# colored diffs
+dff () {
+    if [ -z "$1" ]  || [ -z "$2" ]; then
+        err "please enter 2 files to diff"
+        return 1
+    fi
+    \diff --color=always --report-identical-files "$1" "$2" | less
+}
+alias diff="dff"
+
+
+# grep recursively for pattern (case-insensitive)
+# usage: rg <pattern>
+rg () {
+    if [ -z "$1" ]; then
+        err "please enter a search pattern"
+        return 1
+    fi
+    \grep -r \
+    --binary-files=without-match \
+    --color=always \
+    --devices=skip \
+    --ignore-case \
+    --line-number \
+    --no-messages \
+    --with-filename \
+    --exclude-dir=.git \
+    --exclude-dir=.tox \
+    --exclude-dir=.pytest_cache \
+    --exclude-dir=__pycache__ \
+    --exclude-dir=.venv \
+    --exclude-dir=venv \
+    "$1" | less
+}
+alias rgrep="rg"
 
 
 # search command history by regex (case-insensitive) show last n matches
@@ -595,75 +439,6 @@ py-refurb () {
 }
 
 
-# package maintenance
-apt-up () {
-    # reload package index files from sources
-    sudo apt --no-allow-insecure-repositories update && echo &&
-    # upgrade installed packages
-    sudo apt full-upgrade && echo &&
-    # check for broken dependencies
-    sudo apt-get check && echo &&
-    # fix broken dependencies
-    sudo apt --fix-broken install && echo &&
-    # fix missing dependencies
-    sudo apt --fix-missing install && echo &&
-    # purge packages that are no longer needed
-    sudo apt --purge autoremove && echo &&
-    # remove cached packages
-    sudo apt clean &&
-    # purge orphaned configs from removed packages
-    purge-apt-configs &&
-    # reload package index files from sources
-    sudo apt --no-allow-insecure-repositories update && echo
-}
-
-
-# purge configuration data from packages marked as removed
-purge-apt-configs () {
-    if dpkg -l | grep --quiet '^rc'; then
-        echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
-        echo "purging package configs from removed packages..."
-        dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
-    fi
-}
-
-
-# backup public github repos and google drive and store in a tarball in ~/backup
-backup-all () {
-    local backup_dir="${HOME}/backup"
-    local backup_archive="./backups.tar.gz"
-    if [ ! ${backup_dir} ]; then
-        err "backup directory not found"
-        return 1
-    fi
-    if [ ! -x "$(command -v google_drive_export)" ]; then
-        err "google_drive_export not found"
-        return 1
-    fi
-    if [ ! -x "$(command -v githubtakeout)" ]; then
-        err "githubtakeout not found"
-        return 1
-    fi
-    echo
-    echo "Changing directory to: ${backup_dir}"
-    cd "${backup_dir}"
-    rm -f "${backup_archive}"
-    rm -rf ./exported_files
-    rm -rf ./backups
-    rm -rf ./google_drive_files
-    rm -rf ./github_archives
-    google_drive_export
-    echo
-    githubtakeout "${GITHUB_USERNAME}" --format=tar
-    mv ./exported_files ./google_drive_files
-    mv ./backups ./github_archives
-    tar cvzf "${backup_archive}" *
-    echo
-    echo "Changing directory back to: ${OLDPWD}"
-    cd "${OLDPWD}"
-}
-
-
 # count tests found under current directory by running pytest discovery
 # usage: count-tests <path> (no arg counts everything under current directory)
 counttests () {
@@ -677,63 +452,20 @@ counttests () {
 }
 
 
-# update pyenv, plugins, and pip in every python installation
-update-pyenv () {
-    if [ ! -d "${HOME}/.pyenv" ]; then
-        err "pyenv is not installed"
-        return 1
-    fi
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv"
-        deactivate
-    fi
-    echo "updating pyenv and plugins ..."
-    pyenv update
-    pyenv rehash
-    echo
-    for py_version in ${py_versions[@]}; do
-        pyenv global ${py_version}
-        echo "version installed: $(python --version)"
-        echo "version available: Python $(pyenv latest ${py_version})"
-        echo "updating pip ..."
-        python3 -m pip install --upgrade pip
-        echo
-    done
-    eval "pyenv global ${py_versions[*]}"
-}
-
-
 # -----------------------------------------------------------------------------
 
 
-# ruby gems
-if [ -d "${HOME}/.gems" ]; then
-    export GEM_HOME="${HOME}/.gems"
-    export PATH="${PATH}:${HOME}/.gems/bin"
-fi
-
-
-# pyenv
-if [ -d "${HOME}/.pyenv" ]; then
-    export PYENV_ROOT="${HOME}/.pyenv"
-    [[ -d "${PYENV_ROOT}/bin" ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
-    eval "$(pyenv init - bash)"
-    py_versions=("3.13" "3.12" "3.11" "3.10" "3.9" "pypy3.11")
-    eval "pyenv global ${py_versions[*]}"
-fi
-
-
-# pipx
-if [ -f /usr/bin/pipx ]; then
-    eval "$(register-python-argcomplete pipx)"
-fi
-
-
-# atuin - shell history/search (https://atuin.sh)
-#   - ctrl-r to activate
-#   - run autuin-update to update the binary
-if [ -d "${HOME}/.atuin" ]; then
-    source "${HOME}/.atuin/bin/env"
-    [[ -f "${HOME}/.bash-preexec.sh" ]] && source "${HOME}/.bash-preexec.sh"
-    eval "$(atuin init bash --disable-up-arrow)"
-fi
+# load additional bash configurations if they exist
+load-bash-configs () {
+    local config_files=(
+        "${HOME}/.bashrc_linux"
+        "${HOME}/.bashrc_win"
+        "${HOME}/.bashrc_selenium"
+    )
+    for config_file in ${config_files[@]}; do
+        if [ -f "${config_file}" ]; then
+            source "${config_file}"
+        fi
+    done
+}
+load-bash-configs
