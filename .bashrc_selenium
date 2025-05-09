@@ -1,7 +1,6 @@
 # ~/.bashrc_selenium
 # - bash shell configuration
-#
-# ============================================================================
+# ==========================
 
 
 SELENIUM_DEV_HOME="${HOME}/code/selenium"
@@ -155,7 +154,7 @@ selenium-server () {
 # delete and re-install all webdrivers and browsers used by selenium
 # also delete and re-download selenium grid server
 update-webrivers () {
-    kill-webdriver
+    kill-webdrivers
     local sel_home="${SELENIUM_DEV_HOME}"
     local sel_mgr_path="${sel_home}/py/selenium/webdriver/common/linux"
     local jar="selenium-server.jar"
@@ -204,30 +203,5 @@ update-webrivers () {
     echo "updating grid server ..."
     gh release download --pattern=selenium-server*.jar --output=${jar}
     cd "${OLDPWD}"
-    echo
-}
-
-
-# show spinner for indicating progress
-spinner() {
-    local shs=( - \\ \| / ) pnt=0
-    printf '\e7'
-    while ! read -rsn1 -t .2 _; do
-        printf '%b\e8' "${shs[pnt++%${#shs[@]}]}"
-    done
-}
-
-
-# start spinner background task
-start_spinner () {
-    tput civis;
-    exec {doSpinner}> >(spinner "$@")
-}
-
-
-# stop spinner background task
-stop_spinner () {
-    echo >&"${doSpinner}" && exec {doSpinner}>&-;
-    tput cnorm;
     echo
 }

@@ -1,7 +1,6 @@
 # ~/.bashrc_linux
 # - bash shell configuration
-#
-# ============================================================================
+# ==========================
 
 
 export GITHUB_USERNAME="cgoldberg"
@@ -109,7 +108,7 @@ clean-metadata () {
 #   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 #   - run: gh extension install yusukebe/gh-markdown-preview
 preview-md () {
-    if [ ! -x "$(command -v gh)" ];
+    if [ ! -x "$(command -v gh)" ]; then
         echo "github cli is not installed"
         return 1
     fi
