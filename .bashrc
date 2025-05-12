@@ -459,8 +459,8 @@ counttests () {
 load-bash-configs () {
     local config_files=(
         "${HOME}/.bashrc_linux"
-        "${HOME}/.bashrc_win"
-        "${HOME}/.bashrc_selenium"
+        "${HOME}/.bashrc_linux_selenium"
+        "${HOME}/.bashrc_windows"
     )
     for config_file in ${config_files[@]}; do
         if [ -f "${config_file}" ]; then
