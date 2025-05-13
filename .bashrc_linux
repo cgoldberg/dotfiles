@@ -79,6 +79,10 @@ alias mem="free --human --si | \grep --extended-regex 'Mem|total'"
 alias tree="tree -ash -CF --du"
 
 
+# show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
+alias which="type"
+
+
 # python virtual env
 alias activate="source ./venv/bin/activate"
 alias act="activate"
