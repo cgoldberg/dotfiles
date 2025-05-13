@@ -13,7 +13,6 @@
     status = always
 
 [core]
-    autocrlf = true
     safecrlf = true
 
 [pull]
