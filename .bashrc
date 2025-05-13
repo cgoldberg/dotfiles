@@ -133,10 +133,6 @@ alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --q
 alias more="less"
 
 
-# show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
-alias which="type"
-
-
 # version control
 alias g="git"
 
@@ -163,7 +159,7 @@ alias py="python"
 
 
 # show the zen of python
-alias zen="python -c 'import this'"
+alias zen="python3 -c 'import this'"
 
 
 # uninstall all python packages in current environment
