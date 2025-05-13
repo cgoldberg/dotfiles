@@ -46,9 +46,10 @@ export LANGUAGE="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
 export PAGER="less"
 export EDITOR="vi"
-export VISUAL="vi"
-if [ -f /usr/bin/subl ]; then
+if [ -x "$(command -v subl)" ]; then
     export VISUAL="subl --new-window --wait"
+else
+    export VISUAL="vi"
 fi
 
 
