@@ -12,6 +12,10 @@
     interactive = always
     status = always
 
+[core]
+    autocrlf = true
+    safecrlf = true
+
 [pull]
     rebase = true
 
@@ -24,6 +28,12 @@
 
 [status]
     showStash = true
+
+[filter "lfs"]
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
 
 [alias]
     b = branch
