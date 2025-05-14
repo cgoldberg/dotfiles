@@ -22,6 +22,6 @@ if __name__ == '__main__':
         for f in files:
             if f.lower().endswith(delete_extensions):
                 path = os.path.join(root, f)
-                print('removing: {}'.format(path))
+                print(f'removing: {path}')
                 os.unlink(path)
 
