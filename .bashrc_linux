@@ -58,12 +58,7 @@ alias web="sensible-browser"
 
 
 # disk space
-alias df="\df --human-readable --sync"
 alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
-
-
-# disk usage (directory sizes)
-alias du="du --human-readable --time --max-depth=1"
 
 
 # ncurses disk usage (requires ncdu package)
