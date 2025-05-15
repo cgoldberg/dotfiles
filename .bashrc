@@ -40,6 +40,34 @@ if [ -d "${HOME}/.local/bin" ] ; then
 fi
 
 
+# enable programmable completion features
+# if not available, download it and put it in ~/etc
+# https://salsa.debian.org/debian/bash-completion/-/raw/master/bash_completion
+load-bash-completions () {
+    local completion_paths=(
+        "/usr/share/bash-completion/bash_completion"
+        "/etc/bash_completion"
+        "${HOME}/etc/bash_completion"
+    )
+    local completion_loader_funcs=(
+        "_completion_loader"
+        "_comp_complete_load"
+    )
+    for completion_path in ${completion_paths[@]}; do
+        if [ -f "${completion_path}" ]; then
+            source "${completion_path}"
+        fi
+    done
+    for completion_loader_func in ${completion_loader_funcs[@]}; do
+        if declare -f "${completion_loader_func}" >/dev/null; then
+            "${completion_loader_func}" git
+            complete -o bashdefault -o default -o nospace -F __git_wrap__git_main git
+        fi
+    done
+}
+load-bash-completions
+
+
 # export environment variables
 export LANG="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
@@ -65,17 +93,6 @@ export LESS_TERMCAP_se=$(printf '\e[0m')
 export LESS_TERMCAP_so=$(printf '\e[01;33m')
 export LESS_TERMCAP_ue=$(printf '\e[0m')
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
-
-
-# enable programmable completion features (you don't need to enable this, if it's
-# already enabled in /etc/bash.bashrc and /etc/profile sources /etc/bash.bashrc)
-if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-        source /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-        source /etc/bash_completion
-    fi
-fi
 
 
 # check window size after each command and update the values of LINES and COLUMNS
@@ -135,7 +152,6 @@ alias more="less"
 
 # version control
 alias g="git"
-_completion_loader git
 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
 
 
