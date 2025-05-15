@@ -135,6 +135,7 @@ alias more="less"
 
 # version control
 alias g="git"
+_completion_loader git
 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
 
 
