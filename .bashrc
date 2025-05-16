@@ -182,6 +182,10 @@ alias c="clear"
 alias py="python"
 
 
+# create a python virtual environment and activate it if none exists, otherwise just activate it
+alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && activate || activate"
+
+
 # show the zen of python
 alias zen="python3 -c 'import this'"
 
