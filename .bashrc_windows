@@ -12,16 +12,6 @@ custom_prompt='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\
 PS1="${custom_prompt}"
 
 
-# python virtual env
-alias activate="source ./venv/Scripts/activate"
-alias act="activate"
-alias deact="deactivate"
-
-
-# create a python virtual environment and activate it if none exists, otherwise just activate it
-alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && activate || activate"
-
-
 load_ssh_key () {
     local ssh_env=~/.ssh/agent.env
     agent_load_env () {
@@ -40,10 +30,16 @@ load_ssh_key () {
         ssh-add
     fi
 }
-
-
 load_ssh_key
-cd ~
-if [ -d ~/code ]; then
-    cd ./code
+
+
+# python virtual env
+alias activate="source ./venv/Scripts/activate"
+alias act="activate"
+alias deact="deactivate"
+
+
+cd "${HOME}"
+if [ -d "${HOME}/code" ]; then
+    cd "${HOME}/code"
 fi
