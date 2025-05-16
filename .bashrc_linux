@@ -1,4 +1,5 @@
 # ~/.bashrc_linux
+# ==========================
 # - bash shell configuration
 # ==========================
 
@@ -58,7 +59,12 @@ alias web="sensible-browser"
 
 
 # disk space
+alias df="\df --human-readable --sync"
 alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
+
+
+# disk usage (directory sizes)
+alias du="\du --human-readable --time --max-depth=1"
 
 
 # ncurses disk usage (requires ncdu package)
@@ -81,10 +87,6 @@ alias which="type"
 alias activate="source ./venv/bin/activate"
 alias act="activate"
 alias deact="deactivate"
-
-
-# create a python virtual environment and activate it if none exists, otherwise just activate it
-alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
 
 # ip addresses
