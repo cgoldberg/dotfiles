@@ -272,6 +272,17 @@ dff () {
 alias diff="dff"
 
 
+# rename all files under the current directory to replace spaces with underscores (recursive)
+# if inside a git repo, file renames will be tracked by git
+remove-whitespace-from-filenames () {
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        find . -path ./.git -prune -o -type f -name "* *" -exec bash -c 'git mv "$0" "${0// /_}"' {} \;
+    else
+        find . -type f -name "* *" -exec bash -c 'mv "$0" "${0// /_}"' {} \;
+    fi
+}
+
+
 # grep recursively for pattern (case-insensitive)
 # usage: rg <pattern>
 rg () {
