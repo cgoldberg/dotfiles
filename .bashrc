@@ -488,6 +488,19 @@ counttests () {
 }
 
 
+# preview markdown with github cli
+# requires github cli and gh-markdown-preview extension
+#   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+#   - run: gh extension install yusukebe/gh-markdown-preview
+preview-md () {
+    if [ ! -x "$(command -v gh)" ]; then
+        echo "github cli is not installed"
+        return 1
+    fi
+    gh markdown-preview --light-mode "$1"
+}
+
+
 # -----------------------------------------------------------------------------
 
 
