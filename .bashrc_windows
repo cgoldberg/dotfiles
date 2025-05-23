@@ -1,6 +1,7 @@
 # ~/.bashrc_windows
-# - bash shell configuration
-# ==========================
+# =========================
+#  bash shell configuration
+# =========================
 
 
 # set a color prompt with: user@host:dir, git branch (if in a git repo)

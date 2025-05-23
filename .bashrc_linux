@@ -1,7 +1,7 @@
 # ~/.bashrc_linux
-# ==========================
-# - bash shell configuration
-# ==========================
+# =========================
+#  bash shell configuration
+# =========================
 
 
 export GITHUB_USERNAME="cgoldberg"
