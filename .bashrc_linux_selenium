@@ -1,7 +1,7 @@
 # ~/.bashrc_linux_selenium
-# ==========================
-# - bash shell configuration
-# ==========================
+# =========================
+#  bash shell configuration
+# =========================
 
 
 SELENIUM_DEV_HOME="${HOME}/code/selenium"
