@@ -291,20 +291,21 @@ rg () {
         return 1
     fi
     \grep -r \
-    --binary-files=without-match \
-    --color=always \
-    --devices=skip \
-    --ignore-case \
-    --line-number \
-    --no-messages \
-    --with-filename \
-    --exclude-dir=.git \
-    --exclude-dir=.tox \
-    --exclude-dir=.pytest_cache \
-    --exclude-dir=__pycache__ \
-    --exclude-dir=.venv \
-    --exclude-dir=venv \
-    "$1" | less
+        --binary-files=without-match \
+        --color=always \
+        --devices=skip \
+        --ignore-case \
+        --line-number \
+        --no-messages \
+        --with-filename \
+        --exclude-dir=.git \
+        --exclude-dir=.tox \
+        --exclude-dir=.pytest_cache \
+        --exclude-dir=__pycache__ \
+        --exclude-dir=.venv \
+        --exclude-dir=venv \
+        "$1" \
+        | less
 }
 alias rgrep="rg"
 
