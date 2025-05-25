@@ -502,9 +502,6 @@ preview-md () {
 }
 
 
-# -----------------------------------------------------------------------------
-
-
 # load additional bash configurations if they exist
 load-bash-configs () {
     local config_files=(
