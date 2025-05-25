@@ -90,8 +90,16 @@ alias deact="deactivate"
 
 
 # ip addresses
-alias internalip="echo 'internal ip addresss:' && echo '---------------------' && hostname --all-ip-addresses | awk '{print \$1}'"
-alias externalip="echo 'external ip addresses:' && echo '----------------------' && curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
+alias internalip="echo 'internal ip addresss:' && echo '---------------------' && \
+    hostname --all-ip-addresses | awk '{print \$1}'"
+alias externalip="echo 'external ip addresses:' && echo '----------------------' && \
+    curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
+alias ips="echo 'ip addresses:' && echo '-------------' && \
+    hostname --all-ip-addresses | awk '{print \$1}' && \
+    curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
+
+
+# --------------------------------- FUNCTIONS ---------------------------------
 
 
 # remove metadata from image
@@ -239,6 +247,9 @@ update-pyenv () {
     done
     eval "pyenv global ${py_versions[*]}"
 }
+
+
+# -----------------------------------------------------------------------------
 
 
 # ruby gems
