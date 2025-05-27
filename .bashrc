@@ -356,40 +356,6 @@ clean-pip () {
 }
 
 
-# clean python dev/temp files from local directory (recurse subdirectories)
-clean-py () {
-    echo "cleaning python dev/temp files ..."
-    local dirs=(
-        "build/"
-        "dist/"
-    )
-    local recurse_dirs=(
-        "*.egg-info/"
-        ".mypy_cache/"
-        ".pytest_cache/"
-        ".ruff_cache/"
-        ".tox/"
-        ".venv/"
-        "__pycache__/"
-        "venv/"
-    )
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv"
-        deactivate
-    fi
-    for d in ${dirs[@]}; do
-        if [ -d "${d}" ]; then
-            echo "deleting ${d}"
-            rm -rf "${d}"
-        fi
-    done
-    for d in ${recurse_dirs[@]}; do
-        echo "recursively deleting ${d}"
-        rm -rf ./**/${d}/
-    done
-}
-
-
 # search active processes for pattern (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
