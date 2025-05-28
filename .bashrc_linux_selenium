@@ -4,6 +4,12 @@
 # =========================
 
 
+# this file only works on Linux
+if [[ "${OSTYPE}" != "linux"* ]]; then
+    return
+fi
+
+
 SELENIUM_DEV_HOME="${HOME}/code/selenium"
 
 
