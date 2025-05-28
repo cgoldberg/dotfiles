@@ -11,7 +11,7 @@ fi
 
 
 # set a color prompt with: user@host:dir, git branch (if in a git repo)
-custom_prompt='\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]$(__git_ps1 " (%s) ")\[\033[0m\]\$ '
+custom_prompt='\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]$(__git_ps1 " (%s)")\[\033[0m\] \$ '
 PS1="${custom_prompt}"
 
 
@@ -40,6 +40,13 @@ load_ssh_key
 alias activate="source ./venv/Scripts/activate"
 alias act="activate"
 alias deact="deactivate"
+
+
+# clean pip cache
+clean-pip () {
+    echo "cleaning pip cache ..."
+    pip cache purge
+}
 
 
 cd "${HOME}"
