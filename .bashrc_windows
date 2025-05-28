@@ -5,7 +5,7 @@
 
 
 # this file only works on MinGW
-if [[ "${OSTYPE}" != "msys"* ]]; then
+if [[ "${OSTYPE}" != "msys" ]]; then
     return
 fi
 
