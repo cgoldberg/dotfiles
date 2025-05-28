@@ -421,6 +421,7 @@ py-refurb () {
             --disable FURB144 \
             --disable FURB146 \
             --disable FURB150 \
+            --disable FURB173 \
             --disable FURB183 \
             --disable FURB184
 }
