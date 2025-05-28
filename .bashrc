@@ -339,22 +339,6 @@ re-source () {
 }
 
 
-# clean pip, pipx, poetry cache
-clean-pip () {
-    echo "cleaning pip and pipx cache ..."
-    local dirs=(
-        "${HOME}/.cache/pip/"
-        "${HOME}/.cache/pip-tools/"
-        "${HOME}/.local/pipx/.cache/"
-    )
-    for d in ${dirs[@]}; do
-        if [ -d "${d}" ]; then
-            echo "deleting ${d}"
-            rm -rf "${d}"
-        fi
-    done
-}
-
 
 # search active processes for pattern (case-insensitive)
 # usage: psgrep <pattern>
