@@ -49,7 +49,6 @@ clean-pip () {
 }
 
 
-cd "${HOME}"
-if [ -d "${HOME}/code" ]; then
+if [ "${PWD}" == "${HOME}" ] && [ -z "${OLDPWD}" ] && [ -d "${HOME}/code" ]; then
     cd "${HOME}/code"
 fi
