@@ -214,23 +214,23 @@ killblog () {
 # package maintenance
 apt-up () {
     # reload package index files from sources
-    sudo apt --no-allow-insecure-repositories update && echo &&
-    # upgrade installed packages
-    sudo apt full-upgrade && echo &&
+    sudo apt update --no-allow-insecure-repositories && echo &&
     # check for broken dependencies
     sudo apt-get check && echo &&
     # fix broken dependencies
-    sudo apt --fix-broken install && echo &&
+    sudo apt install --fix-broken && echo &&
     # fix missing dependencies
-    sudo apt --fix-missing install && echo &&
+    sudo apt install --fix-missing && echo &&
+    # upgrade installed packages
+    sudo apt full-upgrade && echo &&
     # purge packages that are no longer needed
-    sudo apt --purge autoremove && echo &&
+    sudo apt autoremove --purge && echo &&
     # remove cached packages
     sudo apt clean &&
     # purge orphaned configs from removed packages
     purge-apt-configs &&
     # reload package index files from sources
-    sudo apt --no-allow-insecure-repositories update && echo
+    sudo apt update --no-allow-insecure-repositories && echo
 }
 
 
