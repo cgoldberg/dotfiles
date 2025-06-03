@@ -440,6 +440,24 @@ counttests () {
 }
 
 
+# clean pip, pipx cache
+clean-pip () {
+    echo "cleaning pip and pipx cache ..."
+    pip cache purge
+    local dirs=(
+        "${HOME}/.cache/pip-tools/"
+        "${HOME}/.local/pipx/.cache/"
+        "${HOME}/pipx/.cache/"
+    )
+    for d in ${dirs[@]}; do
+        if [ -d "${d}" ]; then
+            echo "deleting ${d}"
+            rm -rf "${d}"
+        fi
+    done
+}
+
+
 # preview markdown with github cli
 # requires github cli and gh-markdown-preview extension
 #   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
