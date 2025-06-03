@@ -36,13 +36,6 @@ alias act="activate"
 alias deact="deactivate"
 
 
-# clean pip cache
-clean-pip () {
-    echo "cleaning pip cache ..."
-    pip cache purge
-}
-
-
 if [ "${PWD}" == "${HOME}" ] && [ -z "${OLDPWD}" ] && [ -d "${HOME}/code" ]; then
     cd "${HOME}/code"
 fi
