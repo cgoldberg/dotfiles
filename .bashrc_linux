@@ -263,7 +263,10 @@ backup-all () {
 }
 
 
-# update pyenv, plugins, and pip in every python installation
+# update pyenv
+# uninstall each python installation
+# install latest of each major python version
+# update pip in each python installation
 update-pyenv () {
     if [ ! -d "${HOME}/.pyenv" ]; then
         err "pyenv is not installed"
