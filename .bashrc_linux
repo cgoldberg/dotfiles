@@ -278,7 +278,6 @@ update-pyenv () {
     fi
     echo
     echo "updating pyenv ..."
-    echo
     pyenv update
     pyenv rehash
     echo
