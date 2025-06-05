@@ -273,29 +273,26 @@ update-pyenv () {
         echo "deactivating venv"
         deactivate
     fi
+    echo
     echo "updating pyenv ..."
     pyenv update
     pyenv rehash
     echo
-    echo
     for py_version in ${PY_VERSIONS[@]}; do
-        pyenv global "${py_version}"
-        echo "uninstalling $(python3 --version) ..."
-        start_spinner
-        pyenv uninstall --force "${py_version}"
-        stop_spinner
-        echo
-        echo "installing latest version of Python ${py_version}) ..."
+        local minor_versions=( $(pyenv versions --bare | \grep "${py_version}") )
+        for minor_version in ${minor_versions[@]}; do
+            echo "uninstalling Python ${minor_version} ..."
+            start_spinner
+            pyenv uninstall --force "${minor_version}"
+            stop_spinner
+        echo "installing latest version of Python ${py_version} ..."
         start_spinner
         pyenv install --force "${py_version}"
         stop_spinner
-        echo
         pyenv global "${py_version}"
         echo "installed $(python3 --version)"
-        echo
         echo "updating pip ..."
         python3 -m pip install --upgrade pip
-        echo
         echo
     done
     eval "pyenv global ${PY_VERSIONS[*]}"
