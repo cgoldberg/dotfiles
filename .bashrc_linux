@@ -275,6 +275,7 @@ update-pyenv () {
     fi
     echo
     echo "updating pyenv ..."
+    echo
     pyenv update
     pyenv rehash
     echo
@@ -282,14 +283,10 @@ update-pyenv () {
         local minor_versions=( $(pyenv versions --bare | \grep "${py_version}") )
         for minor_version in ${minor_versions[@]}; do
             echo "uninstalling Python ${minor_version} ..."
-            start_spinner
             pyenv uninstall --force "${minor_version}"
-            stop_spinner
         done
         echo "installing latest version of Python ${py_version} ..."
-        start_spinner
         pyenv install --force "${py_version}"
-        stop_spinner
         pyenv global "${py_version}"
         echo "installed $(python3 --version)"
         echo "updating pip ..."
