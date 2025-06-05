@@ -273,19 +273,32 @@ update-pyenv () {
         echo "deactivating venv"
         deactivate
     fi
-    echo "updating pyenv and plugins ..."
+    echo "updating pyenv ..."
     pyenv update
     pyenv rehash
     echo
-    for py_version in ${py_versions[@]}; do
-        pyenv global ${py_version}
-        echo "version installed: $(python --version)"
-        echo "version available: Python $(pyenv latest ${py_version})"
+    echo
+    for py_version in ${PY_VERSIONS[@]}; do
+        pyenv global "${py_version}"
+        echo "uninstalling $(python3 --version) ..."
+        start_spinner
+        pyenv uninstall --force "${py_version}"
+        stop_spinner
+        echo
+        echo "installing latest version of Python ${py_version}) ..."
+        start_spinner
+        pyenv install --force "${py_version}"
+        stop_spinner
+        echo
+        pyenv global "${py_version}"
+        echo "installed $(python3 --version)"
+        echo
         echo "updating pip ..."
         python3 -m pip install --upgrade pip
         echo
+        echo
     done
-    eval "pyenv global ${py_versions[*]}"
+    eval "pyenv global ${PY_VERSIONS[*]}"
 }
 
 
@@ -310,8 +323,8 @@ if [ -d "${HOME}/.pyenv" ]; then
     export PYENV_ROOT="${HOME}/.pyenv"
     [[ -d "${PYENV_ROOT}/bin" ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init - bash)"
-    py_versions=("3.13" "3.12" "3.11" "3.10" "3.9" "pypy3.11")
-    eval "pyenv global ${py_versions[*]}"
+    PY_VERSIONS=("3.13" "3.12" "3.11" "3.10" "3.9" "pypy3.11")
+    eval "pyenv global ${PY_VERSIONS[*]}"
 fi
 
 
