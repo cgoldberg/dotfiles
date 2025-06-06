@@ -4,8 +4,8 @@
 # =========================
 
 
-# don't use this file on Linux
-if [[ "${OSTYPE}" == "linux"* ]]; then
+# only use this file on MinGW
+if [[ "${OSTYPE}" != "msys" ]]; then
     return
 fi
 
