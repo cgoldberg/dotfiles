@@ -4,6 +4,12 @@
 # =========================
 
 
+# don't use this file on Linux
+if [[ "${OSTYPE}" == "linux"* ]]; then
+    return
+fi
+
+
 # set a color prompt with: user@host:dir, git branch (if in a git repo)
 custom_prompt='\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]$(__git_ps1 " (%s)")\[\033[0m\] \$ '
 PS1="${custom_prompt}"
