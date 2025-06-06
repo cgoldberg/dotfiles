@@ -4,7 +4,7 @@
 # =========================
 
 
-# this file only works on Linux
+# only use this file on Linux
 if [[ "${OSTYPE}" != "linux"* ]]; then
     return
 fi
