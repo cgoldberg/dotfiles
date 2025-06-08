@@ -347,13 +347,3 @@ if [ -d "${HOME}/.pyenv" ]; then
     PY_VERSIONS=("3.13" "3.12" "3.11" "3.10" "3.9" "pypy3.11")
     eval "pyenv global ${PY_VERSIONS[*]}"
 fi
-
-
-# atuin - shell history/search (https://atuin.sh)
-#   - ctrl-r to activate
-#   - run autuin-update to update the binary
-if [ -d "${HOME}/.atuin" ]; then
-    source "${HOME}/.atuin/bin/env"
-    [[ -f "${HOME}/.bash-preexec.sh" ]] && source "${HOME}/.bash-preexec.sh"
-    eval "$(atuin init bash --disable-up-arrow)"
-fi
