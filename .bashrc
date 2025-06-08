@@ -287,7 +287,7 @@ remove-whitespace-from-filenames () {
 # usage: rg <pattern>
 rg () {
     if [ -z "$1" ]; then
-        err "please enter a search pattern"
+        err "please specify a search pattern"
         return 1
     fi
     \grep -r \
@@ -358,7 +358,7 @@ psgrep () {
 # usage: findfiles <pattern>
 findfiles () {
     if [ -z "$1" ]; then
-        err "usage: findfiles <pattern>"
+        err "please enter a search pattern"
         return 1
     fi
     find \
