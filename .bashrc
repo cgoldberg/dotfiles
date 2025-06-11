@@ -467,14 +467,14 @@ clean-py () {
         "dist/"
     )
     local recurse_dirs=(
-        "*.egg-info/"
+        "venv/"
+        ".tox/"
+        ".venv/"
         ".mypy_cache/"
         ".pytest_cache/"
         ".ruff_cache/"
-        ".tox/"
-        ".venv/"
+        "*.egg-info/"
         "__pycache__/"
-        "venv/"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
         local venv=$(basename "${VIRTUAL_ENV}")
