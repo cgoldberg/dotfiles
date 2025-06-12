@@ -465,8 +465,6 @@ clean-py () {
     local dirs=(
         "build/"
         "dist/"
-    )
-    local recurse_dirs=(
         "venv/"
         ".tox/"
         ".venv/"
@@ -474,6 +472,8 @@ clean-py () {
         ".pytest_cache/"
         ".ruff_cache/"
         "*.egg-info/"
+    )
+    local recurse_dirs=(
         "__pycache__/"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
@@ -487,9 +487,9 @@ clean-py () {
             rm -rf "${d}"
         fi
     done
-    for d in ${recurse_dirs[@]}; do
-        echo "recursively deleting ${d}"
-        rm -rf ./**/${d}/
+    for rd in ${recurse_dirs[@]}; do
+        echo "recursively deleting ${rd}"
+        rm -rf ./**/${rd}/
     done
 }
 
