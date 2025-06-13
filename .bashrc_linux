@@ -108,6 +108,23 @@ alias ips="echo 'ip addresses:' && echo '-------------' && \
 # --------------------------------- FUNCTIONS ---------------------------------
 
 
+# install chrome from google repo
+install-chrome () {
+    local package="google-chrome-stable"
+    if dpkg-query -Wf'${db:Status-abbrev}' "${package}" 2>/dev/null | \grep -q '^i'; then
+        err "${package} is already installed"
+        return 1
+    else
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub \
+            | sudo tee /etc/apt/trusted.gpg.d/google.asc >/dev/null
+        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" \
+            | sudo tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt update
+        sudo apt install "${package}" -y
+    fi
+}
+
+
 # remove metadata from an image
 # usage: clean-metadata <image_file>
 clean-metadata () {
