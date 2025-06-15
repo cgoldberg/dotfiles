@@ -118,7 +118,8 @@ clean-selenium-dev () {
     )
     echo "cleaning up selenium dev environment ..."
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv ..."
+        local venv=$(basename "${VIRTUAL_ENV}")
+        echo "deactivating ${venv}"
         deactivate
     fi
     for d in ${dirs[@]}; do

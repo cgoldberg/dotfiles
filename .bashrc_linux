@@ -257,7 +257,8 @@ update-pyenv () {
         return 1
     fi
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv"
+        local venv=$(basename "${VIRTUAL_ENV}")
+        echo "deactivating ${venv}"
         deactivate
     fi
     echo
