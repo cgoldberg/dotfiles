@@ -477,7 +477,8 @@ clean-py () {
         "venv/"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv"
+        local venv=$(basename "${VIRTUAL_ENV}")
+        echo "deactivating ${venv}"
         deactivate
     fi
     for d in ${dirs[@]}; do
