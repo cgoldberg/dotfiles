@@ -427,19 +427,6 @@ py-refurb () {
 }
 
 
-# count tests found under current directory by running pytest discovery
-# usage: count-tests <path> (no arg counts everything under current directory)
-counttests () {
-    if [ -x "$(command -v pytest)" ]; then
-        echo "running test discovery ..."
-        local num_tests=$(pytest --collect-only -q "$1" | head -n -2 | wc -l)
-        echo "tests found: ${num_tests}"
-    else
-        echo "pytest not found"
-    fi
-}
-
-
 # clean pip, pipx cache
 clean-pip () {
     echo "cleaning pip and pipx cache ..."
@@ -456,7 +443,6 @@ clean-pip () {
         fi
     done
 }
-
 
 
 # clean python dev/temp files from current directory and subdirectories
