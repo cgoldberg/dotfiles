@@ -162,7 +162,7 @@ alias x="exit"
 
 
 # disk usage (directory sizes)
-alias du="\du --human-readable --time"
+alias du="\du --human-readable --time --max-depth=1"
 
 
 # extract a tarball
@@ -170,7 +170,7 @@ alias untar="tar zxvf"
 
 
 # count all files in current directory (recursive)
-alias countfiles="find . -type f | wc -l"
+alias countfiles=" find . -type f ! -path './.git/*' | wc -l"
 
 
 # clear screen and scrollback buffer
