@@ -40,7 +40,7 @@ load_ssh_key
 
 
 # exit shell
-alias exit="TASKKILL //F //IM git.exe >/dev/null 2>&1; TASKKILL //F //IM ssh-agent.exe >/dev/null 2>&1; \exit"
+alias exit="TASKKILL //F //IM git.exe >/dev/null 2>&1; \exit"
 alias x="exit"
 
 
