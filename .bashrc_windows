@@ -18,14 +18,17 @@ PS1="${custom_prompt}"
 load_ssh_key () {
     local ssh_env=~/.ssh/agent.env
     agent_load_env () {
-        test -f "${ssh_env}" && source "${ssh_env}" >| /dev/null ;
+        if [ -f "${ssh_env}" ]; then
+            source "${ssh_env}" >/dev/null
+        fi
     }
     agent_start () {
-        (umask 077; ssh-agent >| "${ssh_env}")
-        source "${ssh_env}" >| /dev/null ; }
+        (umask 077; ssh-agent > "${ssh_env}")
+        source "${ssh_env}" >/dev/null
+    }
     agent_load_env
     # agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2=agent not running
-    local agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+    local agent_run_state=$(ssh-add -l >/dev/null 2>&1; echo $?)
     if [ ! "${SSH_AUTH_SOCK}" ] || [ "${agent_run_state}" = 2 ]; then
         agent_start
         ssh-add
@@ -34,6 +37,11 @@ load_ssh_key () {
     fi
 }
 load_ssh_key
+
+
+# exit shell
+alias exit="TASKKILL //F //IM git.exe >/dev/null 2>&1; TASKKILL //F //IM ssh-agent.exe >/dev/null 2>&1; \exit"
+alias x="exit"
 
 
 # python virtual env
