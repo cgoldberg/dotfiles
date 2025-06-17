@@ -43,6 +43,10 @@ alias sudo="sudo "
 alias watch="watch "
 
 
+# exit shell
+alias x="exit"
+
+
 # kill process group by name (case-insensitive)
 alias killall="\killall --ignore-case --process-group --wait"
 
