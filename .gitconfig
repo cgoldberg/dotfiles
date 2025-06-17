@@ -1,5 +1,7 @@
 # ~/.gitconfig
-# git configuration
+# global git configuration
+# set in each repo's .git/config to override these
+
 
 [user]
     name = Corey Goldberg
@@ -14,6 +16,9 @@
 
 [core]
     safecrlf = true
+    # autocrlf = true
+    # fsmonitor = true
+    # untrackedcache = true
 
 [pull]
     rebase = true
@@ -27,6 +32,9 @@
 
 [status]
     showStash = true
+
+#[credential]
+#    helper = manager
 
 [filter "lfs"]
     process = git-lfs filter-process
