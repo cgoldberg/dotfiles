@@ -259,7 +259,7 @@ stop_spinner () {
 
 # colored diffs
 dff () {
-    if [ -z "$1" ]  || [ -z "$2" ]; then
+    if [ -z "$1" ] || [ -z "$2" ]; then
         err "please enter 2 files to diff"
         return 1
     fi
