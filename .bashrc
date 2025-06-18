@@ -497,7 +497,7 @@ pipx-install () {
 }
 
 
-# upgrade all pipx apps
+# upgrade all pipx applications
 # reinstall them if they don't match the current python interpreter version
 pipx-upgrade-all () {
     if [ ! -x "$(command -v pipx)" ]; then
