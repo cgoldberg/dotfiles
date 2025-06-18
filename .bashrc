@@ -488,7 +488,7 @@ pipx-install () {
         return 1
     fi
     pipx uninstall "$1" >/dev/null
-    if [ -x "$(command -v pyenv)" ] && [ -d "${HOME}/.pyenv" ]; then
+    if [ -d "${HOME}/.pyenv" ]; then
         rm -rf "${HOME}/.pyenv/shims/${1}"
         pipx install "${1}" --python $(pyenv which python)
     else
@@ -515,7 +515,8 @@ pipx-upgrade-all () {
         pipx upgrade-all
     else
         echo "package versions don't match python version. reinstalling packages ..."
-        if [ -x "$(command -v pyenv)" ]; then
+        echo
+        if [ -d "${HOME}/.pyenv" ]; then
             pipx reinstall-all --python $(pyenv which python)
         else
             pipx reinstall-all

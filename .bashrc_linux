@@ -287,6 +287,7 @@ update-pyenv () {
         echo
     done
     eval "pyenv global ${PY_VERSIONS[*]}"
+    pipx-upgrade-all
 }
 
 
