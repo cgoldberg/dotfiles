@@ -290,27 +290,6 @@ update-pyenv () {
 }
 
 
-# install python application in isoloated environment with current python interpreter
-# usage: pipx-install <package>
-pipx-install () {
-    if [ -z "$1" ]; then
-        err "please sspecify a package"
-        return 1
-    fi
-    if [ ! -x "$(command -v pipx)" ]; then
-        err "pipx not installed"
-        return 1
-    fi
-    pipx uninstall "$1" >/dev/null
-    if [ -d "${HOME}/.pyenv" ]; then
-        rm -rf "${HOME}/.pyenv/shims/${1}"
-        pipx install "${1}" --python $(pyenv which python)
-    else
-        pipx install "${1}"
-    fi
-}
-
-
 # -----------------------------------------------------------------------------
 
 

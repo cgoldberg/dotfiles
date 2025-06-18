@@ -476,6 +476,56 @@ clean-py () {
 }
 
 
+# install python application in isoloated environment with current python interpreter
+# usage: pipx-install <package>
+pipx-install () {
+    if [ -z "$1" ]; then
+        err "please specify a package"
+        return 1
+    fi
+    if [ ! -x "$(command -v pipx)" ]; then
+        err "pipx not installed"
+        return 1
+    fi
+    pipx uninstall "$1" >/dev/null
+    if [ -x "$(command -v pyenv)" ] && [ -d "${HOME}/.pyenv" ]; then
+        rm -rf "${HOME}/.pyenv/shims/${1}"
+        pipx install "${1}" --python $(pyenv which python)
+    else
+        pipx install "${1}"
+    fi
+}
+
+
+# upgrade all pipx apps
+# reinstall them if they don't match the current python interpreter version
+pipx-upgrade-all () {
+    if [ ! -x "$(command -v pipx)" ]; then
+        err "pipx not installed"
+        return 1
+    fi
+    if [ ! -z "${VIRTUAL_ENV}" ]; then
+        local venv=$(basename "${VIRTUAL_ENV}")
+        echo "deactivating ${venv}"
+        deactivate
+    fi
+    local py_version=$(python3 --version)
+    local output=$(pipx list)
+    if [[ "${output}" == *"${py_version}"* ]]; then
+        pipx upgrade-all
+    else
+        echo "package versions don't match python version. reinstalling packages ..."
+        if [ -x "$(command -v pyenv)" ]; then
+            pipx reinstall-all --python $(pyenv which python)
+        else
+            pipx reinstall-all
+        fi
+    fi
+    echo
+    pipx list
+}
+
+
 # preview markdown with github cli
 # requires github cli and gh-markdown-preview extension
 #   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
