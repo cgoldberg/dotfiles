@@ -28,16 +28,16 @@
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
+    *i*);;
       *) return;;
 esac
 
 
 # set PATH so it includes private bins if they exist
-if [ -d "${HOME}/bin" ] ; then
+if [ -d "${HOME}/bin" ]; then
     export PATH="${PATH}:${HOME}/bin"
 fi
-if [ -d "${HOME}/.local/bin" ] ; then
+if [ -d "${HOME}/.local/bin" ]; then
     export PATH="${PATH}:${HOME}/.local/bin"
 fi
 
