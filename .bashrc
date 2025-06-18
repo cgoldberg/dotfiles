@@ -244,15 +244,15 @@ spinner() {
 
 # start spinner background task
 start_spinner () {
-    tput civis;
+    tput civis
     exec {doSpinner}> >(spinner "$@")
 }
 
 
 # stop spinner background task
 stop_spinner () {
-    echo >&"${doSpinner}" && exec {doSpinner}>&-;
-    tput cnorm;
+    echo >&"${doSpinner}" && exec {doSpinner}>&-
+    tput cnorm
     echo
 }
 
