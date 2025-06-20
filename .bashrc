@@ -281,13 +281,13 @@ remove-whitespace-from-filenames () {
 
 # search recursively for files or directories matching pattern (case-insensitive unless pattern contains an uppercase)
 # - https://github.com/sharkdp/fd
-# usage: findfiles <pattern>
+# usage: findfiles <regex>
 findit () {
     if [ ! -x "$(command -v fd)" ]; then
         err "fd not found"
         return 1
     fi
-    local command_name="\fd --hidden --glob "
+    local command_name="\fd --hidden "
     local exclude_patterns=(
         ".git/"
         ".tox/"
