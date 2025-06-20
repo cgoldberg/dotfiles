@@ -93,12 +93,6 @@ alias tree="tree -ash -CF --du"
 alias which="type"
 
 
-# python virtual env
-alias activate="source ./venv/bin/activate"
-alias act="activate"
-alias deact="deactivate"
-
-
 # ip addresses
 alias internalip="echo 'internal ip addresss:' && echo '---------------------' && \
     hostname --all-ip-addresses | awk '{print \$1}'"
