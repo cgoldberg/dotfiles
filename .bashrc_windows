@@ -44,12 +44,6 @@ alias exit="TASKKILL //F //IM git.exe >/dev/null 2>&1; TASKKILL //F //IM ssh-age
 alias x="exit"
 
 
-# python virtual env
-alias activate="source ./venv/Scripts/activate"
-alias act="activate"
-alias deact="deactivate"
-
-
 if [ "${PWD}" == "${HOME}" ] && [ -z "${OLDPWD}" ] && [ -d "${HOME}/code" ]; then
     cd "${HOME}/code"
 fi

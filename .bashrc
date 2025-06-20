@@ -216,6 +216,16 @@ fi
 alias ebrc="edit ${HOME}/.bashrc"
 
 
+# python virtual env
+if [[ "${OSTYPE}" == "msys" ]]; then
+    alias activate="source ${VIRTUAL_ENV}/Scripts/activate"
+else
+    alias activate="source ${VIRTUAL_ENV}/bin/activate"
+fi
+alias act="activate"
+alias deact="deactivate"
+
+
 # --------------------------------- FUNCTIONS ---------------------------------
 
 
@@ -356,7 +366,7 @@ re-source () {
     source "${HOME}/.bashrc"
     # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        source "${VIRTUAL_ENV}/bin/activate"
+        activate
     fi
 }
 
