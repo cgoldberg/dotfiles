@@ -290,7 +290,7 @@ remove-whitespace-from-filenames () {
 
 
 # search recursively for files or directories matching pattern (case-insensitive unless pattern contains an uppercase)
-# - https://github.com/sharkdp/fd
+# - https://github.com/sharkdp/fd (install .deb from releases)
 # usage: findfiles <regex>
 findit () {
     if [ ! -x "$(command -v fd)" ]; then
