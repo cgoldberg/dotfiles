@@ -279,6 +279,33 @@ remove-whitespace-from-filenames () {
 }
 
 
+# search recursively for files or directories matching pattern (case-insensitive unless pattern contains an uppercase)
+# - https://github.com/sharkdp/fd
+# usage: findfiles <pattern>
+findit () {
+    if [ ! -x "$(command -v fd)" ]; then
+        err "fd not found"
+        return 1
+    fi
+    local command_name="\fd --hidden --glob "
+    local exclude_patterns=(
+        ".git/"
+        ".tox/"
+        ".venv/"
+        "__pycache__/"
+        "venv/"
+    )
+    for pattern in ${exclude_patterns[@]}; do
+        command_name+=" --exclude=${pattern}"
+    done
+    if [ ! -z "$1" ]; then
+        command_name+=" $1"
+    fi
+    eval "${command_name}"
+}
+alias ff="findit"
+
+
 # grep recursively for pattern (case-insensitive)
 # usage: rg <pattern>
 rg () {
@@ -296,9 +323,8 @@ rg () {
         --with-filename \
         --exclude-dir=.git \
         --exclude-dir=.tox \
-        --exclude-dir=.pytest_cache \
-        --exclude-dir=__pycache__ \
         --exclude-dir=.venv \
+        --exclude-dir=__pycache__ \
         --exclude-dir=venv \
         "$1" \
         | less
@@ -335,48 +361,17 @@ re-source () {
 }
 
 
-
 # search active processes for pattern (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
     if [ ! -z "$1" ]; then
-        ps -ef | \grep -v "grep" \
+        ps -ef \
             | \grep --color=always --extended-regexp --ignore-case "$1" \
             | nowrap
     else
         ps -ef
     fi
 }
-
-
-# search recursively for files or directories matching pattern (case-insensitive unless pattern contains an uppercase)
-# https://github.com/sharkdp/fd
-# usage: findfiles <pattern>
-findit () {
-    if [ ! -x "$(command -v fd)" ]; then
-        err "fd not found"
-        return 1
-    fi
-    local command_name="\fd --hidden --glob "
-    local patterns=(
-        ".git/"
-        ".tox/"
-        ".venv/"
-        ".mypy_cache/"
-        ".pytest_cache/"
-        ".ruff_cache/"
-        "__pycache__/"
-        "venv/"
-    )
-    for pattern in ${patterns[@]}; do
-        command_name+=" --exclude=${pattern}"
-    done
-    if [ ! -z "$1" ]; then
-        command_name+=" $1"
-    fi
-    eval "${command_name}"
-}
-alias ff="findit"
 
 
 # run pyupgrade against all python files in current directory (recursive), and fix recommendations in-place
