@@ -349,28 +349,34 @@ psgrep () {
 }
 
 
-# search recursively under the current directory for filenames matching pattern (case-insensitive)
-# - skips unreadable files/directories
+# search recursively for files or directories matching pattern (case-insensitive unless pattern contains an uppercase)
+# https://github.com/sharkdp/fd
 # usage: findfiles <pattern>
-findfiles () {
-    if [ -z "$1" ]; then
-        err "please enter a search pattern"
+findit () {
+    if [ ! -x "$(command -v fd)" ]; then
+        err "fd not found"
         return 1
     fi
-    find \
-        -xdev \
-        ! -readable -prune \
-        -o \
-        -iname "*$1*" \
-        ! -path "*/.git/*" \
-        ! -path "*/.tox/*" \
-        ! -path "*/.pytest_cache/*" \
-        ! -path "*/__pycache__/*" \
-        ! -path "*/venv/*" \
-        -print \
-        | \grep --ignore-case --color=always "$1" | less
+    local command_name="\fd --hidden --glob "
+    local patterns=(
+        ".git/"
+        ".tox/"
+        ".venv/"
+        ".mypy_cache/"
+        ".pytest_cache/"
+        ".ruff_cache/"
+        "__pycache__/"
+        "venv/"
+    )
+    for pattern in ${patterns[@]}; do
+        command_name+=" --exclude=${pattern}"
+    done
+    if [ ! -z "$1" ]; then
+        command_name+=" $1"
+    fi
+    eval "${command_name}"
 }
-alias ff="findfiles"
+alias ff="findit"
 
 
 # run pyupgrade against all python files in current directory (recursive), and fix recommendations in-place
