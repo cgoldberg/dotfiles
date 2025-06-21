@@ -10,9 +10,6 @@ if [[ "${OSTYPE}" != "linux"* ]]; then
 fi
 
 
-export GITHUB_USERNAME="cgoldberg"
-
-
 # set a color prompt with: chroot (if in a chroot), user@host:dir, git branch (if in a git repo)
 export GIT_PS1_HIDE_IF_PWD_IGNORED=1
 export GIT_PS1_SHOWDIRTYSTATE=1
@@ -41,6 +38,10 @@ alias sudo="sudo "
 
 # expand aliases when running watch
 alias watch="watch "
+
+
+# python virtual env
+alias activate="source './${VENV}/bin/activate'"
 
 
 # exit shell
@@ -255,8 +256,7 @@ update-pyenv () {
         return 1
     fi
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        local venv=$(basename "${VIRTUAL_ENV}")
-        echo "deactivating ${venv}"
+        echo "deactivating ${VENV}"
         deactivate
     fi
     echo

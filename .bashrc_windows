@@ -39,6 +39,10 @@ load_ssh_key () {
 load_ssh_key
 
 
+# python virtual env
+alias activate="source './${VENV}/Scripts/activate'"
+
+
 # exit shell
 alias exit="TASKKILL //F //IM git.exe >/dev/null 2>&1; TASKKILL //F //IM ssh-agent.exe >/dev/null 2>&1; \exit"
 alias x="exit"

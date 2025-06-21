@@ -83,6 +83,11 @@ else
 fi
 
 
+# set global variables
+GITHUB_USERNAME="cgoldberg"
+VENV="venv"
+
+
 # don't leave .lesshst files in home directory
 export LESSHISTFILE=-
 
@@ -179,7 +184,11 @@ alias py="python"
 
 
 # create a python virtual environment and activate it if none exists, otherwise just activate it
-alias venv="[ ! -d './venv' ] && python3 -m venv --upgrade-deps venv && activate || activate"
+alias venv="[ ! -d './${VENV}' ] && python3 -m venv --upgrade-deps '${VENV}' && activate || activate"
+
+
+# deactivate a python virtual environment
+alias deact="deactivate"
 
 
 # show the zen of python
@@ -214,16 +223,6 @@ fi
 
 # open ~/.bashrc for editing
 alias ebrc="edit ${HOME}/.bashrc"
-
-
-# python virtual env
-if [[ "${OSTYPE}" == "msys" ]]; then
-    alias activate="source ${VIRTUAL_ENV}/Scripts/activate"
-else
-    alias activate="source ${VIRTUAL_ENV}/bin/activate"
-fi
-alias act="activate"
-alias deact="deactivate"
 
 
 # --------------------------------- FUNCTIONS ---------------------------------
@@ -303,7 +302,7 @@ findit () {
         ".tox/"
         ".venv/"
         "__pycache__/"
-        "venv/"
+        "${VENV}/"
     )
     for pattern in ${exclude_patterns[@]}; do
         command_name+=" --exclude=${pattern}"
@@ -335,7 +334,7 @@ rg () {
         --exclude-dir=.tox \
         --exclude-dir=.venv \
         --exclude-dir=__pycache__ \
-        --exclude-dir=venv \
+        --exclude-dir="${VENV}" \
         "$1" \
         | less
 }
@@ -397,7 +396,7 @@ py-upgrade () {
         ! -path "*/.pytest_cache/*" \
         ! -path "*/__pycache__/*" \
         ! -path "*/selenium/webdriver/common/devtools/*" \
-        ! -path "*/venv/*" \
+        ! -path "*/${VENV}/*" \
         -print \
         | xargs pyupgrade --py39-plus
 }
@@ -416,7 +415,7 @@ py-refurb () {
         ! -path "*/.pytest_cache/*" \
         ! -path "*/__pycache__/*" \
         ! -path "*/selenium/webdriver/common/devtools/*" \
-        ! -path "*/venv/*" \
+        ! -path "*/${VENV}/*" \
         -print \
         | xargs refurb \
             --python-version 3.9 \
@@ -458,7 +457,7 @@ clean-py () {
     local dirs=(
         "build/"
         "dist/"
-        "venv/"
+        "${VENV}/"
         ".tox/"
         ".venv/"
         ".mypy_cache/"
@@ -469,9 +468,8 @@ clean-py () {
     local recurse_dirs=(
         "__pycache__/"
     )
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
-        local venv=$(basename "${VIRTUAL_ENV}")
-        echo "deactivating ${venv}"
+    if [ ! -z "${VIRTUAL_ENV}" ]; the
+        echo "deactivating ${VENV}"
         deactivate
     fi
     for d in ${dirs[@]}; do
@@ -516,8 +514,7 @@ pipx-upgrade-all () {
         return 1
     fi
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        local venv=$(basename "${VIRTUAL_ENV}")
-        echo "deactivating ${venv}"
+        echo "deactivating ${VENV}"
         deactivate
     fi
     local py_version=$(python3 --version)
