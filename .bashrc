@@ -468,7 +468,7 @@ clean-py () {
     local recurse_dirs=(
         "__pycache__/"
     )
-    if [ ! -z "${VIRTUAL_ENV}" ]; the
+    if [ ! -z "${VIRTUAL_ENV}" ]; then
         echo "deactivating ${VENV}"
         deactivate
     fi
