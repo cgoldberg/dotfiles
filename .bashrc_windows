@@ -48,6 +48,24 @@ alias exit="TASKKILL //F //IM git.exe >/dev/null 2>&1; TASKKILL //F //IM ssh-age
 alias x="exit"
 
 
+# update all packages installed by scoop
+scoop-update () {
+    if [ ! -x "$(command -v fd)" ]; then
+        err "scoop not installed"
+        return 1
+    fi
+    scoop update
+    scoop status
+    scoop status | sed '/^[[:space:]]*$/d' | while read -r line; do
+        if [[ ! "${line}" =~ ^Scoop|^Everything|^Name|^---- ]]; then
+            read -ra fields <<< "${line}"
+            package="${fields[0]}"
+            scoop update "${package}"
+        fi
+    done
+}
+
+
 if [ "${PWD}" == "${HOME}" ] && [ -z "${OLDPWD}" ] && [ -d "${HOME}/code" ]; then
     cd "${HOME}/code"
 fi
