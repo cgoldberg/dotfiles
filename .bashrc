@@ -296,7 +296,7 @@ findit () {
         err "fd not found"
         return 1
     fi
-    local command_name="\fd --hidden "
+    local command_name="\fd --hidden --no-ignore "
     local exclude_patterns=(
         ".git/"
         ".tox/"
