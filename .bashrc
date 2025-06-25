@@ -298,11 +298,11 @@ findit () {
     fi
     local command_name="\fd --hidden --no-ignore "
     local exclude_patterns=(
+        "${VENV}/"
         ".git/"
         ".tox/"
         ".venv/"
         "__pycache__/"
-        "${VENV}/"
     )
     for pattern in ${exclude_patterns[@]}; do
         command_name+=" --exclude=${pattern}"
@@ -455,9 +455,9 @@ clean-pip () {
 clean-py () {
     echo "cleaning python dev/temp files ..."
     local dirs=(
+        "${VENV}/"
         "build/"
         "dist/"
-        "${VENV}/"
         ".tox/"
         ".venv/"
         ".mypy_cache/"
