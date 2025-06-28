@@ -40,7 +40,7 @@ load_ssh_key
 
 
 # python virtual env
-alias activate="source './${VENV}/Scripts/activate'"
+alias activate="source './venv/Scripts/activate'"
 
 
 # exit shell
