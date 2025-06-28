@@ -107,7 +107,6 @@ clean-selenium-dev () {
         "dist/"
     )
     local recurse_dirs=(
-        "${VENV}/"
         ".tox/"
         ".venv/"
         ".mypy_cache/"
@@ -115,10 +114,11 @@ clean-selenium-dev () {
         ".ruff_cache/"
         "*.egg-info/"
         "__pycache__/"
+        "venv/"
     )
     echo "cleaning up selenium dev environment ..."
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating ${VENV}"
+        echo "deactivating venv"
         deactivate
     fi
     for d in ${dirs[@]}; do
