@@ -41,7 +41,7 @@ alias watch="watch "
 
 
 # python virtual env
-alias activate="source './venv/bin/activate'"
+alias activate="source ./venv/bin/activate"
 
 
 # exit shell
