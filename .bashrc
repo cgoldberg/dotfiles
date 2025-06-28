@@ -295,7 +295,7 @@ findit () {
         err "fd not found"
         return 1
     fi
-    local command_name="\fd --hidden --no-ignore "
+    local command_name="\fd --hidden --no-ignore --color=always "
     local exclude_patterns=(
         ".git/"
         ".tox/"
@@ -309,7 +309,7 @@ findit () {
     if [ ! -z "$1" ]; then
         command_name+=" $1"
     fi
-    eval "${command_name}"
+    eval "${command_name}" | less
 }
 alias ff="findit"
 
