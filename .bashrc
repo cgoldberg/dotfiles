@@ -85,7 +85,6 @@ fi
 
 # set global variables
 GITHUB_USERNAME="cgoldberg"
-VENV="venv"
 
 
 # don't leave .lesshst files in home directory
@@ -184,7 +183,7 @@ alias py="python"
 
 
 # create a python virtual environment and activate it if none exists, otherwise just activate it
-alias venv="[ ! -d './${VENV}' ] && python3 -m venv --upgrade-deps '${VENV}' && activate || activate"
+alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
 
 # deactivate a python virtual environment
@@ -298,11 +297,11 @@ findit () {
     fi
     local command_name="\fd --hidden --no-ignore "
     local exclude_patterns=(
-        "${VENV}/"
         ".git/"
         ".tox/"
         ".venv/"
         "__pycache__/"
+        "venv/"
     )
     for pattern in ${exclude_patterns[@]}; do
         command_name+=" --exclude=${pattern}"
@@ -315,30 +314,50 @@ findit () {
 alias ff="findit"
 
 
-# grep recursively for pattern (case-insensitive)
+# search recursively in files for pattern (case-insensitive)
+# use ripgrep if available
 # usage: rg <pattern>
 rg () {
     if [ -z "$1" ]; then
         err "please specify a search pattern"
         return 1
     fi
-    \grep -r \
-        --binary-files=without-match \
-        --color=always \
-        --devices=skip \
-        --ignore-case \
-        --line-number \
-        --no-messages \
-        --with-filename \
-        --exclude-dir=.git \
-        --exclude-dir=.tox \
-        --exclude-dir=.venv \
-        --exclude-dir=__pycache__ \
-        --exclude-dir="${VENV}" \
-        "$1" \
-        | less
+    if [ -f /usr/bin/rg ]; then # ripgrep
+        eval /usr/bin/rg \
+            --hidden \
+            --ignore-case \
+            --line-number \
+            --no-heading \
+            --no-ignore \
+            --no-messages \
+            --one-file-system \
+            --with-filename \
+            --color=always \
+            --glob='!.git/' \
+            --glob='!.tox/' \
+            --glob='!.venv/' \
+            --glob='!__pycache__/' \
+            --glob='!venv/' \
+            $1 \
+            | less
+    else
+        \grep -r \
+            --ignore-case \
+            --line-number \
+            --no-messages \
+            --with-filename \
+            --binary-files=without-match \
+            --color=always \
+            --devices=skip \
+            --exclude-dir=.git \
+            --exclude-dir=.tox \
+            --exclude-dir=.venv \
+            --exclude-dir=__pycache__ \
+            --exclude-dir="venv" \
+            "$1" \
+            | less
+    fi
 }
-alias rgrep="rg"
 
 
 # search command history by regex (case-insensitive) show last n matches
@@ -396,7 +415,7 @@ py-upgrade () {
         ! -path "*/.pytest_cache/*" \
         ! -path "*/__pycache__/*" \
         ! -path "*/selenium/webdriver/common/devtools/*" \
-        ! -path "*/${VENV}/*" \
+        ! -path "*/venv/*" \
         -print \
         | xargs pyupgrade --py39-plus
 }
@@ -415,7 +434,7 @@ py-refurb () {
         ! -path "*/.pytest_cache/*" \
         ! -path "*/__pycache__/*" \
         ! -path "*/selenium/webdriver/common/devtools/*" \
-        ! -path "*/${VENV}/*" \
+        ! -path "*/venv/*" \
         -print \
         | xargs refurb \
             --python-version 3.9 \
@@ -455,21 +474,21 @@ clean-pip () {
 clean-py () {
     echo "cleaning python dev/temp files ..."
     local dirs=(
-        "${VENV}/"
-        "build/"
-        "dist/"
         ".tox/"
         ".venv/"
         ".mypy_cache/"
         ".pytest_cache/"
         ".ruff_cache/"
         "*.egg-info/"
+        "build/"
+        "dist/"
+        "venv/"
     )
     local recurse_dirs=(
         "__pycache__/"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating ${VENV}"
+        echo "deactivating venv"
         deactivate
     fi
     for d in ${dirs[@]}; do
@@ -514,7 +533,7 @@ pipx-upgrade-all () {
         return 1
     fi
     if [ ! -z "${VIRTUAL_ENV}" ]; then
-        echo "deactivating ${VENV}"
+        echo "deactivating venv"
         deactivate
     fi
     local py_version=$(python3 --version)
