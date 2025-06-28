@@ -323,7 +323,7 @@ ff () {
             ! -path "*/__pycache__/*" \
             ! -path "*/venv/*" \
             -print \
-            | \grep --ignore-case --color=always "$1"
+            | \grep --ignore-case --color=always "$1" \
             | less
     fi
 }
