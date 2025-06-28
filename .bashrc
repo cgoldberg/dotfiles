@@ -26,7 +26,7 @@
 # ============================================================================
 
 
-# If not running interactively, don't do anything
+# if not running interactively, don't do anything
 case $- in
     *i*);;
       *) return;;
@@ -43,8 +43,8 @@ fi
 
 
 # enable programmable completion features
-# if not available, download it and put it in ~/etc
-# https://salsa.debian.org/debian/bash-completion/-/raw/master/bash_completion
+# - if not available, download it and put it in ~/etc
+# - https://salsa.debian.org/debian/bash-completion/-/raw/master/bash_completion
 load-bash-completions () {
     local completion_paths=(
         "/usr/share/bash-completion/bash_completion"
@@ -277,7 +277,7 @@ alias diff="dff"
 
 
 # rename all files under the current directory to replace spaces with underscores (recursive)
-# if inside a git repo, file renames will be tracked by git
+# - if inside a git repo, file renames will be tracked by git
 remove-whitespace-from-filenames () {
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         find . -path ./.git -prune -o -type f -name "* *" -exec bash -c 'git mv "$0" "${0// /_}"' {} \;
@@ -288,34 +288,49 @@ remove-whitespace-from-filenames () {
 
 
 # search recursively for files or directories matching pattern (case-insensitive unless pattern contains an uppercase)
-# - https://github.com/sharkdp/fd (install .deb from releases)
-# usage: findfiles <regex>
-findit () {
-    if [ ! -x "$(command -v fd)" ]; then
-        err "fd not found"
-        return 1
+# - uses fd if available: https://github.com/sharkdp/fd
+# usage: ff <regex>
+ff () {
+    if [ -x "$(command -v fd)" ]; then
+        local command_name="\fd --hidden --no-ignore --color=always "
+        local exclude_patterns=(
+            ".git/"
+            ".tox/"
+            ".venv/"
+            "__pycache__/"
+            "venv/"
+        )
+        for pattern in ${exclude_patterns[@]}; do
+            command_name+=" --exclude=${pattern}"
+        done
+        if [ ! -z "$1" ]; then
+            command_name+=" $1"
+        fi
+        eval "${command_name}" | less
+    else
+        if [ -z "$1" ]; then
+            err "please enter a search pattern"
+            return 1
+        fi
+        find \
+            -xdev \
+            ! -readable -prune \
+            -o \
+            -iname "*$1*" \
+            ! -path "*/.git/*" \
+            ! -path "*/.tox/*" \
+            ! -path "*/.venv/*" \
+            ! -path "*/__pycache__/*" \
+            ! -path "*/venv/*" \
+            -print \
+            | \grep --ignore-case --color=always "$1"
+            | less
     fi
-    local command_name="\fd --hidden --no-ignore --color=always "
-    local exclude_patterns=(
-        ".git/"
-        ".tox/"
-        ".venv/"
-        "__pycache__/"
-        "venv/"
-    )
-    for pattern in ${exclude_patterns[@]}; do
-        command_name+=" --exclude=${pattern}"
-    done
-    if [ ! -z "$1" ]; then
-        command_name+=" $1"
-    fi
-    eval "${command_name}" | less
 }
-alias ff="findit"
 
 
 # search recursively in files for pattern (case-insensitive)
-# use ripgrep if available
+# - uses ripgrep if available
 # usage: rg <pattern>
 rg () {
     if [ -z "$1" ]; then
@@ -526,7 +541,7 @@ pipx-install () {
 
 
 # upgrade all pipx applications
-# reinstall them if they don't match the current python interpreter version
+# - reinstalls them if they don't match the current python interpreter version
 pipx-upgrade-all () {
     if [ ! -x "$(command -v pipx)" ]; then
         err "pipx not installed"
@@ -555,7 +570,7 @@ pipx-upgrade-all () {
 
 
 # preview markdown with github cli
-# requires github cli and gh-markdown-preview extension
+# - requires github cli and gh-markdown-preview extension
 #   - folow installation instructions at: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 #   - run: gh extension install yusukebe/gh-markdown-preview
 preview-md () {
