@@ -182,6 +182,14 @@ alias c="clear"
 alias py="python"
 
 
+# python virtual env
+if [[ "${OSTYPE}" == "msys" ]]; then #  Windows/MinGW
+    alias activate="source ./venv/Scripts/activate"
+else
+    alias activate="source ./venv/bin/activate"
+fi
+
+
 # create a python virtual environment and activate it if none exists, otherwise just activate it
 alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
@@ -195,7 +203,7 @@ alias zen="python3 -c 'import this'"
 
 
 # uninstall all python packages in current environment
-alias pip-uninstall-all="pip freeze | xargs pip uninstall -y"
+alias pip-uninstall-all="pip freeze | sed 's/^-e //g' | xargs pip uninstall -y"
 
 
 # serve current directory over HTTP on port 8000 (bind all interfaces)

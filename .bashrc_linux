@@ -40,10 +40,6 @@ alias sudo="sudo "
 alias watch="watch "
 
 
-# python virtual env
-alias activate="source ./venv/bin/activate"
-
-
 # exit shell
 alias x="exit"
 

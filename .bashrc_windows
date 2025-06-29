@@ -4,7 +4,7 @@
 # =========================
 
 
-# only use this file on MinGW
+# only use this file on Windows/MinGW
 if [[ "${OSTYPE}" != "msys" ]]; then
     return
 fi
@@ -37,10 +37,6 @@ load_ssh_key () {
     fi
 }
 load_ssh_key
-
-
-# python virtual env
-alias activate="source ./venv/Scripts/activate"
 
 
 # exit shell
