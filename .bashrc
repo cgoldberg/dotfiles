@@ -183,7 +183,7 @@ alias py="python"
 
 
 # python virtual env
-if [[ "${OSTYPE}" == "msys" ]]; then #  Windows/MinGW
+if [[ "${OSTYPE}" == "msys" ]]; then # Windows/MinGW
     alias activate="source ./venv/Scripts/activate"
 else
     alias activate="source ./venv/bin/activate"
