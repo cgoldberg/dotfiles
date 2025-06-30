@@ -1,0 +1,12 @@
+# ~/.gitconfig.win
+#
+# global git configuration overrides for Windows/ADO
+# (set in each repo's .git/config to override these)
+
+[core]
+    autocrlf = true
+    fsmonitor = true
+    untrackedcache = true
+
+[credential]
+    helper = manager

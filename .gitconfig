@@ -1,8 +1,10 @@
 # ~/.gitconfig
+#
 # global git configuration
-# set in each repo's .git/config to override these
+# (set in each repo's .git/config to override these)
 
 [user]
+    useConfigOnly = true
     name = Corey Goldberg
     email = 1113081+cgoldberg@users.noreply.github.com
 
@@ -15,9 +17,6 @@
 
 [core]
     safecrlf = true
-    #autocrlf = true
-    #fsmonitor = true
-    #untrackedcache = true
 
 [pull]
     rebase = true
@@ -31,9 +30,6 @@
 
 [status]
     showStash = true
-
-#[credential]
-#    helper = manager
 
 [filter "lfs"]
     process = git-lfs filter-process
@@ -81,3 +77,8 @@
     # list local branches with last commit date and commit hash, sorted by last modified
     branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads \
         | sed -e 's-refs/heads/--'; }; f"
+
+
+# overrides for Windows/ADO GitHub
+[includeIf "hasconfig:remote.*.url:git@ssh.dev.azure.com:*/**"]
+    path = ~/.gitconfig.win
