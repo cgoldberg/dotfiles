@@ -345,6 +345,7 @@ rg () {
         err "please specify a search pattern"
         return 1
     fi
+    local escaped_pattern=$(sed 's/./\\&/g' <<<"$1")
     if [ -f /usr/bin/rg ]; then # ripgrep
         eval /usr/bin/rg \
             --hidden \
@@ -361,7 +362,7 @@ rg () {
             --glob='!.venv/' \
             --glob='!__pycache__/' \
             --glob='!venv/' \
-            $1 \
+            "${escaped_pattern}" \
             | less
     else
         \grep -r \
