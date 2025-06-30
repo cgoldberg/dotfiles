@@ -70,10 +70,6 @@ alias df="\df --human-readable --sync"
 alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
 
 
-# disk usage (directory sizes)
-alias du="\du --human-readable --time --max-depth=1"
-
-
 # ncurses disk usage (requires ncdu package)
 alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
 
@@ -84,10 +80,6 @@ alias mem="free --human --si | \grep --extended-regex 'Mem|total'"
 
 # list directories and files in tree format
 alias tree="tree -ash -CF --du"
-
-
-# show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
-alias which="type"
 
 
 # ip addresses

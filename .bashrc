@@ -165,6 +165,10 @@ complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
 alias du="\du --human-readable --time --max-depth=1"
 
 
+# show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
+alias which="type"
+
+
 # extract a tarball
 alias untar="tar zxvf"
 
@@ -345,9 +349,14 @@ rg () {
         err "please specify a search pattern"
         return 1
     fi
-    local escaped_pattern=$(sed 's/./\\&/g' <<<"$1")
-    if [ -f /usr/bin/rg ]; then # ripgrep
-        eval /usr/bin/rg \
+    if [ -f /usr/bin/rg ]; then
+        local rg_bin=/usr/bin/rg
+    elif [ -f ~/Scoop/shims/rg ]; then
+        local rg_bin=~/Scoop/shims/rg
+    fi
+    if [ ! -z "${rg_bin+x}" ]; then # using ripgrep
+        local escaped_pattern=$(sed 's/./\\&/g' <<<"$1")
+        eval "${rg_bin}" \
             --hidden \
             --ignore-case \
             --line-number \
@@ -541,10 +550,10 @@ pipx-install () {
     fi
     pipx uninstall "$1" >/dev/null
     if [ -d "${HOME}/.pyenv" ]; then
-        rm -rf "${HOME}/.pyenv/shims/${1}"
-        pipx install "${1}" --python $(pyenv which python)
+        rm -rf "${HOME}/.pyenv/shims/$1"
+        pipx install "$1" --python $(pyenv \which python)
     else
-        pipx install "${1}"
+        pipx install "$1"
     fi
 }
 
@@ -568,7 +577,7 @@ pipx-upgrade-all () {
         echo "package versions don't match python version. reinstalling packages ..."
         echo
         if [ -d "${HOME}/.pyenv" ]; then
-            pipx reinstall-all --python $(pyenv which python)
+            pipx reinstall-all --python $(pyenv \which python)
         else
             pipx reinstall-all
         fi
