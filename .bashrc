@@ -503,13 +503,13 @@ clean-py () {
         ".mypy_cache/"
         ".pytest_cache/"
         ".ruff_cache/"
-        "*.egg-info/"
         "build/"
         "dist/"
         "venv/"
     )
     local recurse_dirs=(
         "__pycache__/"
+        "*.egg-info/"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
