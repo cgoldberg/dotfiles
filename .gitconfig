@@ -79,6 +79,6 @@
         | sed -e 's-refs/heads/--'; }; f"
 
 
-# overrides for Windows/ADO GitHub
+# overrides for Windows/ADO
 [includeIf "hasconfig:remote.*.url:git@ssh.dev.azure.com:*/**"]
     path = ~/.gitconfig.win
