@@ -548,9 +548,7 @@ pipx-install () {
         err "pipx not installed"
         return 1
     fi
-    pipx uninstall "$1" >/dev/null
     if [ -d "${HOME}/.pyenv" ]; then
-        rm -rf "${HOME}/.pyenv/shims/$1"
         pipx install "$1" --python $(pyenv \which python)
     else
         pipx install "$1"
