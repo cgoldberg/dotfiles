@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+# colorize git status to indicate branch state
+
+set -e
+
+die() { echo "$*" 1>&2 ; exit 1; }
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    die "not in a git repo"
+fi
+
+if [[ "${TERM}" != *"256color" ]]; then
+    git status
+    exit
+fi
+
+clean="38;5;82"         # green
+untracked="38;5;70"     # faded green
+ahead_behind="38;5;226" # yellow
+diverged="38;5;196"     # red
+staged="38;5;214"       # orange yellow
+unstaged="38;5;202"     # orange
+dirty="38;5;196"        # red
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+status=$(git status)
+color="0"
+
+msg="working tree clean"
+if [[ "${status}" =~ "${msg}" ]]; then
+    color="${clean}"
+    status=$(echo "${status}" | sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/")
+fi
+msg="Untracked files"
+    if [[ "${status}" =~ "${msg}" ]]; then
+    color="${untracked}"
+    status=$(echo "${status}" | sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/")
+fi
+msg="Your branch is ahead"
+if [[ "${status}" =~ "${msg}" ]]; then
+    color="${ahead_behind}"
+    status=$(echo "${status}" | sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/")
+fi
+msg="Your branch is behind"
+if [[ "${status}" =~ "${msg}" ]]; then
+    color="${ahead_behind}"
+    status=$(echo "${status}" | sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/")
+fi
+msg="Your branch.+diverged"
+if [[ "${status}" =~ ${msg} ]]; then
+    color="${diverged}"
+    status=$(echo "${status}" | sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/")
+fi
+msg="Changes to be committed"
+if [[ "${status}" =~ "${msg}" ]]; then
+    color="${staged}"
+    status=$(echo "${status}" | sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/")
+fi
+msg="Changed but not updated"
+if [[ "${status}" =~ "${msg}" ]]; then
+    color="${unstaged}"
+    status=$(echo "${status}" | sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/")
+fi
+msg="Changes not staged for commit"
+if [[ "${status}" =~ "${msg}" ]]; then
+    color="${unstaged}"
+    status=$(echo "${status}" | sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/")
+fi
+msg="Unmerged paths"
+if [[ "${status}" =~ "${msg}" ]]; then
+    color="${dirty}"
+    status=$(echo "${status}" | sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/")
+fi
+
+# color branch name with last color
+colored_status=$(echo "${status}" | sed "s/${branch}$/\\\033[${color}m${branch}\\\033[0m/")
+echo -e "${colored_status}"
