@@ -548,6 +548,10 @@ pipx-install () {
         err "pipx not installed"
         return 1
     fi
+    if [ ! -z "${VIRTUAL_ENV}" ]; then
+        echo "deactivating venv"
+        deactivate
+    fi
     if [ -d "${HOME}/.pyenv" ]; then
         pipx install "$1" --python $(pyenv \which python)
     else
