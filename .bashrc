@@ -602,6 +602,18 @@ preview-md () {
 }
 
 
+# list all colors available in xterm-256 pallete with color codes
+colors () {
+    if [[ "${TERM}" != *"256color" ]]; then
+        err "not in a 256 color terminal"
+        return 1
+    fi
+    for code in {0..255}; do
+        echo -e "\\e[38;5;${code}m\\\e[38;5;${code}m\\e[0m"
+    done
+}
+
+
 # load additional bash configurations if they exist
 load-bash-configs () {
     local config_files=(
