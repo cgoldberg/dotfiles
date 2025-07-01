@@ -40,15 +40,14 @@
 [alias]
     b = branch
     d = diff
-    s = status
+    s = stat # ~/bin/git-stat
+    bd = branch -D # delete branch (even if not merged)
     br = branch --all --list # list local and remote-tracking branches
-    db = branch -D # delete branch (even if not merged)
     co = checkout
     df = diff --staged
-    rb = rebase
-    undo = reset --soft HEAD~1 # reset current branch to previous commit, preserving all changes
     clone-b = clone --filter=blob:none # blobless clone
     clone-s = clone --depth=1 # shallow clone
+    undo = reset --soft HEAD~1 # reset current branch to previous commit, preserving all changes
 
     # commit logs
     l = log --stat --pretty=fuller
