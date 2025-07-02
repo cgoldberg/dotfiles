@@ -46,17 +46,26 @@ if [[ "${status}" =~ ${message} ]]; then
     status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
 fi
 
-declare -A messages; declare -a orders;
-msg="nothing to commit, working tree clean"; messages["${msg}"]="${clean}"; orders+=( "${msg}" )
-msg="Untracked files:"; messages["${msg}"]="${untracked}"; orders+=( "${msg}" )
-msg="Changes to be committed:"; messages["${msg}"]="${staged}"; orders+=( "${msg}" )
-msg="Changed but not updated:"; messages["${msg}"]="${unstaged}"; orders+=( "${msg}" )
-msg="Changes not staged for commit:"; messages["${msg}"]="${unstaged}"; orders+=( "${msg}" )
-msg="Unmerged paths:"; messages["${msg}"]="${dirty}"; orders+=( "${msg}" )
-
-for message in "${orders[@]}"; do
+messages=(
+    "nothing to commit, working tree clean"
+    "Untracked files:"
+    "Changes to be committed:"
+    "Changed but not updated:"
+    "Changes not staged for commit:"
+    "Unmerged paths:"
+)
+colors=(
+    "${clean}"
+    "${untracked}"
+    "${staged}"
+    "${unstaged}"
+    "${unstaged}"
+    "${dirty}"
+)
+for i in ${!messages[@]}; do
+    message=${messages[i]}
     if [[ "${status}" =~ "${message}" ]]; then
-        color="${messages[${message}]}"
+        color=${colors[i]}
         status=$(sed "s/${message}/\\\033[${color}m${message}\\\033[0m/" <<<"${status}")
     fi
 done
