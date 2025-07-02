@@ -7,8 +7,12 @@ set -e
 
 die() { echo "$*" 1>&2 ; exit 1; }
 
+if [ ! -x "$(command -v git)" ]; then
+    die "fatal: can't find git"
+fi
+
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    die "not in a git repo"
+    die "fatal: not a git repository"
 fi
 
 if [[ "${TERM}" != *"256color" ]]; then
