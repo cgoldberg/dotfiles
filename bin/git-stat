@@ -28,7 +28,6 @@ status=$(git status)
 color="0"
 
 declare -A messages
-messages["working tree clean"]="${clean}"
 messages["Untracked files"]="${untracked}"
 messages["Your branch is ahead"]="${ahead_behind}"
 messages["Your branch is behind"]="${ahead_behind}"
@@ -36,6 +35,7 @@ messages["Changes to be committed"]="${staged}"
 messages["Changed but not updated"]="${unstaged}"
 messages["Changes not staged for commit"]="${unstaged}"
 messages["Unmerged paths"]="${dirty}"
+messages["working tree clean"]="${clean}"
 
 for msg in "${!messages[@]}"; do
     if [[ "${status}" =~ "${msg}" ]]; then
