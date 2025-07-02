@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Show info from local Git repository
+#
+# show info from local Git repository
 
 
-# Traverse up to root of repo
+# traverse up to root of repo
 while [[ ! -d .git ]] && [[ ! $(pwd) = "/" ]]; do
     cd ..
 done
