@@ -46,7 +46,7 @@ if [[ "${status}" =~ ${message} ]]; then
 fi
 
 declare -A messages; declare -a orders;
-msg="working tree clean"; messages["${msg}"]="${clean}"; orders+=( "${msg}" )
+msg="nothing to commit, working tree clean"; messages["${msg}"]="${clean}"; orders+=( "${msg}" )
 msg="Untracked files:"; messages["${msg}"]="${untracked}"; orders+=( "${msg}" )
 msg="Changes to be committed:"; messages["${msg}"]="${staged}"; orders+=( "${msg}" )
 msg="Changed but not updated:"; messages["${msg}"]="${unstaged}"; orders+=( "${msg}" )
