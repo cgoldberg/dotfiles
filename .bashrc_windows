@@ -45,7 +45,7 @@ alias x="exit"
 
 
 # update all packages installed by scoop
-scoop-update () {
+scoop-update-all () {
     if [ ! -x "$(command -v fd)" ]; then
         err "scoop not installed"
         return 1
