@@ -59,6 +59,7 @@ scoop-update-all () {
             scoop update "${package}"
         fi
     done
+    scoop cache rm *
 }
 
 
