@@ -27,28 +27,38 @@ branch=$(git rev-parse --abbrev-ref HEAD)
 status=$(git status)
 color="0"
 
-declare -A messages
-messages["Untracked files"]="${untracked}"
-messages["Your branch is ahead"]="${ahead_behind}"
-messages["Your branch is behind"]="${ahead_behind}"
-messages["Changes to be committed"]="${staged}"
-messages["Changed but not updated"]="${unstaged}"
-messages["Changes not staged for commit"]="${unstaged}"
-messages["Unmerged paths"]="${dirty}"
-messages["working tree clean"]="${clean}"
+message="Your branch is ahead.+commits."
+if [[ "${status}" =~ ${message} ]]; then
+    color="${ahead_behind}"
+    status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
+fi
 
-for msg in "${!messages[@]}"; do
-    if [[ "${status}" =~ "${msg}" ]]; then
-        color="${messages[${msg}]}"
-        status=$(sed "s/${msg}/\\\033[${color}m${msg}\\\033[0m/" <<<"${status}")
+message="Your branch is behind.+commits."
+if [[ "${status}" =~ ${message} ]]; then
+    color="${ahead_behind}"
+    status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
+fi
+
+message="Your branch.+diverged."
+if [[ "${status}" =~ ${message} ]]; then
+    color="${diverged}"
+    status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
+fi
+
+declare -A messages; declare -a orders;
+msg="working tree clean"; messages["${msg}"]="${clean}"; orders+=( "${msg}" )
+msg="Untracked files:"; messages["${msg}"]="${untracked}"; orders+=( "${msg}" )
+msg="Changes to be committed:"; messages["${msg}"]="${staged}"; orders+=( "${msg}" )
+msg="Changed but not updated:"; messages["${msg}"]="${unstaged}"; orders+=( "${msg}" )
+msg="Changes not staged for commit:"; messages["${msg}"]="${unstaged}"; orders+=( "${msg}" )
+msg="Unmerged paths:"; messages["${msg}"]="${dirty}"; orders+=( "${msg}" )
+
+for message in "${orders[@]}"; do
+    if [[ "${status}" =~ "${message}" ]]; then
+        color="${messages[${message}]}"
+        status=$(sed "s/${message}/\\\033[${color}m${message}\\\033[0m/" <<<"${status}")
     fi
 done
-
-msg="Your branch.+diverged"
-if [[ "${status}" =~ ${msg} ]]; then
-    color="${diverged}"
-    status=$(sed -E "s/(${msg})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
-fi
 
 # color branch name with last color
 colored_status=$(sed "s/${branch}$/\\\033[${color}m${branch}\\\033[0m/" <<<"${status}")
