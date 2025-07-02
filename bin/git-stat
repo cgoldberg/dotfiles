@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+# Corey Goldberg
+#
 # colorize git status to indicate branch state
 
 set -e

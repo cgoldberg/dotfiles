@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+# Corey Goldberg
+#
 # pull all local git branches in current repo
 #  - stashes uncommitted changes
 #  - switches to default branch and does pull/rebase
