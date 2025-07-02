@@ -28,19 +28,25 @@ branch=$(git rev-parse --abbrev-ref HEAD)
 status=$(git status)
 color="0"
 
-message="Your branch is ahead.+commit.*"
+message="Your branch is up to date with.+\."
+if [[ "${status}" =~ ${message} ]]; then
+    color="${clean}"
+    status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
+fi
+
+message="Your branch is ahead.+commit.*\."
 if [[ "${status}" =~ ${message} ]]; then
     color="${ahead_behind}"
     status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
 fi
 
-message="Your branch is behind.+commit.*"
+message="Your branch is behind.+commit.*\."
 if [[ "${status}" =~ ${message} ]]; then
     color="${ahead_behind}"
     status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
 fi
 
-message="Your branch.+diverged."
+message="Your branch.+diverged\."
 if [[ "${status}" =~ ${message} ]]; then
     color="${diverged}"
     status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
