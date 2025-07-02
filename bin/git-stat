@@ -28,13 +28,13 @@ branch=$(git rev-parse --abbrev-ref HEAD)
 status=$(git status)
 color="0"
 
-message="Your branch is ahead.+commits."
+message="Your branch is ahead.+commit.*"
 if [[ "${status}" =~ ${message} ]]; then
     color="${ahead_behind}"
     status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
 fi
 
-message="Your branch is behind.+commits."
+message="Your branch is behind.+commit.*"
 if [[ "${status}" =~ ${message} ]]; then
     color="${ahead_behind}"
     status=$(sed -E "s/(${message})/\\\033[${color}m\0\\\033[0m/" <<<"${status}")
@@ -49,17 +49,17 @@ fi
 messages=(
     "nothing to commit, working tree clean"
     "Untracked files:"
-    "Changes to be committed:"
     "Changed but not updated:"
     "Changes not staged for commit:"
+    "Changes to be committed:"
     "Unmerged paths:"
 )
 colors=(
     "${clean}"
     "${untracked}"
+    "${unstaged}"
+    "${unstaged}"
     "${staged}"
-    "${unstaged}"
-    "${unstaged}"
     "${dirty}"
 )
 for i in ${!messages[@]}; do
