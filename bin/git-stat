@@ -7,7 +7,6 @@
 # Requirements:
 #  - Bash
 #  - Git
-#  - Terminal with 256 color palette support
 #
 # Usage:
 #  - Add this script to a directory on your PATH
@@ -26,22 +25,29 @@ if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     die "fatal: not a git repository"
 fi
 
-if [[ "${TERM}" != *"256color" ]]; then
-    git status
-    exit
-fi
+clean="1;32"        # bold green
+ahead_behind="1;33" # bold yellow
+diverged="1;31"     # bold red
+staged="0;32"       # green
+unstaged="0;33"     # yellow
+untracked="0;31"    # red
+unmerged="1;31"     # bold red
 
-clean="38;5;82"         # green
-untracked="38;5;70"     # faded green
-ahead_behind="38;5;226" # yellow
-diverged="38;5;196"     # red
-staged="38;5;214"       # orange yellow
-unstaged="38;5;202"     # orange
-dirty="38;5;196"        # red
+status_colors=(
+     "color.status='always'"
+     "color.status.branch='magenta bold'"
+     "color.status.nobranch='red bold'"
+     "color.status.added='green'"
+     "color.status.updated='green'"
+     "color.status.changed='yellow'"
+     "color.status.untracked='red'"
+     "color.status.unmerged='red bold'"
+)
+for sc in "${status_colors[@]}"; do
+    color_opts="${color_opts} -c ${sc}"
+done
 
-branch=$(git rev-parse --abbrev-ref HEAD)
-status=$(git -c color.status=always status)
-color="0"
+status=$(eval "git ${color_opts} status")
 
 message="Your branch is up to date with.+\."
 if [[ "${status}" =~ ${message} ]]; then
@@ -81,7 +87,7 @@ colors=(
     "${unstaged}"
     "${unstaged}"
     "${staged}"
-    "${dirty}"
+    "${unmerged}"
 )
 for i in ${!messages[@]}; do
     message=${messages[i]}
@@ -91,6 +97,4 @@ for i in ${!messages[@]}; do
     fi
 done
 
-# colorize branch name with last color
-colored_status=$(sed "s/${branch}$/\\\033[${color}m${branch}\\\033[0m/" <<<"${status}")
-echo -e "${colored_status}"
+echo -e "${status}"
