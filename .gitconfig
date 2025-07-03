@@ -9,11 +9,14 @@
     email = 1113081+cgoldberg@users.noreply.github.com
 
 [color]
-    ui = always
     branch = always
+    decorate = always
     diff = always
+    grep = always
     interactive = always
+    showbranch = always
     status = always
+    ui = always
 
 [core]
     safecrlf = true
