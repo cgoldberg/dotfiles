@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
-# Corey Goldberg
 #
-# colorize git status to indicate branch state
+# git-stat - Colorize git status to indicate branch state
+#
+# Author: Corey Goldberg (https://github.com/cgoldberg)
+#
+# Requirements:
+#  - Bash
+#  - Git
+#  - Terminal with 256 color palette support
+#
+# Usage:
+#  - Add this script to a directory on your PATH
+#  - Make this script executable (chmod +x git-stat)
+#  - Run `git stat` from any directory inside a Git repo
 
 set -e
 
@@ -80,6 +91,6 @@ for i in ${!messages[@]}; do
     fi
 done
 
-# color branch name with last color
+# colorize branch name with last color
 colored_status=$(sed "s/${branch}$/\\\033[${color}m${branch}\\\033[0m/" <<<"${status}")
 echo -e "${colored_status}"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# git-score -- aggregate git commit statistics
+# git-score - aggregate git commit statistics
 #
 # Author: Juan Batiz-Benet
 # Author: Matt Sparks
