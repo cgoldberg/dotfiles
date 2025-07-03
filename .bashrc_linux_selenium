@@ -34,11 +34,11 @@ kill-webdrivers () {
         "webkitwebdriver"
         "java"
     )
-    for process in ${processes[@]}; do
+    for process in "${processes[@]}"; do
         \killall --ignore-case --process-group --quiet --wait "${process}"
     done
     sleep 0.5
-    for process in ${processes[@]}; do
+    for process in "${processes[@]}"; do
         \killall -9 --ignore-case --process-group --quiet --wait "${process}"
     done
 }

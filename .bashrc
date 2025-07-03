@@ -55,12 +55,12 @@ load-bash-completions () {
         "_completion_loader"
         "_comp_complete_load"
     )
-    for completion_path in ${completion_paths[@]}; do
+    for completion_path in "${completion_paths[@]}"; do
         if [ -f "${completion_path}" ]; then
             source "${completion_path}"
         fi
     done
-    for completion_loader_func in ${completion_loader_funcs[@]}; do
+    for completion_loader_func in "${completion_loader_funcs[@]}"; do
         if declare -f "${completion_loader_func}" >/dev/null; then
             "${completion_loader_func}" git
             complete -o bashdefault -o default -o nospace -F __git_wrap__git_main git
@@ -312,7 +312,7 @@ ff () {
             "__pycache__/"
             "venv/"
         )
-        for pattern in ${exclude_patterns[@]}; do
+        for pattern in "${exclude_patterns[@]}"; do
             command_name+=" --exclude=${pattern}"
         done
         if [ ! -z "$1" ]; then
@@ -623,7 +623,7 @@ load-bash-configs () {
         "${HOME}/.bashrc_linux_selenium"
         "${HOME}/.bashrc_windows"
     )
-    for config_file in ${config_files[@]}; do
+    for config_file in "${config_files[@]}"; do
         if [ -f "${config_file}" ]; then
             source "${config_file}"
         fi
