@@ -507,18 +507,16 @@ clean-pip () {
 clean-py () {
     echo "cleaning python dev/temp files ..."
     local dirs=(
-        ".tox/"
-        ".venv/"
-        ".mypy_cache/"
-        ".pytest_cache/"
-        ".ruff_cache/"
         "build/"
         "dist/"
-        "venv/"
     )
     local recurse_dirs=(
-        "__pycache__/"
-        "*.egg-info/"
+        ".tox"
+        ".venv"
+        ".*_cache"
+        "*.egg-info"
+        "__pycache__"
+        "venv"
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
@@ -530,9 +528,15 @@ clean-py () {
             rm -rf "${d}"
         fi
     done
-    for rd in ${recurse_dirs[@]}; do
-        echo "recursively deleting ${rd}"
-        rm -rf ./**/${rd}/
+    for rd in "${recurse_dirs[@]}"; do
+        echo "recursively deleting ${rd}/"
+        #echo "WTF"
+        #echo "${rd}"
+        if [ -x "$(command -v fd)" ]; then
+            \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" --exec rm -r
+        else
+            rm -rf ./**/${rd}/
+        fi
     done
 }
 
