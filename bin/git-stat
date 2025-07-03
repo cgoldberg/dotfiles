@@ -40,7 +40,7 @@ unstaged="38;5;202"     # orange
 dirty="38;5;196"        # red
 
 branch=$(git rev-parse --abbrev-ref HEAD)
-status=$(git status)
+status=$(git -c color.status=always status)
 color="0"
 
 message="Your branch is up to date with.+\."
