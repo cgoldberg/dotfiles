@@ -494,7 +494,7 @@ clean-pip () {
         "${HOME}/.local/pipx/.cache/"
         "${HOME}/pipx/.cache/"
     )
-    for d in ${dirs[@]}; do
+    for d in "${dirs[@]}"; do
         if [ -d "${d}" ]; then
             echo "deleting ${d}"
             rm -rf "${d}"
@@ -522,7 +522,7 @@ clean-py () {
         echo "deactivating venv"
         deactivate
     fi
-    for d in ${dirs[@]}; do
+    for d in "${dirs[@]}"; do
         if [ -d "${d}" ]; then
             echo "deleting ${d}"
             rm -rf "${d}"
@@ -530,8 +530,6 @@ clean-py () {
     done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
-        #echo "WTF"
-        #echo "${rd}"
         if [ -x "$(command -v fd)" ]; then
             \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" --exec rm -r
         else

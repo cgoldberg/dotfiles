@@ -75,7 +75,7 @@ clean-selenium-dev-full () {
     )
     echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
     if [ -d "${sel_home}" ]; then
-        for sd in ${sel_dirs[@]}; do
+        for sd in "${sel_dirs[@]}"; do
             if [ -d "${sd}" ]; then
                 echo "deleting ${sd}"
                 rm -rf "${sd}"
@@ -83,14 +83,14 @@ clean-selenium-dev-full () {
         done
     fi
     if [ -d "${sel_home}" ]; then
-        for sl in ${symlinks[@]}; do
+        for sl in "${symlinks[@]}"; do
             if [ -L "${sl}" ]; then
                 echo "deleting ${sl}"
                 sudo rm -rf "${sl}"
             fi
         done
     fi
-    for dd in ${dot_dirs[@]}; do
+    for dd in "${dot_dirs[@]}"; do
         if [ -d "${dd}" ]; then
             echo "deleting ${dd}"
             sudo rm -rf "${dd}"
@@ -121,13 +121,13 @@ clean-selenium-dev () {
         echo "deactivating venv"
         deactivate
     fi
-    for d in ${dirs[@]}; do
+    for d in "${dirs[@]}"; do
         if [ -d "${d}" ]; then
             echo "deleting ${d}"
             rm -rf "${d}"
         fi
     done
-    for rd in ${recurse_dirs[@]}; do
+    for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}"
         rm -rf ${sel_home}/py/**/${rd}
     done
@@ -178,7 +178,7 @@ update-webrivers () {
         err "selenium-manager not found in: ${sel_mgr_path}"
         return 1
     fi
-    for d in ${dirs[@]}; do
+    for d in "${dirs[@]}"; do
         if [ -d "${d}" ]; then
             echo "deleting ${d}"
             rm -rf "${d}"
