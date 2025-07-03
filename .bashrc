@@ -490,14 +490,14 @@ clean-pip () {
     echo "cleaning pip and pipx cache ..."
     pip cache purge
     local dirs=(
-        "${HOME}/.cache/pip-tools/"
-        "${HOME}/.local/pipx/.cache/"
-        "${HOME}/pipx/.cache/"
+        ${HOME}/.cache/pip-tools/
+        ${HOME}/.local/pipx/.cache/
+        ${HOME}/pipx/.cache/
     )
-    for d in "${dirs[@]}"; do
-        if [ -d "${d}" ]; then
+    for d in ${dirs[@]}; do
+        if [ -d ${d} ]; then
             echo "deleting ${d}"
-            rm -rf "${d}"
+            rm -rf ${d}
         fi
     done
 }
@@ -507,34 +507,30 @@ clean-pip () {
 clean-py () {
     echo "cleaning python dev/temp files ..."
     local dirs=(
-        "build/"
-        "dist/"
+        .venv/
+        build/
+        dist/
+        venv/
     )
     local recurse_dirs=(
-        ".tox"
-        ".venv"
-        ".*_cache"
-        "*.egg-info"
-        "__pycache__"
-        "venv"
+        .tox
+        .*_cache
+        *.egg-info
+        __pycache__
     )
     if [ ! -z "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
         deactivate
     fi
-    for d in "${dirs[@]}"; do
-        if [ -d "${d}" ]; then
+    for d in ${dirs[@]}; do
+        if [ -d ${d} ]; then
             echo "deleting ${d}"
-            rm -rf "${d}"
+            rm -rf ${d}
         fi
     done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
-        if [ -x "$(command -v fd)" ]; then
-            \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" --exec rm -r
-        else
-            rm -rf ./**/${rd}/
-        fi
+        \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" --exec rm -r
     done
 }
 
