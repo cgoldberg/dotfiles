@@ -141,7 +141,7 @@ clean-selenium-dev () {
 selenium-server () {
     local sel_home="${SELENIUM_DEV_HOME}"
     local jar="selenium-server.jar"
-    if [ ! -f /usr/bin/gh ]; then
+    if [ ! -x "$(command -v gh)" ]; then
         err "github cli is not installed"
         return 1
     fi
@@ -203,7 +203,7 @@ update-webrivers () {
     start_spinner
     ${sel_mgr_path}/selenium-manager --browser=firefox --driver=geckodriver
     stop_spinner
-    if [ ! -f /usr/bin/gh ]; then
+    if [ ! -x "$(command -v gh)" ]; then
         err "github cli is not installed"
         cd "${OLDPWD}"
         return 1
