@@ -589,7 +589,7 @@ pipx-upgrade-all () {
 
 # preview markdown file in browser
 # - requires gitHub cli and gh-markdown-preview extension
-#   - folow installation instructions at: https://github.com/cli/cli
+#   - follow installation instructions at: https://github.com/cli/cli
 #   - install extension with: `gh extension install yusukebe/gh-markdown-preview`
 preview-md () {
     if [ ! -x "$(command -v gh)" ]; then
