@@ -4,11 +4,16 @@
 #
 # git-sync - rebase all local git branches in current repo from remote tracking branches
 #
-#  - stashes uncommitted changes
-#  - switches to default branch and does pull/rebase
-#  - switches to every other local branch and does pull/rebase
-#  - switches back to original branch
-#  - only works if in a git repo
+# - stashes uncommitted changes
+# - switches to default branch and does pull/rebase
+# - switches to every other local branch and does pull/rebase
+# - switches back to original branch
+# - only works if in a git repo
+#
+# usage:
+#  - add this script to a directory on your PATH
+#  - make this script executable (chmod +x git-sync)
+#  - run `git sync` from any directory in a local git repo
 
 set -e
 

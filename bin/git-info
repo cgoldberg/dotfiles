@@ -3,6 +3,11 @@
 # Corey Goldberg (https://github.com/cgoldberg)
 #
 # git-info - show info from local git repository
+#
+# usage:
+#  - add this script to a directory on your PATH
+#  - make this script executable (chmod +x git-info)
+#  - run `git info` from any directory in a local git repo
 
 set -e
 
