@@ -606,8 +606,26 @@ colors () {
         err "not in a 256 color terminal"
         return 1
     fi
-    for code in {0..255}; do
-        echo -e "\\e[38;5;${code}m\\\e[38;5;${code}m\\e[0m"
+    local step start_group end_group space
+    step=6
+    for ((i = 0; i <= 255; i += step)); do
+        start_group=${i}
+        end_group=$((i + step - 1))
+        if ((end_group > 255)); then
+            end_group=255
+        fi
+        for ((code = start_group; code <= end_group; code++)); do
+            length=${#code}
+            if (( length == 1 )); then
+                space="  "
+            elif (( length == 2 )); then
+                space=" "
+            else
+                space=""
+            fi
+            echo -en "\033[38;5;${code}m \\\033[38;5;${code}m ${space}\033[0m"
+        done
+        echo
     done
 }
 
