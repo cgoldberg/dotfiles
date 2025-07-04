@@ -84,7 +84,7 @@ fi
 
 
 # set global variables
-GITHUB_USERNAME="cgoldberg"
+export GITHUB_USERNAME="cgoldberg"
 
 
 # don't leave .lesshst files in home directory
