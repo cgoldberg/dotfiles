@@ -1,71 +1,59 @@
 #!/usr/bin/env bash
 #
-# show info from local Git repository
+# Corey Goldberg (https://github.com/cgoldberg)
+#
+# git-info - show info from local git repository
 
+set -e
+
+die() { echo "$*" 1>&2 ; exit 1; }
+
+if [ ! -x "$(command -v git)" ]; then
+    die "fatal: can't find git"
+fi
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    die "fatal: not a git repository"
+fi
+
+indent () {
+    cat - | sed -e 's/^[[:space:]]*/    /g'
+}
 
 # traverse up to root of repo
 while [[ ! -d .git ]] && [[ ! $(pwd) = "/" ]]; do
     cd ..
 done
+
+current_branch=$(git branch --show-current)
+
 echo
 
-if [[ ! -d .git ]]; then
-    echo "Not a Git repository!"
-    exit 1
-fi
-
-echo -e "\\e[94m\e[1m=== Configuration ===\e[0m"
-git config --list |
-while IFS= read -r line; do
-    if [[ ! $line =~ alias.* ]]; then
-        echo "    $line"
-    fi
-done
+echo -e "\033[1;36m=== Stats (branch: "${current_branch}") ===\033[0m"
+num_commits=$(git rev-list --count "${current_branch}" | LC_NUMERIC="en_US.UTF-8" numfmt --grouping)
+num_files=$(find . -type f ! -path './.git/*' | wc -l)
+num_tracked_files=$(git ls-files | wc -l)
+size_disk=$(du -hs | awk '{print $1}')
+size_tracked=$(git ls-files -z | xargs -0 stat -c %s | awk '{total+=$1} END {printf("%.0f\n",total)}' | numfmt --to=iec)
+echo -e "commits: ${num_commits}" | indent
+echo -e "files: ${num_files} (excluding .git directory)" | indent
+echo -e "tracked files: ${num_tracked_files}" | indent
+echo -e "size on disk: ${size_disk}" | indent
+echo -e "size of tracked files: ${size_tracked}" | indent
 echo
 
-echo -e "\\e[94m\e[1m=== Aliases ===\e[0m"
-git config --list |
-while IFS= read -r line; do
-    if [[ $line =~ alias.* ]]; then
-        echo "    $line"
-    fi
-done
+echo -e "\033[1;36m=== Most Recent Commit (branch: ${current_branch}) ===\033[0m"
+git log --max-count=1 --color=never | head -n 5 | indent
 echo
 
-echo -e "\\e[94m\e[1m=== Remote URLs ===\e[0m"
-git remote -v |
-while IFS= read -r line; do
-    echo "    $line"
-done
+echo -e "\033[1;36m=== Remote URLs ===\033[0m"
+git remote -v | indent
 echo
 
-echo -e "\\e[94m\e[1m=== Remote Branches ===\e[0m"
-git branch -r |
-while IFS= read -r line; do
-    echo "  $line"
-done
+echo -e "\033[1;36m=== Remote Branches ===\033[0m"
+git branch -r --color=never | indent
 echo
 
-echo -e "\\e[94m\e[1m=== Local Branches ===\e[0m"
-git branch |
-while IFS= read -r line; do
-    echo "    $line"
-done
-echo
-
-echo -e "\\e[94m\e[1m=== Most Recent Commit ===\e[0m"
-git log --max-count=1 |
-while IFS= read -r line; do
-    echo "    $line"
-done
-echo
-
-echo -e "\\e[94m\e[1m=== Status ===\e[0m"
-git status -b -s |
-while IFS= read -r line; do
-    echo "    $line"
-done
-echo
-
-echo -e "\\e[94m\e[1m================================================\e[0m"
+echo -e "\033[1;36m=== Local Branches ===\033[0m"
+git branch --color=never | indent
 echo
