@@ -593,7 +593,7 @@ pipx-upgrade-all () {
 #   - install extension with: `gh extension install yusukebe/gh-markdown-preview`
 preview-md () {
     if [ ! -x "$(command -v gh)" ]; then
-        echo "github cli is not installed"
+        err "can't find github cli"
         return 1
     fi
     gh markdown-preview --light-mode "$1"
