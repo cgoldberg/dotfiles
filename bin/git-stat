@@ -35,13 +35,13 @@ unmerged="1;31"     # bold red
 
 status_colors=(
      "color.status='always'"
-     "color.status.branch='magenta bold'"
+     "color.status.branch='brightmagenta bold'"
      "color.status.nobranch='red bold'"
      "color.status.added='green'"
      "color.status.updated='green'"
      "color.status.changed='yellow'"
      "color.status.untracked='red'"
-     "color.status.unmerged='red bold'"
+     "color.status.unmerged='brightred bold'"
 )
 for sc in "${status_colors[@]}"; do
     color_opts="${color_opts} -c ${sc}"
