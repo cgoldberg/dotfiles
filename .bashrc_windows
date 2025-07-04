@@ -10,7 +10,7 @@ if [[ "${OSTYPE}" != "msys" ]]; then
 fi
 
 
-# set a color prompt with:
+# set a colored prompt with:
 # - chroot (if in a chroot)
 # - user:dir
 # - git branch with state (if in a git repo)
@@ -18,7 +18,12 @@ export GIT_PS1_HIDE_IF_PWD_IGNORED=1
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWUPSTREAM="auto"
-custom_prompt='\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]$(__git_ps1 " (%s)")\[\033[0m\] \$ '
+custom_prompt=\
+'\[\033[1;38;5;214m\]\u@\h\[\033[0m\]'\
+'\[\033[1;38;5;255m\]:\[\033[00m\]'\
+'\[\033[1;38;5;123m\]\w\[\033[00m\]'\
+'\[\033[0;38;5;046m\]$(__git_ps1 " (%s)")\[\033[0m\] '\
+'\[\033[1;38;5;255m\]\$ \[\033[0m\]'
 PS1="${custom_prompt}"
 
 
