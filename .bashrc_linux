@@ -291,6 +291,12 @@ if [ -d "${HOME}/.gems" ]; then
 fi
 
 
+# rust/cargo - https://rustup.rs
+if [ -d "${HOME}/.cargo" ]; then
+    source "${HOME}/.cargo/env"
+fi
+
+
 # pipx
 if [ -x "$(command -v pipx)" ]; then
     eval "$(register-python-argcomplete pipx)"
