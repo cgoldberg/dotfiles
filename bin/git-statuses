@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# Corey Goldberg (https://github.com/cgoldberg)
+#
+# git-statuses - display statuses of local git repos in tabular format
+#
+# - rebases branches from remote tracking branches in all local git repos
+# - requires: https://github.com/bircni/git-statuses
+
+CODE_HOME="${HOME}/code/"
+GIT_STATUSES="${HOME}/.cargo/bin/git-statuses"
+
+die() { echo "$*" 1>&2 ; exit 1; }
+
+if [ ! -x "$(command -v git)" ]; then
+    die "fatal: can't find git"
+fi
+
+if [ ! -d "${CODE_HOME}" ]; then
+    die "fatal: can't find repos"
+fi
+
+if [ ! -f "${GIT_STATUSES}" ]; then
+    die "fatal: can't find ${GIT_STATUSES}"
+fi
+
+cd "${CODE_HOME}"
+for d in */; do
+    if [ -d "${d}" ]; then
+        cd "${d}"
+        if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+            echo "----------------------------------------------------------------"
+            echo "rebasing local branches in repo: '${d%/} ...'"
+            git-sync
+        fi
+        cd ..
+    fi
+done
+echo "----------------------------------------------------------------"
+echo
+
+"$GIT_STATUSES"
