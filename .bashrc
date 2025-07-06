@@ -33,13 +33,7 @@ case $- in
 esac
 
 
-# set PATH so it includes private bins if they exist
-if [ -d "${HOME}/bin" ]; then
-    export PATH="${PATH}:${HOME}/bin"
-fi
-if [ -d "${HOME}/.local/bin" ]; then
-    export PATH="${PATH}:${HOME}/.local/bin"
-fi
+ORIGINAL_PATH="${PATH}"
 
 
 # enable programmable completion features
@@ -299,6 +293,16 @@ remove-whitespace-from-filenames () {
 }
 
 
+# print system PATH
+path () {
+    IFS=":"
+    for d in $PATH; do
+        echo "$d"
+    done
+    unset IFS
+}
+
+
 # search recursively for files or directories matching pattern (case-insensitive unless pattern contains an uppercase)
 # - uses fd if available: https://github.com/sharkdp/fd
 # usage: ff <regex>
@@ -414,6 +418,7 @@ alias md="makedir"
 re-source () {
     echo 'sourcing ~/.bashrc ...'
     unalias -a # remove all aliases
+    PATH="${ORIGINAL_PATH}"
     source "${HOME}/.bashrc"
     # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
     if [ ! -z "${VIRTUAL_ENV}" ]; then
@@ -614,3 +619,12 @@ load-bash-configs () {
     done
 }
 load-bash-configs
+
+
+# add private bins to beginning of PATH
+if [ -d "${HOME}/.local/bin" ]; then
+    export PATH="${HOME}/.local/bin:${PATH}"
+fi
+if [ -d "${HOME}/bin" ]; then
+    export PATH="${HOME}/bin:${PATH}"
+fi
