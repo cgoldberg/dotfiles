@@ -124,6 +124,9 @@ HISTFILESIZE=999
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
 
+# ---------------------------------- ALIASES ----------------------------------
+
+
 # navigate up the directory tree
 alias ..="cd .."
 alias ...="cd ../.."
@@ -603,6 +606,9 @@ preview-md () {
     fi
     gh markdown-preview --light-mode "$1"
 }
+
+
+# -----------------------------------------------------------------------------
 
 
 # load additional bash configurations if they exist
