@@ -621,10 +621,18 @@ load-bash-configs () {
 load-bash-configs
 
 
-# add private bins to beginning of PATH
-if [ -d "${HOME}/.local/bin" ]; then
-    export PATH="${HOME}/.local/bin:${PATH}"
-fi
-if [ -d "${HOME}/bin" ]; then
-    export PATH="${HOME}/bin:${PATH}"
-fi
+# add local bin directories to beginning of PATH if they exist and are not already on PATH
+add-bins () {
+    local bin_dirs=(
+        "${HOME}/.local/bin"
+        "${HOME}/bin"
+    )
+    for d in "${bin_dirs[@]}"; do
+        if [ -d "${d}" ]; then
+            if [[ "${PATH}" != *"${d}"* ]]; then
+                export PATH="${d}:${PATH}"
+            fi
+        fi
+    done
+}
+add-bins
