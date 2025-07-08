@@ -73,13 +73,22 @@ alias gist="xdg-open https://gist.github.com/${GITHUB_USERNAME}"
 alias web="sensible-browser"
 
 
+# python virtual env
+alias activate="source ./venv/bin/activate"
+
+
 # disk space
 alias df="\df --human-readable --sync"
 alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
 
 
-# ncurses disk usage (requires ncdu package)
-alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
+# ncurses disk usage
+if [ ! -x "$(command -v ncdu)" ]; then
+    err "ncdu not found"
+    return 1
+else
+    alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
+fi
 
 
 # memory usage
@@ -91,13 +100,11 @@ alias tree="tree -ash -CF --du"
 
 
 # ip addresses
-alias internalip="echo 'internal ip addresss:' && echo '---------------------' && \
+alias internalip="echo 'internal ip address:' && echo '---------------------' && \
     hostname --all-ip-addresses | awk '{print \$1}'"
 alias externalip="echo 'external ip addresses:' && echo '----------------------' && \
     curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
-alias ips="echo 'ip addresses:' && echo '-------------' && \
-    hostname --all-ip-addresses | awk '{print \$1}' && \
-    curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
+alias ips="internalip && echo && externalip"
 
 
 # --------------------------------- FUNCTIONS ---------------------------------

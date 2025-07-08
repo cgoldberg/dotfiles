@@ -183,14 +183,6 @@ alias c="clear"
 alias py="python"
 
 
-# python virtual env
-if [[ "${OSTYPE}" == "msys" ]]; then # Windows/MinGW
-    alias activate="source ./venv/Scripts/activate"
-else
-    alias activate="source ./venv/bin/activate"
-fi
-
-
 # create a python virtual environment and activate it if none exists, otherwise just activate it
 alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
