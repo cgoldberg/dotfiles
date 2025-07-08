@@ -26,6 +26,10 @@ custom_prompt=\
 PS1="${custom_prompt}"
 
 
+# set the terminal title to current directory
+PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
+
+
 # exit shell
 alias exit="TASKKILL //F //IM git.exe >/dev/null 2>&1; \exit"
 alias x="exit"
