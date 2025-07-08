@@ -68,7 +68,7 @@
     open = !gh repo view --web
 
     # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
-    tidy = "!f() { git prune --progress --verbose && git remote prune origin && git gc; }; f"
+    tidy = "!f() { git fetch --prune --verbose && git prune --progress --verbose && git remote prune origin && git gc —prune=now — ggressive; }; f"
 
     # show contributor stats (similar to `git-score`)
     # displays lines delta/added/removed for each author
