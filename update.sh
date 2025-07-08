@@ -24,7 +24,6 @@ if [ ! -d "${DOTFILES_HOME}" ]; then
 fi
 
 echo "updating local dotfiles and ~/bin scripts from github ..."
-echo
 
 mkdir --parents "${BIN_DIR}"
 
@@ -73,4 +72,7 @@ for script in "${scripts[@]}"; do
     url="https://raw.githubusercontent.com/cgoldberg/git-scripts/refs/heads/main/${script}"
     curl -fsS --output "${BIN_DIR}/${script}" "${url}"
     chmod +x "${BIN_DIR}/${script}"
+    if [[ "${OSTYPE}" == "msys" ]]; then
+        unix2dos "${BIN_DIR}/${script}" >/dev/null 2>&1
+    fi
 done
