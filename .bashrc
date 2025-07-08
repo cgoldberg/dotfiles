@@ -496,7 +496,9 @@ clean-pip () {
     local dirs=(
         ${HOME}/.cache/pip-tools/
         ${HOME}/.local/pipx/.cache/
+        ${HOME}/.local/pipx/logs/
         ${HOME}/pipx/.cache/
+        ${HOME}/pipx/logs/
     )
     for d in ${dirs[@]}; do
         if [ -d ${d} ]; then
