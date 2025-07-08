@@ -78,7 +78,6 @@ alias activate="source ./venv/bin/activate"
 
 
 # disk space
-alias df="\df --human-readable --sync"
 alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
 
 

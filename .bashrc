@@ -158,6 +158,10 @@ alias g="git"
 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
 
 
+# disk space
+alias df="\df --human-readable --sync"
+
+
 # disk usage (directory sizes)
 alias du="\du --human-readable --time --max-depth=1"
 
