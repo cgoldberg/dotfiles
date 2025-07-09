@@ -67,6 +67,7 @@ scripts=(
     "git-stat"
     "git-sync"
     "git-syncrepo"
+    "git-track-branches"
 )
 for script in "${scripts[@]}"; do
     url="https://raw.githubusercontent.com/cgoldberg/git-scripts/refs/heads/main/${script}"
