@@ -324,7 +324,7 @@ path () {
 # usage: ff <regex>
 ff () {
     if [ -x "$(command -v fd)" ]; then
-        local command_name="\fd --hidden --no-ignore --color=always "
+        local command_name="\fd --hidden --no-ignore --color=always --path-separator=/ "
         local exclude_patterns=(
             ".git/"
             ".tox/"
@@ -391,6 +391,7 @@ rg () {
             --glob='!.venv/' \
             --glob='!__pycache__/' \
             --glob='!venv/' \
+            --path-separator=/ \
             "${escaped_pattern}" \
             | less
     else
@@ -553,7 +554,7 @@ clean-py () {
     done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
-        \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" --exec rm -r
+        \fd --hidden --no-ignore --glob --path-separator=/ --exclude=".git/" --type=d "${rd}" --exec rm -r
     done
 }
 
