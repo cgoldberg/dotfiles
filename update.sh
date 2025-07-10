@@ -24,6 +24,7 @@ if [ ! -d "${DOTFILES_HOME}" ]; then
 fi
 
 echo "updating local dotfiles and ~/bin scripts from github ..."
+echo
 
 mkdir --parents "${BIN_DIR}"
 
@@ -31,7 +32,7 @@ cd "${DOTFILES_HOME}"
 
 current_branch=$(git branch --show-current)
 
-echo "syncing local branches in ${DOTFILES_HOME} ..."
+echo "syncing local branches in ${DOTFILES_HOME}"
 git sync
 git checkout master >/dev/null 2>&1
 
@@ -80,4 +81,3 @@ done
 
 echo
 re-source
-
