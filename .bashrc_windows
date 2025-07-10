@@ -19,10 +19,6 @@ alias exit="TASKKILL //F //IM git.exe >/dev/null 2>&1; \exit"
 alias x="exit"
 
 
-# python virtual env
-alias activate="source ./venv/Scripts/activate"
-
-
 # update all packages installed by scoop
 scoop-update-all () {
     if [ ! -x "$(command -v fd)" ]; then

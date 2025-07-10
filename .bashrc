@@ -208,7 +208,12 @@ alias py="python"
 alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
 
-# deactivate a python virtual environment
+# python virtual env
+if [[ "${OSTYPE}" == "msys" ]]; then # Windows/MinGW
+    alias activate="source ./venv/Scripts/activate"
+else
+    alias activate="source ./venv/bin/activate"
+fi
 alias deact="deactivate"
 
 

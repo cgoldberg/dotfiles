@@ -52,10 +52,6 @@ alias gist="xdg-open https://gist.github.com/${GITHUB_USERNAME}"
 alias web="sensible-browser"
 
 
-# python virtual env
-alias activate="source ./venv/bin/activate"
-
-
 # disk space
 alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
 
