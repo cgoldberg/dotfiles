@@ -298,7 +298,7 @@ dff () {
         err "please enter 2 files to diff"
         return 1
     fi
-    \diff --color=always --report-identical-files "$1" "$2" | less
+    \diff --report-identical-files --color=always "$1" "$2" | less
 }
 alias diff="dff"
 
@@ -329,7 +329,7 @@ path () {
 # usage: ff <regex>
 ff () {
     if [ -x "$(command -v fd)" ]; then
-        local command_name="\fd --hidden --no-ignore --color=always --path-separator=/ "
+        local command_name="\fd --hidden --no-ignore --color=always "
         local exclude_patterns=(
             ".git/"
             ".tox/"
@@ -376,8 +376,9 @@ rg () {
     fi
     if [ -f /usr/bin/rg ]; then
         local rg_bin=/usr/bin/rg
-    elif [ -f ~/Scoop/shims/rg ]; then
+    elif [ -f ~/Scoop/shims/rg ]; then # Windows/Scoop/MinGW
         local rg_bin=~/Scoop/shims/rg
+        rg_bin="${rg_bin} --path-separator='//'"
     fi
     if [ ! -z "${rg_bin+x}" ]; then # using ripgrep
         local escaped_pattern=$(sed 's/./\\&/g' <<<"$1")
@@ -396,7 +397,6 @@ rg () {
             --glob='!.venv/' \
             --glob='!__pycache__/' \
             --glob='!venv/' \
-            --path-separator=/ \
             "${escaped_pattern}" \
             | less
     else
@@ -559,7 +559,7 @@ clean-py () {
     done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
-        \fd --hidden --no-ignore --glob --path-separator=/ --exclude=".git/" --type=d "${rd}" --exec rm -r
+        \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" --exec rm -r
     done
 }
 
