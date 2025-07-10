@@ -447,6 +447,7 @@ re-source () {
         activate
     fi
 }
+export -f re-source
 
 
 # search active processes for pattern (case-insensitive)

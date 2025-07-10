@@ -77,3 +77,7 @@ for script in "${scripts[@]}"; do
         unix2dos "${BIN_DIR}/${script}" >/dev/null 2>&1
     fi
 done
+
+echo
+re-source
+
