@@ -1,4 +1,4 @@
-# ~/.gitconfig.win
+# ~/.gitconfig_win
 #
 # global git configuration overrides for Windows/ADO
 # (set in each repo's .git/config to override these)

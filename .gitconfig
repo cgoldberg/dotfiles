@@ -83,4 +83,4 @@
 
 # overrides for Windows/ADO
 [includeIf "hasconfig:remote.*.url:git@ssh.dev.azure.com:*/**"]
-    path = ~/.gitconfig.win
+    path = ~/.gitconfig_win

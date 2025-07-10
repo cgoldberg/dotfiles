@@ -55,7 +55,7 @@ if [[ "${OSTYPE}" == "linux"* ]]; then
 elif [[ "${OSTYPE}" == "msys" ]]; then
     echo "copying windows configs from dotfiles repo master branch to ${HOME}"
     cp .bashrc_windows "${HOME}"
-    cp .gitconfig.win "${HOME}"
+    cp .gitconfig_win "${HOME}"
     cp .minttyrc "${HOME}"
 fi
 
