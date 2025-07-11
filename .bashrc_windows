@@ -22,7 +22,7 @@ alias x="exit"
 # update all packages installed by scoop
 scoop-update-all () {
     if [ ! -x "$(command -v fd)" ]; then
-        err "Scoop not installed"
+        err "scoop not installed"
         return 1
     fi
     scoop update
@@ -37,7 +37,7 @@ scoop-update-all () {
     scoop cache rm *
     local apps_path=~/Scoop/apps
     if [ ! -d "${apps_path}" ]; then
-        err "can't find Scoop apps"
+        err "can't find scoop apps"
         return 1
     fi
     for d in "${apps_path}"/*/; do
