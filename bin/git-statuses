@@ -40,4 +40,5 @@ done
 echo "----------------------------------------------------------------"
 echo
 
-"$GIT_STATUSES"
+"$GIT_STATUSES" --condensed --summary
+echo
