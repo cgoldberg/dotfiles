@@ -70,7 +70,7 @@
     # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
     tidy = "!f() { git fetch --prune --verbose && git prune --progress --verbose && git remote prune origin && git gc --prune=now; }; f"
 
-    #
+    # sync remote with parent, rebase all local branches, and clean up repo
     up = "!f() { git syncrepo; git sync; git tidy; }; f"
 
     # list local branches with last commit date and commit hash, sorted by last modified
