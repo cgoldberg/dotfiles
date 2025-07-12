@@ -44,7 +44,6 @@ cp .gitconfig "${HOME}"
 
 echo "copying scripts from dotfiles repo master branch to ${BIN_DIR}"
 cp "${DOTFILES_HOME}/bin/colors" "${BIN_DIR}"
-cp "${DOTFILES_HOME}/bin/git-statuses" "${BIN_DIR}"
 cp "${DOTFILES_HOME}/bin/prettyping" "${BIN_DIR}"
 
 if [[ "${OSTYPE}" == "linux"* ]]; then
