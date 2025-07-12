@@ -31,10 +31,11 @@ mkdir --parents "${BIN_DIR}"
 cd "${DOTFILES_HOME}"
 
 current_branch=$(git branch --show-current)
+default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's/.*\///')
 
 echo "syncing local branches in ${DOTFILES_HOME}"
 git sync
-git checkout master >/dev/null 2>&1
+git checkout ${default_branch} >/dev/null 2>&1
 
 echo "copying configs from dotfiles repo master branch to ${HOME}"
 cp .bashrc "${HOME}"
@@ -80,4 +81,5 @@ for script in "${scripts[@]}"; do
 done
 
 echo
-re-source
+tput setaf 10; echo -en "\u2714 "; tput sgr0
+echo "done"
