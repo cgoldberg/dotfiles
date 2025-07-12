@@ -5,7 +5,7 @@
 # git-statuses - display statuses of local git repos in tabular format
 #
 # - rebases branches from remote tracking branches in all local git repos
-# - requires: https://github.com/bircni/git-statuses
+# - requires: https://github.com/bircni/git-statuses (cargo install git-statuses)
 
 CODE_HOME="${HOME}/code/"
 GIT_STATUSES="${HOME}/.cargo/bin/git-statuses"
