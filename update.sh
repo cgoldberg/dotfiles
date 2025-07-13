@@ -41,22 +41,24 @@ echo "copying configs from dotfiles repo master branch to ${HOME}"
 cp .bashrc "${HOME}"
 cp .profile "${HOME}"
 cp .gitconfig "${HOME}"
-
-echo "copying scripts from dotfiles repo master branch to ${BIN_DIR}"
-cp "${DOTFILES_HOME}/bin/colors" "${BIN_DIR}"
-cp "${DOTFILES_HOME}/bin/prettyping" "${BIN_DIR}"
-
 if [[ "${OSTYPE}" == "linux"* ]]; then
     echo "copying linux configs from dotfiles repo master branch to ${HOME}"
     cp .bashrc_linux "${HOME}"
     cp .bashrc_linux_selenium "${HOME}"
-    echo "copying linux scripts from dotfiles repo master branch to ${BIN_DIR}"
-    cp "${DOTFILES_HOME}/bin/now" "${BIN_DIR}"
 elif [[ "${OSTYPE}" == "msys" ]]; then
-    echo "copying windows configs from dotfiles repo master branch to ${HOME}"
+    echo "copying msys configs from dotfiles repo master branch to ${HOME}"
     cp .bashrc_windows "${HOME}"
     cp .gitconfig_win "${HOME}"
     cp .minttyrc "${HOME}"
+fi
+
+echo "copying scripts from dotfiles repo master branch to ${BIN_DIR}"
+cp ./bin/colors "${BIN_DIR}"
+cp ./bin/prettyping "${BIN_DIR}"
+if [[ "${OSTYPE}" == "linux"* ]]; then
+    echo "copying linux scripts from dotfiles repo master branch to ${BIN_DIR}"
+    cp ./bin/now "${BIN_DIR}"
+    cp ./bin/sysinfo "${BIN_DIR}"
 fi
 
 git checkout "${current_branch}" >/dev/null 2>&1

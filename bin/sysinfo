@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+GREY="\033[1;37m"
+PURPLE="\033[1;35m"
+GREEN="\033[1;32m"
+
+C1="${GREY}"
+C2="${PURPLE}"
+C3="${GREEN}"
+
+HOST=$(hostname --long)
+IP=$(hostname --all-ip-addresses | awk '{print $1}')
+KERNEL=$(uname -r)
+DISTRIBUTION=$(lsb_release -s -d)
+PLATFORM=$(uname -m)
+UPTIME="$(uptime -p | cut -d ' ' -f 2-) (since $(uptime -s))"
+CPUCOUNT=$(grep -c processor /proc/cpuinfo)
+CPUMODEL=$(grep -m1 -E 'model name' /proc/cpuinfo | awk -F ': ' '{print $2}')
+PROCS=$(ps -Afl | grep -E -v 'ps|wc' | wc -l)
+MEM_INFO=$(awk '
+    /^MemFree:/ {MEMFREE=$2/1024}
+    /^MemTotal:/ {MEMMAX=$2/1024}
+    /^SwapFree:/ {SWAPFREE=$2/1024}
+    /^SwapTotal:/ {SWAPMAX=$2/1024}
+    END {printf "%.0f %.0f %.0f %.0f", MEMFREE, MEMMAX, SWAPFREE, SWAPMAX}
+    ' /proc/meminfo
+)
+read -r MEMFREE MEMMAX SWAPFREE SWAPMAX <<< "${MEM_INFO}"
+
+echo -e "
+${C1}        Host ${C2}= ${C3}${HOST}
+${C1}          IP ${C2}= ${C3}${IP}
+${C1}      Kernel ${C2}= ${C3}${KERNEL}
+${C1}      Distro ${C2}= ${C3}${DISTRIBUTION} ${PLATFORM}
+${C1}      Uptime ${C2}= ${C3}${UPTIME}
+${C1}         CPU ${C2}= ${C3}${CPUCOUNT} x ${CPUMODEL}
+${C1}         Mem ${C2}= ${C3}${MEMFREE} MB Free of ${MEMMAX} MB Total
+${C1}        Swap ${C2}= ${C3}${SWAPFREE} MB Free of ${SWAPMAX} MB Total
+${C1}       Procs ${C2}= ${C3}${PROCS}
+"
