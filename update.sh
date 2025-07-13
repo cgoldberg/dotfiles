@@ -63,7 +63,7 @@ fi
 
 git checkout "${current_branch}" >/dev/null 2>&1
 
-echo "downloading scripts from github to ${BIN_DIR}"
+echo "downloading git scripts from github to ${BIN_DIR}"
 scripts=(
     "git-info"
     "git-score"
