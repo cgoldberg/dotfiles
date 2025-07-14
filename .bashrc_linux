@@ -56,10 +56,6 @@ alias web="sensible-browser"
 alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
 
 
-# memory usage
-alias mem="free --human --si | \grep -v 'Swap'"
-
-
 # list directories and files in tree format
 alias tree="tree -ash -CF --du"
 
