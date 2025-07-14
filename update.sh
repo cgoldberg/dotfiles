@@ -67,7 +67,7 @@ cd "${DOTFILES_HOME}"
 current_branch=$(git branch --show-current)
 default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's/.*\///')
 
-echo "syncing local branches in ${DOTFILES_HOME}"
+echo "syncing local branches in ${DOTFILES_HOME} ..."
 git sync
 git checkout "${default_branch}" >/dev/null 2>&1
 
