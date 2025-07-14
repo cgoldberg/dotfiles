@@ -160,7 +160,9 @@ apt-up () {
     # purge orphaned configs from removed packages
     purge-apt-configs &&
     # reload package index files from sources
-    sudo apt update --no-allow-insecure-repositories && echo
+    sudo apt update --no-allow-insecure-repositories && echo &&
+    # print number of installed packages
+    tput setaf 10; echo -en "\u2714 "; tput sgr0; echo "$(dpkg -l | grep -c '^ii') packages installed"
 }
 
 
