@@ -57,7 +57,7 @@ alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --
 
 
 # memory usage
-alias mem="free --human --si | \grep --extended-regex 'Mem|total'"
+alias mem="free --human --si | \grep -v 'Swap'"
 
 
 # list directories and files in tree format
