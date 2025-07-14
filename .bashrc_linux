@@ -52,6 +52,11 @@ alias gist="xdg-open https://gist.github.com/${GITHUB_USERNAME}"
 alias web="sensible-browser"
 
 
+# disk space
+alias df="\df --human-readable --local --sync"
+alias ds="df /"
+
+
 # ncurses disk usage
 alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
 

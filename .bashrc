@@ -175,11 +175,6 @@ alias more="less"
 alias g="git"
 
 
-# disk space
-alias df="\df --human-readable --local --sync"
-alias ds="df /"
-
-
 # disk usage (directory sizes)
 alias du="\du --human-readable --time --max-depth=1"
 
