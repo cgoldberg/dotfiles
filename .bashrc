@@ -176,7 +176,8 @@ alias g="git"
 
 
 # disk space
-alias df="\df --human-readable --sync"
+alias df="\df --human-readable --local --sync"
+alias ds="df /"
 
 
 # disk usage (directory sizes)

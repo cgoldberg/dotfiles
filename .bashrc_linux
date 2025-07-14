@@ -52,17 +52,8 @@ alias gist="xdg-open https://gist.github.com/${GITHUB_USERNAME}"
 alias web="sensible-browser"
 
 
-# disk space
-alias ds="\df --human-readable --sync | \grep --extended-regexp '/dev/kvm|Filesystem'"
-
-
 # ncurses disk usage
-if [ ! -x "$(command -v ncdu)" ]; then
-    err "ncdu not found"
-    return 1
-else
-    alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
-fi
+alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
 
 
 # memory usage
