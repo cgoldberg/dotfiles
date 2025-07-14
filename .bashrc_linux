@@ -198,8 +198,10 @@ backup-all () {
         return 1
     fi
     echo
-    echo "Changing directory to: ${backup_dir}"
+    echo "changing directory to: ${backup_dir}"
+    echo
     cd "${backup_dir}"
+    echo "deleting old backup files and directories ..."
     rm -f "${backup_archive}"
     rm -rf ./exported_files
     rm -rf ./backups
@@ -212,7 +214,7 @@ backup-all () {
     mv ./backups ./github_archives
     tar cvzf "${backup_archive}" *
     echo
-    echo "Changing directory back to: ${OLDPWD}"
+    echo "changing directory back to: ${OLDPWD}"
     cd "${OLDPWD}"
 }
 
