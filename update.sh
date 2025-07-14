@@ -111,5 +111,5 @@ for script in "${GIT_SCRIPTS[@]}"; do
 done
 
 echo
-tput setaf 10; echo -en "\u2714 "; tput sgr0
+tput setaf 10; echo -en "\u2714  "; tput sgr0
 echo "done"
