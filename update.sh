@@ -31,6 +31,7 @@ LINUX_SCRIPTS=(
     "./bin/sysinfo"
 )
 GIT_SCRIPTS=(
+    "git-clean-untracked"
     "git-info"
     "git-score"
     "git-stat"
@@ -111,5 +112,5 @@ for script in "${GIT_SCRIPTS[@]}"; do
 done
 
 echo
-tput setaf 10; echo -en "\u2714 "; tput sgr0
+tput setaf 10; echo -en "\u2714  "; tput sgr0
 echo "done"
