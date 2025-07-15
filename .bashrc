@@ -250,9 +250,10 @@ alias ebrc="edit ${HOME}/.bashrc"
 # --------------------------------- FUNCTIONS ---------------------------------
 
 
-# print messages to stderr along with date/time
+# print bold messages to stderr preceded with red ballot x
 err() {
-    echo "[$(date +'%Y-%m-%d %H:%M:%S%z')]: $*" 1>&2
+    tput setaf 1; echo -en "\u2717  "; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
 }
 
 
@@ -289,14 +290,13 @@ stop_spinner () {
 
 
 # colored diffs
-dff () {
+diff () {
     if [ -z "$1" ] || [ -z "$2" ]; then
         err "please enter 2 files to diff"
         return 1
     fi
     \diff --report-identical-files --color=always "$1" "$2" | less
 }
-alias diff="dff"
 
 
 # rename all files under the current directory to replace spaces with underscores (recursive)

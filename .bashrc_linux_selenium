@@ -19,12 +19,6 @@ if [ ! -d "${SELENIUM_DEV_HOME}" ]; then
 fi
 
 
-# print messages to stderr along with date/time
-err() {
-    echo "[$(date +'%Y-%m-%d %H:%M:%S%z')]: $*" 1>&2
-}
-
-
 # kill all running webdrivers and selenium grid server
 kill-webdrivers () {
     local processes=(
