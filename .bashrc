@@ -225,11 +225,6 @@ alias pip-uninstall-all="pip freeze | sed 's/^-e //g' | xargs pip uninstall -y"
 alias webserver="python3 -m http.server"
 
 
-# todays weather in boston
-alias weather="date && curl --max-time 5 https://wttr.in/Boston?1F"
-alias w="weather"
-
-
 # list directory contents
 alias ls="LC_COLLATE=C \ls --almost-all --classify --group-directories-first --color=always"
 alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
@@ -448,6 +443,17 @@ re-source () {
         activate
     fi
 }
+
+
+# display weather in boston
+weather () {
+    date
+    echo
+    echo -ne "fetching weather ...\r"
+    curl --max-time 10 https://wttr.in/Boston?1F
+    echo
+}
+alias w="weather"
 
 
 # search active processes for pattern (case-insensitive)
