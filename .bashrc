@@ -446,7 +446,7 @@ weather () {
     date
     echo
     echo -ne "fetching weather ...\r"
-    curl --max-time 10 https://wttr.in/Boston?1F
+    curl --max-time 10 https://wttr.in/Boston?2F
     echo
 }
 alias w="weather"
