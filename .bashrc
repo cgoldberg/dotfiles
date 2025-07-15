@@ -187,10 +187,6 @@ alias which="type"
 alias untar="tar zxvf"
 
 
-# count all files in current directory (recursive)
-alias countfiles=" find . -type f ! -path './.git/*' | wc -l"
-
-
 # clear screen and scrollback buffer
 alias cls="clear"
 alias c="clear"
@@ -454,6 +450,21 @@ weather () {
     echo
 }
 alias w="weather"
+
+
+# count all files in current directory (recursive)
+countfiles () {
+    if [ ! -x "$(command -v git)" ]; then
+        err "can't find git"
+        return 1
+    fi
+    echo -n "files: "
+    find . -type f ! -path './.git/*' | wc -l
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo -n "tracked files: "
+        git ls-files | wc -l
+    fi
+}
 
 
 # search active processes for pattern (case-insensitive)
