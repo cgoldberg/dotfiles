@@ -192,6 +192,12 @@ alias cls="clear"
 alias c="clear"
 
 
+# better cat
+if [ -x "$(command -v bat)" ]; then
+    alias cat="bat"
+fi
+
+
 # python
 alias py="python"
 
@@ -313,6 +319,16 @@ path () {
         echo "$d"
     done
     unset IFS
+}
+
+
+# use bat for colored help if available
+help () {
+    if [ -x "$(command -v bat)" ]; then
+        "$@" --help 2>&1 | bat --plain --language=help
+    else
+        builtin help "$@"
+    fi
 }
 
 
