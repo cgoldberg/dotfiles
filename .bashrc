@@ -24,6 +24,17 @@
 #     bbbbbbbbbbbbbbbb     aaaaaaaaaa  aaaa sssssssssss    hhhhhhh     hhhhhhh
 #
 # ============================================================================
+#
+#
+# install dependencies for full functionality:
+# - ripgrep (https://github.com/BurntSushi/ripgrep/releases)
+# - fd (https://github.com/sharkdp/fd/releases)
+# - bat (https://github.com/sharkdp/bat/releases)
+# - subl (https://sublimetext.com/docs/linux_repositories.html)
+# - gh (https://github.com/cli/cli)
+# - pipx (sudo apt install pipx)
+# - pyupgrade (pipx)
+# - refurb (pipx)
 
 
 # if not running interactively, don't do anything
