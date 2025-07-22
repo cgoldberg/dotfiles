@@ -303,13 +303,14 @@ stop_spinner () {
 
 
 # colored diffs
-diff () {
+dff () {
     if [ -z "$1" ] || [ -z "$2" ]; then
         err "please enter 2 files to diff"
         return 1
     fi
-    \diff --report-identical-files --color=always "$1" "$2" | less
+    \diff --report-identical-files --color=always "$1" "$2"  #| less
 }
+alias diff="dff"
 
 
 # rename all files under the current directory to replace spaces with underscores (recursive)
