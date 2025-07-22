@@ -71,7 +71,7 @@
     tidy = "!f() { git fetch --prune --verbose && git prune --progress --verbose && git remote prune origin && git gc --prune=now; }; f"
 
     # sync remote with parent if in a fork, and rebase all local branches
-    up = "!f() { git syncrepo; sleep 2; git sync; }; f"
+    up = "!f() { git syncrepo; sleep 3; git sync; }; f"
 
     # list local branches with last commit date and commit hash, sorted by last modified
     branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads \
