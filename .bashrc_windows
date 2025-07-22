@@ -23,6 +23,24 @@ alias x="exit"
 alias df="echo 'df does not work on this platform'"
 
 
+# open url or file in chrome browser
+web () {
+    if [ -z "$1" ]; then
+        err "please enter a file or url"
+        return 1
+    fi
+    if [[ "$1" == http* ]]; then
+        python -m webbrowser -t "$1"
+    else
+        python -c "import os, webbrowser; \
+            file_path = os.path.abspath('$1'); \
+            chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe'; \
+            webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chrome_path)); \
+            webbrowser.get('chrome').open(f'file://{file_path}')"
+    fi
+}
+
+
 # update all packages installed by scoop
 scoop-update-all () {
     if [ ! -x "$(command -v fd)" ]; then
