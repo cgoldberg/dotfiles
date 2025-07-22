@@ -49,6 +49,7 @@ scoop-update-all () {
     fi
     scoop update
     scoop status
+    echo "Updating Packages..."
     scoop status | sed '/^[[:space:]]*$/d' | while read -r line; do
         if [[ ! "${line}" =~ ^Scoop|^Everything|^Name|^---- ]]; then
             read -ra fields <<< "${line}"
@@ -56,12 +57,12 @@ scoop-update-all () {
             scoop update "${package}"
         fi
     done
-    scoop cache rm *
     local apps_path=~/Scoop/apps
     if [ ! -d "${apps_path}" ]; then
         err "can't find scoop apps"
         return 1
     fi
+    echo "Deleting Old Packages..."
     for d in "${apps_path}"/*/; do
         local dir_count=$(find "${d}" -mindepth 1 -maxdepth 1 -type d ! -type l | wc -l)
         if [ ${dir_count} -gt 1 ]; then
@@ -70,6 +71,11 @@ scoop-update-all () {
             rm -rf "${oldest_version_dir}"
         fi
     done
+    echo "Deleting Cache..."
+    scoop cache rm *
+    echo
+    tput setaf 10; echo -en "\u2714  "; tput sgr0
+    echo "done"
 }
 
 
