@@ -33,6 +33,7 @@ LINUX_SCRIPTS=(
 GIT_SCRIPTS=(
     "git-clean-untracked"
     "git-info"
+    "git-obliterate-repo"
     "git-score"
     "git-stat"
     "git-sync"
