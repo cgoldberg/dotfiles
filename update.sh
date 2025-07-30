@@ -42,7 +42,7 @@ GIT_SCRIPTS=(
 )
 
 die() {
-    tput setaf 1; echo -en "\u2717  "; tput sgr0
+    tput setaf 1; echo -en "\u2717 "; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
     exit 1
 }
