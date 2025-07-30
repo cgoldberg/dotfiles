@@ -115,4 +115,4 @@ done
 
 echo
 tput setaf 10; echo -en "\u2714  "; tput sgr0
-echo "done"
+echo "done updating configs and scripts"
