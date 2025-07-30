@@ -67,7 +67,7 @@ mkdir --parents "${BIN_DIR}"
 cd "${DOTFILES_HOME}"
 
 current_branch=$(git branch --show-current)
-default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's/.*\///')
+default_branch=$(git symbolic-ref HEAD | sed 's/.*\///')
 
 echo "syncing local branches in ${DOTFILES_HOME} ..."
 git sync
