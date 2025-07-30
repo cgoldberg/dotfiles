@@ -71,6 +71,7 @@ default_branch=$(git symbolic-ref HEAD | sed 's/.*\///')
 
 echo "syncing local branches in ${DOTFILES_HOME} ..."
 git sync
+echo
 git checkout "${default_branch}" >/dev/null 2>&1
 
 echo "copying configs from dotfiles repo master branch to ${HOME}"
