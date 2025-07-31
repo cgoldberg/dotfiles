@@ -369,7 +369,7 @@ ff () {
         for pattern in "${exclude_patterns[@]}"; do
             command_name+=" --exclude=${pattern}"
         done
-        if [ ! -z "$1" ]; then
+        if [ -n "$1" ]; then
             command_name+=" $1"
         fi
         eval "${command_name}" | less
@@ -378,7 +378,7 @@ ff () {
             err "please enter a search pattern"
             return 1
         fi
-        find \
+        find . \
             -xdev \
             ! -readable -prune \
             -o \
