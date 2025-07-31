@@ -40,8 +40,11 @@
 
 # if not running interactively, don't do anything
 case $- in
-    *i*);;
-      *) return;;
+    *i*)
+        ;;
+    *)
+        return
+        ;;
 esac
 
 
@@ -200,7 +203,7 @@ alias which="type"
 
 
 # shell script static analysis
-alias shellcheck="shellcheck --color=always --shell=bash --exclude=SC1017"
+shellcheck --color=always --shell=bash --exclude=SC2155,SC1090
 
 
 # extract a tarball
@@ -282,7 +285,7 @@ err() {
 # chop lines at screen width
 # usage example: echo $really_long_line | nowrap
 nowrap () {
-    cut -c-$(tput cols)
+    cut -c-"$(tput cols)"
 }
 
 
@@ -409,7 +412,7 @@ rg () {
         local rg_bin=~/Scoop/shims/rg
         rg_bin="${rg_bin} --path-separator='//'"
     fi
-    if [ ! -z "${rg_bin+x}" ]; then # using ripgrep
+    if [ -n "${rg_bin+x}" ]; then # using ripgrep
         local escaped_pattern=$(sed 's/./\\&/g' <<<"$1")
         eval "${rg_bin}" \
             --hidden \
@@ -472,7 +475,7 @@ re-source () {
     PATH="${ORIGINAL_PATH}"
     source "${HOME}/.bashrc"
     # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
+    if [ -n "${VIRTUAL_ENV}" ]; then
         activate
     fi
 }
@@ -507,7 +510,7 @@ countfiles () {
 # search active processes for pattern (case-insensitive)
 # usage: psgrep <pattern>
 psgrep () {
-    if [ ! -z "$1" ]; then
+    if [ -n "$1" ]; then
         ps -ef \
             | \grep --color=always --extended-regexp --ignore-case "$1" \
             | nowrap
@@ -523,7 +526,7 @@ py-upgrade () {
         err "pyupgrade not found"
         return 1
     fi
-    find \
+    find . \
         -name "*.py" \
         ! -path "*/.git/*" \
         ! -path "*/.tox/*" \
@@ -531,7 +534,7 @@ py-upgrade () {
         ! -path "*/__pycache__/*" \
         ! -path "*/selenium/webdriver/common/devtools/*" \
         ! -path "*/venv/*" \
-        -print \
+        -print0 \
         | xargs pyupgrade --py39-plus
 }
 
@@ -542,7 +545,7 @@ py-refurb () {
         err "refurb not found"
         return 1
     fi
-    find \
+    find . \
         -name "*.py" \
         ! -path "*/.git/*" \
         ! -path "*/.tox/*" \
@@ -550,7 +553,7 @@ py-refurb () {
         ! -path "*/__pycache__/*" \
         ! -path "*/selenium/webdriver/common/devtools/*" \
         ! -path "*/venv/*" \
-        -print \
+        -print0 \
         | xargs refurb \
             --python-version 3.9 \
             --disable FURB101 \
@@ -572,11 +575,11 @@ clean-pip () {
     echo "cleaning pip and pipx cache ..."
     pip cache purge
     local dirs=(
-        ${HOME}/.cache/pip-tools/
-        ${HOME}/.local/pipx/.cache/
-        ${HOME}/.local/pipx/logs/
-        ${HOME}/pipx/.cache/
-        ${HOME}/pipx/logs/
+        "${HOME}/.cache/pip-tools/"
+        "${HOME}/.local/pipx/.cache/"
+        "${HOME}/.local/pipx/logs/"
+        "${HOME}/pipx/.cache/"
+        "${HOME}/pipx/logs/"
     )
     for d in ${dirs[@]}; do
         if [ -d ${d} ]; then
@@ -602,7 +605,7 @@ clean-py () {
         *.egg-info
         __pycache__
     )
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
+    if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
         deactivate
     fi
@@ -630,12 +633,12 @@ pipx-install () {
         err "pipx not installed"
         return 1
     fi
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
+    if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
         deactivate
     fi
     if [ -d "${HOME}/.pyenv" ]; then
-        pipx install "$1" --python $(pyenv \which python)
+        pipx install "$1" --python "$(pyenv which python)"
     else
         pipx install "$1"
     fi
@@ -649,7 +652,7 @@ pipx-upgrade-all () {
         err "pipx not installed"
         return 1
     fi
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
+    if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
         deactivate
     fi
@@ -661,7 +664,7 @@ pipx-upgrade-all () {
         echo "package versions don't match python version. reinstalling packages ..."
         echo
         if [ -d "${HOME}/.pyenv" ]; then
-            pipx reinstall-all --python $(pyenv \which python)
+            pipx reinstall-all --python "$(pyenv which python)"
         else
             pipx reinstall-all
         fi
