@@ -200,7 +200,7 @@ alias which="type"
 
 
 # shell script static analysis
-alias shellcheck="shellcheck --exclude=SC1017"
+alias shellcheck="shellcheck --color=always --shell=bash --exclude=SC1017"
 
 
 # extract a tarball
