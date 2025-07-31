@@ -34,6 +34,7 @@
 #  - pyupgrade (pipx install)
 #  - refurb (pipx install)
 #  - ripgrep (https://github.com/BurntSushi/ripgrep/releases)
+#  - shellcheck (apt install)
 #  - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
 
 
@@ -196,6 +197,10 @@ alias du="\du --human-readable --time --max-depth=1"
 
 # show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
 alias which="type"
+
+
+# shell script static analysis
+alias shellcheck="shellcheck --exclude=SC1017"
 
 
 # extract a tarball
