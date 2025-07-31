@@ -14,13 +14,13 @@ fi
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 
+# expand aliases when running sudo
+alias sudo="sudo "
+
+
 # run sudo with existing environment variables and tab-completion enabled (needed for gui apps)
 alias gsudo="sudo --preserve-env"
 complete -F _root_command gsudo
-
-
-# expand aliases when running sudo
-alias sudo="sudo "
 
 
 # expand aliases when running watch
@@ -121,7 +121,7 @@ blog () {
     fi
     killblog
     echo "running server at: ${jekyll_server}"
-    cd ${blog_dir}
+    cd "${blog_dir}"
     bundle exec jekyll s >/dev/null & disown # silence stdout
     sleep 3.5
     echo "opening browser at: http://${jekyll_server}"
@@ -174,7 +174,7 @@ apt-up () {
 # purge configuration data from packages marked as removed
 purge-apt-configs () {
     if dpkg -l | grep --quiet '^rc'; then
-        echo "$(dpkg -l | grep '^rc' | wc -l) packages have orphaned configs"
+        echo "$(dpkg -l | grep -c '^rc') packages have orphaned configs"
         echo "purging package configs from removed packages..."
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
     fi
@@ -185,7 +185,7 @@ purge-apt-configs () {
 backup-all () {
     local backup_dir="${HOME}/backup"
     local backup_archive="./backups.tar.gz"
-    if [ ! ${backup_dir} ]; then
+    if [ ! "${backup_dir}" ]; then
         err "backup directory not found"
         return 1
     fi
@@ -212,7 +212,7 @@ backup-all () {
     githubtakeout "${GITHUB_USERNAME}" --format=tar
     mv ./exported_files ./google_drive_files
     mv ./backups ./github_archives
-    tar cvzf "${backup_archive}" *
+    tar cvzf "${backup_archive}" ./*
     echo
     echo "changing directory back to: ${OLDPWD}"
     cd "${OLDPWD}"
@@ -228,7 +228,7 @@ update-pyenv () {
         err "pyenv is not installed"
         return 1
     fi
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
+    if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
         deactivate
     fi
@@ -238,7 +238,7 @@ update-pyenv () {
     pyenv rehash
     echo
     for py_version in "${PY_VERSIONS[@]}"; do
-        local minor_versions=($(pyenv versions --bare | \grep "${py_version}"))
+        local minor_versions=( $(pyenv versions --bare | \grep "${py_version}") )
         for minor_version in "${minor_versions[@]}"; do
             echo "uninstalling Python ${minor_version} ..."
             pyenv uninstall --force "${minor_version}"

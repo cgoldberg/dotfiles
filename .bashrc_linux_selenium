@@ -113,7 +113,7 @@ clean-selenium-dev () {
         ${sel_home}/**/__pycache__/
     )
     echo "cleaning up selenium dev environment ..."
-    if [ ! -z "${VIRTUAL_ENV}" ]; then
+    if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
         deactivate
     fi
@@ -139,7 +139,7 @@ selenium-server () {
         err "can't find github cli"
         return 1
     fi
-    cd ${sel_home}
+    cd "${sel_home}"
     if [ ! -f "${jar}" ]; then
         gh release download --pattern=selenium-server*.jar --output=${jar}
     fi
@@ -179,7 +179,7 @@ update-webrivers () {
             rm -rf ${d}
         fi
     done
-    cd ${sel_home}
+    cd "${sel_home}"
     if [ -f "${jar}" ]; then
         echo "deleting ${sel_home}/${jar}"
         rm "./${jar}"

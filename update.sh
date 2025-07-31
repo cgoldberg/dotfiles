@@ -96,7 +96,7 @@ for script in "${SCRIPTS[@]}"; do
 done
 if [[ "${OSTYPE}" == "linux"* ]]; then
     echo "copying linux scripts from dotfiles repo master branch to ${BIN_DIR}"
-    for script in "${SCRIPTS[@]}"; do
+    for script in "${LINUX_SCRIPTS[@]}"; do
         cp "${script}" "${BIN_DIR}"
     done
 fi

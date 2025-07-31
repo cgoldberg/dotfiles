@@ -203,7 +203,7 @@ alias which="type"
 
 
 # shell script static analysis
-shellcheck --color=always --shell=bash --exclude=SC2155,SC1090
+shellcheck --color=always --shell=bash --exclude=SC1090,SC1091
 
 
 # extract a tarball

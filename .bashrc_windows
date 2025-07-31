@@ -65,7 +65,7 @@ scoop-update-all () {
     echo "Deleting Old Packages..."
     for d in "${apps_path}"/*/; do
         local dir_count=$(find "${d}" -mindepth 1 -maxdepth 1 -type d ! -type l | wc -l)
-        if [ ${dir_count} -gt 1 ]; then
+        if [ "${dir_count}" -gt 1 ]; then
             local oldest_version_dir=$(find "${d}" -mindepth 1 -maxdepth 1 -type d ! -type l | sort | head -n 1)
             echo "deleting ${oldest_version_dir}"
             rm -rf "${oldest_version_dir}"
