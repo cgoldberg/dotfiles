@@ -124,6 +124,10 @@ export LESS_TERMCAP_ue=$(printf '\e[0m')
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
 
 
+# disable suspend/resume feature in terminal
+stty -ixon
+
+
 # check window size after each command and update the values of LINES and COLUMNS
 shopt -s checkwinsize
 
