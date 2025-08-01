@@ -40,9 +40,9 @@
 
 # if not running interactively, don't do anything
 case $- in
-    *i*)
+    *i* )
         ;;
-    *)
+    * )
         return
         ;;
 esac
