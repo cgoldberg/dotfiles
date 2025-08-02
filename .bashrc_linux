@@ -208,14 +208,31 @@ backup-all () {
     rm -rf ./google_drive_files
     rm -rf ./github_archives
     google_drive_export
+    rm -f "${backup_dir}/exported_files/${backup_archive}"
     echo
     githubtakeout "${GITHUB_USERNAME}" --format=tar
     mv ./exported_files ./google_drive_files
     mv ./backups ./github_archives
     tar cvzf "${backup_archive}" ./*
     echo
+    if [ ! -x "$(command -v rclone)" ]; then
+        err "rclone not found"
+        echo "changing directory back to: ${OLDPWD}"
+        cd "${OLDPWD}"
+        return 1
+    fi
+    echo "uploading archive to Google Drive ..."
+    echo
+    rclone copyto ./backups.tar.gz gdrive:/backups.tar.gz --progress
+    echo
+    echo "uploading archive to Dropbox ..."
+    echo
+    rclone copyto ./backups.tar.gz dbox:/backups.tar.gz --progress
     echo "changing directory back to: ${OLDPWD}"
     cd "${OLDPWD}"
+    echo
+    tput setaf 10; echo -en "\u2714  "; tput sgr0
+    echo "done. backup complete!"
 }
 
 
