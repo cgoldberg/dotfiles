@@ -77,27 +77,32 @@ git checkout "${default_branch}" >/dev/null 2>&1
 
 echo "copying configs from dotfiles repo master branch to ${HOME}"
 for config in "${CONFIGS[@]}"; do
+    echo -e "  copying: ${config}"
     cp "${config}" "${HOME}"
 done
 if [[ "${OSTYPE}" == "linux"* ]]; then
     echo "copying linux configs from dotfiles repo master branch to ${HOME}"
     for config in "${LINUX_CONFIGS[@]}"; do
+        echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
 elif [[ "${OSTYPE}" == "msys" ]]; then
     echo "copying windows configs from dotfiles repo master branch to ${HOME}"
     for config in "${WIN_CONFIGS[@]}"; do
+        echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
 fi
 
 echo "copying scripts from dotfiles repo master branch to ${BIN_DIR}"
 for script in "${SCRIPTS[@]}"; do
+    echo -e "  copying: ${script}"
     cp "${script}" "${BIN_DIR}"
 done
 if [[ "${OSTYPE}" == "linux"* ]]; then
     echo "copying linux scripts from dotfiles repo master branch to ${BIN_DIR}"
     for script in "${LINUX_SCRIPTS[@]}"; do
+        echo -e "  copying: ${script}"
         cp "${script}" "${BIN_DIR}"
     done
 fi
@@ -107,6 +112,7 @@ git checkout "${current_branch}" >/dev/null 2>&1
 echo "downloading git scripts from github to ${BIN_DIR}"
 for script in "${GIT_SCRIPTS[@]}"; do
     url="https://raw.githubusercontent.com/cgoldberg/git-scripts/refs/heads/main/${script}"
+    echo -e "  downloading: ./${BIN_DIR##*/}/${script}"
     curl -fsS --output "${BIN_DIR}/${script}" "${url}"
     chmod +x "${BIN_DIR}/${script}"
     if [[ "${OSTYPE}" == "msys" ]]; then
