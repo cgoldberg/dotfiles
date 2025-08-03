@@ -576,6 +576,7 @@ clean-pip () {
     pip cache purge
     local dirs=(
         "${HOME}/.cache/pip-tools/"
+        "${HOME}/.cache/pipx/"
         "${HOME}/.local/pipx/.cache/"
         "${HOME}/.local/pipx/logs/"
         "${HOME}/pipx/.cache/"
