@@ -29,6 +29,7 @@ SCRIPTS=(
 LINUX_SCRIPTS=(
     "./bin/now"
     "./bin/sysinfo"
+    "./bin/backup-all"
 )
 GIT_SCRIPTS=(
     "git-clean-untracked"

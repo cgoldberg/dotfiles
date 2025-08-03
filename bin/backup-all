@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+#
+# general backup script:
+#  - download Google Drive files
+#  - download public GitHub repos
+#  - create a tarball
+#  - upload tarball to Google Drive and Dropbox
+#
+# requires:
+#  - google-drive-export (PyPI)
+#  - githubtakeout (PyPI)
+#  - rclone (apt install) with remotes configured: gdrive, dbox
+
+set -e
+
+BACKUP_DIR="${HOME}/backup"
+BACKUP_ARCHIVE="./backups.tar.gz"
+
+die () {
+    tput setaf 1; echo -en "\u2717 "; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+    exit 1
+}
+
+if [ ! "${BACKUP_DIR}" ]; then
+    die "backup directory not found"
+fi
+
+if [ ! -x "$(command -v google_drive_export)" ]; then
+    die "google_drive_export not found"
+fi
+
+if [ ! -x "$(command -v githubtakeout)" ]; then
+    die "githubtakeout not found"
+fi
+
+echo
+echo "changing directory to: ${BACKUP_DIR}"
+echo
+cd "${BACKUP_DIR}"
+
+echo "deleting old backup files and directories ..."
+rm -f "${BACKUP_ARCHIVE}"
+rm -rf ./exported_files
+rm -rf ./backups
+rm -rf ./google_drive_files
+rm -rf ./github_archives
+
+google_drive_export
+rm -f "${BACKUP_DIR}/exported_files/${BACKUP_ARCHIVE}"
+echo
+
+githubtakeout "${GITHUB_USERNAME}" --format=tar
+echo
+
+mv ./exported_files ./google_drive_files
+mv ./backups ./github_archives
+tar cvzf "${BACKUP_ARCHIVE}" ./*
+echo
+
+if [ ! -x "$(command -v rclone)" ]; then
+    cd "${OLDPWD}"
+    die "rclone not found"
+fi
+
+echo "uploading archive to Google Drive ..."
+echo
+rclone copyto "${BACKUP_ARCHIVE}" "gdrive:/${BACKUP_ARCHIVE}" --progress
+echo
+
+echo "uploading archive to Dropbox ..."
+echo
+rclone copyto "${BACKUP_ARCHIVE}" "dbox:/${BACKUP_ARCHIVE}" --progress
+echo
+
+echo "changing directory back to: ${OLDPWD}"
+cd "${OLDPWD}"
+echo
+
+tput setaf 10; echo -en "\u2714  "; tput sgr0
+echo "done. backup complete!"

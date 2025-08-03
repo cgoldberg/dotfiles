@@ -181,61 +181,6 @@ purge-apt-configs () {
 }
 
 
-# backup public github repos and google drive and store in a tarball in ~/backup
-backup-all () {
-    local backup_dir="${HOME}/backup"
-    local backup_archive="./backups.tar.gz"
-    if [ ! "${backup_dir}" ]; then
-        err "backup directory not found"
-        return 1
-    fi
-    if [ ! -x "$(command -v google_drive_export)" ]; then
-        err "google_drive_export not found"
-        return 1
-    fi
-    if [ ! -x "$(command -v githubtakeout)" ]; then
-        err "githubtakeout not found"
-        return 1
-    fi
-    echo
-    echo "changing directory to: ${backup_dir}"
-    echo
-    cd "${backup_dir}"
-    echo "deleting old backup files and directories ..."
-    rm -f "${backup_archive}"
-    rm -rf ./exported_files
-    rm -rf ./backups
-    rm -rf ./google_drive_files
-    rm -rf ./github_archives
-    google_drive_export
-    rm -f "${backup_dir}/exported_files/${backup_archive}"
-    echo
-    githubtakeout "${GITHUB_USERNAME}" --format=tar
-    mv ./exported_files ./google_drive_files
-    mv ./backups ./github_archives
-    tar cvzf "${backup_archive}" ./*
-    echo
-    if [ ! -x "$(command -v rclone)" ]; then
-        err "rclone not found"
-        echo "changing directory back to: ${OLDPWD}"
-        cd "${OLDPWD}"
-        return 1
-    fi
-    echo "uploading archive to Google Drive ..."
-    echo
-    rclone copyto ./backups.tar.gz gdrive:/backups.tar.gz --progress
-    echo
-    echo "uploading archive to Dropbox ..."
-    echo
-    rclone copyto ./backups.tar.gz dbox:/backups.tar.gz --progress
-    echo "changing directory back to: ${OLDPWD}"
-    cd "${OLDPWD}"
-    echo
-    tput setaf 10; echo -en "\u2714  "; tput sgr0
-    echo "done. backup complete!"
-}
-
-
 # update pyenv
 # uninstall each python installation
 # install latest of each major python version
