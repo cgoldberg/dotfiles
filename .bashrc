@@ -30,7 +30,7 @@
 #  - bat (https://github.com/sharkdp/bat/releases)
 #  - fd (https://github.com/sharkdp/fd/releases)
 #  - gh (https://github.com/cli/cli)
-#  - pipx (apt install)
+#  - pipx (python3 -m pip install --user pipx)
 #  - pyupgrade (pipx install)
 #  - refurb (pipx install)
 #  - ripgrep (https://github.com/BurntSushi/ripgrep/releases)
