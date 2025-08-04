@@ -156,9 +156,9 @@ HISTCONTROL=ignoredups:erasedups
 # don't add entries to history
 HISTIGNORE="x:exit" # we get duplicates of 'x' and 'exit' because shell is closed immediately
 # number of previous commands stored in memory for current session
-HISTSIZE=999
+HISTSIZE=9999
 # number of previous commands stored in history file
-HISTFILESIZE=999
+HISTFILESIZE=9999
 # immediately add commands to history instead of waiting for end of session
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
