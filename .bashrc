@@ -101,6 +101,7 @@ PS1=\
 # export environment variables
 export LANG="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
 export PAGER="less"
 export EDITOR="vi"
@@ -252,9 +253,9 @@ alias webserver="python3 -m http.server"
 
 
 # list directory contents
-alias ls="LC_COLLATE=C \ls --almost-all --classify --group-directories-first --color=always"
-alias ll="LC_COLLATE=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
-alias l="ll"
+alias ls="LC_ALL=C \ls --almost-all --classify --group-directories-first --color=always"
+alias l="LC_ALL=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
+alias ll="l"
 
 
 # editors (sublime/vim)
