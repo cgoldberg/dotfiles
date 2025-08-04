@@ -215,6 +215,10 @@ update-pyenv () {
         python3 -m pip install --upgrade pip
         echo
     done
+    pyenv rehash
+    echo "global python versions installed:"
+    pyenv global
+    echo
     eval "pyenv global ${PY_VERSIONS[*]}"
     pipx-upgrade-all
 }
