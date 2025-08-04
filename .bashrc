@@ -31,6 +31,7 @@
 #  - fd (https://github.com/sharkdp/fd/releases)
 #  - gh (https://github.com/cli/cli)
 #  - pipx (python3 -m pip install --user pipx)
+#  - pyenv (https://github.com/pyenv/pyenv)
 #  - pyupgrade (pipx install)
 #  - refurb (pipx install)
 #  - ripgrep (https://github.com/BurntSushi/ripgrep/releases)
