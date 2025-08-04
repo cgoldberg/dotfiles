@@ -456,7 +456,7 @@ rg () {
 # search command history by regex (case-insensitive) show last n matches
 # usage: h <pattern>
 h () {
-    local num="60"
+    local num="50"
     history -n; history -w; history -c; history -r;
     history | \grep -v "  h " | \grep --ignore-case --color=always "$1" | tail -n "${num}"
 }
