@@ -15,7 +15,7 @@ PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 
 
 # exit shell
-alias x="history -n; history -w; exit"
+alias x="history -n; history -w; TASKKILL //F //IM git.exe >/dev/null 2>&1; exit"
 
 
 # disk space (first column removed)
