@@ -27,6 +27,15 @@ complete -F _root_command gsudo
 alias watch="watch "
 
 
+# exit shell
+alias x="history -n; history -w; exit"
+
+
+# disk space
+alias df="\df --human-readable --local --sync"
+alias ds="df /"
+
+
 # kill process group by name (case-insensitive)
 alias killall="\killall --ignore-case --process-group --wait"
 
