@@ -196,11 +196,17 @@ alias more="less"
 alias g="git"
 
 
+# disk space
+alias df="\df --human-readable --local --sync"
+alias ds="df /"
+
+
 # disk usage (directory sizes)
 alias du="\du --human-readable --time --max-depth=1"
 
 
-# show how a command would be interpreted (includes: aliases, builtins, functions, scripts/executables on path)
+# show how a command would be interpreted
+#  - includes: aliases, builtins, functions, scripts/executables on PATH
 alias which="type"
 
 

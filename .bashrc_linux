@@ -28,7 +28,7 @@ alias watch="watch "
 
 
 # exit shell
-alias x="exit"
+alias x="history -n; history -w; exit"
 
 
 # kill process group by name (case-insensitive)
@@ -50,11 +50,6 @@ alias gist="xdg-open https://gist.github.com/${GITHUB_USERNAME}"
 
 # open url or file in default browser
 alias web="sensible-browser"
-
-
-# disk space
-alias df="\df --human-readable --local --sync"
-alias ds="df /"
 
 
 # ncurses disk usage

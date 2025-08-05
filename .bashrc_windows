@@ -15,12 +15,11 @@ PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 
 
 # exit shell
-alias exit="TASKKILL //F //IM git.exe >/dev/null 2>&1; \exit"
-alias x="exit"
+alias x="TASKKILL //F //IM git.exe >/dev/null 2>&1; x"
 
 
-# disk space
-alias df="echo 'df does not work on this platform'"
+# disk space (first column removed)
+alias df="df | sed -E 's/^[^[:space:]]+[[:space:]]+//'"
 
 
 # open url or file in chrome browser
