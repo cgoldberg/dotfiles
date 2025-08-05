@@ -20,7 +20,7 @@ alias x="history -n; history -w; TASKKILL //F //IM git.exe >/dev/null 2>&1; exit
 
 # disk space (first column removed)
 alias df="\df --human-readable --local --sync | sed -E 's/^[^[:space:]]+[[:space:]]+//'"
-alias ds="df /"
+alias ds="df"
 
 
 # open url or file in chrome browser
