@@ -43,6 +43,7 @@ clean-selenium-dev-full () {
     clean-selenium-dev
     local sel_home="${SELENIUM_DEV_HOME}"
     local sel_dirs=(
+        ${sel_home}/.aspect/
         ${sel_home}/py/selenium/webdriver/common/devtools/
         ${sel_home}/py/selenium/webdriver/common/linux/
         ${sel_home}/py/selenium/webdriver/common/macos/
