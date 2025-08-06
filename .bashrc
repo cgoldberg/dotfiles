@@ -573,9 +573,10 @@ py-refurb () {
 }
 
 
-# clean pip, pipx cache
+# upgrade pip and clean pip/pipx cache
 clean-pip () {
-    echo "cleaning pip and pipx cache ..."
+    echo "upgrading pip, cleaning pip/pipx cache ..."
+    pip install --upgrade pip
     pip cache purge
     local dirs=(
         "${HOME}/.cache/pip-tools/"
@@ -650,7 +651,7 @@ pipx-install () {
 
 
 # upgrade all pipx applications
-# - reinstalls them if they don't match the current python interpreter version
+# - reinstalls apps if they don't match the current python interpreter version
 pipx-upgrade-all () {
     if [ ! -x "$(command -v pipx)" ]; then
         err "pipx not installed"
@@ -660,9 +661,12 @@ pipx-upgrade-all () {
         echo "deactivating venv"
         deactivate
     fi
+    echo "upgrading pip ..."
+    pip install --upgrade pip
     local py_version=$(python3 --version)
-    local output=$(pipx list)
-    if [[ "${output}" == *"${py_version}"* ]]; then
+    local pipx_list_output=$(pipx list)
+    echo "upgrading pipx apps ..."
+    if [[ "${pipx_list_output}" == *"${py_version}"* ]]; then
         pipx upgrade-all
     else
         echo "package versions don't match python version. reinstalling packages ..."
@@ -674,7 +678,12 @@ pipx-upgrade-all () {
         fi
     fi
     echo
-    pipx list
+    local pipx_list_output=$(pipx list)
+    echo "${pipx_list_output}"
+    echo
+    tput setaf 10; echo -en "\u2714  "; tput sgr0
+    echo "$(grep -c '\- ' <<< ${pipx_list_output}) apps from"\
+        "$(grep -c 'package ' <<< ${pipx_list_output}) packages installed"
 }
 
 
