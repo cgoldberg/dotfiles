@@ -724,7 +724,6 @@ add-bins () {
     local bin_dirs=(
         "${HOME}/.local/bin"
         "${HOME}/bin"
-        "${HOME}/go/bin"
     )
     for d in "${bin_dirs[@]}"; do
         if [ -d "${d}" ]; then
