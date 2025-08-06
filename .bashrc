@@ -323,7 +323,7 @@ dff () {
         err "please enter 2 files to diff"
         return 1
     fi
-    \diff --report-identical-files --color=always "$1" "$2"  #| less
+    \diff --report-identical-files --strip-trailing-cr --color=always "$1" "$2" | less
 }
 alias diff="dff"
 
