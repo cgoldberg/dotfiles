@@ -599,16 +599,16 @@ clean-pip () {
 clean-py () {
     echo "cleaning python dev/temp files ..."
     local dirs=(
-        .venv/
         build/
         dist/
-        venv/
     )
     local recurse_dirs=(
         .tox
+        .venv
         .*_cache
         *.egg-info
         __pycache__
+        venv
     )
     if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
