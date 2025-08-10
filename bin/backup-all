@@ -14,7 +14,7 @@
 set -e
 
 BACKUP_DIR="${HOME}/backup"
-BACKUP_ARCHIVE="./backups.tar.gz"
+BACKUP_ARCHIVE="backups.tar.gz"
 
 die () {
     tput setaf 1; echo -en "\u2717 "; tput sgr0
@@ -40,7 +40,7 @@ echo
 cd "${BACKUP_DIR}"
 
 echo "deleting old backup files and directories ..."
-rm -f "${BACKUP_ARCHIVE}"
+rm -f "./${BACKUP_ARCHIVE}"
 rm -rf ./exported_files
 rm -rf ./backups
 rm -rf ./google_drive_files
@@ -55,7 +55,7 @@ echo
 
 mv ./exported_files ./google_drive_files
 mv ./backups ./github_archives
-tar cvzf "${BACKUP_ARCHIVE}" ./*
+tar cvzf "./${BACKUP_ARCHIVE}" ./*
 echo
 
 if [ ! -x "$(command -v rclone)" ]; then
@@ -65,12 +65,12 @@ fi
 
 echo "uploading archive to Google Drive ..."
 echo
-rclone copyto "${BACKUP_ARCHIVE}" "gdrive:/${BACKUP_ARCHIVE##*/}" --progress
+rclone copyto "./${BACKUP_ARCHIVE}" "gdrive:/${BACKUP_ARCHIVE##*/}" --progress
 echo
 
 echo "uploading archive to Dropbox ..."
 echo
-rclone copyto "${BACKUP_ARCHIVE}" "dbox:/${BACKUP_ARCHIVE##*/}" --progress
+rclone copyto "./${BACKUP_ARCHIVE}" "dbox:/${BACKUP_ARCHIVE##*/}" --progress
 echo
 
 echo "changing directory back to: ${OLDPWD}"
