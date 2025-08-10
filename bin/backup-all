@@ -65,12 +65,12 @@ fi
 
 echo "uploading archive to Google Drive ..."
 echo
-rclone copyto "./${BACKUP_ARCHIVE}" "gdrive:/${BACKUP_ARCHIVE##*/}" --progress
+rclone copyto "./${BACKUP_ARCHIVE}" "gdrive:/${BACKUP_ARCHIVE}" --progress
 echo
 
 echo "uploading archive to Dropbox ..."
 echo
-rclone copyto "./${BACKUP_ARCHIVE}" "dbox:/${BACKUP_ARCHIVE##*/}" --progress
+rclone copyto "./${BACKUP_ARCHIVE}" "dbox:/${BACKUP_ARCHIVE}" --progress
 echo
 
 echo "changing directory back to: ${OLDPWD}"
