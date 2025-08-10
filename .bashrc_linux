@@ -76,6 +76,15 @@ alias ips="internalip && echo && externalip"
 # --------------------------------- FUNCTIONS ---------------------------------
 
 
+# mount NAS
+bitz () {
+    # requires `gvfs-backends`
+    gio mount smb://cgoldberg@10.0.0.5/Public 2>/dev/null
+    ln -s /run/user/1000/gvfs/smb-share:server=10.0.0.5,share=public,user=cgoldberg ~/bitz 2>/dev/null
+    cd ~/bitz 2>/dev/null
+}
+
+
 # install chrome from google repo
 install-chrome () {
     local package="google-chrome-stable"
@@ -217,10 +226,10 @@ update-pyenv () {
         echo
     done
     pyenv rehash
+    eval "pyenv global ${PY_VERSIONS[*]}"
     echo "global python versions installed:"
     pyenv global
     echo
-    eval "pyenv global ${PY_VERSIONS[*]}"
     pipx-upgrade-all
 }
 
