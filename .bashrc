@@ -538,7 +538,7 @@ py-upgrade () {
         ! -path "*/selenium/webdriver/common/devtools/*" \
         ! -path "*/venv/*" \
         -print0 \
-        | xargs pyupgrade --py39-plus
+        | xargs --null pyupgrade --py39-plus
 }
 
 
@@ -557,7 +557,7 @@ py-refurb () {
         ! -path "*/selenium/webdriver/common/devtools/*" \
         ! -path "*/venv/*" \
         -print0 \
-        | xargs refurb \
+        | xargs --null refurb \
             --python-version 3.9 \
             --disable FURB101 \
             --disable FURB103 \
