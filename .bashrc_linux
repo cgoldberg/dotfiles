@@ -79,7 +79,7 @@ alias ips="internalip && echo && externalip"
 # mount NAS
 bitz () {
     # requires `gvfs-backends`
-    gio mount smb://cgoldberg@10.0.0.5/Public 2>/dev/null
+    gio mount smb://cgoldberg@10.0.0.5/public 2>/dev/null
     ln -s /run/user/1000/gvfs/smb-share:server=10.0.0.5,share=public,user=cgoldberg ~/bitz 2>/dev/null
     cd ~/bitz 2>/dev/null
 }
