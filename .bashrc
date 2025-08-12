@@ -359,6 +359,7 @@ md2html () {
         --template "${HOME}/.pandoc/template.html" \
         --css "${HOME}/.pandoc/template.css" \
         --from gfm \
+        --eold lf \
         --metadata title="${output}" \
         --self-contained \
         --standalone
