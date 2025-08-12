@@ -8,6 +8,7 @@ set -e
 
 DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
+TEMPLATE_DIR="${HOME}/.pandoc"
 CONFIGS=(
     ".bashrc"
     ".profile"
@@ -21,6 +22,10 @@ WIN_CONFIGS=(
     ".bashrc_windows"
     ".gitconfig_win"
     ".minttyrc"
+)
+TEMPLATES=(
+    "./pandoc/template.html"
+    "./pandoc/bootstrap.min.css"
 )
 SCRIPTS=(
     "./bin/colors"
@@ -64,6 +69,7 @@ echo "updating local dotfiles and ~/bin scripts from github ..."
 echo
 
 mkdir --parents "${BIN_DIR}"
+mkdir --parents "${TEMPLATE_DIR}"
 
 cd "${DOTFILES_HOME}"
 
@@ -75,32 +81,40 @@ git sync
 echo
 git checkout "${default_branch}" >/dev/null 2>&1
 
-echo "copying configs from dotfiles repo master branch to ${HOME}"
+echo "copying configs from dotfiles repo ${default_branch} branch to ${HOME}"
 for config in "${CONFIGS[@]}"; do
     echo -e "  copying: ${config}"
     cp "${config}" "${HOME}"
 done
+
 if [[ "${OSTYPE}" == "linux"* ]]; then
-    echo "copying linux configs from dotfiles repo master branch to ${HOME}"
+    echo "copying linux configs from dotfiles repo ${default_branch} branch to ${HOME}"
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
 elif [[ "${OSTYPE}" == "msys" ]]; then
-    echo "copying windows configs from dotfiles repo master branch to ${HOME}"
+    echo "copying windows configs from dotfiles repo ${default_branch} branch to ${HOME}"
     for config in "${WIN_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
 fi
 
-echo "copying scripts from dotfiles repo master branch to ${BIN_DIR}"
+echo "copying templates from dotfiles repo ${default_branch} branch to ${TEMPLATE_DIR}"
+for template in "${TEMPLATES[@]}"; do
+    echo -e "  copying: ${template}"
+    cp "${template}" "${TEMPLATE_DIR}"
+done
+
+echo "copying scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
 for script in "${SCRIPTS[@]}"; do
     echo -e "  copying: ${script}"
     cp "${script}" "${BIN_DIR}"
 done
+
 if [[ "${OSTYPE}" == "linux"* ]]; then
-    echo "copying linux scripts from dotfiles repo master branch to ${BIN_DIR}"
+    echo "copying linux scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
     for script in "${LINUX_SCRIPTS[@]}"; do
         echo -e "  copying: ${script}"
         cp "${script}" "${BIN_DIR}"

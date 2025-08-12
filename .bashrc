@@ -30,6 +30,7 @@
 #  - bat (https://github.com/sharkdp/bat/releases)
 #  - fd (https://github.com/sharkdp/fd/releases)
 #  - gh (https://github.com/cli/cli)
+#  - pandoc (apt install)
 #  - pipx (python3 -m pip install --user pipx)
 #  - pyenv (https://github.com/pyenv/pyenv)
 #  - pyupgrade (pipx install)
@@ -335,6 +336,34 @@ remove-whitespace-from-filenames () {
         find . -path ./.git -prune -o -type f -name "* *" -exec bash -c 'git mv "$0" "${0// /_}"' {} \;
     else
         find . -type f -name "* *" -exec bash -c 'mv "$0" "${0// /_}"' {} \;
+    fi
+}
+
+
+# generate a self-contained html from markdown
+# - uses pandoc and twitter bootstrap css
+# - usage: md2html <markdown_file>
+md2html () {
+    if [ -z "$1" ]; then
+        err "please specify a markdown file"
+        return 1
+    fi
+    if [ ! -x "$(command -v pandoc)" ]; then
+        err "pandoc not found"
+        return 1
+    fi
+    local input="$1"
+    local output="${input%.*}.html"
+    pandoc "${input}" \
+        --output "${output}" \
+        --template "${HOME}/.pandoc/template.html" \
+        --css "${HOME}/.pandoc/bootstrap.min.css" \
+        --from gfm \
+        --metadata title="${output}" \
+        --self-contained \
+        --standalone
+    if [ $? -eq 0 ]; then
+        echo "created: ${output}"
     fi
 }
 
