@@ -12051,6 +12051,7 @@ body {
 pre {
   background-color: #F0F0F0;
   padding: 0.35em;
+  margin-top: 0.4em;
   border-radius: 5px;
   outline: 0.5px dashed #A9A9A9;
 }
