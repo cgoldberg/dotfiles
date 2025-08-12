@@ -353,14 +353,16 @@ md2html () {
         return 1
     fi
     local input="$1"
-    local output="${input%.*}.html"
+    local base="${input%.*}"
+    local output="${base}.html"
+    local title="${base##*/}"
     pandoc "${input}" \
         --output "${output}" \
         --template "${HOME}/.pandoc/template.html" \
         --css "${HOME}/.pandoc/template.css" \
         --from gfm \
         --eol lf \
-        --metadata title="${output}" \
+        --metadata title="${title}" \
         --embed-resources \
         --standalone
     echo "${output}"
