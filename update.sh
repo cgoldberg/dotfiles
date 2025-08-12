@@ -25,7 +25,7 @@ WIN_CONFIGS=(
 )
 TEMPLATES=(
     "./pandoc/template.html"
-    "./pandoc/bootstrap.min.css"
+    "./pandoc/template.css"
 )
 SCRIPTS=(
     "./bin/colors"
