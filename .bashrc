@@ -341,7 +341,7 @@ remove-whitespace-from-filenames () {
 
 
 # generate a self-contained html from markdown
-# - uses pandoc and modified bootstrap css
+# - uses modified bootstrap css
 # - usage: md2html <markdown_file>
 md2html () {
     if [ -z "$1" ]; then
@@ -361,7 +361,7 @@ md2html () {
         --from gfm \
         --eol lf \
         --metadata title="${output}" \
-        --self-contained \
+        --embed-resources \
         --standalone
     echo "${output}"
 }
