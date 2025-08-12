@@ -362,9 +362,7 @@ md2html () {
         --metadata title="${output}" \
         --self-contained \
         --standalone
-    if [ $? -eq 0 ]; then
-        echo "created: ${output}"
-    fi
+    echo "${output}"
 }
 
 
