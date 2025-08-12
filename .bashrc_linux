@@ -58,7 +58,7 @@ alias web="sensible-browser"
 
 
 # install a package
-alias apt-install="sudo apt install"
+alias apt-install="sudo apt update && sudo apt install"
 
 
 # remove a package
