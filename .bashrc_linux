@@ -57,6 +57,14 @@ alias gist="xdg-open https://gist.github.com/${GITHUB_USERNAME}"
 alias web="sensible-browser"
 
 
+# install a package
+alias apt-install="sudo apt install"
+
+
+# remove a package
+alias apt-remove="sudo apt remove --purge"
+
+
 # ncurses disk usage
 alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
 
