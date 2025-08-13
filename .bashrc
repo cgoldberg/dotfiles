@@ -280,6 +280,40 @@ alias ebrc="edit ${HOME}/.bashrc"
 # --------------------------------- FUNCTIONS ---------------------------------
 
 
+# verify all dependencies used in bash config aliases/functions are installed
+check-dependencies () {
+    local deps=(
+        "bat"
+        "eza"
+        "fd"
+        "gh"
+        "pandoc"
+        "pipx"
+        "pyupgrade"
+        "refurb"
+        "rg"
+        "shellcheck"
+        "subl"
+    )
+    local linux_deps=(
+        "pyenv"
+    )
+    for dep in "${deps[@]}"; do
+        if [ ! -x "$(type -pP ${dep})" ]; then
+            err "${dep} not installed"
+        fi
+    done
+    if [[ "${OSTYPE}" == "linux"* ]]; then
+        for dep in "${linux_deps[@]}"; do
+            if [ ! -x "$(type -pP ${dep})" ]; then
+                err "${dep} not installed"
+            fi
+        done
+    fi
+    ok "checked all dependencies"
+}
+
+
 # print bold message to stderr preceded with red ballot x
 err () {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
