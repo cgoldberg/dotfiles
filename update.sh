@@ -53,6 +53,11 @@ die () {
     exit 1
 }
 
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+}
+
 if [ ! -d "${DOTFILES_HOME}" ]; then
     die "fatal: can't find dotfiles repo"
 fi
@@ -135,5 +140,4 @@ for script in "${GIT_SCRIPTS[@]}"; do
 done
 
 echo
-tput setaf 10; echo -en "\u2714  "; tput sgr0
-echo "done updating configs and scripts"
+ok "done updating configs and scripts"
