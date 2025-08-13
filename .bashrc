@@ -281,7 +281,7 @@ alias ebrc="edit ${HOME}/.bashrc"
 
 # print bold messages to stderr preceded with red ballot x
 err () {
-    tput setaf 1; echo -en "\u2717  "; tput sgr0
+    tput setaf 1; echo -en "\u2717  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
