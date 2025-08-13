@@ -286,6 +286,13 @@ err () {
 }
 
 
+# print bold message to stderr preceded with green heavy check mark
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+
 # chop lines at screen width
 # usage example: echo $really_long_line | nowrap
 nowrap () {
@@ -711,8 +718,7 @@ pipx-upgrade-all () {
     local pipx_list_output=$(pipx list)
     echo "${pipx_list_output}"
     echo
-    tput setaf 10; echo -en "\u2714  "; tput sgr0
-    echo "$(grep -c '\- ' <<< ${pipx_list_output}) apps from"\
+    ok "$(grep -c '\- ' <<< ${pipx_list_output}) apps from"\
         "$(grep -c 'package ' <<< ${pipx_list_output}) packages installed"
 }
 

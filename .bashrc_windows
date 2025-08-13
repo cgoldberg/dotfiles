@@ -74,8 +74,7 @@ scoop-update-all () {
     echo "Deleting Cache..."
     scoop cache rm *
     echo
-    tput setaf 10; echo -en "\u2714  "; tput sgr0
-    echo "done"
+    ok "done"
 }
 
 

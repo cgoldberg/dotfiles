@@ -22,6 +22,11 @@ die () {
     exit 1
 }
 
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+}
+
 if [ ! "${BACKUP_DIR}" ]; then
     die "backup directory not found"
 fi
@@ -76,6 +81,4 @@ echo
 echo "changing directory back to: ${OLDPWD}"
 cd "${OLDPWD}"
 echo
-
-tput setaf 10; echo -en "\u2714  "; tput sgr0
-echo "done. backup complete!"
+ok "backup complete!"
