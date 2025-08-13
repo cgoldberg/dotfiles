@@ -27,15 +27,16 @@
 #
 #
 # install dependencies for full functionality:
-#  - bat (https://github.com/sharkdp/bat/releases)
-#  - fd (https://github.com/sharkdp/fd/releases)
+#  - bat (https://github.com/sharkdp/bat)
+#  - eza (https://eza.rocks)
+#  - fd (https://github.com/sharkdp/fd)
 #  - gh (https://github.com/cli/cli)
 #  - pandoc (apt install)
 #  - pipx (python3 -m pip install --user pipx)
 #  - pyenv (https://github.com/pyenv/pyenv)
 #  - pyupgrade (pipx install)
 #  - refurb (pipx install)
-#  - ripgrep (https://github.com/BurntSushi/ripgrep/releases)
+#  - rg (https://github.com/BurntSushi/ripgrep)
 #  - shellcheck (apt install)
 #  - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
 
@@ -73,7 +74,7 @@ load-bash-completions () {
     done
     for completion_loader_func in "${completion_loader_funcs[@]}"; do
         if declare -f "${completion_loader_func}" >/dev/null; then
-            if [ -x "$(command -v git)" ]; then
+            if [ -x "$(type -pP git)" ]; then
                 "${completion_loader_func}" git
                 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main git
                 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
@@ -106,7 +107,7 @@ export LC_ALL="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
 export PAGER="less"
 export EDITOR="vi"
-if [ -x "$(command -v subl)" ]; then
+if [ -x "$(type -pP subl)" ]; then
     export VISUAL="subl --new-window --wait"
 else
     export VISUAL="vi"
@@ -220,7 +221,7 @@ alias c="clear"
 
 
 # better cat
-if [ -x "$(command -v bat)" ]; then
+if [ -x "$(type -pP bat)" ]; then
     alias cat="bat"
 fi
 
@@ -261,7 +262,7 @@ alias ll="l"
 
 
 # editors (sublime/vim)
-if [ -x "$(command -v subl)" ]; then
+if [ -x "$(type -pP subl)" ]; then
     alias edit="subl"
     alias ed="subl"
     alias e="subl --new-window ."
@@ -355,7 +356,7 @@ md2html () {
         err "please specify a markdown file"
         return 1
     fi
-    if [ ! -x "$(command -v pandoc)" ]; then
+    if [ ! -x "$(type -pP pandoc)" ]; then
         err "pandoc not found"
         return 1
     fi
@@ -388,7 +389,7 @@ path () {
 
 # use bat for colored help if available
 help () {
-    if [ -x "$(command -v bat)" ]; then
+    if [ -x "$(type -pP bat)" ]; then
         "$@" --help 2>&1 | bat --plain --language=help
     else
         builtin help "$@"
@@ -400,7 +401,7 @@ help () {
 # - uses fd if available: https://github.com/sharkdp/fd
 # usage: ff <regex>
 ff () {
-    if [ -x "$(command -v fd)" ]; then
+    if [ -x "$(type -pP fd)" ]; then
         local command_name="\fd --hidden --no-ignore --color=always "
         local exclude_patterns=(
             ".git/"
@@ -534,7 +535,7 @@ alias w="weather"
 
 # count all files in current directory (recursive)
 countfiles () {
-    if [ ! -x "$(command -v git)" ]; then
+    if [ ! -x "$(type -pP git)" ]; then
         err "can't find git"
         return 1
     fi
@@ -562,7 +563,7 @@ psgrep () {
 
 # run pyupgrade against all python files in current directory (recursive), and fix recommendations in-place
 py-upgrade () {
-    if [ ! -x "$(command -v pyupgrade)" ]; then
+    if [ ! -x "$(type -pP pyupgrade)" ]; then
         err "pyupgrade not found"
         return 1
     fi
@@ -581,7 +582,7 @@ py-upgrade () {
 
 # run refurb against all python files in current directory (recursive), and display recommendations
 py-refurb () {
-    if [ ! -x "$(command -v refurb)" ]; then
+    if [ ! -x "$(type -pP refurb)" ]; then
         err "refurb not found"
         return 1
     fi
@@ -671,7 +672,7 @@ pipx-install () {
         err "please specify a package"
         return 1
     fi
-    if [ ! -x "$(command -v pipx)" ]; then
+    if [ ! -x "$(type -pP pipx)" ]; then
         err "pipx not installed"
         return 1
     fi
@@ -690,7 +691,7 @@ pipx-install () {
 # upgrade all pipx applications
 # - reinstalls apps if they don't match the current python interpreter version
 pipx-upgrade-all () {
-    if [ ! -x "$(command -v pipx)" ]; then
+    if [ ! -x "$(type -pP pipx)" ]; then
         err "pipx not installed"
         return 1
     fi
@@ -728,7 +729,7 @@ pipx-upgrade-all () {
 #   - follow installation instructions at: https://github.com/cli/cli
 #   - install extension with: `gh extension install yusukebe/gh-markdown-preview`
 preview-md () {
-    if [ ! -x "$(command -v gh)" ]; then
+    if [ ! -x "$(type -pP gh)" ]; then
         err "can't find github cli"
         return 1
     fi

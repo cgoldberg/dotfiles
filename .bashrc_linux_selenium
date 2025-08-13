@@ -136,7 +136,7 @@ clean-selenium-dev () {
 selenium-server () {
     local sel_home="${SELENIUM_DEV_HOME}"
     local jar="selenium-server.jar"
-    if [ ! -x "$(command -v gh)" ]; then
+    if [ ! -x "$(type -pP gh)" ]; then
         err "can't find github cli"
         return 1
     fi
@@ -198,7 +198,7 @@ update-webrivers () {
     start_spinner
     ${sel_mgr_path}/selenium-manager --browser=firefox --driver=geckodriver
     stop_spinner
-    if [ ! -x "$(command -v gh)" ]; then
+    if [ ! -x "$(type -pP gh)" ]; then
         err "can't find github cli"
         cd "${OLDPWD}"
         return 1

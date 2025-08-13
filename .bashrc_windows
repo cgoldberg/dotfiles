@@ -43,7 +43,7 @@ web () {
 
 # update all packages installed by scoop
 scoop-update-all () {
-    if [ ! -x "$(command -v fd)" ]; then
+    if [ ! -x "$(type -pP fd)" ]; then
         err "scoop not installed"
         return 1
     fi

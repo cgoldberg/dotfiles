@@ -132,7 +132,7 @@ blog () {
     if [ ! -d "${blog_dir}" ]; then
         err "${blog_dir} not found"
         return 1
-    elif [ ! -x "$(command -v bundle)" ]; then
+    elif [ ! -x "$(type -pP bundle)" ]; then
         err "bundler not found"
         return 1
     fi
@@ -258,7 +258,7 @@ fi
 
 
 # pipx
-if [ -x "$(command -v pipx)" ]; then
+if [ -x "$(type -pP pipx)" ]; then
     eval "$(register-python-argcomplete pipx)"
 fi
 
