@@ -24,21 +24,6 @@
 #     bbbbbbbbbbbbbbbb     aaaaaaaaaa  aaaa sssssssssss    hhhhhhh     hhhhhhh
 #
 # ============================================================================
-#
-#
-# install dependencies for full functionality:
-#  - bat (https://github.com/sharkdp/bat)
-#  - eza (https://eza.rocks)
-#  - fd (https://github.com/sharkdp/fd)
-#  - gh (https://github.com/cli/cli)
-#  - pandoc (apt install)
-#  - pipx (python3 -m pip install --user pipx)
-#  - pyenv (https://github.com/pyenv/pyenv)
-#  - pyupgrade (pipx install)
-#  - refurb (pipx install)
-#  - rg (https://github.com/BurntSushi/ripgrep)
-#  - shellcheck (apt install)
-#  - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
 
 
 # if not running interactively, don't do anything
@@ -278,40 +263,6 @@ alias ebrc="edit ${HOME}/.bashrc"
 
 
 # --------------------------------- FUNCTIONS ---------------------------------
-
-
-# verify all dependencies used in bash config aliases/functions are installed
-check-dependencies () {
-    local deps=(
-        "bat"
-        "eza"
-        "fd"
-        "gh"
-        "pandoc"
-        "pipx"
-        "pyupgrade"
-        "refurb"
-        "rg"
-        "shellcheck"
-        "subl"
-    )
-    local linux_deps=(
-        "pyenv"
-    )
-    for dep in "${deps[@]}"; do
-        if [ ! -x "$(type -pP ${dep})" ]; then
-            err "${dep} not installed"
-        fi
-    done
-    if [[ "${OSTYPE}" == "linux"* ]]; then
-        for dep in "${linux_deps[@]}"; do
-            if [ ! -x "$(type -pP ${dep})" ]; then
-                err "${dep} not installed"
-            fi
-        done
-    fi
-    ok "checked all dependencies"
-}
 
 
 # print bold message to stderr preceded with red ballot x

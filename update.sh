@@ -3,12 +3,44 @@
 # Corey Goldberg (https://github.com/cgoldberg)
 #
 # update.sh - install or update local dotfiles and ~/bin scripts from github
+#
+# install dependencies for full functionality:
+#  - bat (https://github.com/sharkdp/bat)
+#  - fd (https://github.com/sharkdp/fd)
+#  - gh (https://github.com/cli/cli)
+#  - pandoc (apt install)
+#  - pipx (python3 -m pip install --user pipx)
+#  - pyenv (https://github.com/pyenv/pyenv)
+#  - pyupgrade (pipx install)
+#  - refurb (pipx install)
+#  - rg (https://github.com/BurntSushi/ripgrep)
+#  - shellcheck (apt install)
+#  - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
 
 set -e
 
 DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
 TEMPLATE_DIR="${HOME}/.pandoc"
+REQUIREMENTS=(
+    "git"
+    "curl"
+)
+DEPENDENCIES=(
+    "bat"
+    "fd"
+    "gh"
+    "pandoc"
+    "pipx"
+    "pyupgrade"
+    "refurb"
+    "rg"
+    "shellcheck"
+    "subl"
+)
+DEPENDENCIES_LINUX=(
+    "pyenv"
+)
 CONFIGS=(
     ".bashrc"
     ".profile"
@@ -47,28 +79,69 @@ GIT_SCRIPTS=(
     "git-track-branches"
 )
 
-die () {
+
+err () {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+
+die () {
+    err "$*"
     exit 1
 }
+
 
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
+
+check-programs () {
+    local programs=("$@")
+    unset check_failed
+    for prog in "${programs[@]}"; do
+        if [ ! -x "$(type -pP ${prog})" ]; then
+            err "${prog} is not installed"
+            check_failed="true"
+        else
+            ok "${prog} is installed"
+        fi
+    done
+}
+
+
+check-requirements () {
+    check-programs "${REQUIREMENTS[@]}"
+    if [ -n "${check_failed}" ]; then
+        echo
+        die "fatal: missing requirement"
+    fi
+}
+
+
+check-dependencies () {
+    check-programs "${DEPENDENCIES[@]}"
+    if [ -n "${check_failed}" ]; then
+        check_deps_failed="true"
+    fi
+    if [[ "${OSTYPE}" == "linux"* ]]; then
+        check-programs "${DEPENDENCIES_LINUX[@]}"
+        if [ -n "${check_failed}" ]; then
+            check_linux_deps_failed="true"
+        fi
+    fi
+}
+
+
 if [ ! -d "${DOTFILES_HOME}" ]; then
-    die "fatal: can't find dotfiles repo"
+    die "fatal: can't find local dotfiles repo"
 fi
 
-if [ ! -x "$(command -v git)" ]; then
-    die "fatal: can't find git"
-fi
-
-if [ ! -x "$(command -v curl)" ]; then
-    die "fatal: can't find curl"
-fi
+check-requirements
+check-dependencies
+echo
 
 echo "updating local dotfiles and ~/bin scripts from github ..."
 echo
@@ -140,4 +213,7 @@ for script in "${GIT_SCRIPTS[@]}"; do
 done
 
 echo
+if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ]; then
+    err "missing dependency"
+fi
 ok "done updating configs and scripts"
