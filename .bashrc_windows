@@ -18,6 +18,10 @@ PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 alias x="history -n; history -w; TASKKILL //F //IM git.exe >/dev/null 2>&1; exit"
 
 
+# delete crap in /tmp
+alias clean-tmp="rm -rf /tmp/* /tmp/.*"
+
+
 # disk space (first column removed)
 alias df="\df --human-readable --local --sync | sed -E 's/^[^[:space:]]+[[:space:]]+//'"
 alias ds="df"
