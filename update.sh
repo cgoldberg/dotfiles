@@ -5,17 +5,20 @@
 # update.sh - install or update local dotfiles and ~/bin scripts from github
 #
 # install dependencies for full functionality:
-#  - bat (https://github.com/sharkdp/bat)
-#  - fd (https://github.com/sharkdp/fd)
-#  - gh (https://github.com/cli/cli)
-#  - pandoc (apt install)
-#  - pipx (python3 -m pip install --user pipx)
-#  - pyenv (https://github.com/pyenv/pyenv)
-#  - pyupgrade (pipx install)
-#  - refurb (pipx install)
-#  - rg (https://github.com/BurntSushi/ripgrep)
-#  - shellcheck (apt install)
-#  - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
+#  - all platforms:
+#    - bat (https://github.com/sharkdp/bat)
+#    - fd (https://github.com/sharkdp/fd)
+#    - gh (https://github.com/cli/cli)
+#    - pandoc (apt install)
+#    - pipx (python3 -m pip install --user pipx)
+#    - pyupgrade (pipx install)
+#    - refurb (pipx install)
+#    - rg (https://github.com/BurntSushi/ripgrep)
+#    - shellcheck (apt install)
+#    - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
+#  - linux only:
+#    - exiv2 (apt install)
+#    - pyenv (https://github.com/pyenv/pyenv)
 
 set -e
 
@@ -40,6 +43,7 @@ DEPENDENCIES=(
 )
 DEPENDENCIES_LINUX=(
     "pyenv"
+    "exiv2"
 )
 CONFIGS=(
     ".bashrc"
