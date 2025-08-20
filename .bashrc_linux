@@ -111,8 +111,8 @@ install-chrome () {
 
 
 # remove metadata from an image
-# usage: clean-metadata <image_file>
-clean-metadata () {
+# usage: clean-img-metadata <image_file>
+clean-img-metadata () {
     if [ -z "$1" ]; then
         err "please specify an image file"
         return 1
