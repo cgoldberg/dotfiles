@@ -43,8 +43,8 @@ DEPENDENCIES=(
     "subl"
 )
 DEPENDENCIES_LINUX=(
-    "pyenv"
     "exiv2"
+    "pyenv"
     "rsync"
 )
 CONFIGS=(
