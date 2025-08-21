@@ -99,7 +99,7 @@ do_backup () {
     echo
     echo "downloading GitHub backup ..."
     echo
-    githubtakeout "${GITHUB_USERNAME}" --format=tar
+    githubtakeout "${GITHUB_USERNAME}" --gists --format=tar
     echo
     echo "${SEP}"
     mv ./exported_files "./${GOOGLE_DRIVE_BACKUP_DIR}"
