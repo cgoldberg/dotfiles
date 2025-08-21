@@ -84,12 +84,29 @@ alias ips="internalip && echo && externalip"
 # --------------------------------- FUNCTIONS ---------------------------------
 
 
-# mount NAS
+# mount 2-bay NAS
 bitz () {
     # requires `gvfs-backends`
-    gio mount smb://cgoldberg@10.0.0.5/public 2>/dev/null
-    ln -s /run/user/1000/gvfs/smb-share:server=10.0.0.5,share=public,user=cgoldberg ~/bitz 2>/dev/null
-    cd ~/bitz 2>/dev/null
+    local host="bitz"
+    local ip="10.0.0.5"
+    local username="cgoldberg"
+    local share="public"
+    gio mount "smb://${username}@${ip}/${share}" 2>/dev/null
+    ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" ~/"${host}" 2>/dev/null
+    cd ~/"${host}" 2>/dev/null
+}
+
+
+# mount 1-bay NAS
+bytez () {
+    # requires `gvfs-backends`
+    local host="bytez"
+    local ip="10.0.0.6"
+    local username="cgoldberg"
+    local share="public"
+    gio mount "smb://${username}@${ip}/${share}" 2>/dev/null
+    ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" ~/"${host}" 2>/dev/null
+    cd ~/"${host}" 2>/dev/null
 }
 
 
