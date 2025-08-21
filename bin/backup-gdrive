@@ -2,11 +2,12 @@
 #
 # Google Drive backup script:
 #  - download Google Drive files
-#  - rsync files to remote storage
+#  - sync files to remote storage
 #
 # requires:
 #  - gvfs-backends (apt install)
-#  - google-drive-export (PyPI)
+#  - google-drive-export (pipx install)
+#  - rsync (apt install)
 
 set -e
 

@@ -18,6 +18,8 @@
 #    - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
 #  - linux only:
 #    - exiv2 (apt install)
+#    - githubtakeout (pipx install)
+#    - google_drive_export (pipx install)
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (apt install)
 
@@ -44,6 +46,8 @@ DEPENDENCIES=(
 )
 DEPENDENCIES_LINUX=(
     "exiv2"
+    "githubtakeout"
+    "google_drive_export"
     "pyenv"
     "rsync"
 )
@@ -72,6 +76,7 @@ SCRIPTS=(
 LINUX_SCRIPTS=(
     "./bin/backup-gdrive"
     "./bin/backup-github"
+    "./bin/backup-nas"
     "./bin/now"
     "./bin/sysinfo"
 )

@@ -2,11 +2,12 @@
 #
 # GitHub backup script:
 #  - download public GitHub repos and gists as tarballs
-#  - rsync files to remote storage
+#  - sync files to remote storage
 #
 # requires:
 #  - gvfs-backends (apt install)
-#  - githubtakeout (PyPI)
+#  - githubtakeout (pipx install)
+#  - rsync (apt install)
 
 set -e
 
