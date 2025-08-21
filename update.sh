@@ -19,6 +19,7 @@
 #  - linux only:
 #    - exiv2 (apt install)
 #    - pyenv (https://github.com/pyenv/pyenv)
+#    - rsync (apt install)
 
 set -e
 
@@ -44,6 +45,7 @@ DEPENDENCIES=(
 DEPENDENCIES_LINUX=(
     "pyenv"
     "exiv2"
+    "rsync"
 )
 CONFIGS=(
     ".bashrc"
