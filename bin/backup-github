@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 #
-# general backup script:
-#  - download Google Drive files
-#  - download public GitHub repos as trarballs
+# GitHub backup script:
+#  - download public GitHub repos and gists as tarballs
 #  - rsync files to remote storage
 #
 # requires:
 #  - gvfs-backends (apt install)
-#  - google-drive-export (PyPI)
 #  - githubtakeout (PyPI)
 
 set -e
@@ -18,7 +16,6 @@ NAS_USERNAME="cgoldberg"
 NAS_SHARE="public"
 BACKUP_LOCAL_PATH="${HOME}/backup"
 BACKUP_DESTINATION_PATH="${HOME}/${NAS_HOST}"
-GOOGLE_DRIVE_BACKUP_DIR="GoogleDrive_Backup"
 GITHUB_BACKUP_DIR="GitHub_Backup"
 SEP="----------------------------------------------------------------"
 
@@ -46,10 +43,6 @@ check_configuration () {
         die "fatal: rsync not found"
     fi
 
-    if [ ! -x "$(type -pP google_drive_export)" ]; then
-        die "fatal: google_drive_export not found"
-    fi
-
     if [ ! -x "$(type -pP githubtakeout)" ]; then
         die "fatal: githubtakeout not found"
     fi
@@ -57,9 +50,7 @@ check_configuration () {
 
 delete_old_backups () {
     echo "deleting old backup files and directories ..."
-    rm -rf ./exported_files
     rm -rf ./backups
-    rm -rf "./${GOOGLE_DRIVE_BACKUP_DIR}"
     rm -rf "./${GITHUB_BACKUP_DIR}"
 }
 
@@ -91,39 +82,13 @@ timer () {
 }
 
 do_backup () {
-    echo "downloading Google Drive backup ..."
-    echo
-    google_drive_export
-    echo
-    echo "${SEP}"
-    echo
     echo "downloading GitHub backup ..."
     echo
     githubtakeout "${GITHUB_USERNAME}" --gists --format=tar
     echo
     echo "${SEP}"
-    mv ./exported_files "./${GOOGLE_DRIVE_BACKUP_DIR}"
     mv ./backups "./${GITHUB_BACKUP_DIR}"
     sync "${BACKUP_LOCAL_PATH}"
-    echo
-    echo "syncing "\
-        "${BACKUP_LOCAL_PATH}/${GOOGLE_DRIVE_BACKUP_DIR} to "\
-        "${BACKUP_DESTINATION_PATH}/${GOOGLE_DRIVE_BACKUP_DIR} ..."
-    echo
-    rsync \
-        --delete \
-        --human-readable \
-        --links \
-        --progress \
-        --recursive \
-        --safe-links \
-        --stats \
-        --times \
-        --verbose \
-        "${BACKUP_LOCAL_PATH}/${GOOGLE_DRIVE_BACKUP_DIR}/" \
-        "${BACKUP_DESTINATION_PATH}/${GOOGLE_DRIVE_BACKUP_DIR}/"
-    echo
-    echo "${SEP}"
     echo
     echo "syncing "\
         "${BACKUP_LOCAL_PATH}/${GITHUB_BACKUP_DIR} to "\

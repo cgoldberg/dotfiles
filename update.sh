@@ -70,9 +70,10 @@ SCRIPTS=(
     "./bin/prettyping"
 )
 LINUX_SCRIPTS=(
+    "./bin/backup-gdrive"
+    "./bin/backup-github"
     "./bin/now"
     "./bin/sysinfo"
-    "./bin/backup-all"
 )
 GIT_SCRIPTS=(
     "git-clean-untracked"

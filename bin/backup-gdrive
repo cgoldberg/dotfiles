@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+#
+# Google Drive backup script:
+#  - download Google Drive files
+#  - rsync files to remote storage
+#
+# requires:
+#  - gvfs-backends (apt install)
+#  - google-drive-export (PyPI)
+
+set -e
+
+NAS_HOST="bitz"
+NAS_IP="10.0.0.5"
+NAS_USERNAME="cgoldberg"
+NAS_SHARE="public"
+BACKUP_LOCAL_PATH="${HOME}/backup"
+BACKUP_DESTINATION_PATH="${HOME}/${NAS_HOST}"
+GOOGLE_DRIVE_BACKUP_DIR="GoogleDrive_Backup"
+SEP="----------------------------------------------------------------"
+
+die () {
+    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+    exit 1
+}
+
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+check_configuration () {
+    if [ ! -d "${BACKUP_LOCAL_PATH}" ]; then
+        die "fatal: backup directory not found: ${BACKUP_LOCAL_PATH}"
+    fi
+
+    if [ ! -d "${BACKUP_DESTINATION_PATH}" ]; then
+        die "fatal: can't find mounted storage: ${BACKUP_DESTINATION_PATH}"
+    fi
+
+    if [ ! -x "$(type -pP rsync)" ]; then
+        die "fatal: rsync not found"
+    fi
+
+    if [ ! -x "$(type -pP google_drive_export)" ]; then
+        die "fatal: google_drive_export not found"
+    fi
+}
+
+delete_old_backups () {
+    echo "deleting old backup files and directories ..."
+    rm -rf ./exported_files
+    rm -rf "./${GOOGLE_DRIVE_BACKUP_DIR}"
+}
+
+mount_nas () {
+    gio mount --unmount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}" 2>/dev/null || true
+    gio mount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}"
+    ln -s \
+        "/run/user/1000/gvfs/smb-share:server=${NAS_IP},share=${NAS_SHARE},user=${NAS_USERNAME}" \
+        ~/"${NAS_HOST}" \
+        2>/dev/null || true
+    until [ -d "${BACKUP_DESTINATION_PATH}" ]; do
+        sleep .5
+    done
+}
+
+unmount_nas () {
+    gio mount --unmount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}"
+}
+
+timer () {
+    local start_time=${SECONDS}
+    "$@"
+    local end_time=${SECONDS}
+    local duration=$((end_time - start_time))
+    local hours=$((duration / 3600))
+    local minutes=$(((duration % 3600) / 60))
+    local seconds=$((duration % 60))
+    printf  -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
+}
+
+do_backup () {
+    echo "downloading Google Drive backup ..."
+    echo
+    google_drive_export
+    echo
+    echo "${SEP}"
+    mv ./exported_files "./${GOOGLE_DRIVE_BACKUP_DIR}"
+    sync "${BACKUP_LOCAL_PATH}"
+    echo
+    echo "syncing "\
+        "${BACKUP_LOCAL_PATH}/${GOOGLE_DRIVE_BACKUP_DIR} to "\
+        "${BACKUP_DESTINATION_PATH}/${GOOGLE_DRIVE_BACKUP_DIR} ..."
+    echo
+    rsync \
+        --delete \
+        --human-readable \
+        --links \
+        --progress \
+        --recursive \
+        --safe-links \
+        --stats \
+        --times \
+        --verbose \
+        "${BACKUP_LOCAL_PATH}/${GOOGLE_DRIVE_BACKUP_DIR}/" \
+        "${BACKUP_DESTINATION_PATH}/${GOOGLE_DRIVE_BACKUP_DIR}/"
+    sync "${BACKUP_DESTINATION_PATH}"
+}
+
+echo
+echo "mounting remote storage ..."
+mount_nas
+echo "verifying configuration ..."
+check_configuration
+echo "changing directory to: ${BACKUP_LOCAL_PATH}"
+cd "${BACKUP_LOCAL_PATH}"
+echo "deleting old local backups ..."
+delete_old_backups
+echo "starting backup job ..."
+echo
+echo "${SEP}"
+echo
+timer do_backup
+echo
+echo "${SEP}"
+echo
+echo "unmounting remote storage ..."
+unmount_nas
+echo "changing directory back to: ${OLDPWD}"
+cd "${OLDPWD}"
+echo
+echo "elapsed time: ${elapsed_time}"
+echo
+ok "backup complete!"
