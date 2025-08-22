@@ -110,8 +110,6 @@ do_backup () {
         --times \
         --verbose \
         --verbose \
-        --info=progress2 \
-        --info=name0 \
         "${SOURCE_PATH}/" \
         "${DESTINATION_PATH}/"
     sync "${SOURCE_PATH}"
