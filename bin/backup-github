@@ -107,6 +107,8 @@ do_backup () {
         --stats \
         --times \
         --verbose \
+        --info=progress2 \
+        --info=name0 \
         "${BACKUP_LOCAL_PATH}/${GITHUB_BACKUP_DIR}/" \
         "${BACKUP_DESTINATION_PATH}/${GITHUB_BACKUP_DIR}/"
     sync "${BACKUP_DESTINATION_PATH}"
