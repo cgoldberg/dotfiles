@@ -637,7 +637,7 @@ clean-py () {
         echo "deactivating venv"
         deactivate
     fi
-    for d in ${dirs[@]}; do
+    for d in "${dirs[@]}"; do
         if [ -d ${d} ]; then
             echo "deleting ${d}"
             rm -rf ${d}

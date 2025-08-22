@@ -33,7 +33,6 @@ alias x="history -n; history -w; exit"
 
 # disk space
 alias df="\df --human-readable --local --sync"
-alias ds="df /"
 
 
 # kill process group by name (case-insensitive)
@@ -82,6 +81,27 @@ alias ips="internalip && echo && externalip"
 
 
 # --------------------------------- FUNCTIONS ---------------------------------
+
+# disk space
+ds () {
+    local dirs=(
+        "${HOME}/bitz"
+        "${HOME}/bytez"
+    )
+    echo -e "Location\tFilesystem      Size  Used Avail Use% Mounted on"
+    echo "---------------------------------------------------------------"
+    echo -en "local\t\t"; \
+            \df --human-readable --local --sync / \
+                | \grep -v "Filesystem"
+    for d in "${dirs[@]}"; do
+        remotes="true"
+        if [ -d "${d}" ]; then
+            echo -en "$(basename ${d})\t\t"; \
+                \df --human-readable --local --sync "${d}" \
+                    | \grep -v "Filesystem"
+        fi
+    done
+}
 
 
 # mount 2-bay NAS
