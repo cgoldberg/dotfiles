@@ -96,9 +96,13 @@ do_backup () {
         "${BACKUP_DESTINATION_PATH}/${GITHUB_BACKUP_DIR} ..."
     echo
     rsync \
-        --delete \
+        --cvs-exclude \
+        --delete-during \
+        --fsync \
         --human-readable \
         --links \
+        --no-whole-file \
+        --perms \
         --progress \
         --recursive \
         --safe-links \

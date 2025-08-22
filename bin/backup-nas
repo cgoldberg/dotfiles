@@ -98,14 +98,18 @@ do_backup () {
     echo "syncing ${SOURCE_PATH} to ${DESTINATION_PATH} ..."
     echo
     rsync \
-        --delete \
+        --delete-during \
+        --fsync \
         --human-readable \
         --links \
+        --no-whole-file \
+        --perms \
         --progress \
         --recursive \
         --safe-links \
         --stats \
         --times \
+        --verbose \
         --verbose \
         "${SOURCE_PATH}/" \
         "${DESTINATION_PATH}/"
