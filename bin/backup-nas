@@ -109,6 +109,7 @@ do_backup () {
         --stats \
         --times \
         --verbose \
+        --verbose \
         "${SOURCE_PATH}/" \
         "${DESTINATION_PATH}/"
     sync "${SOURCE_PATH}"
