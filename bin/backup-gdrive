@@ -105,6 +105,7 @@ do_backup () {
         --stats \
         --times \
         --verbose \
+        --info=progress2 \
         "${BACKUP_LOCAL_PATH}/${GOOGLE_DRIVE_BACKUP_DIR}/" \
         "${BACKUP_DESTINATION_PATH}/${GOOGLE_DRIVE_BACKUP_DIR}/"
     sync "${BACKUP_DESTINATION_PATH}"

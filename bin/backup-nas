@@ -110,6 +110,7 @@ do_backup () {
         --times \
         --verbose \
         --verbose \
+        --info=progress2 \
         "${SOURCE_PATH}/" \
         "${DESTINATION_PATH}/" \
         | grep -v "file_list pointer array"
