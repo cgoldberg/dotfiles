@@ -84,7 +84,6 @@ timer () {
 
 do_backup () {
     echo "downloading Google Drive backup ..."
-    echo
     google_drive_export
     echo
     echo "${SEP}"
