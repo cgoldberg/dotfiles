@@ -111,7 +111,8 @@ do_backup () {
         --verbose \
         --verbose \
         "${SOURCE_PATH}/" \
-        "${DESTINATION_PATH}/"
+        "${DESTINATION_PATH}/" \
+        | grep -v "file_list pointer array"
     sync "${SOURCE_PATH}"
     sync "${DESTINATION_PATH}"
 }
