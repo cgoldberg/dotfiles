@@ -1,0 +1,151 @@
+#!/usr/bin/env bash
+#
+# data transfer test
+# - mounts source NAS and destination NAS with GVFS/Samba
+# - writes a binary file to source NAS
+# - transfers binary file from source NAS to destination NAS
+# - deletes files
+#
+# requires:
+#  - gvfs-backends (apt install)
+
+set -e
+
+FILE_NAME="test.img"
+FILE_SIZE=100M
+
+NAS_USERNAME="cgoldberg"
+NAS_SHARE="public"
+
+# 2-bay QNAP
+SOURCE_NAS_HOST="bitz"
+SOURCE_NAS_IP="10.0.0.5"
+SOURCE_PATH="${HOME}/${SOURCE_NAS_HOST}"
+
+# 1-bay QNAP
+DESTINATION_NAS_HOST="bytez"
+DESTINATION_NAS_IP="10.0.0.6"
+DESTINATION_PATH="${HOME}/${DESTINATION_NAS_HOST}"
+
+SEP="----------------------------------------------------------------"
+
+die () {
+    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+    exit 1
+}
+
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+check_configuration () {
+    if [ ! -d "${SOURCE_PATH}" ]; then
+        die "fatal: can't find mounted storage: ${SOURCE_PATH}"
+    fi
+
+    if [ ! -d "${DESTINATION_PATH}" ]; then
+        die "fatal: can't find mounted storage: ${DESTINATION_PATH}"
+    fi
+
+    if [ ! -x "$(type -pP rsync)" ]; then
+        die "fatal: rsync not found"
+    fi
+}
+
+mount_source_nas () {
+    gio mount --unmount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}" 2>/dev/null || true
+    gio mount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}"
+    ln -s \
+        "/run/user/1000/gvfs/smb-share:server=${SOURCE_NAS_IP},share=${NAS_SHARE},user=${NAS_USERNAME}" \
+        ~/"${SOURCE_NAS_HOST}" \
+        2>/dev/null || true
+    until [ -d "${SOURCE_PATH}" ]; do
+        sleep .5
+    done
+}
+
+mount_destination_nas () {
+    gio mount --unmount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}" 2>/dev/null || true
+    gio mount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}"
+    ln -s \
+        "/run/user/1000/gvfs/smb-share:server=${DESTINATION_NAS_IP},share=${NAS_SHARE},user=${NAS_USERNAME}" \
+        ~/"${DESTINATION_NAS_HOST}" \
+        2>/dev/null || true
+    until [ -d "${DESTINATION_PATH}" ]; do
+        sleep .5
+    done
+}
+
+unmount_source_nas () {
+    gio mount --unmount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}"
+}
+
+unmount_destination_nas () {
+    gio mount --unmount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}"
+}
+
+timer () {
+    local start_time=${SECONDS}
+    "$@"
+    local end_time=${SECONDS}
+    local duration=$((end_time - start_time))
+    local hours=$((duration / 3600))
+    local minutes=$(((duration % 3600) / 60))
+    local seconds=$((duration % 60))
+    printf  -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
+}
+
+run_test () {
+    dd \
+        if=/dev/zero \
+        of="${SOURCE_PATH}/${FILE_NAME}" \
+        bs="${FILE_SIZE}" \
+        count=1 \
+        oflag=dsync \
+        conv=fdatasync \
+        status=none
+    sync "${SOURCE_PATH}"
+    dd \
+        if="${SOURCE_PATH}/${FILE_NAME}" \
+        of="${DESTINATION_PATH}/${FILE_NAME}" \
+        bs="${FILE_SIZE}" \
+        count=1 \
+        oflag=dsync,nocache \
+        conv=fdatasync
+}
+
+echo
+echo "settings:"
+echo "  - test file size: ${FILE_SIZE}"
+echo "  - source: ${SOURCE_PATH}"
+echo "  - destination: ${DESTINATION_PATH}"
+echo
+echo "mounting remote storage source ..."
+mount_source_nas
+echo "mounting remote storage destination ..."
+mount_destination_nas
+echo "verifying configuration ..."
+check_configuration
+echo
+echo "running data transfer test ..."
+echo
+echo "${SEP}"
+echo
+echo "TEST RESULTS:"
+echo
+timer run_test
+echo
+echo "${SEP}"
+echo
+rm -f "${SOURCE_PATH}/${FILE_NAME}"
+rm -f "${DESTINATION_PATH}/${FILE_NAME}"
+echo "unmounting remote storage source ..."
+unmount_source_nas
+echo "unmounting remote storage destination ..."
+unmount_destination_nas
+echo
+echo "elapsed time: ${elapsed_time}"
+echo
+ok "test complete!"

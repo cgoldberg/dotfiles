@@ -79,6 +79,7 @@ LINUX_SCRIPTS=(
     "./bin/backup-nas"
     "./bin/now"
     "./bin/sysinfo"
+    "./bin/test-nas-data-xfer"
 )
 GIT_SCRIPTS=(
     "git-clean-untracked"
