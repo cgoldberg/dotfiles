@@ -100,7 +100,6 @@ do_backup () {
         --human-readable \
         --links \
         --no-whole-file \
-        --perms \
         --progress \
         --recursive \
         --safe-links \
