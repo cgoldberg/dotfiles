@@ -50,7 +50,6 @@ check_configuration () {
 }
 
 delete_old_backups () {
-    echo "deleting old backup files and directories ..."
     rm -rf ./exported_files
     rm -rf "./${GOOGLE_DRIVE_BACKUP_DIR}"
 }
