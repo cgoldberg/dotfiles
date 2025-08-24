@@ -143,9 +143,7 @@ install-chrome () {
         err "${package} is already installed"
         return 1
     else
-        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub \
-            | sudo tee /etc/apt/trusted.gpg.d/google.asc >/dev/null
-        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" \
+        echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" \
             | sudo tee /etc/apt/sources.list.d/google-chrome.list
         sudo apt update
         sudo apt install "${package}" -y
