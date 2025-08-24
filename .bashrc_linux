@@ -38,6 +38,7 @@ alias ds="diskspace"
 
 # watch disk space
 alias diskwatch="watch --interval 2 --exec bash -c diskspace"
+alias dw="diskwatch"
 
 
 # kill process group by name (case-insensitive)
