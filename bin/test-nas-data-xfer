@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 #
 # data transfer test
-# - mounts source NAS and destination NAS with GVFS/Samba
-# - writes a binary file to source NAS
-# - transfers binary file from source NAS to destination NAS
-# - deletes files
+# ------------------
+# This script tests data transfer speed between 2 remote storage servers
+# on my LAN mounted with GVfs and Samba to my Debian system.
+#
+# - mounts source NAS and destination NAS with GVfs/Samba
+# - creates a symlink to each mount point
+# - writes a binary test file to the root directory of the source NAS
+# - reads test file from source NAS and writes it to root directory of destination NAS
+# - deletes test file from source NAS and destination NAS
+# - results show transfer speed
 #
 # requires:
 #  - gvfs-backends (apt install)
@@ -47,10 +53,6 @@ check_configuration () {
 
     if [ ! -d "${DESTINATION_PATH}" ]; then
         die "fatal: can't find mounted storage: ${DESTINATION_PATH}"
-    fi
-
-    if [ ! -x "$(type -pP rsync)" ]; then
-        die "fatal: rsync not found"
     fi
 }
 

@@ -2,7 +2,7 @@
 #
 # Google Drive backup script:
 #  - download Google Drive files
-#  - sync files to remote storage
+#  - sync files to remote storage (NAS mounted with GVfs/Samba)
 #
 # requires:
 #  - gvfs-backends (apt install)

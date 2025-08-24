@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # NAS backup script:
-#  - sync files from source NAS to destination NAS
+#  - sync files from source NAS to destination NAS (mounted with GVfs/Samba)
 #
 # requires:
 #  - gvfs-backends (apt install)

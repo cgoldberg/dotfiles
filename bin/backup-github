@@ -2,7 +2,7 @@
 #
 # GitHub backup script:
 #  - download public GitHub repos and gists as tarballs
-#  - sync files to remote storage
+#  - sync files to remote storage (NAS mounted with GVfs/Samba)
 #
 # requires:
 #  - gvfs-backends (apt install)
