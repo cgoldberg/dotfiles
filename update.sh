@@ -9,7 +9,7 @@
 #    - bat (https://github.com/sharkdp/bat)
 #    - fd (https://github.com/sharkdp/fd)
 #    - gh (https://github.com/cli/cli)
-#    - pandoc (apt install)
+#    - pandoc (https://github.com/jgm/pandoc)
 #    - pipx (python3 -m pip install --user pipx)
 #    - pyupgrade (pipx install)
 #    - refurb (pipx install)
