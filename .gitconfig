@@ -4,9 +4,9 @@
 # (set in each repo's .git/config to override these)
 
 [user]
-    useConfigOnly = true
     name = Corey Goldberg
     email = 1113081+cgoldberg@users.noreply.github.com
+    useConfigOnly = true
 
 [color]
     branch = always
