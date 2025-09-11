@@ -140,17 +140,15 @@ selenium-server () {
         err "can't find github cli"
         return 1
     fi
+    if [ ! -x "$(type -pP java)" ]; then
+        err "can't find java"
+        return 1
+    fi
     cd "${sel_home}"
     if [ ! -f "${jar}" ]; then
         gh release download --pattern=selenium-server*.jar --output=${jar}
     fi
-    if [ ! -f /usr/bin/java ]; then
-        err "can't find java"
-        cd "${OLDPWD}"
-        return 1
-    fi
     java -jar "${jar}" standalone
-    cd "${OLDPWD}"
 }
 
 
@@ -205,6 +203,13 @@ update-webrivers () {
     fi
     echo "updating grid server ..."
     gh release download --pattern=selenium-server*.jar --output=${jar}
+    if [ ! -x "$(type -pP java)" ]; then
+        err "can't find java"
+        cd "${OLDPWD}"
+        return 1
+    fi
+    sleep 1
+    java -jar "${jar}" info --version
     cd "${OLDPWD}"
     echo
 }
