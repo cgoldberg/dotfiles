@@ -140,4 +140,4 @@ unmount_destination_nas
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
-ok "backup complete!"
+ok "backup complete"

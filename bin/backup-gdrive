@@ -18,11 +18,13 @@ NAS_SHARE="public"
 BACKUP_LOCAL_PATH="${HOME}/backup"
 BACKUP_DESTINATION_PATH="${HOME}/${NAS_HOST}"
 GOOGLE_DRIVE_BACKUP_DIR="GoogleDrive_Backup"
+ORIGINAL_DIR="${PWD}"
 SEP="----------------------------------------------------------------"
 
 die () {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
+    cd "${ORIGINAL_DIR}"
     exit 1
 }
 
@@ -114,10 +116,10 @@ do_backup () {
 echo
 echo "mounting remote storage ..."
 mount_nas
+echo "changing directory to: ${BACKUP_LOCAL_PATH} ..."
+cd "${BACKUP_LOCAL_PATH}"
 echo "verifying configuration ..."
 check_configuration
-echo "changing directory to: ${BACKUP_LOCAL_PATH}"
-cd "${BACKUP_LOCAL_PATH}"
 echo "deleting old local backups ..."
 delete_old_backups
 echo "starting backup job ..."
@@ -130,9 +132,9 @@ echo "${SEP}"
 echo
 echo "unmounting remote storage ..."
 unmount_nas
-echo "changing directory back to: ${OLDPWD}"
-cd "${OLDPWD}"
+echo "changing directory back to: ${ORIGINAL_DIR} ..."
+cd "${ORIGINAL_DIR}"
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
-ok "backup complete!"
+ok "backup complete"

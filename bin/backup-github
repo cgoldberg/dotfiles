@@ -18,11 +18,14 @@ NAS_SHARE="public"
 BACKUP_LOCAL_PATH="${HOME}/backup"
 BACKUP_DESTINATION_PATH="${HOME}/${NAS_HOST}"
 GITHUB_BACKUP_DIR="GitHub_Backup"
+GITHUB_TOKEN_FILE="github_token.txt"
+ORIGINAL_DIR="${PWD}"
 SEP="----------------------------------------------------------------"
 
 die () {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
+    cd "${ORIGINAL_DIR}"
     exit 1
 }
 
@@ -46,6 +49,10 @@ check_configuration () {
 
     if [ ! -x "$(type -pP githubtakeout)" ]; then
         die "fatal: githubtakeout not found"
+    fi
+
+    if [ ! -f "${GITHUB_TOKEN_FILE}" ]; then
+        die "fatal: can't find github token in: ${GITHUB_TOKEN_FILE}"
     fi
 }
 
@@ -84,6 +91,7 @@ timer () {
 do_backup () {
     echo "downloading GitHub backup ..."
     echo
+    export GITHUB_TOKEN=$(cat "${GITHUB_TOKEN_FILE}")
     githubtakeout "${GITHUB_USERNAME}" --gists --format=tar
     echo
     echo "${SEP}"
@@ -116,10 +124,10 @@ do_backup () {
 echo
 echo "mounting remote storage ..."
 mount_nas
+echo "changing directory to: ${BACKUP_LOCAL_PATH} ..."
+cd "${BACKUP_LOCAL_PATH}"
 echo "verifying configuration ..."
 check_configuration
-echo "changing directory to: ${BACKUP_LOCAL_PATH}"
-cd "${BACKUP_LOCAL_PATH}"
 echo "deleting old local backups ..."
 delete_old_backups
 echo "starting backup job ..."
@@ -132,9 +140,9 @@ echo "${SEP}"
 echo
 echo "unmounting remote storage ..."
 unmount_nas
-echo "changing directory back to: ${OLDPWD}"
-cd "${OLDPWD}"
+echo "changing directory back to: ${ORIGINAL_DIR} ..."
+cd "${ORIGINAL_DIR}"
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
-ok "backup complete!"
+ok "backup complete"
