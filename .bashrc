@@ -354,7 +354,7 @@ md2html () {
         --template "${HOME}/.pandoc/template.html" \
         --css "${HOME}/.pandoc/template.css" \
         --from gfm \
-        --eol lf \
+        --eol native \
         --metadata title="${title}" \
         --embed-resources \
         --standalone
