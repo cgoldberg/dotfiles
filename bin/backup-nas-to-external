@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+#
+# NAS backup script:
+#  - sync files from NAS (mounted with GVfs/Samba) to external USB drive
+#  - insert external drive, in 'Files' app right-click 'backup' directory and 'Share with Linux'
+#
+# requires:
+#  - gvfs-backends (apt install)
+#  - rsync (apt install)
+
+set -e
+
+NAS_USERNAME="cgoldberg"
+NAS_SHARE="public"
+
+# 2-bay QNAP
+SOURCE_NAS_HOST="bitz"
+SOURCE_NAS_IP="10.0.0.5"
+SOURCE_PATH="${HOME}/${SOURCE_NAS_HOST}"
+
+# T7 Shield
+DESTINATION_PATH="/mnt/chromeos/removable/T7Shield/backup"
+
+SEP="----------------------------------------------------------------"
+
+die () {
+    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+    exit 1
+}
+
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+check_configuration () {
+    if [ ! -d "${SOURCE_PATH}" ]; then
+        die "fatal: can't find mounted storage: ${SOURCE_PATH}"
+    fi
+
+    if [ ! -d "${DESTINATION_PATH}" ]; then
+        die "fatal: can't find mounted storage: ${DESTINATION_PATH}"
+    fi
+
+    if [ ! -x "$(type -pP rsync)" ]; then
+        die "fatal: rsync not found"
+    fi
+}
+
+mount_source_nas () {
+    gio mount --unmount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}" 2>/dev/null || true
+    gio mount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}"
+    ln -s \
+        "/run/user/1000/gvfs/smb-share:server=${SOURCE_NAS_IP},share=${NAS_SHARE},user=${NAS_USERNAME}" \
+        ~/"${SOURCE_NAS_HOST}" \
+        2>/dev/null || true
+    until [ -d "${SOURCE_PATH}" ]; do
+        sleep .5
+    done
+}
+
+unmount_source_nas () {
+    gio mount --unmount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}"
+}
+
+timer () {
+    local start_time=${SECONDS}
+    "$@"
+    local end_time=${SECONDS}
+    local duration=$((end_time - start_time))
+    local hours=$((duration / 3600))
+    local minutes=$(((duration % 3600) / 60))
+    local seconds=$((duration % 60))
+    printf  -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
+}
+
+do_backup () {
+    sync "${SOURCE_PATH}"
+    sync "${DESTINATION_PATH}"
+    echo "syncing ${SOURCE_PATH} to ${DESTINATION_PATH} ..."
+    echo
+    rsync \
+        --delete-during \
+        --fsync \
+        --human-readable \
+        --links \
+        --no-whole-file \
+        --progress \
+        --recursive \
+        --safe-links \
+        --stats \
+        --times \
+        --verbose \
+        --verbose \
+        --exclude='d0/' \
+        --exclude='d1/' \
+        --info=progress2 \
+        "${SOURCE_PATH}/" \
+        "${DESTINATION_PATH}/" \
+        | grep -v "file_list pointer array"
+    sync "${SOURCE_PATH}"
+    sync "${DESTINATION_PATH}"
+}
+
+echo
+echo "mounting remote storage source ..."
+mount_source_nas
+echo "verifying configuration ..."
+check_configuration
+echo "starting backup job ..."
+echo
+echo "${SEP}"
+echo
+timer do_backup
+echo
+echo "${SEP}"
+echo
+echo "unmounting remote storage source ..."
+unmount_source_nas
+echo
+echo "elapsed time: ${elapsed_time}"
+echo
+ok "backup complete"

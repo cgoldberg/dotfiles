@@ -76,7 +76,8 @@ SCRIPTS=(
 LINUX_SCRIPTS=(
     "./bin/backup-gdrive"
     "./bin/backup-github"
-    "./bin/backup-nas"
+    "./bin/backup-nas-to-external"
+    "./bin/backup-nas-to-nas"
     "./bin/now"
     "./bin/sysinfo"
     "./bin/test-nas-data-xfer"
