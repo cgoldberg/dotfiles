@@ -1,0 +1,3 @@
+sudo apt install gvfs-backends
+sudo apt remove --purge avahi*
+sudo apt remove --purge cups*
