@@ -606,15 +606,9 @@ py-refurb () {
     ! -path "*/venv/*" \
     -print0 \
     | xargs --null --no-run-if-empty refurb \
+    --enable-all \
     --python-version 3.9 \
-    --disable FURB101 \
-    --disable FURB103 \
-    --disable FURB104 \
     --disable FURB107 \
-    --disable FURB141 \
-    --disable FURB144 \
-    --disable FURB146 \
-    --disable FURB150 \
     --disable FURB173 \
     --disable FURB183 \
     --disable FURB184
