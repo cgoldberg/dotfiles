@@ -90,6 +90,7 @@ export LANG="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
+export GITHUB_USERNAME="cgoldberg"
 export PAGER="less"
 export EDITOR="vi"
 if [ -x "$(type -pP subl)" ]; then
@@ -97,10 +98,6 @@ if [ -x "$(type -pP subl)" ]; then
 else
     export VISUAL="vi"
 fi
-
-
-# set global variables
-export GITHUB_USERNAME="cgoldberg"
 
 
 # don't leave .lesshst files in home directory
@@ -121,27 +118,45 @@ export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
 stty -ixon
 
 
-# check window size after each command and update the values of LINES and COLUMNS
+# set shell behavior
+# ------------------
+# change to directory by name without cd command
+shopt -s autocd
+# check window size after each command and update the
+# values of LINES and COLUMNS
 shopt -s checkwinsize
-
-
-# the pattern "**" used in a pathname expansion context will match
-# all files and zero or more directories and subdirectories.
+# include filenames beginning with a "." in the results of
+# filename expansion
+shopt -s dotglob
+# the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories
 shopt -s globstar
+# filename expansion patterns which match no files expand to
+# nothing and are removed
+shopt -s nullglob
+# automatically close file descriptors assigned using the
+# "{varname}" redirection syntax instead of leaving them
+# open when a command completes
+shopt -s varredir_close
 
 
 # better command history handling
 # -------------------------------
-# append to history file, don't overwrite it
+# append to history file, rather than overwrite it
 shopt -s histappend
 # edit recalled history line before executing
 shopt -s histverify
-# save each line of a multi-line command in the same history entry
+# save each line of a multi-line command in the same
+# history entry
 shopt -s cmdhist
+# save multi-line commands with embedded newlines rather than
+# semicolon separators where possible
+shopt -s lithist
 # remove duplicate commands from history
 HISTCONTROL=ignoredups:erasedups
-# don't add entries to history
-HISTIGNORE="x:exit" # we get duplicates of 'x' and 'exit' because shell is closed immediately
+# don't add entries to history (sometimes get duplicates of 'x'
+# and 'exit' because shell is closed immediately
+HISTIGNORE="x:exit"
 # number of previous commands stored in memory for current session
 HISTSIZE=9999
 # number of previous commands stored in history file
@@ -161,6 +176,7 @@ alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
 alias .......="cd ../../../../../.."
 alias ........="cd ../../../../../../.."
+alias .........="cd ../../../../../../../.."
 alias cd..="cd .."
 alias cd...="cd ../.."
 alias cd....="cd ../../.."
@@ -168,6 +184,7 @@ alias cd.....="cd ../../../.."
 alias cd......="cd ../../../../.."
 alias cd.......="cd ../../../../../.."
 alias cd........="cd ../../../../../../.."
+alias cd.........="cd ../../../../../../../.."
 
 
 # enable color support for grep
@@ -187,8 +204,8 @@ alias g="git"
 alias du="\du --human-readable --time --max-depth=1"
 
 
-# show how a command would be interpreted
-#  - includes: aliases, builtins, functions, scripts/executables on PATH
+# show how a command would be interpreted (includes: aliases, builtins,
+# functions, scripts/executables on PATH)
 alias which="type"
 
 
@@ -215,7 +232,8 @@ fi
 alias py="python"
 
 
-# create a python virtual environment and activate it if none exists, otherwise just activate it
+# create a python virtual environment and activate it if none exists,
+# otherwise just activate it
 alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
 
@@ -233,7 +251,7 @@ alias zen="python3 -c 'import this'"
 
 
 # uninstall all python packages in current environment
-alias pip-uninstall-all="pip freeze | sed 's/^-e //g' | xargs pip uninstall -y"
+alias pip-uninstall-all="pip freeze | sed 's/^-e //g' | xargs --no-run-if-empty pip uninstall -y"
 
 
 # serve current directory over HTTP on port 8000 (bind all interfaces)
@@ -322,13 +340,16 @@ dff () {
 alias diff="dff"
 
 
-# rename all files under the current directory to replace spaces with underscores (recursive)
-# - if inside a git repo, file renames will be tracked by git
+# rename all files under the current directory, replacing
+# spaces with underscores (recursive). If inside a git repo,
+# renames will be tracked by git
 remove-whitespace-from-filenames () {
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-        find . -path ./.git -prune -o -type f -name "* *" -exec bash -c 'git mv "$0" "${0// /_}"' {} \;
+        find . -path ./.git -prune -o -type f -name "* *" \
+        -exec bash -c 'git mv "$0" "${0// /_}"' {} \;
     else
-        find . -type f -name "* *" -exec bash -c 'mv "$0" "${0// /_}"' {} \;
+        find . -type f -name "* *" \
+        -exec bash -c 'mv "$0" "${0// /_}"' {} \;
     fi
 }
 
@@ -350,14 +371,14 @@ md2html () {
     local output="${base}.html"
     local title="${base##*/}"
     pandoc "${input}" \
-        --output "${output}" \
-        --template "${HOME}/.pandoc/template.html" \
-        --css "${HOME}/.pandoc/template.css" \
-        --from gfm \
-        --eol native \
-        --metadata title="${title}" \
-        --embed-resources \
-        --standalone
+    --output "${output}" \
+    --template "${HOME}/.pandoc/template.html" \
+    --css "${HOME}/.pandoc/template.css" \
+    --from gfm \
+    --eol native \
+    --metadata title="${title}" \
+    --embed-resources \
+    --standalone
     echo "${output}"
 }
 
@@ -382,7 +403,8 @@ help () {
 }
 
 
-# search recursively for files or directories matching pattern (case-insensitive unless pattern contains an uppercase)
+# search recursively for files or directories matching pattern
+# (case-insensitive unless pattern contains an uppercase)
 # - uses fd if available: https://github.com/sharkdp/fd
 # usage: ff <regex>
 ff () {
@@ -408,18 +430,18 @@ ff () {
             return 1
         fi
         find . \
-            -xdev \
-            ! -readable -prune \
-            -o \
-            -iname "*$1*" \
-            ! -path "*/.git/*" \
-            ! -path "*/.tox/*" \
-            ! -path "*/.venv/*" \
-            ! -path "*/__pycache__/*" \
-            ! -path "*/venv/*" \
-            -print \
-            | \grep --ignore-case --color=always "$1" \
-            | less
+        -xdev \
+        ! -readable -prune \
+        -o \
+        -iname "*$1*" \
+        ! -path "*/.git/*" \
+        ! -path "*/.tox/*" \
+        ! -path "*/.venv/*" \
+        ! -path "*/__pycache__/*" \
+        ! -path "*/venv/*" \
+        -print \
+        | \grep --ignore-case --color=always "$1" \
+        | less
     fi
 }
 
@@ -441,38 +463,38 @@ rg () {
     if [ -n "${rg_bin+x}" ]; then # using ripgrep
         local escaped_pattern=$(sed 's/./\\&/g' <<<"$1")
         eval "${rg_bin}" \
-            --hidden \
-            --ignore-case \
-            --line-number \
-            --no-heading \
-            --no-ignore \
-            --no-messages \
-            --one-file-system \
-            --with-filename \
-            --color=always \
-            --glob='!.git/' \
-            --glob='!.tox/' \
-            --glob='!.venv/' \
-            --glob='!__pycache__/' \
-            --glob='!venv/' \
-            "${escaped_pattern}" \
-            | less
+        --hidden \
+        --ignore-case \
+        --line-number \
+        --no-heading \
+        --no-ignore \
+        --no-messages \
+        --one-file-system \
+        --with-filename \
+        --color=always \
+        --glob='!.git/' \
+        --glob='!.tox/' \
+        --glob='!.venv/' \
+        --glob='!__pycache__/' \
+        --glob='!venv/' \
+        "${escaped_pattern}" \
+        | less
     else
         \grep -r \
-            --ignore-case \
-            --line-number \
-            --no-messages \
-            --with-filename \
-            --binary-files=without-match \
-            --color=always \
-            --devices=skip \
-            --exclude-dir=.git \
-            --exclude-dir=.tox \
-            --exclude-dir=.venv \
-            --exclude-dir=__pycache__ \
-            --exclude-dir="venv" \
-            "$1" \
-            | less
+        --ignore-case \
+        --line-number \
+        --no-messages \
+        --with-filename \
+        --binary-files=without-match \
+        --color=always \
+        --devices=skip \
+        --exclude-dir=.git \
+        --exclude-dir=.tox \
+        --exclude-dir=.venv \
+        --exclude-dir=__pycache__ \
+        --exclude-dir="venv" \
+        "$1" \
+        | less
     fi
 }
 
@@ -482,7 +504,8 @@ rg () {
 h () {
     local num="50"
     history -n; history -w; history -c; history -r;
-    history | \grep -v "  h " | \grep --ignore-case --color=always "$1" | tail -n "${num}"
+    history | \grep -v "  h " | \grep --ignore-case --color=always "$1" \
+    | tail -n "${num}"
 }
 
 
@@ -500,7 +523,8 @@ re-source () {
     unalias -a # remove all aliases
     PATH="${ORIGINAL_PATH}"
     source "${HOME}/.bashrc"
-    # if a virtual env is active, reactivate it, since the prompt prefix gets clobbered
+    # if a virtual env is active, reactivate it, since the prompt
+    # prefix gets clobbered
     if [ -n "${VIRTUAL_ENV}" ]; then
         activate
     fi
@@ -538,61 +562,62 @@ countfiles () {
 psgrep () {
     if [ -n "$1" ]; then
         ps -ef \
-            | \grep --color=always --extended-regexp --ignore-case "$1" \
-            | nowrap
+        | \grep --color=always --extended-regexp --ignore-case "$1" | nowrap
     else
         ps -ef
     fi
 }
 
 
-# run pyupgrade against all python files in current directory (recursive), and fix recommendations in-place
+# run pyupgrade against all python files in current directory (recursive),
+# and fix recommendations in-place
 py-upgrade () {
     if [ ! -x "$(type -pP pyupgrade)" ]; then
         err "pyupgrade not found"
         return 1
     fi
     find . \
-        -name "*.py" \
-        ! -path "*/.git/*" \
-        ! -path "*/.tox/*" \
-        ! -path "*/.pytest_cache/*" \
-        ! -path "*/__pycache__/*" \
-        ! -path "*/selenium/webdriver/common/devtools/*" \
-        ! -path "*/venv/*" \
-        -print0 \
-        | xargs --null pyupgrade --py39-plus
+    -name "*.py" \
+    ! -path "*/.git/*" \
+    ! -path "*/.tox/*" \
+    ! -path "*/.pytest_cache/*" \
+    ! -path "*/__pycache__/*" \
+    ! -path "*/devtools/*" \
+    ! -path "*/venv/*" \
+    -print0 \
+    | xargs --null --no-run-if-empty pyupgrade --py39-plus
 }
 
 
-# run refurb against all python files in current directory (recursive), and display recommendations
+# run refurb against all python files in current directory (recursive),
+# and display recommendations
 py-refurb () {
     if [ ! -x "$(type -pP refurb)" ]; then
         err "refurb not found"
         return 1
     fi
     find . \
-        -name "*.py" \
-        ! -path "*/.git/*" \
-        ! -path "*/.tox/*" \
-        ! -path "*/.pytest_cache/*" \
-        ! -path "*/__pycache__/*" \
-        ! -path "*/selenium/webdriver/common/devtools/*" \
-        ! -path "*/venv/*" \
-        -print0 \
-        | xargs --null refurb \
-            --python-version 3.9 \
-            --disable FURB101 \
-            --disable FURB103 \
-            --disable FURB104 \
-            --disable FURB107 \
-            --disable FURB141 \
-            --disable FURB144 \
-            --disable FURB146 \
-            --disable FURB150 \
-            --disable FURB173 \
-            --disable FURB183 \
-            --disable FURB184
+    -name "*.py" \
+    ! -path "*/.git/*" \
+    ! -path "*/.tox/*" \
+    ! -path "*/.pytest_cache/*" \
+    ! -path "*/__pycache__/*" \
+    ! -path "*/devtools/*" \
+    ! -path "*/venv/*" \
+    -print0 \
+    | xargs --null --no-run-if-empty refurb \
+    --python-version 3.9 \
+    --disable FURB101 \
+    --disable FURB103 \
+    --disable FURB104 \
+    --disable FURB107 \
+    --disable FURB141 \
+    --disable FURB144 \
+    --disable FURB146 \
+    --disable FURB150 \
+    --disable FURB173 \
+    --disable FURB183 \
+    --disable FURB184
 }
 
 
@@ -741,7 +766,8 @@ load-bash-configs () {
 load-bash-configs
 
 
-# add local bin directories to beginning of PATH if they exist and are not already on PATH
+# add local bin directories to beginning of PATH if they exist and
+# are not already on PATH
 add-bins () {
     local bin_dirs=(
         "${HOME}/.local/bin"
