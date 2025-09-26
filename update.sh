@@ -2,7 +2,7 @@
 #
 # Corey Goldberg (https://github.com/cgoldberg)
 #
-# update.sh - install or update local dotfiles and ~/bin scripts from github
+# update.sh - install or update local configs and scripts from github
 #
 # install dependencies for full functionality:
 #  - all platforms:
@@ -10,7 +10,7 @@
 #    - fd (https://github.com/sharkdp/fd)
 #    - gh (https://github.com/cli/cli)
 #    - pandoc (https://github.com/jgm/pandoc)
-#    - pipx (python3 -m pip install --user pipx)
+#    - pipx (pip install)
 #    - pyupgrade (pipx install)
 #    - refurb (pipx install)
 #    - rg (https://github.com/BurntSushi/ripgrep)
@@ -27,7 +27,7 @@ set -e
 
 DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
-TEMPLATE_DIR="${HOME}/.pandoc"
+PANDOC_TEMPLATE_DIR="${HOME}/.pandoc"
 REQUIREMENTS=(
     "git"
     "curl"
@@ -157,11 +157,8 @@ check-requirements
 check-dependencies
 echo
 
-echo "updating local dotfiles and ~/bin scripts from github ..."
-echo
-
 mkdir --parents "${BIN_DIR}"
-mkdir --parents "${TEMPLATE_DIR}"
+mkdir --parents "${PANDOC_TEMPLATE_DIR}"
 
 cd "${DOTFILES_HOME}"
 
@@ -172,6 +169,9 @@ echo "syncing local branches in ${DOTFILES_HOME} ..."
 git sync
 echo
 git checkout "${default_branch}" >/dev/null 2>&1
+
+echo "updating local configs and scripts from github ..."
+echo
 
 echo "copying configs from dotfiles repo ${default_branch} branch to ${HOME}"
 for config in "${CONFIGS[@]}"; do
@@ -193,10 +193,10 @@ elif [[ "${OSTYPE}" == "msys" ]]; then
     done
 fi
 
-echo "copying templates from dotfiles repo ${default_branch} branch to ${TEMPLATE_DIR}"
+echo "copying templates from dotfiles repo ${default_branch} branch to ${PANDOC_TEMPLATE_DIR}"
 for template in "${TEMPLATES[@]}"; do
     echo -e "  copying: ${template}"
-    cp "${template}" "${TEMPLATE_DIR}"
+    cp "${template}" "${PANDOC_TEMPLATE_DIR}"
 done
 
 echo "copying scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
