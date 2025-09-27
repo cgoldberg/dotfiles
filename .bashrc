@@ -131,9 +131,6 @@ shopt -s dotglob
 # the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories
 shopt -s globstar
-# filename expansion patterns which match no files expand to
-# nothing and are removed
-shopt -s nullglob
 # automatically close file descriptors assigned using the
 # "{varname}" redirection syntax instead of leaving them
 # open when a command completes
