@@ -146,7 +146,7 @@ selenium-server () {
     fi
     cd "${sel_home}"
     if [ ! -f "${jar}" ]; then
-        gh release download --pattern=selenium-server*.jar --output=${jar}
+        gh release download --pattern="selenium-server*.jar" --output="${jar}"
     fi
     java -jar "${jar}" standalone
 }
@@ -179,10 +179,6 @@ update-webrivers () {
         fi
     done
     cd "${sel_home}"
-    if [ -f "${jar}" ]; then
-        echo "deleting ${sel_home}/${jar}"
-        rm "./${jar}"
-    fi
     echo
     echo "updating chrome/chromedriver ..."
     start_spinner
@@ -202,7 +198,7 @@ update-webrivers () {
         return 1
     fi
     echo "updating grid server ..."
-    gh release download --pattern=selenium-server*.jar --output=${jar}
+    gh release download --clobber --pattern="selenium-server*.jar" --output="${jar}"
     if [ ! -x "$(type -pP java)" ]; then
         err "can't find java"
         cd "${OLDPWD}"
