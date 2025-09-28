@@ -50,7 +50,7 @@ alias wget="wget --hsts-file=/dev/null"
 
 
 # python virtual env
-alias activate="source ./venv/Scripts/activate"
+alias activate="source ./venv/bin/activate"
 alias deact="deactivate"
 alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
