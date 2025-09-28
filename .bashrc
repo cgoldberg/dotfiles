@@ -90,9 +90,10 @@ export LANG="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
-export GITHUB_USERNAME="cgoldberg"
 export PAGER="less"
 export EDITOR="vi"
+export GITHUB_USERNAME="cgoldberg"
+export PIP_REQUIRE_VIRTUALENV=true
 if [ -x "$(type -pP subl)" ]; then
     export VISUAL="subl --new-window --wait"
 else
@@ -227,6 +228,12 @@ fi
 
 # python
 alias py="python"
+
+
+# install python package globally
+gpip-install () {
+    PIP_REQUIRE_VIRTUALENV=false pip install --user "$@"
+}
 
 
 # show the zen of python
@@ -601,7 +608,7 @@ py-refurb () {
 # upgrade pip and clean pip/pipx cache
 clean-pip () {
     echo "upgrading pip, cleaning pip/pipx cache ..."
-    pip install --upgrade pip
+    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade pip
     pip cache purge
     local dirs=(
         "${HOME}/.cache/pip-tools/"
