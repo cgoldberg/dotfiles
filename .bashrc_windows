@@ -14,6 +14,12 @@ fi
 PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 
 
+# python virtual env
+alias activate="source ./venv/Scripts/activate"
+alias deact="deactivate"
+alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
+
+
 # exit shell
 alias x="history -n; history -w; TASKKILL //F //IM git.exe >/dev/null 2>&1; exit"
 

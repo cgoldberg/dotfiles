@@ -198,7 +198,7 @@ alias g="git"
 
 
 # disk usage (directory sizes)
-alias du="\du --human-readable --time --max-depth=1"
+alias du="\du --human-readable --max-depth=1"
 
 
 # show how a command would be interpreted (includes: aliases, builtins,
@@ -227,20 +227,6 @@ fi
 
 # python
 alias py="python"
-
-
-# create a python virtual environment and activate it if none exists,
-# otherwise just activate it
-alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
-
-
-# python virtual env
-if [[ "${OSTYPE}" == "msys" ]]; then # Windows/MinGW
-    alias activate="source ./venv/Scripts/activate"
-else
-    alias activate="source ./venv/bin/activate"
-fi
-alias deact="deactivate"
 
 
 # show the zen of python
