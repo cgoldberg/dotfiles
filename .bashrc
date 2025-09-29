@@ -694,7 +694,7 @@ pipx-upgrade-all () {
         deactivate
     fi
     echo "upgrading pip ..."
-    pip install --upgrade pip
+    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade pip
     local py_version=$(python3 --version)
     local pipx_list_output=$(pipx list)
     echo "upgrading pipx apps ..."
