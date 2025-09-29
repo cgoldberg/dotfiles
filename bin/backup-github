@@ -92,7 +92,7 @@ do_backup () {
     echo "downloading GitHub backup ..."
     echo
     export GITHUB_TOKEN=$(cat "${GITHUB_TOKEN_FILE}")
-    githubtakeout "${GITHUB_USERNAME}" --gists --format=tar
+    githubtakeout "${GITHUB_USERNAME}" --gists
     echo
     echo "${SEP}"
     mv ./backups "./${GITHUB_BACKUP_DIR}"
