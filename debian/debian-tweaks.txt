@@ -1,5 +1,6 @@
 # add packages
 # -----------------------------------------
+sudo apt install build-essential
 sudo apt install gvfs-backends
 
 
