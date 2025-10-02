@@ -1,3 +1,25 @@
+# add packages
+# -----------------------------------------
 sudo apt install gvfs-backends
+
+
+remove packages
+# -----------------------------------------
 sudo apt remove --purge avahi*
 sudo apt remove --purge cups*
+
+
+# remap CAPS-LOCK to CTRL
+# -----------------------------------------
+sudo apt install keyboard-configuration
+sudo apt install console-setup
+sudo vi /etc/default/keyboard
+
+update:
+XKBOPTIONS="ctrl:nocaps"
+
+sudo dpkg-reconfigure keyboard-configuration
+sudo systemctl restart keyboard-setup.service
+sudo setupcon
+sudo update-initramfs -u
+# -----------------------------------------
