@@ -14,6 +14,7 @@
 #    - pyupgrade (pipx install)
 #    - refurb (pipx install)
 #    - rg (https://github.com/BurntSushi/ripgrep)
+#    - ruby (apt install)
 #    - shellcheck (apt install)
 #    - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
 #  - linux only:
@@ -41,6 +42,7 @@ DEPENDENCIES=(
     "pyupgrade"
     "refurb"
     "rg"
+    "ruby"
     "shellcheck"
     "subl"
 )
