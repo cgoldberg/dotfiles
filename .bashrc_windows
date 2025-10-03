@@ -28,11 +28,6 @@ alias x="history -n; history -w; TASKKILL //F //IM git.exe >/dev/null 2>&1; exit
 alias clean-tmp="rm -rf /tmp/* /tmp/.*"
 
 
-# disk space (first column removed)
-alias df="\df --human-readable --local --sync | sed -E 's/^[^[:space:]]+[[:space:]]+//'"
-alias ds="df"
-
-
 # open url or file in chrome browser
 web () {
     if [ -z "$1" ]; then
