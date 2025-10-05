@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+  <head title="Favorites">
+    <expansionState></expansionState>
+  </head>
+  <body>
+    <outline URL="randomplay://track" icon="plugins/RandomPlay/html/images/icon.png" text="Random songs" type="audio" />
+  </body>
+</opml>

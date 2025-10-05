@@ -1,0 +1,14 @@
+---
+_ts_ignoreFolders: 1755277620
+_ts_transcodeLMS: 1755277620
+_ts_useLMS: 1755277620
+_ts_useUPnP: 1755277620
+_version: 0
+ignoreFolders: 'Movies, Video, Pictures, Images, @optware, @SynoFinder-log, @quarantine,
+  #snapshot, @cloudsync, @database, @appstore, @tmp, @postfix, @MailScanner, @synopkg,
+  @sharesnap, upd@te, @img_bkp_cache, @autoupdate, @S2S, @eaDir, #recycle, @SynologyDriveShareSync,
+  @synodlvolumeche.core, @spool, @maillog, @synovideostation, @SynologyApplicationService,
+  @AntiVirus, @synologydrive, @download, @clamav'
+transcodeLMS: flac
+useLMS: 1
+useUPnP: 0

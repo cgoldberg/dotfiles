@@ -1,0 +1,16 @@
+# Docker Compose YAML for Lyrion Music Server
+
+version: '3.9'
+services:
+    lms:
+        image: lmscommunity/lyrionmusicserver:stable
+        volumes:
+            - /share/Container/app-data/lms-config/:/config:rw
+            - /share/Public/Tunes/:/music:ro
+            - /share/Public/Playlists/Lyrion/:/playlist:rw
+        ports:
+            - "9000:9000"
+            - "9090:9090"
+            - "3483:3483/udp"
+            - "3483:3483/tcp"
+        restart: always

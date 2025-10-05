@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+  <head title="Favorites">
+    <expansionState></expansionState>
+  </head>
+  <body>
+    <outline URL="randomplay://track" icon="plugins/RandomPlay/html/images/icon.png" text="Random songs" type="audio" />
+    <outline URL="deezer://radio/37151/tracks.dzr" icon="https://e-cdns-images.dzcdn.net/images/cover/235ec47f2b21c3c73e02fce66f56ccc5/500x500-000000-80-0-0.jpg" text="Hits" type="audio" />
+  </body>
+</opml>
