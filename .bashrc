@@ -695,6 +695,8 @@ pipx-upgrade-all () {
     fi
     echo "upgrading pip ..."
     PIP_REQUIRE_VIRTUALENV=false pip install --upgrade pip
+    echo "upgrading pipx ..."
+    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade --user pipx
     local py_version=$(python3 --version)
     local pipx_list_output=$(pipx list)
     echo "upgrading pipx apps ..."
