@@ -237,7 +237,7 @@ gpip-install () {
 
 
 # uninstall python package globally
-gpip-install () {
+gpip-uninstall () {
     PIP_REQUIRE_VIRTUALENV=false pip uninstall "$@"
 }
 
