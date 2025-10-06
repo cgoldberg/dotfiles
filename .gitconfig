@@ -48,8 +48,8 @@
     br = branch --all --list # list local and remote-tracking branches
     co = checkout
     df = diff --staged
-    clone-b = clone --filter=blob:none # blobless clone
-    clone-s = clone --depth=1 # shallow clone
+    clone-blobless = clone --filter=blob:none
+    clone-shallow = clone --depth=1
     undo = reset --soft HEAD~1 # reset current branch to previous commit, preserving all changes
 
     # commit logs
@@ -64,7 +64,7 @@
     # commit all staged/unstaged changes with inline message
     ci = !git commit --all --message $2
 
-    # open Github page for default remote repository (requires GitHub CLI))
+    # open Github page for default remote repository (requires GitHub CLI)
     open = !gh repo view --web
 
     # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
