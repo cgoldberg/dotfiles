@@ -232,7 +232,7 @@ alias py="python"
 
 # install python package globally
 gpip-install () {
-    PIP_REQUIRE_VIRTUALENV=false pip install --user "$@"
+    PIP_REQUIRE_VIRTUALENV=false pip install --user --upgrade --upgrade-strategy=eager "$@"
 }
 
 
@@ -617,7 +617,7 @@ py-refurb () {
 # upgrade pip and clean pip/pipx cache
 clean-pip () {
     echo "upgrading pip, cleaning pip/pipx cache ..."
-    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade pip
+    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade --upgrade-strategy=eager pip
     pip cache purge
     local dirs=(
         "${HOME}/.cache/pip-tools/"
@@ -703,9 +703,9 @@ pipx-upgrade-all () {
         deactivate
     fi
     echo "upgrading pip ..."
-    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade pip
+    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade --upgrade-strategy=eager pip
     echo "upgrading pipx ..."
-    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade --user pipx
+    PIP_REQUIRE_VIRTUALENV=false pip install --user --upgrade --upgrade-strategy=eager pipx
     local py_version=$(python3 --version)
     local pipx_list_output=$(pipx list)
     echo "upgrading pipx apps ..."
