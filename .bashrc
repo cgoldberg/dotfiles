@@ -241,7 +241,10 @@ alias zen="python3 -c 'import this'"
 
 
 # uninstall all python packages in current environment
-alias pip-uninstall-all="pip freeze | sed 's/^-e //g' | xargs --no-run-if-empty pip uninstall -y"
+alias pip-uninstall-all="\
+    pip freeze \
+    | sed 's/^-e //g' \
+    | PIP_REQUIRE_VIRTUALENV=false xargs --no-run-if-empty pip uninstall -y"
 
 
 # serve current directory over HTTP on port 8000 (bind all interfaces)
