@@ -236,6 +236,12 @@ gpip-install () {
 }
 
 
+# uninstall python package globally
+gpip-install () {
+    PIP_REQUIRE_VIRTUALENV=false pip uninstall "$@"
+}
+
+
 # show the zen of python
 alias zen="python3 -c 'import this'"
 
