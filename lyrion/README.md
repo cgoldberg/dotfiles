@@ -22,19 +22,19 @@
   - Click "Add" to create a new network
   - Choose "Bridge" and select the wanted interface
   - Set a static IP address, by clicking "Use a static IP address"
-    and providing the Address, Mask, and Gateway. (i.e. 10.0.0.100)
+    and providing the IP. (i.e. 10.0.0.100)
   - Click "Connect" to add the network
   - Click "Apply" to update the container
-  - Take note of the IP address of your container
 
 ### Updating the Docker image
 
-- Go to "Images" and click on the cog wheel icon next to "lmscommunity/lyrionmusicserver"
+- Go to "Images" and click on the cog wheel icon next to
+  "lmscommunity/lyrionmusicserver"
 - In the drop-down menu, select "Pull" (it will download the latest version)
 - Go to "Applications"
 - Click the cog wheel icon next to the application
 - In the drop-down menu, select "Recreate"
-- The application will be undeployed and recreated (all configurations are kept as it
-  is mounted in a bind volume)
+- The application will be undeployed and recreated (all configurations are
+  kept as it is mounted in a bind volume)
 - You can remove the old image after deploying
 - You will need to set the network configuration again
