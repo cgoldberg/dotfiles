@@ -769,10 +769,9 @@ add-bins () {
         "${HOME}/bin"
     )
     for d in "${bin_dirs[@]}"; do
-        if [ -d "${d}" ]; then
-            if [[ "${PATH}" != *"${d}"* ]]; then
-                export PATH="${d}:${PATH}"
-            fi
+        mkdir --parents "${d}"
+        if [[ "${PATH}" != *"${d}"* ]]; then
+            export PATH="${d}:${PATH}"
         fi
     done
 }
