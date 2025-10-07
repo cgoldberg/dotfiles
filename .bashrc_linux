@@ -268,7 +268,7 @@ update-pyenv () {
         echo "installed $(python3 --version)"
         echo
         echo "updating pip ..."
-        python3 -m pip install --upgrade pip
+        PIP_REQUIRE_VIRTUALENV=false python3 -m pip install --upgrade pip
         echo
     done
     pyenv rehash
@@ -305,6 +305,6 @@ if [ -d "${HOME}/.pyenv" ]; then
     export PYENV_ROOT="${HOME}/.pyenv"
     [[ -d "${PYENV_ROOT}/bin" ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init - bash)"
-    PY_VERSIONS=("3.13" "3.12" "3.11" "3.10" "3.9" "pypy3.11")
+    PY_VERSIONS=("3.14" "3.13" "3.12" "3.11" "3.10" "pypy3.11")
     eval "pyenv global ${PY_VERSIONS[*]}"
 fi
