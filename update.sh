@@ -7,6 +7,7 @@
 # install dependencies for full functionality:
 #  - all platforms:
 #    - bat (https://github.com/sharkdp/bat)
+#    - cargo-cache (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
 #    - gh (https://github.com/cli/cli)
 #    - pandoc (https://github.com/jgm/pandoc)
@@ -21,7 +22,9 @@
 #    - exiv2 (apt install)
 #    - githubtakeout (pipx install)
 #    - google_drive_export (pipx install)
+#    - java (apt install)
 #    - pyenv (https://github.com/pyenv/pyenv)
+#    - rustup (https://rustup.rs)
 #    - rsync (apt install)
 
 set -e
@@ -47,11 +50,14 @@ DEPENDENCIES=(
     "subl"
 )
 DEPENDENCIES_LINUX=(
+    "cargo-cache"
     "exiv2"
     "githubtakeout"
     "google_drive_export"
+    "java"
     "pyenv"
     "rsync"
+    "rustup"
 )
 CONFIGS=(
     ".bashrc"

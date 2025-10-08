@@ -45,6 +45,10 @@ alias dw="diskwatch"
 alias killall="\killall --ignore-case --process-group --wait"
 
 
+# remove Rust/Cargo crate source checkouts and git repo checkouts
+alias clean-rust="cargo-cache --autoclean"
+
+
 # don't leave .wget-hsts file in home directory
 alias wget="wget --hsts-file=/dev/null"
 
