@@ -189,6 +189,10 @@ update-webrivers () {
         err "can't find java"
         return 1
     fi
+    if [ "$(arch)" == "aarch64" ]; then
+        err "unsupported architecture for selenium manager"
+        return 1
+    fi
     for d in ${dirs[@]}; do
         if [ -d ${d} ]; then
             echo "deleting ${d}"
