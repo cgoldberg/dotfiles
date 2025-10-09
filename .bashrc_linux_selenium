@@ -10,11 +10,12 @@ if [[ "${OSTYPE}" != "linux"* ]]; then
 fi
 
 
-SELENIUM_DEV_HOME="${HOME}/code/selenium"
+SELENIUM_HOME="${HOME}/code/selenium"
+SELENIUM_MANAGER_HOME="${HOME}/code/selenium_manager_artifacts"
 
 
 # only activate these functions if we have the selenium repo cloned
-if [ ! -d "${SELENIUM_DEV_HOME}" ]; then
+if [ ! -d "${SELENIUM_HOME}" ]; then
     return
 fi
 
@@ -41,7 +42,7 @@ kill-webdrivers () {
 # clean selenium dev environment (cache, browsers, webdrivers, build artifacts)
 clean-selenium-dev-full () {
     clean-selenium-dev
-    local sel_home="${SELENIUM_DEV_HOME}"
+    local sel_home="${SELENIUM_HOME}"
     local sel_dirs=(
         ${sel_home}/.aspect/
         ${sel_home}/py/selenium/webdriver/common/devtools/
@@ -96,7 +97,7 @@ clean-selenium-dev-full () {
 
 # clean selenium dev environment
 clean-selenium-dev () {
-    local sel_home="${SELENIUM_DEV_HOME}"
+    local sel_home="${SELENIUM_HOME}"
     local dirs=(
         ${sel_home}/.venv/
         ${sel_home}/build/
@@ -134,8 +135,9 @@ clean-selenium-dev () {
 # run selenium grid server in standalone mode (on port 4444)
 # download server first with github cli if it's not found
 selenium-server () {
-    local sel_home="${SELENIUM_DEV_HOME}"
-    local jar="selenium-server.jar"
+    local sel_home="${SELENIUM_HOME}"
+    local server_jar="selenium-server.jar"
+    local original_dir="${PWD}"
     if [ ! -x "$(type -pP gh)" ]; then
         err "can't find github cli"
         return 1
@@ -145,10 +147,11 @@ selenium-server () {
         return 1
     fi
     cd "${sel_home}"
-    if [ ! -f "${jar}" ]; then
-        gh release download --pattern="selenium-server*.jar" --output="${jar}"
+    if [ ! -f "${server_jar}" ]; then
+        gh release download --pattern="selenium-server*.jar" --output="${server_jar}"
     fi
-    java -jar "${jar}" standalone
+    java -jar "${server_jar}" standalone
+    cd "${original_dir}"
 }
 
 
@@ -156,9 +159,11 @@ selenium-server () {
 # also delete and re-download selenium grid server
 update-webrivers () {
     kill-webdrivers
-    local sel_home="${SELENIUM_DEV_HOME}"
-    local sel_mgr_path="${sel_home}/py/selenium/webdriver/common/linux"
-    local jar="selenium-server.jar"
+    local sel_home="${SELENIUM_HOME}"
+    local sel_mgr_home="${SELENIUM_MANAGER_HOME}"
+    local sel_mgr_bin="selenium-manager-linux"
+    local server_jar="selenium-server.jar"
+    local original_dir="${PWD}"
     local dirs=(
         ${HOME}/.cache/google-chrome*/
         ${HOME}/.cache/Microsoft/
@@ -168,8 +173,20 @@ update-webrivers () {
         ${HOME}/.config/microsoft-edge*/
         ${HOME}/.mozilla/
     )
-    if [ ! -d "${sel_mgr_path}" ]; then
-        err "selenium-manager not found in: ${sel_mgr_path}"
+    if [ ! -d "${sel_home}" ]; then
+        err "${sel_home} not found"
+        return 1
+    fi
+    if [ ! -d "${sel_mgr_home}" ]; then
+        err "${sel_mgr_home} not found"
+        return 1
+    fi
+    if [ ! -x "$(type -pP gh)" ]; then
+        err "can't find github cli"
+        return 1
+    fi
+    if [ ! -x "$(type -pP java)" ]; then
+        err "can't find java"
         return 1
     fi
     for d in ${dirs[@]}; do
@@ -178,34 +195,29 @@ update-webrivers () {
             rm -rf ${d}
         fi
     done
+    echo
+    cd "${sel_mgr_home}"
+    echo "updating selenium manager ..."
+    gh release download --clobber --pattern="${sel_mgr_bin}" --dir="${sel_home}"
     cd "${sel_home}"
+    chmod +x "./${sel_mgr_bin}"
+    "./${sel_mgr_bin}" --version
+    echo
+    echo "updating grid server ..."
+    gh release download --clobber --pattern="selenium-server*.jar" --output="${server_jar}"
+    java -jar "${server_jar}" info --version
     echo
     echo "updating chrome/chromedriver ..."
     start_spinner
-    ${sel_mgr_path}/selenium-manager --browser=chrome --driver=chromedriver
+    "./${sel_mgr_bin}" --browser=chrome --driver=chromedriver
     stop_spinner
     echo "updating edge/edgedriver ..."
     start_spinner
-    ${sel_mgr_path}/selenium-manager --browser=edge --driver=edgedriver
+    "./${sel_mgr_bin}" --browser=edge --driver=edgedriver
     stop_spinner
     echo "updating firefox/geckodriver ..."
     start_spinner
-    ${sel_mgr_path}/selenium-manager --browser=firefox --driver=geckodriver
+    "./${sel_mgr_bin}" --browser=firefox --driver=geckodriver
     stop_spinner
-    if [ ! -x "$(type -pP gh)" ]; then
-        err "can't find github cli"
-        cd "${OLDPWD}"
-        return 1
-    fi
-    echo "updating grid server ..."
-    gh release download --clobber --pattern="selenium-server*.jar" --output="${jar}"
-    if [ ! -x "$(type -pP java)" ]; then
-        err "can't find java"
-        cd "${OLDPWD}"
-        return 1
-    fi
-    sleep 1
-    java -jar "${jar}" info --version
-    cd "${OLDPWD}"
-    echo
+    cd "${original_dir}"
 }
