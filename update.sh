@@ -41,6 +41,7 @@ DEPENDENCIES=(
     "bat"
     "fd"
     "gh"
+    "jq"
     "pandoc"
     "pipx"
     "pyupgrade"
