@@ -10,6 +10,7 @@
 #    - cargo-cache (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
 #    - gh (https://github.com/cli/cli)
+#    - jq (apt install)
 #    - pandoc (https://github.com/jgm/pandoc)
 #    - pipx (pip install)
 #    - pyupgrade (pipx install)
@@ -94,6 +95,7 @@ GIT_SCRIPTS=(
     "git-clean-untracked"
     "git-info"
     "git-obliterate-repo"
+    "git-prs"
     "git-score"
     "git-stat"
     "git-sync"
