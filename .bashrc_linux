@@ -46,7 +46,7 @@ alias killall="\killall --ignore-case --process-group --wait"
 
 
 # remove Rust/Cargo crate source checkouts and git repo checkouts
-alias clean-rust="cargo-cache --autoclean"
+alias clean-rust="rustup update && cargo-cache --autoclean"
 
 
 # don't leave .wget-hsts file in home directory
