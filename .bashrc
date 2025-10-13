@@ -258,9 +258,14 @@ alias webserver="python3 -m http.server"
 
 
 # list directory contents
-alias ls="LC_ALL=C \ls --almost-all --classify --group-directories-first --color=always"
-alias l="LC_ALL=C \ls -l --almost-all --classify --group-directories-first --human-readable --no-group --color=always"
-alias ll="l"
+alias ls="\
+    LC_ALL=C \ls --almost-all --classify --group-directories-first --color=always"
+alias ll="\
+    LC_ALL=C \ls -l --almost-all --classify --group-directories-first\
+    --human-readable --no-group --color=always"
+alias l="\
+        eza --all --git --git-repos-no-status --group-directories-first --header\
+        --long --modified --total-size --sort=Name --time-style=long-iso"
 
 
 # editors (sublime/vim)

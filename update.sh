@@ -7,7 +7,7 @@
 # install dependencies for full functionality:
 #  - all platforms:
 #    - bat (https://github.com/sharkdp/bat)
-#    - cargo-cache (cargo install)
+#    - eza (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
 #    - gh (https://github.com/cli/cli)
 #    - jq (apt install)
@@ -20,6 +20,7 @@
 #    - shellcheck (apt install)
 #    - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
 #  - linux only:
+#    - cargo-cache (cargo install)
 #    - exiv2 (apt install)
 #    - githubtakeout (pipx install)
 #    - google_drive_export (pipx install)
@@ -39,6 +40,7 @@ REQUIREMENTS=(
 )
 DEPENDENCIES=(
     "bat"
+    "eza"
     "fd"
     "gh"
     "jq"
