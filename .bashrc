@@ -265,7 +265,7 @@ alias ll="\
     --human-readable --no-group --color=always"
 alias l="\
         eza --all --git --git-repos-no-status --group-directories-first --header\
-        --long --modified --total-size --sort=Name --time-style=long-iso"
+        --long --modified --sort=Name --time-style=long-iso"
 
 
 # editors (sublime/vim)
