@@ -5,6 +5,7 @@
 # update.sh - install or update local configs and scripts from github
 #
 # install dependencies for full functionality:
+#
 #  - all platforms:
 #    - bat (https://github.com/sharkdp/bat)
 #    - eza (cargo install)
@@ -19,6 +20,7 @@
 #    - ruby (apt install)
 #    - shellcheck (apt install)
 #    - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
+#
 #  - linux only:
 #    - cargo-cache (cargo install)
 #    - exiv2 (apt install)
@@ -28,12 +30,17 @@
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rustup (https://rustup.rs)
 #    - rsync (apt install)
+#
+#  - windows only:
+#    - alacritty (scoop install)
+
 
 set -e
 
 DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
 PANDOC_TEMPLATE_DIR="${HOME}/.pandoc"
+ALACRITTY_CONFIG_DIR="${APPDATA}/alacritty"
 REQUIREMENTS=(
     "git"
     "curl"
@@ -63,6 +70,9 @@ DEPENDENCIES_LINUX=(
     "rsync"
     "rustup"
 )
+DEPENDENCIES_WINDOWS=(
+    "alacritty"
+)
 CONFIGS=(
     ".bashrc"
     ".profile"
@@ -77,7 +87,10 @@ WIN_CONFIGS=(
     ".gitconfig_win"
     ".minttyrc"
 )
-TEMPLATES=(
+ALACRITTY_CONFIGS=(
+    "./alacritty/alacritty.toml"
+)
+PANDOC_TEMPLATES=(
     "./pandoc/template.html"
     "./pandoc/template.css"
 )
@@ -159,6 +172,12 @@ check-dependencies () {
             check_linux_deps_failed="true"
         fi
     fi
+    if [[ "${OSTYPE}" == "msys"* ]]; then
+        check-programs "${DEPENDENCIES_WINDOWS[@]}"
+        if [ -n "${check_failed}" ]; then
+            check_win_deps_failed="true"
+        fi
+    fi
 }
 
 
@@ -186,17 +205,16 @@ git checkout "${default_branch}" >/dev/null 2>&1
 echo "updating local configs and scripts from github ..."
 echo
 
-echo "copying configs from dotfiles repo ${default_branch} branch to ${HOME}"
-for config in "${CONFIGS[@]}"; do
-    echo -e "  copying: ${config}"
-    cp "${config}" "${HOME}"
-done
-
 if [[ "${OSTYPE}" == "linux"* ]]; then
     echo "copying linux configs from dotfiles repo ${default_branch} branch to ${HOME}"
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
+    done
+    echo "copying linux scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
+    for script in "${LINUX_SCRIPTS[@]}"; do
+        echo -e "  copying: ${script}"
+        cp "${script}" "${BIN_DIR}"
     done
 elif [[ "${OSTYPE}" == "msys" ]]; then
     echo "copying windows configs from dotfiles repo ${default_branch} branch to ${HOME}"
@@ -204,10 +222,21 @@ elif [[ "${OSTYPE}" == "msys" ]]; then
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
+    echo "copying alacritty configs from dotfiles repo ${default_branch} branch to ${ALACRITTY_CONFIG_DIR}"
+    for config in "${ALACRITTY_CONFIGS[@]}"; do
+        echo -e "  copying: ${template}"
+        cp "${config}" "${ALACRITTY_CONFIG_DIR}"
+    done
 fi
 
-echo "copying templates from dotfiles repo ${default_branch} branch to ${PANDOC_TEMPLATE_DIR}"
-for template in "${TEMPLATES[@]}"; do
+echo "copying configs from dotfiles repo ${default_branch} branch to ${HOME}"
+for config in "${CONFIGS[@]}"; do
+    echo -e "  copying: ${config}"
+    cp "${config}" "${HOME}"
+done
+
+echo "copying pandoc templates from dotfiles repo ${default_branch} branch to ${PANDOC_TEMPLATE_DIR}"
+for template in "${PANDOC_TEMPLATES[@]}"; do
     echo -e "  copying: ${template}"
     cp "${template}" "${PANDOC_TEMPLATE_DIR}"
 done
@@ -217,14 +246,6 @@ for script in "${SCRIPTS[@]}"; do
     echo -e "  copying: ${script}"
     cp "${script}" "${BIN_DIR}"
 done
-
-if [[ "${OSTYPE}" == "linux"* ]]; then
-    echo "copying linux scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
-    for script in "${LINUX_SCRIPTS[@]}"; do
-        echo -e "  copying: ${script}"
-        cp "${script}" "${BIN_DIR}"
-    done
-fi
 
 git checkout "${current_branch}" >/dev/null 2>&1
 
@@ -240,7 +261,7 @@ for script in "${GIT_SCRIPTS[@]}"; do
 done
 
 echo
-if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ]; then
+if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ] || [ -n "${check_win_deps_failed}" ]; then
     err "missing dependency"
 fi
 ok "done updating configs and scripts"
