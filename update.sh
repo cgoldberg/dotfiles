@@ -191,6 +191,7 @@ echo
 
 mkdir --parents "${BIN_DIR}"
 mkdir --parents "${PANDOC_TEMPLATE_DIR}"
+mkdir --parents "${ALACRITTY_CONFIG_DIR}"
 
 cd "${DOTFILES_HOME}"
 
