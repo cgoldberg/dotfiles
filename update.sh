@@ -225,7 +225,7 @@ elif [[ "${OSTYPE}" == "msys" ]]; then
     done
     echo "copying alacritty configs from dotfiles repo ${default_branch} branch to ${ALACRITTY_CONFIG_DIR}"
     for config in "${ALACRITTY_CONFIGS[@]}"; do
-        echo -e "  copying: ${template}"
+        echo -e "  copying: ${config}"
         cp "${config}" "${ALACRITTY_CONFIG_DIR}"
     done
 fi
