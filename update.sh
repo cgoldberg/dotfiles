@@ -73,7 +73,7 @@ DEPENDENCIES_LINUX=(
     "rustup"
 )
 DEPENDENCIES_WINDOWS=(
-    "allacritty"
+    "alacritty"
 )
 CONFIGS=(
     ".bashrc"
