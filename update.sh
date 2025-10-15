@@ -7,7 +7,6 @@
 # install dependencies for full functionality:
 #
 #  - all platforms:
-#    - alacritty (cargo install)
 #    - bat (https://github.com/sharkdp/bat)
 #    - eza (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
@@ -31,6 +30,9 @@
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rustup (https://rustup.rs)
 #    - rsync (apt install)
+#
+#  - windows only:
+#    - alacritty (cargo install)
 
 
 set -e
@@ -40,15 +42,12 @@ BIN_DIR="${HOME}/bin"
 PANDOC_TEMPLATE_DIR="${HOME}/.pandoc"
 if [[ "${OSTYPE}" == "msys" ]]; then
     ALACRITTY_DIR="${APPDATA}/alacritty"
-else
-    ALACRITTY_DIR="${HOME}/.config/alacritty"
 fi
 REQUIREMENTS=(
     "git"
     "curl"
 )
 DEPENDENCIES=(
-    "alacritty"
     "bat"
     "eza"
     "fd"
@@ -73,6 +72,9 @@ DEPENDENCIES_LINUX=(
     "rsync"
     "rustup"
 )
+DEPENDENCIES_WINDOWS=(
+    "allacritty"
+)
 CONFIGS=(
     ".bashrc"
     ".profile"
@@ -89,7 +91,6 @@ WIN_CONFIGS=(
 )
 ALACRITTY_CONFIGS=(
     "./alacritty/alacritty.toml"
-    "./alacritty/alacritty-term.png"
 )
 PANDOC_TEMPLATES=(
     "./pandoc/template.html"
@@ -176,6 +177,12 @@ check-dependencies () {
             check_linux_deps_failed="true"
         fi
     fi
+    if [[ "${OSTYPE}" == "msys" ]]; then
+        check-programs "${DEPENDENCIES_WINDOWS[@]}"
+        if [ -n "${check_failed}" ]; then
+            check_win_deps_failed="true"
+        fi
+    fi
 }
 
 
@@ -210,12 +217,19 @@ if [[ "${OSTYPE}" == "msys" ]]; then
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
+
+    echo "copying alacritty configs from dotfiles repo ${default_branch} branch to ${ALACRITTY_DIR}"
+    for config in "${ALACRITTY_CONFIGS[@]}"; do
+        echo -e "  copying: ${config}"
+        cp "${config}" "${ALACRITTY_DIR}"
+    done
 else
     echo "copying linux configs from dotfiles repo ${default_branch} branch to ${HOME}"
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
+
     echo "copying linux scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
     for script in "${LINUX_SCRIPTS[@]}"; do
         echo -e "  copying: ${script}"
@@ -227,12 +241,6 @@ echo "copying configs from dotfiles repo ${default_branch} branch to ${HOME}"
 for config in "${CONFIGS[@]}"; do
     echo -e "  copying: ${config}"
     cp "${config}" "${HOME}"
-done
-
-echo "copying alacritty configs from dotfiles repo ${default_branch} branch to ${ALACRITTY_DIR}"
-for config in "${ALACRITTY_CONFIGS[@]}"; do
-    echo -e "  copying: ${config}"
-    cp "${config}" "${ALACRITTY_DIR}"
 done
 
 echo "copying pandoc templates from dotfiles repo ${default_branch} branch to ${PANDOC_TEMPLATE_DIR}"
@@ -261,7 +269,7 @@ for script in "${GIT_SCRIPTS[@]}"; do
 done
 
 echo
-if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ]; then
+if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ] || [ -n "${check_win_deps_failed}" ]; then
     err "missing dependency"
 fi
 ok "done updating configs and scripts"

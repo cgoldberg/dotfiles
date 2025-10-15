@@ -1,9 +1,5 @@
 # Alacritty terminal emulator configuration
 #
-# Linux:
-#   $HOME/.config/alacritty/alacritty.toml
-#   $HOME/.alacritty.toml
-#
 # Windows:
 #   $APPDATA/alacritty/alacritty.toml
 
