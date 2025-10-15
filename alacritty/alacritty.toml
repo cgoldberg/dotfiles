@@ -5,7 +5,7 @@
 #   $HOME/.alacritty.toml
 #
 # Windows:
-#   %APPDATA%\alacritty\alacritty.toml
+#   $APPDATA/alacritty/alacritty.toml
 
 [general]
 live_config_reload = true

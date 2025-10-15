@@ -7,6 +7,7 @@
 # install dependencies for full functionality:
 #
 #  - all platforms:
+#    - alacritty (cargo install)
 #    - bat (https://github.com/sharkdp/bat)
 #    - eza (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
@@ -30,9 +31,6 @@
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rustup (https://rustup.rs)
 #    - rsync (apt install)
-#
-#  - windows only:
-#    - alacritty (scoop install)
 
 
 set -e
@@ -40,12 +38,17 @@ set -e
 DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
 PANDOC_TEMPLATE_DIR="${HOME}/.pandoc"
-ALACRITTY_CONFIG_DIR="${APPDATA}/alacritty"
+if [[ "${OSTYPE}" == "msys" ]]; then
+    ALACRITTY_DIR="${APPDATA}/alacritty"
+else
+    ALACRITTY_DIR="${HOME}/.config/alacritty"
+fi
 REQUIREMENTS=(
     "git"
     "curl"
 )
 DEPENDENCIES=(
+    "alacritty"
     "bat"
     "eza"
     "fd"
@@ -70,9 +73,6 @@ DEPENDENCIES_LINUX=(
     "rsync"
     "rustup"
 )
-DEPENDENCIES_WINDOWS=(
-    "alacritty"
-)
 CONFIGS=(
     ".bashrc"
     ".profile"
@@ -89,6 +89,7 @@ WIN_CONFIGS=(
 )
 ALACRITTY_CONFIGS=(
     "./alacritty/alacritty.toml"
+    "./alacritty/alacritty-term.png"
 )
 PANDOC_TEMPLATES=(
     "./pandoc/template.html"
@@ -153,6 +154,9 @@ check-programs () {
 
 
 check-requirements () {
+    if [[ "${OSTYPE}" != "msys" ]] && [[ "${OSTYPE}" != "linux"* ]]; then
+        die "fatal: unknown operating system"
+    fi
     check-programs "${REQUIREMENTS[@]}"
     if [ -n "${check_failed}" ]; then
         echo
@@ -170,12 +174,6 @@ check-dependencies () {
         check-programs "${DEPENDENCIES_LINUX[@]}"
         if [ -n "${check_failed}" ]; then
             check_linux_deps_failed="true"
-        fi
-    fi
-    if [[ "${OSTYPE}" == "msys"* ]]; then
-        check-programs "${DEPENDENCIES_WINDOWS[@]}"
-        if [ -n "${check_failed}" ]; then
-            check_win_deps_failed="true"
         fi
     fi
 }
@@ -206,7 +204,13 @@ git checkout "${default_branch}" >/dev/null 2>&1
 echo "updating local configs and scripts from github ..."
 echo
 
-if [[ "${OSTYPE}" == "linux"* ]]; then
+if [[ "${OSTYPE}" == "msys" ]]; then
+    echo "copying windows configs from dotfiles repo ${default_branch} branch to ${HOME}"
+    for config in "${WIN_CONFIGS[@]}"; do
+        echo -e "  copying: ${config}"
+        cp "${config}" "${HOME}"
+    done
+else
     echo "copying linux configs from dotfiles repo ${default_branch} branch to ${HOME}"
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
@@ -216,17 +220,6 @@ if [[ "${OSTYPE}" == "linux"* ]]; then
     for script in "${LINUX_SCRIPTS[@]}"; do
         echo -e "  copying: ${script}"
         cp "${script}" "${BIN_DIR}"
-    done
-elif [[ "${OSTYPE}" == "msys" ]]; then
-    echo "copying windows configs from dotfiles repo ${default_branch} branch to ${HOME}"
-    for config in "${WIN_CONFIGS[@]}"; do
-        echo -e "  copying: ${config}"
-        cp "${config}" "${HOME}"
-    done
-    echo "copying alacritty configs from dotfiles repo ${default_branch} branch to ${ALACRITTY_CONFIG_DIR}"
-    for config in "${ALACRITTY_CONFIGS[@]}"; do
-        echo -e "  copying: ${config}"
-        cp "${config}" "${ALACRITTY_CONFIG_DIR}"
     done
 fi
 
@@ -240,6 +233,12 @@ echo "copying pandoc templates from dotfiles repo ${default_branch} branch to ${
 for template in "${PANDOC_TEMPLATES[@]}"; do
     echo -e "  copying: ${template}"
     cp "${template}" "${PANDOC_TEMPLATE_DIR}"
+done
+
+echo "copying alacritty configs from dotfiles repo ${default_branch} branch to ${ALACRITTY_DIR}"
+for config in "${ALACRITTY_CONFIGS[@]}"; do
+    echo -e "  copying: ${config}"
+    cp "${config}" "${ALACRITTY_DIR}"
 done
 
 echo "copying scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
@@ -262,7 +261,7 @@ for script in "${GIT_SCRIPTS[@]}"; do
 done
 
 echo
-if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ] || [ -n "${check_win_deps_failed}" ]; then
+if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ]; then
     err "missing dependency"
 fi
 ok "done updating configs and scripts"
