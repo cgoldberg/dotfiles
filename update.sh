@@ -195,8 +195,10 @@ check-dependencies
 echo
 
 mkdir --parents "${BIN_DIR}"
-mkdir --parents "${ALACRITTY_DIR}"
 mkdir --parents "${PANDOC_TEMPLATE_DIR}"
+if [[ "${OSTYPE}" == "msys" ]]; then
+    mkdir --parents "${ALACRITTY_DIR}"
+fi
 
 cd "${DOTFILES_HOME}"
 
