@@ -188,8 +188,8 @@ check-dependencies
 echo
 
 mkdir --parents "${BIN_DIR}"
+mkdir --parents "${ALACRITTY_DIR}"
 mkdir --parents "${PANDOC_TEMPLATE_DIR}"
-mkdir --parents "${ALACRITTY_CONFIG_DIR}"
 
 cd "${DOTFILES_HOME}"
 
@@ -229,16 +229,16 @@ for config in "${CONFIGS[@]}"; do
     cp "${config}" "${HOME}"
 done
 
-echo "copying pandoc templates from dotfiles repo ${default_branch} branch to ${PANDOC_TEMPLATE_DIR}"
-for template in "${PANDOC_TEMPLATES[@]}"; do
-    echo -e "  copying: ${template}"
-    cp "${template}" "${PANDOC_TEMPLATE_DIR}"
-done
-
 echo "copying alacritty configs from dotfiles repo ${default_branch} branch to ${ALACRITTY_DIR}"
 for config in "${ALACRITTY_CONFIGS[@]}"; do
     echo -e "  copying: ${config}"
     cp "${config}" "${ALACRITTY_DIR}"
+done
+
+echo "copying pandoc templates from dotfiles repo ${default_branch} branch to ${PANDOC_TEMPLATE_DIR}"
+for template in "${PANDOC_TEMPLATES[@]}"; do
+    echo -e "  copying: ${template}"
+    cp "${template}" "${PANDOC_TEMPLATE_DIR}"
 done
 
 echo "copying scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
