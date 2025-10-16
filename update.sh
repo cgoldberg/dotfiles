@@ -119,6 +119,7 @@ GIT_SCRIPTS=(
     "git-sync"
     "git-syncrepo"
     "git-track-branches"
+    "git-whack-branches"
 )
 
 
