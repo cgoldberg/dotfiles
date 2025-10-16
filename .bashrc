@@ -249,8 +249,8 @@ alias zen="python3 -c 'import this'"
 # uninstall all python packages in current environment
 alias pip-uninstall-all="\
     pip freeze \
-    | sed 's/^-e //g' \
-    | PIP_REQUIRE_VIRTUALENV=false xargs --no-run-if-empty pip uninstall -y"
+        | sed 's/^-e //g' \
+        | PIP_REQUIRE_VIRTUALENV=false xargs --no-run-if-empty pip uninstall -y"
 
 
 # serve current directory over HTTP on port 8000 (bind all interfaces)
@@ -350,10 +350,10 @@ alias diff="dff"
 remove-whitespace-from-filenames () {
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         find . -path ./.git -prune -o -type f -name "* *" \
-        -exec bash -c 'git mv "$0" "${0// /_}"' {} \;
+            -exec bash -c 'git mv "$0" "${0// /_}"' {} \;
     else
         find . -type f -name "* *" \
-        -exec bash -c 'mv "$0" "${0// /_}"' {} \;
+            -exec bash -c 'mv "$0" "${0// /_}"' {} \;
     fi
 }
 
@@ -375,14 +375,14 @@ md2html () {
     local output="${base}.html"
     local title="${base##*/}"
     pandoc "${input}" \
-    --output "${output}" \
-    --template "${HOME}/.pandoc/template.html" \
-    --css "${HOME}/.pandoc/template.css" \
-    --from gfm \
-    --eol native \
-    --metadata title="${title}" \
-    --embed-resources \
-    --standalone
+        --output "${output}" \
+        --template "${HOME}/.pandoc/template.html" \
+        --css "${HOME}/.pandoc/template.css" \
+        --from gfm \
+        --eol native \
+        --metadata title="${title}" \
+        --embed-resources \
+        --standalone
     echo "${output}"
 }
 
@@ -434,18 +434,18 @@ ff () {
             return 1
         fi
         find . \
-        -xdev \
-        ! -readable -prune \
-        -o \
-        -iname "*$1*" \
-        ! -path "*/.git/*" \
-        ! -path "*/.tox/*" \
-        ! -path "*/.venv/*" \
-        ! -path "*/__pycache__/*" \
-        ! -path "*/venv/*" \
-        -print \
-        | \grep --ignore-case --color=always "$1" \
-        | less
+            -xdev \
+            ! -readable -prune \
+            -o \
+            -iname "*$1*" \
+            ! -path "*/.git/*" \
+            ! -path "*/.tox/*" \
+            ! -path "*/.venv/*" \
+            ! -path "*/__pycache__/*" \
+            ! -path "*/venv/*" \
+            -print \
+            | \grep --ignore-case --color=always "$1" \
+            | less
     fi
 }
 
@@ -467,38 +467,38 @@ rg () {
     if [ -n "${rg_bin+x}" ]; then # using ripgrep
         local escaped_pattern=$(sed 's/./\\&/g' <<<"$1")
         eval "${rg_bin}" \
-        --hidden \
-        --ignore-case \
-        --line-number \
-        --no-heading \
-        --no-ignore \
-        --no-messages \
-        --one-file-system \
-        --with-filename \
-        --color=always \
-        --glob='!.git/' \
-        --glob='!.tox/' \
-        --glob='!.venv/' \
-        --glob='!__pycache__/' \
-        --glob='!venv/' \
-        "${escaped_pattern}" \
-        | less
+            --hidden \
+            --ignore-case \
+            --line-number \
+            --no-heading \
+            --no-ignore \
+            --no-messages \
+            --one-file-system \
+            --with-filename \
+            --color=always \
+            --glob='!.git/' \
+            --glob='!.tox/' \
+            --glob='!.venv/' \
+            --glob='!__pycache__/' \
+            --glob='!venv/' \
+            "${escaped_pattern}" \
+            | less
     else
         \grep -r \
-        --ignore-case \
-        --line-number \
-        --no-messages \
-        --with-filename \
-        --binary-files=without-match \
-        --color=always \
-        --devices=skip \
-        --exclude-dir=.git \
-        --exclude-dir=.tox \
-        --exclude-dir=.venv \
-        --exclude-dir=__pycache__ \
-        --exclude-dir="venv" \
-        "$1" \
-        | less
+            --ignore-case \
+            --line-number \
+            --no-messages \
+            --with-filename \
+            --binary-files=without-match \
+            --color=always \
+            --devices=skip \
+            --exclude-dir=.git \
+            --exclude-dir=.tox \
+            --exclude-dir=.venv \
+            --exclude-dir=__pycache__ \
+            --exclude-dir="venv" \
+            "$1" \
+            | less
     fi
 }
 
@@ -509,7 +509,7 @@ h () {
     local num="50"
     history -n; history -w; history -c; history -r;
     history | \grep -v "  h " | \grep --ignore-case --color=always "$1" \
-    | tail -n "${num}"
+        | tail -n "${num}"
 }
 
 
@@ -566,7 +566,7 @@ countfiles () {
 psgrep () {
     if [ -n "$1" ]; then
         ps -ef \
-        | \grep --color=always --extended-regexp --ignore-case "$1" | nowrap
+            | \grep --color=always --extended-regexp --ignore-case "$1" | nowrap
     else
         ps -ef
     fi
@@ -581,15 +581,15 @@ py-upgrade () {
         return 1
     fi
     find . \
-    -name "*.py" \
-    ! -path "*/.git/*" \
-    ! -path "*/.tox/*" \
-    ! -path "*/.pytest_cache/*" \
-    ! -path "*/__pycache__/*" \
-    ! -path "*/devtools/*" \
-    ! -path "*/venv/*" \
-    -print0 \
-    | xargs --null --no-run-if-empty pyupgrade --py39-plus
+        -name "*.py" \
+        ! -path "*/.git/*" \
+        ! -path "*/.tox/*" \
+        ! -path "*/.pytest_cache/*" \
+        ! -path "*/__pycache__/*" \
+        ! -path "*/devtools/*" \
+        ! -path "*/venv/*" \
+        -print0 \
+        | xargs --null --no-run-if-empty pyupgrade --py310-plus
 }
 
 
@@ -601,21 +601,21 @@ py-refurb () {
         return 1
     fi
     find . \
-    -name "*.py" \
-    ! -path "*/.git/*" \
-    ! -path "*/.tox/*" \
-    ! -path "*/.pytest_cache/*" \
-    ! -path "*/__pycache__/*" \
-    ! -path "*/devtools/*" \
-    ! -path "*/venv/*" \
-    -print0 \
-    | xargs --null --no-run-if-empty refurb \
-    --enable-all \
-    --python-version 3.9 \
-    --disable FURB107 \
-    --disable FURB173 \
-    --disable FURB183 \
-    --disable FURB184
+        -name "*.py" \
+        ! -path "*/.git/*" \
+        ! -path "*/.tox/*" \
+        ! -path "*/.pytest_cache/*" \
+        ! -path "*/__pycache__/*" \
+        ! -path "*/devtools/*" \
+        ! -path "*/venv/*" \
+        -print0 \
+        | xargs --null --no-run-if-empty refurb \
+        --enable-all \
+        --python-version 3.9 \
+        --disable FURB107 \
+        --disable FURB173 \
+        --disable FURB183 \
+        --disable FURB184
 }
 
 
