@@ -5,7 +5,10 @@
 ### Add Packages
 
 ```
+sudo apt install audacious
 sudo apt install build-essential
+sudo apt install btop
+sudo apt install htop
 sudo apt install python-dev
 sudo apt install gvfs-backends
 sudo apt install libfuse2 (needed for AppImages)
