@@ -549,7 +549,7 @@ alias w="weather"
 # count all files in current directory (recursive)
 countfiles () {
     if [ ! -x "$(type -pP git)" ]; then
-        err "can't find git"
+        err "git not found"
         return 1
     fi
     echo -n "files: "
@@ -681,7 +681,7 @@ pipx-install () {
         return 1
     fi
     if [ ! -x "$(type -pP pipx)" ]; then
-        err "pipx not installed"
+        err "pipx not found"
         return 1
     fi
     if [ -n "${VIRTUAL_ENV}" ]; then
@@ -700,7 +700,7 @@ pipx-install () {
 # - reinstalls apps if they don't match the current python interpreter version
 pipx-upgrade-all () {
     if [ ! -x "$(type -pP pipx)" ]; then
-        err "pipx not installed"
+        err "pipx not found"
         return 1
     fi
     if [ -n "${VIRTUAL_ENV}" ]; then
@@ -735,15 +735,46 @@ pipx-upgrade-all () {
 
 
 # preview markdown file in browser
-# - requires gitHub cli and gh-markdown-preview extension
+# - requires GitHub CLI (gh) and gh-markdown-preview extension
 #   - follow installation instructions at: https://github.com/cli/cli
 #   - install extension with: `gh extension install yusukebe/gh-markdown-preview`
 preview-md () {
     if [ ! -x "$(type -pP gh)" ]; then
-        err "can't find github cli"
+        err "GitHub CLI not found"
         return 1
     fi
     gh markdown-preview --light-mode "$1"
+}
+
+
+# resize all .jpg and .png images in the current directory to the specified pixel width
+#  - won't resize images that are smaller or the same size as the specified width
+#  - files are overwritten in-place
+# usage: shrink-images <width>
+shrink-images () {
+    if [ ! -x "$(type -pP magick)" ]; then
+        err "ImageMagick not found"
+        return 1
+    fi
+    if [ -z "$1" ]; then
+        err "please specify a width in pixels"
+        return 1
+    fi
+    local width="$1"
+    for f in *.[jJ][pP][gG] *.[pP][nN][gG]; do
+        [ -f "${f}" ] || continue
+        local actual_width=$(magick identify -format '%w' "${f}")
+        local dim_before=$(magick identify -format '%wx%h' "${f}")
+        if [ "${actual_width}" -le "${width}" ]; then
+            err "${f} is too small to resize: ${dim_before}"
+            break
+        fi
+        local size_before=$(stat -c%s "${f}" | numfmt --to=iec)
+        magick "${f}" -resize "${width}" "${f}"
+        local dim_after=$(magick identify -format '%wx%h' "${f}")
+        local size_after=$(stat -c%s "${f}" | numfmt --to=iec)
+        ok "resized ${f} from ${dim_before} (${size_before}) to ${dim_after} (${size_after})"
+    done
 }
 
 

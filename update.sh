@@ -10,16 +10,17 @@
 #    - bat (https://github.com/sharkdp/bat)
 #    - eza (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
-#    - gh (https://github.com/cli/cli)
+#    - gh (GitHub CLI - https://github.com/cli/cli)
 #    - jq (apt install)
+#    - magick (ImageMagick - apt install)
 #    - pandoc (https://github.com/jgm/pandoc)
 #    - pipx (pip install)
 #    - pyupgrade (pipx install)
 #    - refurb (pipx install)
-#    - rg (https://github.com/BurntSushi/ripgrep)
+#    - rg (ripgrep = https://github.com/BurntSushi/ripgrep)
 #    - ruby (apt install)
 #    - shellcheck (apt install)
-#    - sublime-text (https://sublimetext.com/docs/linux_repositories.html)
+#    - subl (Sublime Text - https://sublimetext.com/docs/linux_repositories.html)
 #
 #  - linux only:
 #    - cargo-cache (cargo install)
@@ -37,6 +38,7 @@
 
 set -e
 
+
 DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
 PANDOC_TEMPLATE_DIR="${HOME}/.pandoc"
@@ -53,6 +55,7 @@ DEPENDENCIES=(
     "fd"
     "gh"
     "jq"
+    "magick"
     "pandoc"
     "pipx"
     "pyupgrade"
