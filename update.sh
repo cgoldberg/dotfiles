@@ -7,17 +7,17 @@
 # install dependencies for full functionality:
 #
 #  - all platforms:
-#    - bat (https://github.com/sharkdp/bat)
+#    - bat (.deb from https://github.com/sharkdp/bat)
 #    - eza (cargo install)
-#    - fd (https://github.com/sharkdp/fd)
+#    - fd (.deb from https://github.com/sharkdp/fd)
 #    - gh (GitHub CLI - https://github.com/cli/cli)
 #    - jq (apt install)
-#    - magick (ImageMagick - apt install)
-#    - pandoc (https://github.com/jgm/pandoc)
+#    - magick (ImageMagick - .AppImage from https://github.com/ImageMagick/ImageMagick)
+#    - pandoc (.deb from https://github.com/jgm/pandoc)
 #    - pipx (pip install)
 #    - pyupgrade (pipx install)
 #    - refurb (pipx install)
-#    - rg (ripgrep = https://github.com/BurntSushi/ripgrep)
+#    - rg (ripgrep - .deb from https://github.com/BurntSushi/ripgrep)
 #    - ruby (apt install)
 #    - shellcheck (apt install)
 #    - subl (Sublime Text - https://sublimetext.com/docs/linux_repositories.html)
@@ -33,7 +33,7 @@
 #    - rsync (apt install)
 #
 #  - windows only:
-#    - alacritty (cargo install)
+#    - alacritty (scoop install)
 
 
 set -e
