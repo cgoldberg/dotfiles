@@ -68,20 +68,20 @@
     open = !gh repo view --web
 
     # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
-    tidy = "!f() { git fetch --prune --verbose && git prune --progress --verbose && git remote prune origin && git gc --prune=now; }; f"
+    tidy = "!f() { \
+        git fetch --prune --verbose && git prune --progress --verbose \
+            && git remote prune origin && git gc --prune=now; \
+    }; f"
 
     # sync remote with parent if in a fork, and rebase all local branches
     up = "!f() { git syncrepo; sleep 3; git sync; }; f"
 
     # list local branches with last commit date and commit hash, sorted by last modified
-    branches = "!f() { git for-each-ref --sort='-authordate' --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads \
-        | sed -e 's-refs/heads/--'; }; f"
-
-    # show contributor stats (similar to `git-score`)
-    # displays lines delta/added/removed for each author
-    contrib-stats = "!f() { git log --no-merges --no-show-signature --pretty=format:%an --numstat \
-        | awk '/./ && !author { author = $0; next } author { ins[author] += $1; del[author] += $2 } /^$/ { author = \"\"; next } END { for (a in ins) { printf \"%10d %10d %10d %s\\n\", ins[a] - del[a], ins[a], del[a], a } }' \
-        | sort -rn; }; f"
+    branches = "!f() { \
+        git for-each-ref --sort='-authordate' \
+            --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads \
+            | sed -e 's-refs/heads/--'; \
+    }; f"
 
 
 # overrides for Windows/ADO
