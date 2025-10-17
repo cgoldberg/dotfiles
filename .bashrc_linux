@@ -201,7 +201,7 @@ killblog () {
     if [[ $(psgrep "${jekyll_proc}") ]]; then
         echo "killing server at: ${jekyll_server}"
         pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
-        psgrep "${jekyll_proc}"
+        psgrep "${jekyll_proc}" | grep -v grep
     fi
 }
 
