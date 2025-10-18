@@ -42,3 +42,31 @@ sudo setupcon
 sudo update-initramfs -u
 ```
 
+----
+
+### Build ImageMagick from source
+
+install deps:
+
+```
+sudo apt install libjpeg-dev libpng-dev
+```
+
+build and install:
+
+```
+git clone https://github.com/ImageMagick/ImageMagick.git
+cd ImageMagick
+./configure
+make
+sudo make install
+sudo ldconfig /usr/local/lib
+```
+
+uninstall:
+
+```
+sudo make uninstall
+```
+
+
