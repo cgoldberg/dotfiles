@@ -255,6 +255,7 @@ update-pyenv () {
         deactivate
     fi
     echo
+    pyenv global system
     echo "updating pyenv ..."
     pyenv update
     pyenv rehash
