@@ -273,7 +273,8 @@ update-pyenv () {
         echo "installed $(python3 --version)"
         echo
         echo "updating pip ..."
-        PIP_REQUIRE_VIRTUALENV=false python3 -m pip install --upgrade pip
+        PIP_REQUIRE_VIRTUALENV=false python3 -m pip install --upgrade \
+            --upgrade-strategy=eager pip
         echo
     done
     pyenv rehash

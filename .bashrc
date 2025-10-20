@@ -262,14 +262,14 @@ alias py="python"
 # install python package globally
 gpip-install () {
     PIP_REQUIRE_VIRTUALENV=false \
-    python -m pip install --user --upgrade --upgrade-strategy=eager "$@"
+        python -m pip install --user --upgrade --upgrade-strategy=eager "$@"
 }
 
 
 # uninstall python package globally
 gpip-uninstall () {
     PIP_REQUIRE_VIRTUALENV=false \
-    python -m pip uninstall "$@"
+        python -m pip uninstall "$@"
 }
 
 
@@ -278,7 +278,7 @@ alias pip-uninstall-all="\
     python -m pip freeze \
         | sed 's/^-e //g' \
         | PIP_REQUIRE_VIRTUALENV=false \
-        xargs --no-run-if-empty python -m pip uninstall -y"
+            xargs --no-run-if-empty python -m pip uninstall -y"
 
 
 # show the zen of python
