@@ -190,7 +190,8 @@ alias grep="\grep --color=always"
 
 
 # pagers
-alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr --RAW-CONTROL-CHARS"
+alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen \
+    --quit-on-intr --RAW-CONTROL-CHARS"
 alias more="less"
 
 
@@ -208,7 +209,8 @@ alias which="type"
 
 
 # shell script static analysis
-alias shellcheck="shellcheck --color=always --shell=bash --exclude=SC1090,SC1091,SC2155"
+alias shellcheck="shellcheck --color=always --shell=bash \
+    --exclude=SC1090,SC1091,SC2155"
 
 
 # extract a tarball
@@ -218,6 +220,33 @@ alias untar="tar zxvf"
 # clear screen and scrollback buffer
 alias cls="clear"
 alias c="clear"
+
+
+# list directory contents
+alias ls="LC_ALL=C \ls --almost-all --classify --group-directories-first \
+    --color=always"
+alias ll="LC_ALL=C \ls -l --almost-all --classify --group-directories-first \
+    --human-readable --no-group --color=always"
+if [ -x "$(type -pP eza)" ]; then
+    alias l="eza --all --git --git-repos-no-status --group-directories-first \
+        --header --long --modified --no-quotes --classify=always --sort=Name \
+        --time-style=long-iso"
+fi
+
+
+# editors (sublime/vim)
+if [ -x "$(type -pP subl)" ]; then
+    alias edit="subl"
+    alias ed="subl"
+    alias e="subl --new-window ."
+else
+    alias edit="vi"
+    alias ed="vi"
+    alias e="vi ."
+fi
+
+# open ~/.bashrc for editing
+alias ebrc="edit ${HOME}/.bashrc"
 
 
 # better cat
@@ -232,56 +261,32 @@ alias py="python"
 
 # install python package globally
 gpip-install () {
-    PIP_REQUIRE_VIRTUALENV=false pip install --user --upgrade --upgrade-strategy=eager "$@"
+    PIP_REQUIRE_VIRTUALENV=false \
+    python -m pip install --user --upgrade --upgrade-strategy=eager "$@"
 }
 
 
 # uninstall python package globally
 gpip-uninstall () {
-    PIP_REQUIRE_VIRTUALENV=false pip uninstall "$@"
+    PIP_REQUIRE_VIRTUALENV=false \
+    python -m pip uninstall "$@"
 }
+
+
+# uninstall all python packages in current environment
+alias pip-uninstall-all="\
+    python -m pip freeze \
+        | sed 's/^-e //g' \
+        | PIP_REQUIRE_VIRTUALENV=false \
+        xargs --no-run-if-empty python -m pip uninstall -y"
 
 
 # show the zen of python
 alias zen="python3 -c 'import this'"
 
 
-# uninstall all python packages in current environment
-alias pip-uninstall-all="\
-    pip freeze \
-        | sed 's/^-e //g' \
-        | PIP_REQUIRE_VIRTUALENV=false xargs --no-run-if-empty pip uninstall -y"
-
-
 # serve current directory over HTTP on port 8000 (bind all interfaces)
 alias webserver="python3 -m http.server"
-
-
-# list directory contents
-alias ls="\
-    LC_ALL=C \ls --almost-all --classify --group-directories-first --color=always"
-alias ll="\
-    LC_ALL=C \ls -l --almost-all --classify --group-directories-first\
-    --human-readable --no-group --color=always"
-alias l="\
-        eza --all --git --git-repos-no-status --group-directories-first --header\
-        --long --modified --no-quotes --classify=always --sort=Name --time-style=long-iso"
-
-
-# editors (sublime/vim)
-if [ -x "$(type -pP subl)" ]; then
-    alias edit="subl"
-    alias ed="subl"
-    alias e="subl --new-window ."
-else
-    alias edit="vi"
-    alias ed="vi"
-    alias e="vi ."
-fi
-
-
-# open ~/.bashrc for editing
-alias ebrc="edit ${HOME}/.bashrc"
 
 
 # --------------------------------- FUNCTIONS ---------------------------------
@@ -339,7 +344,9 @@ dff () {
         err "please enter 2 files to diff"
         return 1
     fi
-    \diff --report-identical-files --strip-trailing-cr --color=always "$1" "$2" | less
+    \diff --report-identical-files --strip-trailing-cr \
+        --color=always "$1" "$2" \
+        | less
 }
 alias diff="dff"
 
@@ -566,14 +573,15 @@ countfiles () {
 psgrep () {
     if [ -n "$1" ]; then
         ps -ef \
-            | \grep --color=always --extended-regexp --ignore-case "$1" | nowrap
+            | \grep --color=always --extended-regexp --ignore-case "$1" \
+            | nowrap
     else
         ps -ef
     fi
 }
 
 
-# run pyupgrade against all python files in current directory (recursive),
+# run pyupgrade against all python files in current directory (recursive)
 # and fix recommendations in-place
 py-upgrade () {
     if [ ! -x "$(type -pP pyupgrade)" ]; then
@@ -593,7 +601,7 @@ py-upgrade () {
 }
 
 
-# run refurb against all python files in current directory (recursive),
+# run refurb against all python files in current directory (recursive)
 # and display recommendations
 py-refurb () {
     if [ ! -x "$(type -pP refurb)" ]; then
@@ -622,7 +630,8 @@ py-refurb () {
 # upgrade pip and clean pip/pipx cache
 clean-pip () {
     echo "upgrading pip, cleaning pip/pipx cache ..."
-    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade --upgrade-strategy=eager pip
+    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade \
+        --upgrade-strategy=eager pip
     pip cache purge
     local dirs=(
         "${HOME}/.cache/pip-tools/"
@@ -668,12 +677,14 @@ clean-py () {
     done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
-        \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" --exec rm -r
+            \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" \
+                 --exec rm -r
     done
 }
 
 
-# install python application in isoloated environment with current python interpreter
+# install a python application in an isoloated environment with the
+# current global interpreter
 # usage: pipx-install <package>
 pipx-install () {
     if [ -z "$1" ]; then
@@ -708,16 +719,18 @@ pipx-upgrade-all () {
         deactivate
     fi
     echo "upgrading pip ..."
-    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade --upgrade-strategy=eager pip
+    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade \
+        --upgrade-strategy=eager pip
     echo "upgrading pipx ..."
-    PIP_REQUIRE_VIRTUALENV=false pip install --user --upgrade --upgrade-strategy=eager pipx
+    PIP_REQUIRE_VIRTUALENV=false pip install --user --upgrade \
+        --upgrade-strategy=eager pipx
     local py_version=$(python3 --version)
     local pipx_list_output=$(pipx list)
     echo "upgrading pipx apps ..."
     if [[ "${pipx_list_output}" == *"${py_version}"* ]]; then
         pipx upgrade-all
     else
-        echo "package versions don't match python version. reinstalling packages ..."
+        echo "app versions don't match interpreter. reinstalling packages ..."
         echo
         if [ -d "${HOME}/.pyenv" ]; then
             pipx reinstall-all --python "$(pyenv which python)"
@@ -747,8 +760,9 @@ preview-md () {
 }
 
 
-# resize all .jpg and .png images in the current directory to the specified pixel width
-#  - won't resize images that are smaller or the same size as the specified width
+# resize all .jpg and .png images in the current directory to
+# specified pixel width
+#  - won't resize images that are already the same or smaller width
 #  - files are overwritten in-place
 # usage: shrink-images <width>
 shrink-images () {
@@ -773,7 +787,8 @@ shrink-images () {
         magick "${f}" -resize "${width}" "${f}"
         local dim_after=$(magick identify -format '%wx%h' "${f}")
         local size_after=$(stat -c%s "${f}" | numfmt --to=iec)
-        ok "resized ${f} from ${dim_before} (${size_before}) to ${dim_after} (${size_after})"
+        ok "resized ${f} from ${dim_before} \
+            (${size_before}) to ${dim_after} (${size_after})"
     done
 }
 
