@@ -163,6 +163,25 @@ HISTFILESIZE=9999
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
 
+# ruby gems
+if [ -d "${HOME}/.gems" ]; then
+    export GEM_HOME="${HOME}/.gems"
+    export PATH="${PATH}:${HOME}/.gems/bin"
+fi
+
+
+# rust/cargo - https://rustup.rs
+if [ -d "${HOME}/.cargo" ]; then
+    source "${HOME}/.cargo/env"
+fi
+
+
+# pipx
+if [ -x "$(type -pP pipx)" ]; then
+    eval "$(register-python-argcomplete pipx)"
+fi
+
+
 # ---------------------------------- ALIASES ----------------------------------
 
 
@@ -812,8 +831,8 @@ load-bash-configs () {
 load-bash-configs
 
 
-# add local bin directories to beginning of PATH if they exist and
-# are not already on PATH
+# add local bin directories to the end of PATH if they
+# don't exist in PATH
 add-bins () {
     local bin_dirs=(
         "${HOME}/.local/bin"
@@ -822,7 +841,7 @@ add-bins () {
     for d in "${bin_dirs[@]}"; do
         mkdir --parents "${d}"
         if [[ "${PATH}" != *"${d}"* ]]; then
-            export PATH="${d}:${PATH}"
+            export PATH="${PATH}:${d}"
         fi
     done
 }

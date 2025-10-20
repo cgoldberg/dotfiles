@@ -287,25 +287,6 @@ update-pyenv () {
 # -----------------------------------------------------------------------------
 
 
-# ruby gems
-if [ -d "${HOME}/.gems" ]; then
-    export GEM_HOME="${HOME}/.gems"
-    export PATH="${PATH}:${HOME}/.gems/bin"
-fi
-
-
-# rust/cargo - https://rustup.rs
-if [ -d "${HOME}/.cargo" ]; then
-    source "${HOME}/.cargo/env"
-fi
-
-
-# pipx
-if [ -x "$(type -pP pipx)" ]; then
-    eval "$(register-python-argcomplete pipx)"
-fi
-
-
 # pyenv
 if [ -d "${HOME}/.pyenv" ]; then
     export PYENV_ROOT="${HOME}/.pyenv"
