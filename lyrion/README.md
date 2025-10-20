@@ -11,12 +11,14 @@
 - Paste the Docker Compose configuration YAML (lyrion.yml)
 - Click "Validate" to ensure the syntax is correct
 - Click "Create" (once created, you should see the new application in the list)
-- Setup bridge mode networking
+- Set restart policy and configure bridge mode networking
   - By default, Container Station exposes only one port per application in a NAT
     configuration. Lyrion uses multiple ports, so we use "bridge mode":
   - Go to "Containers"
   - You'll see one container running (usually something like "lyrion-lms-1")
   - Click the action cog wheel at the right of the container, and select "Edit"
+  - Click the "General" tab
+  - Choose "Always" for "Restart policy"
   - Click the "Network" tab
   - Click the bin icon to delete the default network
   - Click "Add" to create a new network

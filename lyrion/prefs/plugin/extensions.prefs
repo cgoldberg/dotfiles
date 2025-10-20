@@ -1,6 +1,6 @@
 ---
 _ts_auto: 1755278718
-_ts_plugin: 1759356674
+_ts_plugin: 1760973743
 _ts_repos: 1755277615
 _ts_useUnsupported: 1755277615
 _version: 4
@@ -9,6 +9,5 @@ plugin:
   ClientCleanup: 1
   CommunityFirmware: 1
   MaterialSkin: 1
-  PowerSave: 1
 repos: []
 useUnsupported: 0

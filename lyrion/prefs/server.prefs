@@ -17,7 +17,7 @@ _client:00:04:20:23:82:6f:
   _ts_balance: 1755281367
   _ts_bass: 1755281367
   _ts_bufferThreshold: 1755281367
-  _ts_currentSong: 1759356718
+  _ts_currentSong: 1760971606
   _ts_defeatDestructiveTouchToPlay: 1755281381
   _ts_digitalVolumeControl: 1755281443
   _ts_disableDac: 1755281367
@@ -42,10 +42,10 @@ _client:00:04:20:23:82:6f:
   _ts_pitch: 1755281367
   _ts_playDelay: 1755281367
   _ts_playername: 1755281367
-  _ts_playingAtPowerOff: 1759491799
+  _ts_playingAtPowerOff: 1760960492
   _ts_playtrackalbum: 1755281381
   _ts_positionAtDisconnect: 1759099244
-  _ts_power: 1759700054
+  _ts_power: 1760961196
   _ts_powerOnResume: 1755281443
   _ts_preampVolumeControl: 1755281367
   _ts_presets: 1755281367
@@ -86,7 +86,7 @@ _client:00:04:20:23:82:6f:
   balance: 0
   bass: 50
   bufferThreshold: 255
-  currentSong: ~
+  currentSong: 11
   defeatDestructiveTouchToPlay: '4'
   digitalVolumeControl: '0'
   disableDac: 0
@@ -163,7 +163,7 @@ _ts_Squeezebox-expanded-MY_MUSIC: 1755284408
 _ts_Squeezebox-expanded-PLUGINS: 1755285366
 _ts_Squeezebox-expanded-PLUGIN_MY_APPS_MODULE_NAME: 1755278122
 _ts_Squeezebox-expanded-RADIO: 1755278122
-_ts_additionalPlaylistButtons: 1755278376
+_ts_additionalPlaylistButtons: 1760972741
 _ts_albumartistAlbumLink: 1757299663
 _ts_allowedHosts: 1757298744
 _ts_artfolder: 1755277615
@@ -179,8 +179,8 @@ _ts_browseagelimit: 1755278303
 _ts_bufferSecs: 1755277615
 _ts_cachedir: 1755277615
 _ts_checkVersion: 1755553003
-_ts_checkVersionInterval: 1755277615
-_ts_checkVersionLastTime: 1759698084
+_ts_checkVersionInterval: 1760972889
+_ts_checkVersionLastTime: 1760907700
 _ts_cleanupReleaseTypes: 1757299663
 _ts_composerAlbumLink: 1755278303
 _ts_composerInArtists: 1755277615
@@ -189,14 +189,14 @@ _ts_conductorInArtists: 1755277615
 _ts_corsAllowedHosts: 1755279387
 _ts_coverArt: 1755277615
 _ts_csrfProtectionLevel: 1755277615
-_ts_customArtSpecs: 1759700679
+_ts_customArtSpecs: 1760973764
 _ts_dbhighmem: 1757298863
 _ts_dbjournalsize: 1755277615
 _ts_dbpassword: 1755277615
 _ts_dbsource: 1755277617
 _ts_dbusername: 1755277615
 _ts_defeatDestructiveTouchToPlay: 1755277615
-_ts_disableStatistics: 1755279358
+_ts_disableStatistics: 1760972866
 _ts_disabledextensionsaudio: 1755277615
 _ts_disabledextensionsplaylist: 1755277615
 _ts_disabledformats: 1755277615
@@ -208,13 +208,13 @@ _ts_groupdiscs: 1755278303
 _ts_guessFileFormats: 1755279191
 _ts_httpport: 1755277615
 _ts_ignoreDirRE: 1755277615
-_ts_ignoreInAudioScan: 1759700722
+_ts_ignoreInAudioScan: 1760972770
 _ts_ignoreInImageScan: 1755277615
 _ts_ignoreInVideoScan: 1755277615
 _ts_ignoreReleaseTypes: 1755278303
 _ts_ignoredarticles: 1755277615
 _ts_insecureHTTPS: 1757298876
-_ts_itemsPerPage: 1755278376
+_ts_itemsPerPage: 1760972741
 _ts_jivealbumsort: 1755277615
 _ts_language: 1755277615
 _ts_librarycachedir: 1755277615
@@ -223,7 +223,7 @@ _ts_longdateFormat: 1755278376
 _ts_maxPlaylistLength: 1755279363
 _ts_maxRedirects: 1755277615
 _ts_maxWMArate: 1755277615
-_ts_mediadirs: 1759463733
+_ts_mediadirs: 1760971263
 _ts_myClassicalGenres: 1755278303
 _ts_noGenreFilter: 1755278303
 _ts_noRoleFilter: 1755278303
@@ -253,7 +253,7 @@ _ts_rank-SAVED_PLAYLISTS: 1755277615
 _ts_rank-SEARCH: 1755277615
 _ts_ratingImplementation: 1757299795
 _ts_refreshRate: 1755277615
-_ts_registeredhandlers: 1759700722
+_ts_registeredhandlers: 1760972770
 _ts_releaseTypesToIgnore: 1757299663
 _ts_remotestreamtimeout: 1755277615
 _ts_reshuffleOnRepeat: 1755278303
@@ -267,20 +267,20 @@ _ts_shortdateFormat: 1755277615
 _ts_showArtist: 1755277615
 _ts_showComposerReleasesbyAlbum: 1755277615
 _ts_showYear: 1755277615
-_ts_skin: 1755482599
+_ts_skin: 1760972741
 _ts_skipsentinel: 1755278303
 _ts_splitList: 1755277615
 _ts_tcpConnectMaximum: 1755277615
 _ts_thumbSize: 1755277615
 _ts_timeFormat: 1755277615
-_ts_titleFormat: 1755482599
+_ts_titleFormat: 1760972741
 _ts_titleFormatWeb: 1755278376
 _ts_trackartistAlbumLink: 1755278303
 _ts_trackartistInArtists: 1755277615
 _ts_udpChunkSize: 1755277615
 _ts_useBalancedShuffle: 1755277615
 _ts_useEnhancedHTTP: 1755279316
-_ts_useLocalImageproxy: 1755277615
+_ts_useLocalImageproxy: 1760972828
 _ts_useTPE2AsAlbumArtist: 1755277615
 _ts_useUnifiedArtistsList: 1757298674
 _ts_userDefinedRoles: 1757299663
@@ -307,8 +307,8 @@ browseagelimit: '99999'
 bufferSecs: 3
 cachedir: /config/cache
 checkVersion: 1
-checkVersionInterval: 86400
-checkVersionLastTime: 1759698084.92145
+checkVersionInterval: '604800'
+checkVersionLastTime: 1760907700.49289
 cleanupReleaseTypes:
 - '1'
 - '1'
@@ -329,7 +329,7 @@ dbpassword: ''
 dbsource: dbi:SQLite:dbname=/config/cache/library.db
 dbusername: slimserver
 defeatDestructiveTouchToPlay: 4
-disableStatistics: '1'
+disableStatistics: '0'
 disabledextensionsaudio: ''
 disabledextensionsplaylist: ''
 disabledformats: []
@@ -349,7 +349,7 @@ ignoreInVideoScan:
 ignoreReleaseTypes: '1'
 ignoredarticles: The El La Los Las Le Les
 insecureHTTPS: 0
-itemsPerPage: '200'
+itemsPerPage: '250'
 jivealbumsort: album
 language: EN
 librarycachedir: /config/cache
@@ -359,7 +359,7 @@ maxPlaylistLength: '99999'
 maxRedirects: 7
 maxWMArate: 9999
 mediadirs:
-- /music/MP3
+- /music/FLAC
 myClassicalGenres: ''
 noGenreFilter: '1'
 noRoleFilter: '1'
@@ -390,17 +390,17 @@ rank-SEARCH: 3
 ratingImplementation: LOCAL_RATING_STORAGE
 refreshRate: 30
 registeredhandlers:
-- db
-- tmp
-- http
-- icy
 - https
-- mms
-- playlist
-- spdr
-- file
-- randomplay
+- icy
 - source
+- http
+- mms
+- db
+- randomplay
+- file
+- tmp
+- spdr
+- playlist
 releaseTypesToIgnore:
 - SINGLE
 - OTHER
@@ -440,7 +440,7 @@ trackartistInArtists: 0
 udpChunkSize: 1400
 useBalancedShuffle: 1
 useEnhancedHTTP: '0'
-useLocalImageproxy: 2
+useLocalImageproxy: '1'
 useTPE2AsAlbumArtist: 1
 useUnifiedArtistsList: '0'
 userDefinedRoles: {}
