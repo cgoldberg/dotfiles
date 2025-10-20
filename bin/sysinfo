@@ -1,36 +1,44 @@
 #!/usr/bin/env bash
 #
-# sysinfo - display system information
+# sysinfo - display Linux system information
 
-GREY="\033[1;37m"
+get_cpu_info () {
+    local cpu_count="$(grep -c processor /proc/cpuinfo)"
+    local cpu_model="$(grep -m1 -i 'model name' /proc/cpuinfo | awk -F ': ' '{print $2}')"
+    if [ -z "${cpu_model}" ]; then
+        local cpu_model="$(grep -m1 -i 'model' /proc/cpuinfo | awk -F ': ' '{print $2}')"
+    fi
+    echo -e "${cpu_count} x ${cpu_model}"
+}
+
+GRAY="\033[1;37m"
 PURPLE="\033[1;35m"
 GREEN="\033[1;32m"
 
-C1="${GREY}"
-C2="${PURPLE}"
-C3="${GREEN}"
-
-HOST=$(hostname --long)
-IP=$(hostname --all-ip-addresses | awk '{print $1}')
-UPTIME="$(uptime -p | cut -d ' ' -f 2-) (since $(uptime -s))"
-DISTRIBUTION=$(lsb_release -s -d)
-KERNEL=$(uname -r)
-PLATFORM=$(uname -m)
-CPUCOUNT=$(grep -c processor /proc/cpuinfo)
-CPUMODEL=$(grep -m1 -E 'model name' /proc/cpuinfo | awk -F ': ' '{print $2}')
-PROCS=$(ps -e --no-header | grep -E -v 'ps$|grep$|wc$' | wc -l)
-MEM=$(free -m | awk '/^Mem:/{printf "%.2fG Free of %.2fG Total",$4/1024,$2/1024}')
-DISK=$(df --human-readable --local --si --sync / | grep -v 'Filesystem' | awk '{printf "%s Used of %s Total (%s)",$3,$2,$5}')
+HOST="$(hostname --long)"
+IP="$(hostname --all-ip-addresses | awk '{print $1}')"
+UPTIME="$(uptime -p | cut -d ' ' -f 2-)"
+DISTRIBUTION="$(lsb_release -s -d)"
+KERNEL="$(uname -r)"
+PLATFORM="$(uname -m)"
+CPUCOUNT="$(grep -c processor /proc/cpuinfo)"
+CPU="$(get_cpu_info)"
+PROCS="$(ps -e --no-header | grep -E -v 'ps$|grep$|wc$' | wc -l)"
+MEM="$(free -m \
+    | awk '/^Mem:/{printf "%.2fG Free of %.2fG Total", $4/1024, $2/1024}')"
+DISK="$(df --human-readable --local --si --sync / \
+    | grep -v 'Filesystem' \
+    | awk '{printf "%s Used of %s Total (%s)", $3, $2, $5}')"
 
 echo -e "
-${C1}        Host ${C2}= ${C3}${HOST}
-${C1}          IP ${C2}= ${C3}${IP}
-${C1}      Uptime ${C2}= ${C3}${UPTIME}
-${C1}      Distro ${C2}= ${C3}${DISTRIBUTION}
-${C1}      Kernel ${C2}= ${C3}${KERNEL}
-${C1}    Platform ${C2}= ${C3}${PLATFORM}
-${C1}         CPU ${C2}= ${C3}${CPUCOUNT} x ${CPUMODEL}
-${C1}      Memory ${C2}= ${C3}${MEM}
-${C1}        Disk ${C2}= ${C3}${DISK}
-${C1}       Procs ${C2}= ${C3}${PROCS}
+${GRAY}        Host ${PURPLE}= ${GREEN}${HOST}
+${GRAY}          IP ${PURPLE}= ${GREEN}${IP}
+${GRAY}      Uptime ${PURPLE}= ${GREEN}${UPTIME}
+${GRAY}      Distro ${PURPLE}= ${GREEN}${DISTRIBUTION}
+${GRAY}      Kernel ${PURPLE}= ${GREEN}${KERNEL}
+${GRAY}    Platform ${PURPLE}= ${GREEN}${PLATFORM}
+${GRAY}         CPU ${PURPLE}= ${GREEN}${CPU}
+${GRAY}      Memory ${PURPLE}= ${GREEN}${MEM}
+${GRAY}        Disk ${PURPLE}= ${GREEN}${DISK}
+${GRAY}       Procs ${PURPLE}= ${GREEN}${PROCS}
 "
