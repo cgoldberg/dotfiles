@@ -1,13 +1,13 @@
 Types: deb deb-src
 URIs: https://deb.debian.org/debian
 Suites: bookworm bookworm-updates bookworm-backports
-Components: main contrib non-free-firmware non-free
+Components: main contrib non-free non-free-firmware
 Enabled: yes
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
 Types: deb deb-src
 URIs: https://security.debian.org/debian-security
 Suites: bookworm-security
-Components: main contrib non-free-firmware non-free
+Components: main contrib non-free non-free-firmware
 Enabled: yes
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
