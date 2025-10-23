@@ -11,6 +11,7 @@
 #    - eza (cargo install)
 #    - fd (.deb from https://github.com/sharkdp/fd)
 #    - gh (GitHub CLI - https://github.com/cli/cli)
+#    - git-who (https://github.com/sinclairtarget/git-who)
 #    - jq (apt install)
 #    - magick (ImageMagick - .AppImage from https://github.com/ImageMagick/ImageMagick)
 #    - pandoc (.deb from https://github.com/jgm/pandoc)
