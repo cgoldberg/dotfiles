@@ -114,6 +114,7 @@ LINUX_SCRIPTS=(
 )
 GIT_SCRIPTS=(
     "git-clean-untracked"
+    "git-contribs"
     "git-info"
     "git-obliterate-repo"
     "git-prs"
