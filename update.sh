@@ -55,6 +55,7 @@ DEPENDENCIES=(
     "eza"
     "fd"
     "gh"
+    "git-who"
     "jq"
     "magick"
     "pandoc"
