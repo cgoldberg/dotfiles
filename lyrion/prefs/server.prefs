@@ -17,8 +17,8 @@ _client:00:04:20:23:82:6f:
   _ts_balance: 1755281367
   _ts_bass: 1755281367
   _ts_bufferThreshold: 1755281367
-  _ts_currentSong: 1760971606
-  _ts_defeatDestructiveTouchToPlay: 1755281381
+  _ts_currentSong: 1761280904
+  _ts_defeatDestructiveTouchToPlay: 1761245978
   _ts_digitalVolumeControl: 1755281443
   _ts_disableDac: 1755281367
   _ts_disabledirsets: 1755281367
@@ -42,15 +42,15 @@ _client:00:04:20:23:82:6f:
   _ts_pitch: 1755281367
   _ts_playDelay: 1755281367
   _ts_playername: 1755281367
-  _ts_playingAtPowerOff: 1760960492
+  _ts_playingAtPowerOff: 1761256613
   _ts_playtrackalbum: 1755281381
   _ts_positionAtDisconnect: 1759099244
-  _ts_power: 1760961196
+  _ts_power: 1761280061
   _ts_powerOnResume: 1755281443
   _ts_preampVolumeControl: 1755281367
   _ts_presets: 1755281367
   _ts_remoteReplayGain: 1755281367
-  _ts_repeat: 1755881058
+  _ts_repeat: 1761046881
   _ts_replayGainMode: 1755281367
   _ts_screensaver: 1755281367
   _ts_screensavertimeout: 1755281367
@@ -59,7 +59,7 @@ _client:00:04:20:23:82:6f:
   _ts_scrollPauseDouble: 1755281367
   _ts_scrollRate: 1755281367
   _ts_scrollRateDouble: 1755281367
-  _ts_shuffle: 1757298904
+  _ts_shuffle: 1761046879
   _ts_snLastSyncDown: 1755281367
   _ts_snLastSyncUp: 1755281367
   _ts_snSyncInterval: 1755281367
@@ -70,7 +70,7 @@ _client:00:04:20:23:82:6f:
   _ts_titleFormatCurr: 1755281367
   _ts_transitionDuration: 1755284275
   _ts_transitionSampleRestriction: 1755281443
-  _ts_transitionSmart: 1755281367
+  _ts_transitionSmart: 1761245888
   _ts_transitionType: 1755281443
   _ts_treble: 1755281367
   _ts_volume: 1757813058
@@ -86,8 +86,8 @@ _client:00:04:20:23:82:6f:
   balance: 0
   bass: 50
   bufferThreshold: 255
-  currentSong: 11
-  defeatDestructiveTouchToPlay: '4'
+  currentSong: 0
+  defeatDestructiveTouchToPlay: '1'
   digitalVolumeControl: '0'
   disableDac: 0
   disabledirsets: []
@@ -137,7 +137,7 @@ _client:00:04:20:23:82:6f:
   scrollPauseDouble: 3.6
   scrollRate: 0.033
   scrollRateDouble: 0.033
-  shuffle: 0
+  shuffle: '0'
   snLastSyncDown: -1
   snLastSyncUp: -1
   snSyncInterval: 30
@@ -153,7 +153,7 @@ _client:00:04:20:23:82:6f:
   titleFormatCurr: 4
   transitionDuration: '6'
   transitionSampleRestriction: '0'
-  transitionSmart: 1
+  transitionSmart: '0'
   transitionType: '1'
   treble: 50
   volume: 100
@@ -189,7 +189,7 @@ _ts_conductorInArtists: 1755277615
 _ts_corsAllowedHosts: 1755279387
 _ts_coverArt: 1755277615
 _ts_csrfProtectionLevel: 1755277615
-_ts_customArtSpecs: 1760973764
+_ts_customArtSpecs: 1761280494
 _ts_dbhighmem: 1757298863
 _ts_dbjournalsize: 1755277615
 _ts_dbpassword: 1755277615
@@ -208,7 +208,7 @@ _ts_groupdiscs: 1755278303
 _ts_guessFileFormats: 1755279191
 _ts_httpport: 1755277615
 _ts_ignoreDirRE: 1755277615
-_ts_ignoreInAudioScan: 1760972770
+_ts_ignoreInAudioScan: 1761280904
 _ts_ignoreInImageScan: 1755277615
 _ts_ignoreInVideoScan: 1755277615
 _ts_ignoreReleaseTypes: 1755278303
@@ -223,7 +223,7 @@ _ts_longdateFormat: 1755278376
 _ts_maxPlaylistLength: 1755279363
 _ts_maxRedirects: 1755277615
 _ts_maxWMArate: 1755277615
-_ts_mediadirs: 1760971263
+_ts_mediadirs: 1761280095
 _ts_myClassicalGenres: 1755278303
 _ts_noGenreFilter: 1755278303
 _ts_noRoleFilter: 1755278303
@@ -253,7 +253,7 @@ _ts_rank-SAVED_PLAYLISTS: 1755277615
 _ts_rank-SEARCH: 1755277615
 _ts_ratingImplementation: 1757299795
 _ts_refreshRate: 1755277615
-_ts_registeredhandlers: 1760972770
+_ts_registeredhandlers: 1761280904
 _ts_releaseTypesToIgnore: 1757299663
 _ts_remotestreamtimeout: 1755277615
 _ts_reshuffleOnRepeat: 1755278303
@@ -390,17 +390,17 @@ rank-SEARCH: 3
 ratingImplementation: LOCAL_RATING_STORAGE
 refreshRate: 30
 registeredhandlers:
-- https
-- icy
 - source
-- http
-- mms
+- spdr
+- icy
+- tmp
 - db
+- playlist
+- mms
 - randomplay
 - file
-- tmp
-- spdr
-- playlist
+- http
+- https
 releaseTypesToIgnore:
 - SINGLE
 - OTHER
