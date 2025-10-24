@@ -176,6 +176,12 @@ if [ -d "${HOME}/.cargo" ]; then
 fi
 
 
+# golang
+if [ -d "/usr/local/go" ]; then
+    export PATH="${PATH}:/usr/local/go/bin"
+fi
+
+
 # pipx
 if [ -x "$(type -pP pipx)" ]; then
     eval "$(register-python-argcomplete pipx)"
