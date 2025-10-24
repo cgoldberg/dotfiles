@@ -5,13 +5,18 @@
 ### Install Packages
 
 ```
-sudo apt install audacious
-sudo apt install build-essential
-sudo apt install btop
-sudo apt install htop
-sudo apt install gvfs-backends
-sudo apt install libfuse2 # (needed for AppImages)
-sudo apt install python-is-python3
+sudo apt install audacious -y
+sudo apt install build-essential -y
+sudo apt install btop -y
+sudo apt install fonts-ubuntu -y
+sudo apt install fonts-ubuntu-console -y
+sudo apt install gnome-terminal -y
+sudo apt install htop -y
+sudo apt install gvfs-backends -y
+sudo apt install libfuse2 -y # (needed for AppImages)
+sudo apt install python-is-python3 -y
+sudo apt install python-dev-is-python3 -y
+sudo apt install python3-dev -y
 ```
 
 ### Install dependencies for building Python from source with all optional modules
