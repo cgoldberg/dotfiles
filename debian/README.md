@@ -25,8 +25,8 @@ sudo apt install python3-dev -y
 sudo apt build-dep python3
 sudo apt install build-essential python3-dev python-dev-is-python3 \
     gdb lcov pkg-config libbz2-dev libffi-dev libgdbm-dev libgdbm-compat-dev \
-    liblzma-dev libncurses5-dev libreadline6-dev libsqlite3-dev libssl-dev \
-    lzma lzma-dev tk-dev uuid-dev zlib1g-dev libzstd-dev inetutils-inetd
+    liblzma-dev libncurses-dev libreadline-dev libsqlite3-dev libssl-dev \
+    lzma tk-dev uuid-dev zlib1g-dev libzstd-dev inetutils-inetd
 ```
 
 ----
