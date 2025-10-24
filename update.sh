@@ -11,7 +11,6 @@
 #    - eza (cargo install)
 #    - fd (.deb from https://github.com/sharkdp/fd)
 #    - gh (GitHub CLI - https://github.com/cli/cli)
-#    - go (https://go.dev/doc/install)
 #    - git-who (https://github.com/sinclairtarget/git-who)
 #    - jq (apt install)
 #    - magick (ImageMagick - .AppImage from https://github.com/ImageMagick/ImageMagick)
@@ -28,6 +27,7 @@
 #    - cargo-cache (cargo install)
 #    - exiv2 (apt install)
 #    - githubtakeout (pipx install)
+#    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install)
 #    - java (apt install)
 #    - pyenv (https://github.com/pyenv/pyenv)
@@ -57,7 +57,6 @@ DEPENDENCIES=(
     "fd"
     "gh"
     "git-who"
-    "go"
     "jq"
     "magick"
     "pandoc"
@@ -73,6 +72,7 @@ DEPENDENCIES_LINUX=(
     "cargo-cache"
     "exiv2"
     "githubtakeout"
+    "go"
     "google_drive_export"
     "java"
     "pyenv"
