@@ -31,6 +31,10 @@ alias watch="watch "
 alias x="history -n; history -w; exit"
 
 
+# look all busy and fancy to non-technical people
+alias busy="cat /dev/urandom | hexdump -C | \grep --color=always 'ca fe'"
+
+
 # disk space
 alias df="\df --human-readable --local --sync"
 alias ds="diskspace"
