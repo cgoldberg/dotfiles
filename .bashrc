@@ -499,10 +499,11 @@ rg () {
     if [ -n "${rg_bin+x}" ]; then # using ripgrep
         local escaped_pattern=$(sed 's/./\\&/g' <<<"$1")
         eval "${rg_bin}" \
+            --crlf \
             --hidden \
             --ignore-case \
+            --ignore-vcs \
             --line-number \
-            --no-heading \
             --no-ignore \
             --no-messages \
             --one-file-system \
