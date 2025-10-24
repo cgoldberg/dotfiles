@@ -11,6 +11,7 @@
 #    - eza (cargo install)
 #    - fd (.deb from https://github.com/sharkdp/fd)
 #    - gh (GitHub CLI - https://github.com/cli/cli)
+#    - go (https://go.dev/doc/install)
 #    - git-who (https://github.com/sinclairtarget/git-who)
 #    - jq (apt install)
 #    - magick (ImageMagick - .AppImage from https://github.com/ImageMagick/ImageMagick)
@@ -56,6 +57,7 @@ DEPENDENCIES=(
     "fd"
     "gh"
     "git-who"
+    "go"
     "jq"
     "magick"
     "pandoc"
