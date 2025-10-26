@@ -656,7 +656,7 @@ py-refurb () {
 # upgrade pip and clean pip/pipx cache
 clean-pip () {
     echo "upgrading pip, cleaning pip/pipx cache ..."
-    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade \
+    PIP_REQUIRE_VIRTUALENV=false python -m pip install --upgrade \
         --upgrade-strategy=eager pip
     pip cache purge
     local dirs=(
@@ -745,7 +745,7 @@ pipx-upgrade-all () {
         deactivate
     fi
     echo "upgrading pip ..."
-    PIP_REQUIRE_VIRTUALENV=false pip install --upgrade \
+    PIP_REQUIRE_VIRTUALENV=false python -m pip install --upgrade \
         --upgrade-strategy=eager pip
     echo "upgrading pipx ..."
     PIP_REQUIRE_VIRTUALENV=false pip install --user --upgrade \
