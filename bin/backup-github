@@ -5,12 +5,14 @@
 #  - sync files to remote storage (NAS mounted with GVfs/Samba)
 #
 # requires:
-#  - gvfs-backends (apt install)
-#  - githubtakeout (pipx install)
-#  - rsync (apt install)
+#  - gvfs-backends
+#  - rsync
+#  - githubtakeout
 
 set -e
 
+
+EXPECTED_HOST="penguin"
 NAS_HOST="bitz"
 NAS_IP="10.0.0.5"
 NAS_USERNAME="cgoldberg"
@@ -32,6 +34,13 @@ die () {
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+check_host () {
+    if [ "${HOSTNAME}" != "${EXPECTED_HOST}" ]; then
+        die "fatal: can't run on this host: ${HOSTNAME}" \
+            "(required: ${EXPECTED_HOST})"
+    fi
 }
 
 check_configuration () {
@@ -62,11 +71,13 @@ delete_old_backups () {
 }
 
 mount_nas () {
-    gio mount --unmount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}" 2>/dev/null || true
+    gio mount --unmount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}" \
+        2>/dev/null || true
     gio mount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}"
     ln -s \
-        "/run/user/1000/gvfs/smb-share:server=${NAS_IP},share=${NAS_SHARE},user=${NAS_USERNAME}" \
-        ~/"${NAS_HOST}" \
+        "/run/user/1000/gvfs/smb-share:server=${NAS_IP}," \
+        "share=${NAS_SHARE},user=${NAS_USERNAME}" \
+        "${HOME}/${NAS_HOST}" \
         2>/dev/null || true
     until [ -d "${BACKUP_DESTINATION_PATH}" ]; do
         sleep .5
@@ -85,7 +96,7 @@ timer () {
     local hours=$((duration / 3600))
     local minutes=$(((duration % 3600) / 60))
     local seconds=$((duration % 60))
-    printf  -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
+    printf -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
 }
 
 do_backup () {
@@ -121,6 +132,7 @@ do_backup () {
     sync "${BACKUP_DESTINATION_PATH}"
 }
 
+check_host
 echo
 echo "mounting remote storage ..."
 mount_nas

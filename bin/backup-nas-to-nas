@@ -4,10 +4,13 @@
 #  - sync files from source NAS to destination NAS (mounted with GVfs/Samba)
 #
 # requires:
-#  - gvfs-backends (apt install)
-#  - rsync (apt install)
+#  - gvfs-backends
+#  - rsync
 
 set -e
+
+
+EXPECTED_HOST="penguin"
 
 NAS_USERNAME="cgoldberg"
 NAS_SHARE="public"
@@ -35,6 +38,13 @@ ok () {
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
+check_host () {
+    if [ "${HOSTNAME}" != "${EXPECTED_HOST}" ]; then
+        die "fatal: can't run on this host: ${HOSTNAME}" \
+            "(required: ${EXPECTED_HOST})"
+    fi
+}
+
 check_configuration () {
     if [ ! -d "${SOURCE_PATH}" ]; then
         die "fatal: can't find mounted storage: ${SOURCE_PATH}"
@@ -50,11 +60,13 @@ check_configuration () {
 }
 
 mount_source_nas () {
-    gio mount --unmount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}" 2>/dev/null || true
+    gio mount --unmount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}" \
+        2>/dev/null || true
     gio mount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}"
     ln -s \
-        "/run/user/1000/gvfs/smb-share:server=${SOURCE_NAS_IP},share=${NAS_SHARE},user=${NAS_USERNAME}" \
-        ~/"${SOURCE_NAS_HOST}" \
+        "/run/user/1000/gvfs/smb-share:server=${SOURCE_NAS_IP}," \
+        "share=${NAS_SHARE},user=${NAS_USERNAME}" \
+        "${HOME}/${SOURCE_NAS_HOST}" \
         2>/dev/null || true
     until [ -d "${SOURCE_PATH}" ]; do
         sleep .5
@@ -62,11 +74,13 @@ mount_source_nas () {
 }
 
 mount_destination_nas () {
-    gio mount --unmount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}" 2>/dev/null || true
+    gio mount --unmount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}" \
+        2>/dev/null || true
     gio mount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}"
     ln -s \
-        "/run/user/1000/gvfs/smb-share:server=${DESTINATION_NAS_IP},share=${NAS_SHARE},user=${NAS_USERNAME}" \
-        ~/"${DESTINATION_NAS_HOST}" \
+        "/run/user/1000/gvfs/smb-share:server=${DESTINATION_NAS_IP}," \
+        "share=${NAS_SHARE},user=${NAS_USERNAME}" \
+        "${HOME}/${DESTINATION_NAS_HOST}" \
         2>/dev/null || true
     until [ -d "${DESTINATION_PATH}" ]; do
         sleep .5
@@ -89,7 +103,7 @@ timer () {
     local hours=$((duration / 3600))
     local minutes=$(((duration % 3600) / 60))
     local seconds=$((duration % 60))
-    printf  -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
+    printf -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
 }
 
 do_backup () {
@@ -118,6 +132,7 @@ do_backup () {
     sync "${DESTINATION_PATH}"
 }
 
+check_host
 echo
 echo "mounting remote storage source ..."
 mount_source_nas
