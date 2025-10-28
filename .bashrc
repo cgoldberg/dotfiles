@@ -259,6 +259,16 @@ if [ -x "$(type -pP eza)" ]; then
 fi
 
 
+# show names of all bash aliases and functions
+alias aliases="\
+    { \
+        \alias -p | sed -E 's/^alias ([^=]+)=.*/\1/'; compgen -a -A function \
+        | grep -v ^_; \
+    } \
+        | sort \
+        | uniq"
+
+
 # editors (sublime/vim)
 if [ -x "$(type -pP subl)" ]; then
     alias edit="subl"
@@ -269,6 +279,7 @@ else
     alias ed="vi"
     alias e="vi ."
 fi
+
 
 # open ~/.bashrc for editing
 alias ebrc="edit ${HOME}/.bashrc"
@@ -282,20 +293,6 @@ fi
 
 # python
 alias py="python"
-
-
-# install python package globally
-gpip-install () {
-    PIP_REQUIRE_VIRTUALENV=false \
-        python -m pip install --user --upgrade --upgrade-strategy=eager "$@"
-}
-
-
-# uninstall python package globally
-gpip-uninstall () {
-    PIP_REQUIRE_VIRTUALENV=false \
-        python -m pip uninstall "$@"
-}
 
 
 # uninstall all python packages in current environment
@@ -374,6 +371,20 @@ dff () {
         | less
 }
 alias diff="dff"
+
+
+# install python packages globally
+gpip-install () {
+    PIP_REQUIRE_VIRTUALENV=false \
+        python -m pip install --user --upgrade --upgrade-strategy=eager "$@"
+}
+
+
+# uninstall python packages globally
+gpip-uninstall () {
+    PIP_REQUIRE_VIRTUALENV=false \
+        python -m pip uninstall "$@"
+}
 
 
 # rename all files under the current directory, replacing
