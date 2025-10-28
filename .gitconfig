@@ -59,7 +59,7 @@
     ls = log --pretty=tformat:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
 
     # list git aliases
-    alias = !git config --list | grep alias | cut -c 7- | sort
+    alias = !git config --list | grep alias | cut -c 7- | tr -s ' ' | sort
 
     # commit all staged/unstaged changes with inline message
     ci = !git commit --all --message $2
