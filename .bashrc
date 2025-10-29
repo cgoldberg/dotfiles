@@ -503,8 +503,8 @@ rg () {
     fi
     if [ -f /usr/bin/rg ]; then
         local rg_bin=/usr/bin/rg
-    elif [ -f ~/Scoop/shims/rg ]; then # Windows/Scoop/MinGW
-        local rg_bin=~/Scoop/shims/rg
+    elif [ -f "${HOME}/Scoop/shims/rg" ]; then # Windows/Scoop/MinGW
+        local rg_bin="${HOME}/Scoop/shims/rg"
         rg_bin="${rg_bin} --path-separator='//'"
     fi
     if [ -n "${rg_bin+x}" ]; then # using ripgrep

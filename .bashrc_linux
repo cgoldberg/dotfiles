@@ -134,8 +134,8 @@ bitz () {
     local share="public"
     gio mount "smb://${username}@${ip}/${share}" 2>/dev/null
     ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" \
-        "${home}/${host}" 2>/dev/null
-    cd "${home}/${host}" 2>/dev/null
+        "${HOME}/${host}" 2>/dev/null
+    cd "${HOME}/${host}" 2>/dev/null
 }
 
 
@@ -148,8 +148,8 @@ bytez () {
     local share="public"
     gio mount "smb://${username}@${ip}/${share}" 2>/dev/null
     ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" \
-        "${home}/${host}" 2>/dev/null
-    cd "${home}/${host}" 2>/dev/null
+        "${HOME}/${host}" 2>/dev/null
+    cd "${HOME}/${host}" 2>/dev/null
 }
 
 
