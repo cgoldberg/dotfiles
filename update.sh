@@ -45,7 +45,7 @@ DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
 PANDOC_TEMPLATE_DIR="${HOME}/.pandoc"
 if [[ "${OSTYPE}" == "msys" ]]; then
-    ALACRITTY_DIR="${APPDATA}/alacritty"
+    ALACRITTY_DIR="${APPDATA//\\//}/alacritty"
 fi
 REQUIREMENTS=(
     "git"
