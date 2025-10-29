@@ -18,7 +18,8 @@ fi
 alias sudo="sudo "
 
 
-# run sudo with existing environment variables and tab-completion enabled (needed for gui apps)
+# run sudo with existing environment variables and tab-completion enabled
+# (needed for gui apps)
 alias gsudo="sudo --preserve-env"
 complete -F _root_command gsudo
 
@@ -60,11 +61,18 @@ alias wget="wget --hsts-file=/dev/null"
 # python virtual env
 alias activate="source ./venv/bin/activate"
 alias deact="deactivate"
-alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
+alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv \
+    && activate || activate"
 
 
-# show TCP and UDP sockets that are actively listening
-alias listening="sudo netstat --listening --program --symbolic --tcp --udp"
+# show tcp/udp sockets actively listening
+alias listening="sudo netstat --listening --inet --inet6 --program \
+    --symbolic | grep -v 'connections'"
+
+
+# show tcp/udp sockets with established connections
+alias sockets="sudo netstat --all --inet --inet6 --program \
+    --symbolic | grep -v 'connections' | grep -v 'sunrpc.*init' | grep -v 'LISTEN'"
 
 
 # open github website in default browser
@@ -77,7 +85,8 @@ alias web="sensible-browser"
 
 
 # ncurses disk usage
-alias ncdu="ncdu --disable-delete --group-directories-first --one-file-system --show-itemcount"
+alias ncdu="ncdu --disable-delete --group-directories-first \
+    --one-file-system --show-itemcount"
 
 
 # list directories and files in tree format
@@ -124,8 +133,9 @@ bitz () {
     local username="cgoldberg"
     local share="public"
     gio mount "smb://${username}@${ip}/${share}" 2>/dev/null
-    ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" ~/"${host}" 2>/dev/null
-    cd ~/"${host}" 2>/dev/null
+    ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" \
+        "${home}/${host}" 2>/dev/null
+    cd "${home}/${host}" 2>/dev/null
 }
 
 
@@ -137,8 +147,9 @@ bytez () {
     local username="cgoldberg"
     local share="public"
     gio mount "smb://${username}@${ip}/${share}" 2>/dev/null
-    ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" ~/"${host}" 2>/dev/null
-    cd ~/"${host}" 2>/dev/null
+    ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" \
+        "${home}/${host}" 2>/dev/null
+    cd "${home}/${host}" 2>/dev/null
 }
 
 
