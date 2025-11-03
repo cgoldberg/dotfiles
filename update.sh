@@ -8,6 +8,7 @@
 #
 #  - all platforms:
 #    - bat (https://github.com/sharkdp/bat)
+#    - exiftool (apt install)
 #    - eza (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
 #    - fzf (https://github.com/junegunn/fzf)
@@ -27,7 +28,6 @@
 #
 #  - linux only:
 #    - cargo-cache (cargo install)
-#    - exiv2 (apt install)
 #    - githubtakeout (pipx install)
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install)
@@ -55,6 +55,7 @@ REQUIREMENTS=(
 )
 DEPENDENCIES=(
     "bat"
+    "exiftool"
     "eza"
     "fd"
     "fzf"
@@ -74,7 +75,6 @@ DEPENDENCIES=(
 )
 DEPENDENCIES_LINUX=(
     "cargo-cache"
-    "exiv2"
     "githubtakeout"
     "go"
     "google_drive_export"
