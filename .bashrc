@@ -191,14 +191,8 @@ fi
 # zoxide jump to directory
 if [ -x "$(type -pP zoxide)" ]; then
     eval "$(zoxide init bash)"
+    unalias z 2> /dev/null # we define our own z() below
 fi
-
-
-# fzf - fuzzy finder
-if [ -x "$(type -pP fzf)" ]; then
-    eval "$(fzf --bash)"
-fi
-
 
 # ---------------------------------- ALIASES ----------------------------------
 
