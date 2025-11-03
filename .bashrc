@@ -188,6 +188,18 @@ if [ -x "$(type -pP pipx)" ]; then
 fi
 
 
+# zoxide jump to directory
+if [ -x "$(type -pP zoxide)" ]; then
+    eval "$(zoxide init bash)"
+fi
+
+
+# fzf - fuzzy finder
+if [ -x "$(type -pP fzf)" ]; then
+    eval "$(fzf --bash)"
+fi
+
+
 # ---------------------------------- ALIASES ----------------------------------
 
 
@@ -362,9 +374,7 @@ stop_spinner () {
 
 # zoxide/fzf (jump to dirs with fuzzy find for interactive completions)
 z () {
-    if [ -x "$(type -pP zoxide)" ]; then
-        eval "$(zoxide init bash)"
-    else
+    if [ ! -x "$(type -pP zoxide)" ]; then
         err "zoxide not found"
         return 1
     fi
