@@ -86,10 +86,7 @@ PS1=\
 
 
 # export environment variables
-export LANG="en_US.UTF-8"
-export LANGUAGE="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
-export LC_COLLATE="en_US.UTF-8"
+export LANGUAGE="en_US"
 export PAGER="less"
 export EDITOR="vi"
 export GITHUB_USERNAME="cgoldberg"
@@ -192,7 +189,7 @@ fi
 if [ -x "$(type -pP zoxide)" ]; then
     export _ZO_DOCTOR=0 # disable configuration error message
     eval "$(zoxide init bash)"
-    unalias z 2> /dev/null # we define our own z() below
+    unalias z 2>/dev/null # we define our own z() below
 fi
 
 
@@ -441,8 +438,8 @@ clean-img-metadata () {
         return 1
     fi
     # we don't strip "-all=" because that also removes orientation tag
-    exiftool -EXIF= "$1"
-    exiftool -thumbnailimage= "$1"
+    exiftool -EXIF= "$1" >/dev/null
+    exiftool -thumbnailimage= "$1" >/dev/null
 }
 
 
