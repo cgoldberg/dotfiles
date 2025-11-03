@@ -438,7 +438,9 @@ clean-img-metadata () {
         return 1
     fi
     # we don't strip "-all=" because that also removes orientation tag
+    echo "removing EXIF tags ..."
     exiftool -EXIF= "$1" >/dev/null
+    echo "removing thumbnails ..."
     exiftool -thumbnailimage= "$1" >/dev/null
 }
 

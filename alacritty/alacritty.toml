@@ -10,7 +10,7 @@ live_config_reload = true
 shell = { program = "bash", args = ["--login"] }
 
 [window]
-dimensions = { columns = 140, lines = 38 }
+dimensions = { columns = 148, lines = 38 }
 padding = { x = 5, y = 0 }
 position = { x = 0, y = 0 }
 
@@ -21,3 +21,8 @@ size = 11
 style = { shape = "Block", blinking = "Always" }
 blink_interval = 500
 blink_timeout = 0
+
+[keyboard]
+bindings = [
+    { key = "V", mods = "Control", action = "Paste" },
+]
