@@ -360,6 +360,28 @@ stop_spinner () {
 }
 
 
+# zoxide/fzf (jump to dirs with fuzzy find for interactive completions)
+z () {
+    if [ -x "$(type -pP zoxide)" ]; then
+        eval "$(zoxide init bash)"
+    else
+        err "zoxide not found"
+        return 1
+    fi
+    if [ ! -x "$(type -pP fzf)" ]; then
+        err "fzf not found"
+        return 1
+    fi
+    local dir=$(
+        zoxide query --list --score \
+            | fzf --height 40% --layout reverse --info inline \
+            --nth 2.. --tac --no-sort --query "$*" \
+            --bind 'enter:become:echo {2..}'
+    ) \
+    && cd "${dir}"
+}
+
+
 # colored diffs
 dff () {
     if [ -z "$1" ] || [ -z "$2" ]; then

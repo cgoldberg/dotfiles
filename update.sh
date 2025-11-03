@@ -7,21 +7,23 @@
 # install dependencies for full functionality:
 #
 #  - all platforms:
-#    - bat (.deb from https://github.com/sharkdp/bat)
+#    - bat (https://github.com/sharkdp/bat)
 #    - eza (cargo install)
-#    - fd (.deb from https://github.com/sharkdp/fd)
-#    - gh (GitHub CLI - https://github.com/cli/cli)
+#    - fd (https://github.com/sharkdp/fd)
+#    - fzf (https://github.com/junegunn/fzf)
+#    - gh (https://github.com/cli/cli)
 #    - git-who (https://github.com/sinclairtarget/git-who)
 #    - jq (apt install)
-#    - magick (ImageMagick - .AppImage from https://github.com/ImageMagick/ImageMagick)
-#    - pandoc (.deb from https://github.com/jgm/pandoc)
+#    - magick (https://github.com/ImageMagick/ImageMagick)
+#    - pandoc (https://github.com/jgm/pandoc)
 #    - pipx (pip install)
 #    - pyupgrade (pipx install)
 #    - refurb (pipx install)
-#    - rg (ripgrep - .deb from https://github.com/BurntSushi/ripgrep)
+#    - rg (https://github.com/BurntSushi/ripgrep)
 #    - ruby (apt install)
 #    - shellcheck (apt install)
-#    - subl (Sublime Text - https://sublimetext.com/docs/linux_repositories.html)
+#    - subl (https://sublimetext.com/docs/linux_repositories.html)
+#    - zoxide (cargo install)
 #
 #  - linux only:
 #    - cargo-cache (cargo install)
@@ -55,6 +57,7 @@ DEPENDENCIES=(
     "bat"
     "eza"
     "fd"
+    "fzf"
     "gh"
     "git-who"
     "jq"
@@ -67,6 +70,7 @@ DEPENDENCIES=(
     "ruby"
     "shellcheck"
     "subl"
+    "zoxide"
 )
 DEPENDENCIES_LINUX=(
     "cargo-cache"
