@@ -429,6 +429,23 @@ remove-whitespace-from-filenames () {
 }
 
 
+# remove metadata from an image
+# usage: clean-img-metadata <image_file_or_glob> ...
+clean-img-metadata () {
+    if [ -z "$1" ]; then
+        err "please specify an image file or glob pattern"
+        return 1
+    fi
+    if [ ! -x "$(type -pP exiv2)" ]; then
+        err "exiftool not installed"
+        return 1
+    fi
+    # we don't strip "-all=" because that also removes orientation tag
+    exiftool -EXIF= "$1"
+    exiftool -thumbnailimage= "$1"
+}
+
+
 # generate a self-contained html from markdown
 # - uses modified bootstrap css
 # - usage: md2html <markdown_file>
