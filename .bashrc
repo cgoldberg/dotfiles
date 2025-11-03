@@ -436,7 +436,7 @@ clean-img-metadata () {
         err "please specify an image file or glob pattern"
         return 1
     fi
-    if [ ! -x "$(type -pP exiv2)" ]; then
+    if [ ! -x "$(type -pP exiftool)" ]; then
         err "exiftool not installed"
         return 1
     fi
