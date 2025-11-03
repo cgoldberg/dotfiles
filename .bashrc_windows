@@ -77,7 +77,7 @@ scoop-update-all () {
         fi
     done
     echo "Deleting Cache..."
-    scoop cache rm *
+    scoop cache rm --all
     echo
     ok "done"
 }

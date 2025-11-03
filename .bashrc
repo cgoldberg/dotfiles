@@ -188,11 +188,13 @@ if [ -x "$(type -pP pipx)" ]; then
 fi
 
 
-# zoxide jump to directory
+# zoxide (jump to directory)
 if [ -x "$(type -pP zoxide)" ]; then
+    export _ZO_DOCTOR=0 # disable configuration error message
     eval "$(zoxide init bash)"
     unalias z 2> /dev/null # we define our own z() below
 fi
+
 
 # ---------------------------------- ALIASES ----------------------------------
 
