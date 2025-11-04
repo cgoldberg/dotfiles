@@ -39,37 +39,6 @@ esac
 ORIGINAL_PATH="${PATH}"
 
 
-# enable programmable completion features
-# - if not available, download it and put it in ~/etc
-# - https://salsa.debian.org/debian/bash-completion/-/raw/master/bash_completion
-load-bash-completions () {
-    local completion_paths=(
-        "/usr/share/bash-completion/bash_completion"
-        "/etc/bash_completion"
-        "${HOME}/etc/bash_completion"
-    )
-    local completion_loader_funcs=(
-        "_completion_loader"
-        "_comp_complete_load"
-    )
-    for completion_path in "${completion_paths[@]}"; do
-        if [ -f "${completion_path}" ]; then
-            source "${completion_path}"
-        fi
-    done
-    for completion_loader_func in "${completion_loader_funcs[@]}"; do
-        if declare -f "${completion_loader_func}" >/dev/null; then
-            if [ -x "$(type -pP git)" ]; then
-                "${completion_loader_func}" git
-                complete -o bashdefault -o default -o nospace -F __git_wrap__git_main git
-                complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
-            fi
-        fi
-    done
-}
-load-bash-completions
-
-
 # set a colored prompt with:
 # - user:dir
 # - git branch with state (if in a git repo)
@@ -893,8 +862,7 @@ load-bash-configs () {
 load-bash-configs
 
 
-# add local bin directories to the end of PATH if they
-# don't exist in PATH
+# add local bin directories to the end of PATH if they don't exist in PATH
 add-bins () {
     local bin_dirs=(
         "${HOME}/.local/bin"
@@ -908,3 +876,40 @@ add-bins () {
     done
 }
 add-bins
+
+
+# enable programmable completion features
+# - if not available, download it and put it in ~/etc
+# - https://salsa.debian.org/debian/bash-completion/-/raw/master/bash_completion
+load-bash-completions () {
+    local found_completions="false"
+    local completion_paths=(
+        "/usr/share/bash-completion/bash_completion"
+        "/etc/bash_completion"
+        "${HOME}/etc/bash_completion"
+    )
+    local completion_loader_funcs=(
+        "_completion_loader"
+        "_comp_complete_load"
+    )
+    for completion_path in "${completion_paths[@]}"; do
+        if [ -f "${completion_path}" ]; then
+            source "${completion_path}"
+            found_completions="true"
+        fi
+    done
+    if [ "${found_completions}" == "false" ]; then
+        err "no bash completions found"
+    fi
+    for completion_loader_func in "${completion_loader_funcs[@]}"; do
+        if declare -f "${completion_loader_func}" >/dev/null; then
+            # git completions
+            if [ -x "$(type -pP git)" ]; then
+                "${completion_loader_func}" git
+                complete -o bashdefault -o default -o nospace -F __git_wrap__git_main git
+                complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
+            fi
+        fi
+    done
+}
+load-bash-completions
