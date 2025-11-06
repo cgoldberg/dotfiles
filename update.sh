@@ -29,7 +29,7 @@
 #    - rustup (https://rustup.rs - on Windows: scoop install rustup-gnu)
 #    - shellcheck (apt install)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
-#    - yt-dlp (https://github.com/yt-dlp/yt-dlp)
+#    - yt-dlp (pipx install)
 #    - zoxide (cargo install)
 #
 #  - linux only:
