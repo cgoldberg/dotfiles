@@ -8,13 +8,16 @@
 #
 #  - all platforms:
 #    - bat (https://github.com/sharkdp/bat)
+#    - cargo-cache (cargo install)
 #    - exiftool (apt install)
 #    - eza (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
 #    - ffmpeg (apt install)
 #    - fzf (https://github.com/junegunn/fzf)
+#    - gcc (apt install - on Windows: scoop install mingw)
 #    - gh (https://github.com/cli/cli)
 #    - git-who (https://github.com/sinclairtarget/git-who)
+#    - java (apt install)
 #    - jq (apt install)
 #    - magick (https://github.com/ImageMagick/ImageMagick)
 #    - pandoc (https://github.com/jgm/pandoc)
@@ -23,19 +26,17 @@
 #    - refurb (pipx install)
 #    - rg (https://github.com/BurntSushi/ripgrep)
 #    - ruby (apt install)
+#    - rustup (https://rustup.rs - on Windows: scoop install rustup-gnu)
 #    - shellcheck (apt install)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - yt-dlp (https://github.com/yt-dlp/yt-dlp)
 #    - zoxide (cargo install)
 #
 #  - linux only:
-#    - cargo-cache (cargo install)
 #    - githubtakeout (pipx install)
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install)
-#    - java (apt install)
 #    - pyenv (https://github.com/pyenv/pyenv)
-#    - rustup (https://rustup.rs)
 #    - rsync (apt install)
 #
 #  - windows only:
@@ -57,13 +58,16 @@ REQUIREMENTS=(
 )
 DEPENDENCIES=(
     "bat"
+    "cargo-cache"
     "exiftool"
     "eza"
     "fd"
     "ffmpeg"
     "fzf"
+    "gcc"
     "gh"
     "git-who"
+    "java"
     "jq"
     "magick"
     "pandoc"
@@ -72,20 +76,18 @@ DEPENDENCIES=(
     "refurb"
     "rg"
     "ruby"
+    "rustup"
     "shellcheck"
     "subl"
     "yt-dlp"
     "zoxide"
 )
 DEPENDENCIES_LINUX=(
-    "cargo-cache"
     "githubtakeout"
     "go"
     "google_drive_export"
-    "java"
     "pyenv"
     "rsync"
-    "rustup"
 )
 DEPENDENCIES_WINDOWS=(
     "alacritty"

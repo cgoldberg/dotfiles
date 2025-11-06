@@ -259,6 +259,10 @@ fi
 alias ebrc="edit ${HOME}/.bashrc"
 
 
+# update Rust toolchain, remove Cargo crate source checkouts and git repo checkouts
+alias clean-rust="rustup update && cargo-cache --autoclean"
+
+
 # better cat
 if [ -x "$(type -pP bat)" ]; then
     alias cat="bat"
