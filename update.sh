@@ -292,5 +292,8 @@ done
 echo
 if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ] || [ -n "${check_win_deps_failed}" ]; then
     err "missing dependency"
+else
+    ok "all dependencies installed"
 fi
+echo
 ok "done updating configs and scripts"
