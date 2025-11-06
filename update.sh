@@ -11,6 +11,7 @@
 #    - exiftool (apt install)
 #    - eza (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
+#    - ffmpeg (apt install)
 #    - fzf (https://github.com/junegunn/fzf)
 #    - gh (https://github.com/cli/cli)
 #    - git-who (https://github.com/sinclairtarget/git-who)
@@ -24,6 +25,7 @@
 #    - ruby (apt install)
 #    - shellcheck (apt install)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
+#    - yt-dlp (https://github.com/yt-dlp/yt-dlp)
 #    - zoxide (cargo install)
 #
 #  - linux only:
@@ -58,6 +60,7 @@ DEPENDENCIES=(
     "exiftool"
     "eza"
     "fd"
+    "ffmpeg"
     "fzf"
     "gh"
     "git-who"
@@ -71,6 +74,7 @@ DEPENDENCIES=(
     "ruby"
     "shellcheck"
     "subl"
+    "yt-dlp"
     "zoxide"
 )
 DEPENDENCIES_LINUX=(

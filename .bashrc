@@ -354,6 +354,24 @@ z () {
 }
 
 
+# extract an MP3 audio file from a YouTube video
+yt-mp3 () {
+    if [ -z "$1" ]; then
+        err "please specify a YouTube URL"
+        return 1
+    fi
+    if [ ! -x "$(type -pP yt-dlp)" ]; then
+        err "yt-dlp not found"
+        return 1
+    fi
+    if [ ! -x "$(type -pP ffmpeg)" ]; then
+        err "ffmpeg not found"
+        return 1
+    fi
+    yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 "$1"
+}
+
+
 # colored diffs
 dff () {
     if [ -z "$1" ] || [ -z "$2" ]; then
