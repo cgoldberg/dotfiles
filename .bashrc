@@ -368,7 +368,7 @@ yt-mp3 () {
         err "ffmpeg not found"
         return 1
     fi
-    yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 "$1"
+    yt-dlp --extract-audio --audio-format mp3 --audio-quality 320k "$1"
 }
 
 
