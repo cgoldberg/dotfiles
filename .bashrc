@@ -129,6 +129,22 @@ HISTFILESIZE=9999
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
 
 
+# add local bin directories to the end of PATH if they don't exist in PATH
+add-bins () {
+    local bin_dirs=(
+        "${HOME}/.local/bin"
+        "${HOME}/bin"
+    )
+    for d in "${bin_dirs[@]}"; do
+        mkdir --parents "${d}"
+        if [[ "${PATH}" != *"${d}"* ]]; then
+            export PATH="${PATH}:${d}"
+        fi
+    done
+}
+add-bins
+
+
 # ruby gems
 if [ -d "${HOME}/.gems" ]; then
     export GEM_HOME="${HOME}/.gems"
@@ -136,7 +152,7 @@ if [ -d "${HOME}/.gems" ]; then
 fi
 
 
-# rust/cargo - https://rustup.rs
+# rust/cargo
 if [ -d "${HOME}/.cargo" ]; then
     source "${HOME}/.cargo/env"
 fi
@@ -338,16 +354,8 @@ stop_spinner () {
 }
 
 
-# zoxide/fzf (jump to dirs with fuzzy find for interactive completions)
+# zoxide/fzf - jump to dirs with fuzzy find for interactive completions
 z () {
-    if [ ! -x "$(type -pP zoxide)" ]; then
-        err "zoxide not found"
-        return 1
-    fi
-    if [ ! -x "$(type -pP fzf)" ]; then
-        err "fzf not found"
-        return 1
-    fi
     local dir=$(
         zoxide query --list --score \
             | fzf --height 40% --layout reverse --info inline \
@@ -356,6 +364,10 @@ z () {
     ) \
     && cd "${dir}"
 }
+# just disable this if zoxide and fzf aren't installed so we don't have to check every use
+if [ ! -x "$(type -pP zoxide)" ] || [ ! -x "$(type -pP fzf)" ]; then
+    unset z
+fi
 
 
 # extract an MP3 audio file from a YouTube video
@@ -882,22 +894,6 @@ load-bash-configs () {
     done
 }
 load-bash-configs
-
-
-# add local bin directories to the end of PATH if they don't exist in PATH
-add-bins () {
-    local bin_dirs=(
-        "${HOME}/.local/bin"
-        "${HOME}/bin"
-    )
-    for d in "${bin_dirs[@]}"; do
-        mkdir --parents "${d}"
-        if [[ "${PATH}" != *"${d}"* ]]; then
-            export PATH="${PATH}:${d}"
-        fi
-    done
-}
-add-bins
 
 
 # enable programmable completion features
