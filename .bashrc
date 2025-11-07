@@ -359,7 +359,7 @@ z () {
     local dir=$(
         zoxide query --list --score \
             | fzf --height 40% --layout reverse --info inline \
-            --nth 2.. --tac --no-sort --query "$*" \
+            --nth 2.. --no-sort --query "$*" \
             --bind 'enter:become:echo {2..}'
     ) \
     && cd "${dir}"
