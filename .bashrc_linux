@@ -36,7 +36,7 @@ alias ds="diskspace"
 
 
 # watch disk space
-alias diskwatch="watch --interval 2 --exec bash -c diskspace"
+alias diskwatch="watch --interval 5 --exec bash -c diskspace"
 alias dw="diskwatch"
 
 
