@@ -7,7 +7,7 @@
 #  - gvfs-backends
 #  - rsync
 
-set -e
+set -eou pipefail
 
 
 NAS_USERNAME="cgoldberg"

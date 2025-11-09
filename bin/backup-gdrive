@@ -9,7 +9,7 @@
 #  - rsync
 #  - google-drive-export
 
-set -e
+set -eou pipefail
 
 
 EXPECTED_HOST="penguin"

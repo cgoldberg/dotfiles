@@ -9,7 +9,7 @@
 #  - rsync
 #  - githubtakeout
 
-set -e
+set -eou pipefail
 
 
 EXPECTED_HOST="penguin"

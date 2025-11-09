@@ -3,7 +3,7 @@
 # data transfer test
 # ------------------
 # This script tests data transfer speed between 2 remote storage servers
-# on my LAN mounted with GVfs and Samba to my Debian system.
+# on my LAN mounted with GVfs and Samba.
 #
 # - mounts source NAS and destination NAS with GVfs/Samba
 # - creates a symlink to each mount point
@@ -15,7 +15,8 @@
 # requires:
 #  - gvfs-backends (apt install)
 
-set -e
+set -eou pipefail
+
 
 FILE_NAME="test.img"
 FILE_SIZE=100M
@@ -88,6 +89,13 @@ unmount_destination_nas () {
     gio mount --unmount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}"
 }
 
+delete_test_files () {
+    rm -f "${SOURCE_PATH}/${FILE_NAME}"
+    rm -f "${DESTINATION_PATH}/${FILE_NAME}"
+    sync "${SOURCE_PATH}"
+    sync "${DESTINATION_PATH}"
+}
+
 timer () {
     local start_time=${SECONDS}
     "$@"
@@ -100,6 +108,7 @@ timer () {
 }
 
 run_test () {
+    # generate the file
     dd \
         if=/dev/zero \
         of="${SOURCE_PATH}/${FILE_NAME}" \
@@ -109,14 +118,24 @@ run_test () {
         conv=fdatasync \
         status=none
     sync "${SOURCE_PATH}"
-    dd \
-        if="${SOURCE_PATH}/${FILE_NAME}" \
-        of="${DESTINATION_PATH}/${FILE_NAME}" \
-        bs="${FILE_SIZE}" \
-        count=1 \
-        oflag=dsync,nocache \
-        conv=fdatasync
+    # transfer the file
+    test_results=$( \
+        dd \
+            if="${SOURCE_PATH}/${FILE_NAME}" \
+            of="${DESTINATION_PATH}/${FILE_NAME}" \
+            bs="${FILE_SIZE}" \
+            count=1 \
+            oflag=dsync,nocache \
+            conv=fdatasync \
+            2>&1 \
+            | grep "copied" \
+        )
+    sync "${DESTINATION_PATH}"
 }
+
+if [[ "${OSTYPE}" != "linux"* ]]; then
+    err "fatal: requires Linux"
+fi
 
 echo
 echo "settings:"
@@ -133,21 +152,20 @@ check_configuration
 echo
 echo "running data transfer test ..."
 echo
+timer run_test
 echo "${SEP}"
 echo
 echo "TEST RESULTS:"
 echo
-timer run_test
+tput bold; tput setaf 10; echo "${test_results}"; tput sgr0
+echo "elapsed time: ${elapsed_time}"
 echo
 echo "${SEP}"
 echo
-rm -f "${SOURCE_PATH}/${FILE_NAME}"
-rm -f "${DESTINATION_PATH}/${FILE_NAME}"
+delete_test_files
 echo "unmounting remote storage source ..."
 unmount_source_nas
 echo "unmounting remote storage destination ..."
 unmount_destination_nas
-echo
-echo "elapsed time: ${elapsed_time}"
 echo
 ok "test complete!"

@@ -8,7 +8,7 @@
 #  - gvfs-backends
 #  - rsync
 
-set -e
+set -eou pipefail
 
 
 EXPECTED_HOST="raspberrypi"
