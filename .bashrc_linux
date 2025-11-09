@@ -116,6 +116,7 @@ diskspace () {
         fi
     done
 }
+export -f diskspace # needed so diskwatch can call it in subshell
 alias ds="diskspace"
 
 
