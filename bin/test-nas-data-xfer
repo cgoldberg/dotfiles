@@ -47,6 +47,12 @@ ok () {
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
+check_os () {
+    if [[ "${OSTYPE}" != "linux"* ]]; then
+        err "fatal: requires Linux"
+    fi
+}
+
 check_configuration () {
     if [ ! -d "${SOURCE_PATH}" ]; then
         die "fatal: can't find mounted storage: ${SOURCE_PATH}"
@@ -133,10 +139,7 @@ run_test () {
     sync "${DESTINATION_PATH}"
 }
 
-if [[ "${OSTYPE}" != "linux"* ]]; then
-    err "fatal: requires Linux"
-fi
-
+check_os
 echo
 echo "settings:"
 echo "  - test file size: ${FILE_SIZE}"
