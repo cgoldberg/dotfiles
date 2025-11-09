@@ -32,7 +32,6 @@ alias busy="cat /dev/urandom | hexdump -C | \grep --color=always 'ca fe'"
 
 # disk space
 alias df="\df --human-readable --local --sync"
-alias ds="diskspace"
 
 
 # watch disk space
@@ -99,20 +98,25 @@ diskspace () {
     local dirs=(
         "${HOME}/bitz"
         "${HOME}/bytez"
+        "/media/${USER}/T7Shield"
     )
     echo -e "Location\tFilesystem      Size  Used Avail Use% Mounted on"
     echo "----------------------------------------------------------------"
     echo -en "local\t\t"
     df --human-readable --local --sync / | \grep -v "Filesystem"
     for d in "${dirs[@]}"; do
-        remotes="true"
         if [ -d "${d}" ]; then
-            echo -en "$(basename ${d})\t\t"
-            df --human-readable --local --sync "${d}" | \grep -v "Filesystem"
+            local name="$(basename ${d})"
+            if [ "${#name}" -ge 8 ]; then
+                echo -en "${name}\t"
+            else
+                echo -en "${name}\t\t"
+            fi
+            \df --human-readable --local --sync "${d}" | \grep -v "Filesystem"
         fi
     done
 }
-export -f diskspace
+alias ds="diskspace"
 
 
 # mount 2-bay NAS
