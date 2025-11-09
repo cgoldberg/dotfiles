@@ -10,8 +10,6 @@
 set -e
 
 
-EXPECTED_HOST="penguin"
-
 NAS_USERNAME="cgoldberg"
 NAS_SHARE="public"
 
@@ -36,13 +34,6 @@ die () {
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
-}
-
-check_host () {
-    if [ "${HOSTNAME}" != "${EXPECTED_HOST}" ]; then
-        die "fatal: can't run on this host: ${HOSTNAME}" \
-            "(required: ${EXPECTED_HOST})"
-    fi
 }
 
 check_configuration () {
