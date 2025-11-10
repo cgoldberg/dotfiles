@@ -718,6 +718,8 @@ clean-pip () {
         --upgrade-strategy=eager pip
     pip cache purge
     local dirs=(
+        "${HOME}/AppData/Local/pip/cache/"
+        "${HOME}/.cache/pip/cache/"
         "${HOME}/.cache/pip-tools/"
         "${HOME}/.cache/pipx/"
         "${HOME}/.local/pipx/.cache/"
