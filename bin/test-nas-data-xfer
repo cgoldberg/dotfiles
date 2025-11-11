@@ -19,7 +19,7 @@ set -eou pipefail
 
 
 FILE_NAME="test.img"
-FILE_SIZE=100M
+FILE_SIZE=50M
 
 NAS_USERNAME="cgoldberg"
 NAS_SHARE="public"
