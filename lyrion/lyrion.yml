@@ -7,7 +7,7 @@ services:
         volumes:
             - /share/Container/app-data/lms-config/:/config:rw
             - /share/Public/Tunes/:/music:ro
-            - /share/Public/Playlists/Lyrion/:/playlist:rw
+            - /share/Public/Tunes/Playlists/Lyrion/:/playlist:rw
         ports:
             - "9000:9000"
             - "9090:9090"
