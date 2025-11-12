@@ -54,14 +54,16 @@ alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv \
     && activate || activate"
 
 
-# show tcp/udp sockets actively listening
-alias listening="sudo netstat --listening --inet --inet6 --program \
-    --symbolic | grep -v 'connections'"
+# show tcp/udp listening sockets
+# and summary of network connections
+alias listening="ss --summary --listening --no-queues --processes \
+    --resolve --tcp --udp"
 
 
-# show tcp/udp sockets with established connections
-alias sockets="sudo netstat --all --inet --inet6 --program \
-    --symbolic | grep -v 'connections' | grep -v 'sunrpc.*init' | grep -v 'LISTEN'"
+# show tcp/udp non-listening established sockets
+# and summary of network connections
+alias sockets="ss --summary --no-queues --processes --resolve \
+    --tcp --udp"
 
 
 # open github website in default browser
