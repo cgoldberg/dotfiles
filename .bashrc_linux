@@ -60,7 +60,7 @@ alias listening="ss --summary --listening --no-queues --processes \
     --resolve --tcp --udp"
 
 
-# show tcp/udp non-listening established sockets
+# show tcp/udp non-listening sockets
 # and summary of network connections
 alias sockets="ss --summary --no-queues --processes --resolve \
     --tcp --udp"
