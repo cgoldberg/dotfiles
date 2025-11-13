@@ -686,7 +686,21 @@ py-upgrade () {
         ! -path "*/devtools/*" \
         ! -path "*/venv/*" \
         -print0 \
-        | xargs --null --no-run-if-empty pyupgrade --py310-plus
+            | xargs --null --no-run-if-empty pyupgrade --py310-plus
+    # on Windows, pyupgrade rewrites files with LF line endings,
+    # so we convert them back
+    if [[ "${OSTYPE}" == "msys" ]]; then
+        find . \
+            -name "*.py" \
+            ! -path "*/.git/*" \
+            ! -path "*/.tox/*" \
+            ! -path "*/.pytest_cache/*" \
+            ! -path "*/__pycache__/*" \
+            ! -path "*/devtools/*" \
+            ! -path "*/venv/*" \
+            -print0 \
+                | xargs --null --no-run-if-empty unix2dos 2>/dev/null
+        fi
 }
 
 
@@ -706,13 +720,13 @@ py-refurb () {
         ! -path "*/devtools/*" \
         ! -path "*/venv/*" \
         -print0 \
-        | xargs --null --no-run-if-empty refurb \
-        --enable-all \
-        --python-version 3.9 \
-        --disable FURB107 \
-        --disable FURB173 \
-        --disable FURB183 \
-        --disable FURB184
+            | xargs --null --no-run-if-empty refurb \
+                --enable-all \
+                --python-version 3.9 \
+                --disable FURB107 \
+                --disable FURB173 \
+                --disable FURB183 \
+                --disable FURB184
 }
 
 
