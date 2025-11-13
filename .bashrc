@@ -275,6 +275,11 @@ fi
 alias ebrc="edit ${HOME}/.bashrc"
 
 
+# open github website in default browser
+alias github="web https://github.com/${GITHUB_USERNAME}"
+alias gist="web https://gist.github.com/${GITHUB_USERNAME}"
+
+
 # update Rust toolchain, remove Cargo crate source checkouts and git repo checkouts
 alias clean-rust="rustup update && cargo-cache --autoclean"
 

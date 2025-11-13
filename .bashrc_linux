@@ -56,19 +56,12 @@ alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv \
 
 # show tcp/udp listening sockets
 # and summary of network connections
-alias listening="ss --summary --listening --no-queues --processes \
-    --resolve --tcp --udp"
+alias listening="ss --summary --listening --processes --resolve --tcp --udp"
 
 
 # show tcp/udp non-listening sockets
 # and summary of network connections
-alias sockets="ss --summary --no-queues --processes --resolve \
-    --tcp --udp"
-
-
-# open github website in default browser
-alias gith="xdg-open https://github.com"
-alias gist="xdg-open https://gist.github.com/${GITHUB_USERNAME}"
+alias sockets="ss --summary --processes --resolve --tcp --udp"
 
 
 # open url or file in default browser
