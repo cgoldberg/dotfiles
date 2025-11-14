@@ -33,19 +33,27 @@ sudo apt remove --purge cups*
 
 ----
 
-### Set DNS to Cloudflare
-
-set in `/etc/resolv.conf`:
+### Set DNS
 
 ```
-nameserver 1.1.1.1
-nameserver 1.0.0.1
-nameserver 2606:4700:4700::1111
-nameserver 2606:4700:4700::1001
+sudo apt install systemd-resolved
 ```
 
-Note: this might get overwritten by NetworkManager and need
-      to be set in network connection settings UI
+set in `/etc/systemd/resolved.conf`:
+
+```
+[Resolve]
+DNS=1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com
+FallbackDNS=8.8.8.8#dns.google 8.8.4.4#dns.google 2001:4860:4860::8888#dns.google 2001:4860:4860::8844#dns.google
+DNSOverTLS=yes
+ReadEtcHosts=yes
+```
+
+```
+sudo systemctl restart systemd-resolved
+```
+
+verify with: `resolvectl status`
 
 ----
 
