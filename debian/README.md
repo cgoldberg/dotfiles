@@ -7,8 +7,7 @@
 ```
 sudo apt install \
     audacious btop build-essential fonts-ubuntu fonts-ubuntu-console \
-    gnome-terminal gvfs-backends htop libfuse2 nemo python-dev-is-python3 \
-    python-is-python3 python3-dev
+    gnome-terminal gvfs-backends htop libfuse2 nemo python-is-python3
 
 ```
 
@@ -34,15 +33,30 @@ sudo apt remove --purge cups*
 
 ----
 
+### Set DNS to Cloudflare
+
+set in `/etc/resolv.conf`:
+
+```
+nameserver 1.1.1.1
+nameserver 1.0.0.1
+nameserver 2606:4700:4700::1111
+nameserver 2606:4700:4700::1001
+```
+
+Note: this might get overwritten by NetworkManager and need
+      to be set in network connection settings UI
+
+----
+
 ### Remap CAPS-LOCK to CTRL
 
 ```
 sudo apt install keyboard-configuration console-setup
 ```
 
-```
-sudo vi /etc/default/keyboard # (update: `XKBOPTIONS="ctrl:nocaps"`)
-```
+set `XKBOPTIONS="ctrl:nocaps"` in `/etc/default/keyboard`
+
 
 ```
 sudo dpkg-reconfigure keyboard-configuration
