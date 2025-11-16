@@ -33,7 +33,7 @@ sudo apt remove --purge cups*
 
 ----
 
-### Set DNS
+### Configure custom DNS
 
 ```
 sudo apt install systemd-resolved
@@ -54,24 +54,6 @@ sudo systemctl restart systemd-resolved
 ```
 
 verify with: `resolvectl status`
-
-----
-
-### Remap CAPS-LOCK to CTRL
-
-```
-sudo apt install keyboard-configuration console-setup
-```
-
-set `XKBOPTIONS="ctrl:nocaps"` in `/etc/default/keyboard`
-
-
-```
-sudo dpkg-reconfigure keyboard-configuration
-sudo systemctl restart keyboard-setup.service
-sudo setupcon
-sudo update-initramfs -u
-```
 
 ----
 
