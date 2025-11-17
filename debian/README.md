@@ -6,9 +6,16 @@
 
 ```
 sudo apt install \
-    audacious btop build-essential fonts-ubuntu fonts-ubuntu-console \
-    gnome-terminal gvfs-backends htop libfuse2 nemo python-is-python3
+    audacious btop build-essential gnome-terminal gvfs-backends htop libfuse2 \
+    nemo python-is-python3
 
+```
+
+### Install fonts
+
+```
+sudo apt install \
+    fonts-hack fonts-inconsolata fonts-noto fonts-ubuntu fonts-ubuntu-console
 ```
 
 ### Install dependencies for building Python from source with all optional modules
