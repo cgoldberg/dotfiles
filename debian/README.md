@@ -1,24 +1,50 @@
-# Debian Tweaks
+# Debian Configuration
 
 ----
 
-### Install packages
+## Add package sources
+
+Update `/etc/apt/sources.list.d/debian.sources`:
+
+```
+Types: deb deb-src
+URIs: https://deb.debian.org/debian/
+Suites: trixie trixie-updates trixie-backports
+Components: main non-free-firmware contrib non-free
+Enabled: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
+
+Types: deb deb-src
+URIs: https://deb.debian.org/debian-security/
+Suites: trixie-security
+Components: main non-free-firmware contrib non-free
+Enabled: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
+```
+
+----
+
+## Install packages
 
 ```
 sudo apt install \
-    audacious btop build-essential gnome-terminal gvfs-backends htop libfuse2 \
-    nemo python-is-python3
+    audacious btop build-essential gnome-terminal gvfs-backends htop \
+    libfuse2 nemo python-is-python3
 
 ```
 
-### Install fonts
+----
+
+## Install fonts
 
 ```
 sudo apt install \
     fonts-hack fonts-inconsolata fonts-noto fonts-ubuntu fonts-ubuntu-console
 ```
 
-### Install dependencies for building Python from source with all optional modules
+----
+
+## Install dependencies for building Python with all optional modules
 
 ```
 sudo apt build-dep python3
@@ -31,7 +57,7 @@ sudo apt install \
 
 ----
 
-### Remove packages
+## Remove packages
 
 ```
 sudo apt remove --purge avahi*
@@ -40,7 +66,7 @@ sudo apt remove --purge cups*
 
 ----
 
-### Configure custom DNS
+## Configure custom DNS
 
 ```
 sudo apt install systemd-resolved
@@ -64,7 +90,7 @@ verify with: `resolvectl status`
 
 ----
 
-### Build ImageMagick from source
+## Build ImageMagick from source
 
 install dependencies:
 

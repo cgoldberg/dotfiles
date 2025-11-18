@@ -198,24 +198,34 @@ killblog () {
 
 # package maintenance
 apt-up () {
+    # whack the package resource lists so they are re-downloaded
+    sudo rm -rf /var/lib/apt/lists/*
     # reload package index files from sources
-    sudo apt update --no-allow-insecure-repositories && echo &&
+    sudo apt update --no-allow-insecure-repositories || return 1
+    echo
     # check for broken dependencies
-    sudo apt-get check && echo &&
+    sudo apt-get check
+    echo
     # fix broken dependencies
-    sudo apt install --fix-broken && echo &&
+    sudo apt install --fix-broken
+    echo
     # fix missing dependencies
-    sudo apt install --fix-missing && echo &&
+    sudo apt install --fix-missing
+    echo
     # upgrade installed packages
-    sudo apt full-upgrade && echo &&
+    sudo apt full-upgrade || return 1
+    echo
     # purge packages that are no longer needed
-    sudo apt autoremove --purge && echo &&
+    sudo apt autoremove --purge
+    echo
     # remove cached packages
-    sudo apt clean &&
+    sudo apt clean
     # purge orphaned configs from removed packages
-    purge-apt-configs &&
+    purge-apt-configs
+    echo
     # reload package index files from sources
-    sudo apt update --no-allow-insecure-repositories && echo &&
+    sudo apt update --no-allow-insecure-repositories
+    echo
     # print number of installed packages
     ok "$(dpkg -l | grep -c '^ii') packages installed"
 }
@@ -227,6 +237,8 @@ purge-apt-configs () {
         echo "$(dpkg -l | grep -c '^rc') packages have orphaned configs"
         echo "purging package configs from removed packages..."
         dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
+    else
+        echo "no packages have orphaned configs"
     fi
 }
 
