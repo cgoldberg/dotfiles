@@ -152,7 +152,7 @@ install-chrome () {
     else
         echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" \
             | sudo tee /etc/apt/sources.list.d/google-chrome.list
-        sudo apt update
+        sudo apt update --no-allow-insecure-repositories
         sudo apt install "${package}" -y
     fi
 }
@@ -175,7 +175,7 @@ blog () {
     bundle exec jekyll s >/dev/null & disown # silence stdout
     sleep 3.5
     echo "opening browser at: http://${jekyll_server}"
-    xdg-open "http://${jekyll_server}"
+    web "http://${jekyll_server}"
 }
 
 
@@ -196,50 +196,37 @@ killblog () {
 }
 
 
-# package maintenance
-apt-up () {
-    # whack the package resource lists so they are re-downloaded
+# whack the package resource lists and re-downloaded them
+clean-apt-index () {
     sudo rm -rf /var/lib/apt/lists/*
-    # reload package index files from sources
-    sudo apt update --no-allow-insecure-repositories || return 1
-    echo
-    # check for broken dependencies
-    sudo apt-get check
-    echo
-    # fix broken dependencies
-    sudo apt install --fix-broken
-    echo
-    # fix missing dependencies
-    sudo apt install --fix-missing
-    echo
-    # upgrade installed packages
-    sudo apt full-upgrade || return 1
-    echo
-    # purge packages that are no longer needed
-    sudo apt autoremove --purge
-    echo
-    # remove cached packages
-    sudo apt clean
-    # purge orphaned configs from removed packages
-    purge-apt-configs
-    echo
-    # reload package index files from sources
     sudo apt update --no-allow-insecure-repositories
-    echo
-    # print number of installed packages
-    ok "$(dpkg -l | grep -c '^ii') packages installed"
 }
 
 
-# purge configuration data from packages marked as removed
-purge-apt-configs () {
+# package maintenance
+apt-up () {
+    sudo apt update --no-allow-insecure-repositories || err "apt error" && return 1
+    ok "updated list of available packages\n"
+    sudo apt install --fix-broken || err "apt error" && return 1
+    ok "fixed broken dependencies\n"
+    sudo apt install --fix-missing || err "apt error" && return 1
+    ok "fixed missing dependencies\n"
+    sudo apt full-upgrade || err "apt error" && return 1
+    ok "upgraded installed packages\n"
+    sudo apt autoremove --purge || err "apt error" && return 1
+    ok "removed unused packages\n"
+    sudo apt clean || err "apt error" && return 1
+    ok "removed cached packages\n"
     if dpkg -l | grep --quiet '^rc'; then
         echo "$(dpkg -l | grep -c '^rc') packages have orphaned configs"
-        echo "purging package configs from removed packages..."
-        dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo dpkg --purge
-    else
-        echo "no packages have orphaned configs"
+        dpkg -l | grep '^rc' | awk '{print $2}' \
+            | xargs --no-run-if-empty sudo dpkg --purge
     fi
+    ok "purged orphaned package configs\n"
+    sudo apt update --no-allow-insecure-repositories || err "apt error" && return 1
+    ok "updated list of available packages\n"
+    # print number of installed packages
+    ok "$(dpkg -l | grep -c '^ii') packages installed"
 }
 
 

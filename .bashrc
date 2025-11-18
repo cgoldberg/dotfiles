@@ -316,14 +316,14 @@ alias webserver="python3 -m http.server"
 # print bold message to stderr preceded with red ballot x
 err () {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
-    tput bold; echo "$*" 1>&2; tput sgr0
+    tput bold; echo -e "$*" 1>&2; tput sgr0
 }
 
 
 # print bold message to stderr preceded with green heavy check mark
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
-    tput bold; echo "$*" 1>&2; tput sgr0
+    tput bold; echo -e "$*" 1>&2; tput sgr0
 }
 
 
