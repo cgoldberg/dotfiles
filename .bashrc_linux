@@ -205,17 +205,23 @@ clean-apt-index () {
 
 # package maintenance
 apt-up () {
-    sudo apt update --no-allow-insecure-repositories || err "apt error" && return 1
+    sudo apt update --no-allow-insecure-repositories \
+        || (err "apt error" && return 1)
     ok "updated list of available packages\n"
-    sudo apt install --fix-broken || err "apt error" && return 1
+    sudo apt install --fix-broken \
+        || (err "apt error" && return 1)
     ok "fixed broken dependencies\n"
-    sudo apt install --fix-missing || err "apt error" && return 1
+    sudo apt install --fix-missing \
+        || (err "apt error" && return 1)
     ok "fixed missing dependencies\n"
-    sudo apt full-upgrade || err "apt error" && return 1
+    sudo apt full-upgrade \
+        || (err "apt error" && return 1)
     ok "upgraded installed packages\n"
-    sudo apt autoremove --purge || err "apt error" && return 1
+    sudo apt autoremove --purge \
+        || (err "apt error" && return 1)
     ok "removed unused packages\n"
-    sudo apt clean || err "apt error" && return 1
+    sudo apt clean \
+        || (err "apt error" && return 1)
     ok "removed cached packages\n"
     if dpkg -l | grep --quiet '^rc'; then
         echo "$(dpkg -l | grep -c '^rc') packages have orphaned configs"
@@ -223,7 +229,8 @@ apt-up () {
             | xargs --no-run-if-empty sudo dpkg --purge
     fi
     ok "purged orphaned package configs\n"
-    sudo apt update --no-allow-insecure-repositories || err "apt error" && return 1
+    sudo apt update --no-allow-insecure-repositories \
+        || (err "apt error" && return 1)
     ok "updated list of available packages\n"
     # print number of installed packages
     ok "$(dpkg -l | grep -c '^ii') packages installed"
