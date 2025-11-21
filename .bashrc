@@ -420,8 +420,8 @@ gpip-uninstall () {
 }
 
 
-# rename all files under the current directory, replacing
-# spaces with underscores (recursive). If inside a git repo,
+# rename all files under the current directory (recursive),
+# replacing spaces with underscores. If inside a git repo,
 # renames will be tracked by git
 remove-whitespace-from-filenames () {
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -431,6 +431,13 @@ remove-whitespace-from-filenames () {
         find . -type f -name "* *" \
             -exec bash -c 'mv "$0" "${0// /_}"' {} \;
     fi
+}
+
+
+# remove trailing whitespace from lines in all files
+# under current directory (recursive)
+remove-trailing-whitespace-from-files () {
+    find . -type f -print0 | xargs -r0 sed -e 's/[[:blank:]]\+$//' -i
 }
 
 
