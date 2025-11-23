@@ -158,6 +158,12 @@ if [ -d "${HOME}/.cargo" ]; then
 fi
 
 
+# deno/js
+if [ -d "${HOME}/.deno" ]; then
+    source "${HOME}/.deno/env"
+fi
+
+
 # golang
 if [ -d "/usr/local/go" ]; then
     export PATH="${PATH}:/usr/local/go/bin"

@@ -9,6 +9,7 @@
 #  - all platforms:
 #    - bat (https://github.com/sharkdp/bat)
 #    - cargo-cache (cargo install)
+#    - deno (curl -fsSL https://deno.land/install.sh | sh)
 #    - exiftool (apt install)
 #    - eza (cargo install)
 #    - fd (https://github.com/sharkdp/fd)
@@ -60,6 +61,7 @@ DEPENDENCIES=(
     "bat"
     "cargo-cache"
     "exiftool"
+    "deno"
     "eza"
     "fd"
     "ffmpeg"
