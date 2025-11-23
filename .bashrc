@@ -164,12 +164,6 @@ if [ -d "/usr/local/go" ]; then
 fi
 
 
-# deno/js
-if [ -d "${HOME}/.deno" ]; then
-    source "${HOME}/.deno/env"
-fi
-
-
 # pipx
 if [ -x "$(type -pP pipx)" ]; then
     eval "$(register-python-argcomplete pipx)"
