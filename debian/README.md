@@ -4,7 +4,9 @@
 
 ## Add package sources
 
-Update `/etc/apt/sources.list.d/debian.sources`:
+Remove `/etc/apt/sources.list` if it exists (old format).
+
+Update or add `/etc/apt/sources.list.d/debian.sources`:
 
 ```
 Types: deb deb-src
