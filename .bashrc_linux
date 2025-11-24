@@ -209,6 +209,14 @@ clean-apt-index () {
 }
 
 
+# show locally installed .deb packages
+apt-show-local () {
+    echo "locally installed .deb packages:"
+    echo "--------------------------------"
+    apt list --installed 2>/dev/null | \grep installed,local | cut -d'/' -f1
+}
+
+
 # package maintenance
 apt-up () {
     sudo apt update --no-allow-insecure-repositories \
