@@ -96,6 +96,7 @@ DEPENDENCIES_WINDOWS=(
 )
 CONFIGS=(
     ".bashrc"
+    ".bash_logout"
     ".profile"
     ".gitconfig"
 )

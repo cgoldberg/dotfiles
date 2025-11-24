@@ -23,7 +23,7 @@ alias watch="watch "
 
 
 # exit shell
-alias x="history -n; history -w; exit"
+alias x="exit"
 
 
 # look all busy and fancy to non-technical people
