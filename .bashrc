@@ -676,6 +676,7 @@ psgrep () {
     if [ -n "$1" ]; then
         ps -ef \
             | \grep --color=always --extended-regexp --ignore-case "$1" \
+            | grep --invert-match --word-regexp "grep" \
             | nowrap
     else
         ps -ef
