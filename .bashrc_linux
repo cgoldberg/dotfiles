@@ -191,9 +191,14 @@ killblog () {
     if [[ $(psgrep "${jekyll_proc}") ]]; then
         echo "killing server at: ${jekyll_server}"
         pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
-        psgrep "${jekyll_proc}" | grep -v grep
+        psgrep "${jekyll_proc}"
     fi
 }
+
+
+# whack the thumbnail cache
+clean-thumbnails () {
+    rm -rf "${HOME}/.cache/thumbnails/"
 
 
 # whack the package resource lists and re-downloaded them
