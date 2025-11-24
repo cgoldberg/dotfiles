@@ -566,8 +566,8 @@ rg () {
         err "please specify a search pattern"
         return 1
     fi
-    if [ -f /usr/bin/rg ]; then
-        local rg_bin=/usr/bin/rg
+    if [ -f "${HOME}/.cargo/bin/rg" ]; then
+        local rg_bin="${HOME}/.cargo/bin/rg"
     elif [ -f "${HOME}/Scoop/shims/rg" ]; then # Windows/Scoop/MinGW
         local rg_bin="${HOME}/Scoop/shims/rg"
         rg_bin="${rg_bin} --path-separator='//'"

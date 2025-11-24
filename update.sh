@@ -25,7 +25,7 @@
 #    - pipx (pip install --user pipx)
 #    - pyupgrade (pipx-install pyupgrade)
 #    - refurb (pipx-install refurb)
-#    - rg (https://github.com/BurntSushi/ripgrep)
+#    - rg (cargo install ripgrep)
 #    - ruby (sudo apt install ruby)
 #    - rustup (https://rustup.rs - on Windows: scoop install rustup-gnu)
 #    - shellcheck (sudo apt install shellcheck)
