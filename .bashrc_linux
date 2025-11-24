@@ -199,6 +199,7 @@ killblog () {
 # whack the thumbnail cache
 clean-thumbnails () {
     rm -rf "${HOME}/.cache/thumbnails/"
+}
 
 
 # whack the package resource lists and re-downloaded them
