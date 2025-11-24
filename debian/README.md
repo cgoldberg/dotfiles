@@ -64,6 +64,7 @@ sudo apt install \
 ```
 sudo apt remove --purge avahi*
 sudo apt remove --purge cups*
+sudo apt remove --purge bluez
 ```
 
 ----
