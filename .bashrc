@@ -286,10 +286,6 @@ alias github="web https://github.com/${GITHUB_USERNAME}"
 alias gist="web https://gist.github.com/${GITHUB_USERNAME}"
 
 
-# update Rust toolchain, remove Cargo crate source checkouts and git repo checkouts
-alias clean-rust="rustup update && cargo-cache --autoclean"
-
-
 # better cat
 if [ -x "$(type -pP bat)" ]; then
     alias cat="bat"
@@ -444,6 +440,50 @@ remove-whitespace-from-filenames () {
 # under current directory (recursive)
 remove-trailing-whitespace-from-files () {
     find . -type f -print0 | xargs -r0 sed -e 's/[[:blank:]]\+$//' -i
+}
+
+
+# update rust toolchain, remove cargo crate source checkouts
+# and git repo checkouts
+clean-rust () {
+    if [ ! -x "$(type -pP rustup)" ]; then
+        err "can't find rustup"
+        return 1
+    fi
+    if [ ! -x "$(type -pP cargo-cache)" ]; then
+        err "can't find cargo-cache"
+        return 1
+    fi
+    rustup update
+    cargo-cache --autoclean
+}
+
+
+# rebuild all rust binaries that were installed with cargo
+update-rust-bins () {
+    if [ ! -x "$(type -pP cargo)" ]; then
+        err "can't find cargo"
+        return 1
+    fi
+    local cargo_bins=(
+        "${HOME}/.cargo/bin"
+        "${HOME}/Scoop/apps/rustup-gnu/current/.cargo/bin"
+    )
+    for cargo_bin in "${cargo_bins[@]}"; do
+        if [ -d "${cargo_bin}" ]; then
+            break
+        fi
+        err "can't find Rust binaries directory"
+        return 1
+    done
+    for f in "${cargo_bin}"/*; do
+        if [ ! -L "${f}" ] && [[ "${f}" != *"rustup" ]]; then
+            local bin_name=$(basename "${f}")
+            echo "rebuilding ${bin_name} ..."
+            cargo install "${bin_name}"
+            echo
+        fi
+    done
 }
 
 
