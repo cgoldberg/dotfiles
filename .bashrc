@@ -465,6 +465,7 @@ update-rust-bins () {
         err "can't find cargo"
         return 1
     fi
+    clean-rust
     echo
     for rust_pkg in $(cargo install --list | cut -d' ' -f1 | \grep .); do
         echo "rebuilding ${rust_pkg} ..."
