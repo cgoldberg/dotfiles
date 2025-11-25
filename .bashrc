@@ -465,24 +465,11 @@ update-rust-bins () {
         err "can't find cargo"
         return 1
     fi
-    local cargo_bins=(
-        "${HOME}/.cargo/bin"
-        "${HOME}/Scoop/apps/rustup-gnu/current/.cargo/bin"
-    )
-    for cargo_bin in "${cargo_bins[@]}"; do
-        if [ -d "${cargo_bin}" ]; then
-            break
-        fi
-        err "can't find Rust binaries directory"
-        return 1
-    done
-    for f in "${cargo_bin}"/*; do
-        if [ ! -L "${f}" ] && [[ "${f}" != *"rustup" ]]; then
-            local bin_name=$(basename "${f}")
-            echo "rebuilding ${bin_name} ..."
-            cargo install "${bin_name}"
-            echo
-        fi
+    echo
+    for rust_pkg in $(cargo install --list | cut -d' ' -f1 | \grep .); do
+        echo "rebuilding ${rust_pkg} ..."
+        cargo install "${rust_pkg}"
+        echo
     done
 }
 
