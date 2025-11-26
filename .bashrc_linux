@@ -266,7 +266,13 @@ apt-update-local-pkgs () {
     for pkg in ${packages[@]}; do
         pkg_repo_dir="${HOME}/code/${pkg}"
         if [ ! -d "${pkg_repo_dir}" ]; then
+            echo
             err "can't find git repo for package: ${pkg}"
+            echo
+            echo "locally cloned repos are required at:"
+            for pkg in ${packages[@]}; do
+                echo " - ${HOME}/code/${pkg}"
+            done
             cd "${original_dir}"
             return 1
         fi
