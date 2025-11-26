@@ -209,14 +209,6 @@ clean-apt-index () {
 }
 
 
-# show locally installed .deb packages
-apt-show-local () {
-    echo "locally installed .deb packages:"
-    echo "--------------------------------"
-    apt list --installed 2>/dev/null | \grep installed,local | cut -d'/' -f1
-}
-
-
 # package maintenance
 apt-up () {
     sudo apt update --no-allow-insecure-repositories \
@@ -248,6 +240,51 @@ apt-up () {
     ok "updated list of available packages\n"
     # print number of installed packages
     ok "$(dpkg -l | grep -c '^ii') packages installed"
+}
+
+
+# show locally installed .deb packages
+apt-show-local-pkgs () {
+    apt list --installed 2>/dev/null | \grep installed,local | cut -d'/' -f1
+}
+
+
+# update locally installed .deb packages
+apt-update-local-pkgs () {
+    if [ ! -x "$(type -pP gh)" ]; then
+        err "can't find github cli"
+        return 1
+    fi
+    if [ "$(arch)" == "aarch64" ]; then
+        local architecture="arm64"
+    else
+        local architecture="amd64"
+    fi
+    local packages=$(apt-show-local-pkgs)
+    local original_dir=${PWD}
+    for pkg in ${packages[@]}; do
+        pkg_repo_dir="${HOME}/code/${pkg}"
+        if [ ! -d "${pkg_repo_dir}" ]; then
+            err "can't find git repo for package: ${pkg}"
+            cd "${original_dir}"
+            return 1
+        fi
+        cd "${pkg_repo_dir}"
+        echo
+        echo "downloading latest release of package: '${pkg}' ..."
+        gh release download --clobber --pattern="*${architecture}.deb" --dir="/tmp"
+        for deb in /tmp/*"${architecture}.deb"; do
+            if [[ ${deb} != *"musl"* ]]; then
+                echo "installing: '${deb}' ..."
+                sudo apt install -y "${deb}"
+                echo
+            fi
+            rm "${deb}"
+            cd "${original_dir}"
+        done
+    done
+    cd "${original_dir}"
+    ok "done upgrading locally installed packages"
 }
 
 
