@@ -262,6 +262,7 @@ apt-update-local-pkgs () {
     fi
     local packages=$(apt-show-local-pkgs)
     local original_dir=${PWD}
+    rm -f /tmp/*.deb
     for pkg in ${packages[@]}; do
         pkg_repo_dir="${HOME}/code/${pkg}"
         if [ ! -d "${pkg_repo_dir}" ]; then
@@ -275,7 +276,7 @@ apt-update-local-pkgs () {
         gh release download --clobber --pattern="*${architecture}.deb" --dir="/tmp"
         for deb in /tmp/*"${architecture}.deb"; do
             if [[ ${deb} != *"musl"* ]]; then
-                echo "installing: '${deb}' ..."
+                echo "installing ..."
                 sudo apt install -y "${deb}"
                 echo
             fi
