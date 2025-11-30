@@ -89,7 +89,8 @@ timer () {
 do_backup () {
     echo "downloading backups of GitHub repos ..."
     echo
-    githubtakeout "${GITHUB_USERNAME}" --gists --history --dir="./${GITHUB_BACKUP_DIR}" --format=none --skip_pattern="selenium.*"
+    githubtakeout "${GITHUB_USERNAME}" --gists --history --dir="./${GITHUB_BACKUP_DIR}" \
+        --format=none --skip_pattern="selenium.*|docker-selenium.*"
     echo
     echo "${SEP}"
     sync "${BACKUP_LOCAL_PATH}"
