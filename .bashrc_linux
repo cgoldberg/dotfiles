@@ -47,6 +47,10 @@ alias killall="\killall --ignore-case --process-group --wait"
 alias wget="wget --hsts-file=/dev/null"
 
 
+# remove CUE sheet from FLAC file
+alias clean-flac-cuesheet="metaflac --remove --block-type='CUESHEET'"
+
+
 # python virtual env
 alias activate="source ./venv/bin/activate"
 alias deact="deactivate"
