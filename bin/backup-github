@@ -12,7 +12,6 @@
 set -eou pipefail
 
 
-EXPECTED_HOST="penguin"
 NAS_HOST="bitz"
 NAS_IP="10.0.0.5"
 NAS_USERNAME="cgoldberg"
@@ -36,13 +35,6 @@ ok () {
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
-check_host () {
-    if [ "${HOSTNAME}" != "${EXPECTED_HOST}" ]; then
-        die "fatal: can't run on this host: ${HOSTNAME}" \
-            "(required: ${EXPECTED_HOST})"
-    fi
-}
-
 check_configuration () {
     if [ ! -d "${BACKUP_LOCAL_PATH}" ]; then
         die "fatal: backup directory not found: ${BACKUP_LOCAL_PATH}"
@@ -60,14 +52,9 @@ check_configuration () {
         die "fatal: githubtakeout not found"
     fi
 
-    if [ ! -f "${GITHUB_TOKEN_FILE}" ]; then
-        die "fatal: can't find github token in: ${GITHUB_TOKEN_FILE}"
+    if [ ! -f "./.env" ]; then
+        die "fatal: can't find .env file with GITHUB_TOKEN"
     fi
-}
-
-delete_old_backups () {
-    rm -rf ./backups
-    rm -rf "./${GITHUB_BACKUP_DIR}"
 }
 
 mount_nas () {
@@ -100,13 +87,11 @@ timer () {
 }
 
 do_backup () {
-    echo "downloading GitHub backup ..."
+    echo "downloading backups of GitHub repos ..."
     echo
-    export GITHUB_TOKEN=$(cat "${GITHUB_TOKEN_FILE}")
-    githubtakeout "${GITHUB_USERNAME}" --gists
+    githubtakeout "${GITHUB_USERNAME}" --gists --history --dir="./${GITHUB_BACKUP_DIR}" --format=none --skip_pattern="selenium.*"
     echo
     echo "${SEP}"
-    mv ./backups "./${GITHUB_BACKUP_DIR}"
     sync "${BACKUP_LOCAL_PATH}"
     echo
     echo "syncing "\
@@ -132,7 +117,6 @@ do_backup () {
     sync "${BACKUP_DESTINATION_PATH}"
 }
 
-check_host
 echo
 echo "mounting remote storage ..."
 mount_nas
@@ -140,8 +124,6 @@ echo "changing directory to: ${BACKUP_LOCAL_PATH} ..."
 cd "${BACKUP_LOCAL_PATH}"
 echo "verifying configuration ..."
 check_configuration
-echo "deleting old local backups ..."
-delete_old_backups
 echo "starting backup job ..."
 echo
 echo "${SEP}"
