@@ -57,6 +57,11 @@ check_configuration () {
     fi
 }
 
+delete_old_backups () {
+    rm -rf ./backups
+    rm -rf "./${GITHUB_BACKUP_DIR}"
+}
+
 mount_nas () {
     gio mount --unmount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}" \
         2>/dev/null || true
@@ -89,10 +94,10 @@ timer () {
 do_backup () {
     echo "downloading backups of GitHub repos ..."
     echo
-    githubtakeout "${GITHUB_USERNAME}" --gists --history --dir="./${GITHUB_BACKUP_DIR}" \
-        --format=none --skip_pattern="selenium.*|docker-selenium.*"
+    githubtakeout "${GITHUB_USERNAME}" --gists
     echo
     echo "${SEP}"
+    mv ./backups "./${GITHUB_BACKUP_DIR}"
     sync "${BACKUP_LOCAL_PATH}"
     echo
     echo "syncing "\
@@ -125,6 +130,8 @@ echo "changing directory to: ${BACKUP_LOCAL_PATH} ..."
 cd "${BACKUP_LOCAL_PATH}"
 echo "verifying configuration ..."
 check_configuration
+echo "deleting old local backups ..."
+delete_old_backups
 echo "starting backup job ..."
 echo
 echo "${SEP}"
