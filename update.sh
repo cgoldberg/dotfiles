@@ -37,6 +37,7 @@
 #    - githubtakeout (pipx-install githubtakeout)
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install google-drive-export)
+#    - metaflac (sudo apt install flac)
 #    - ncdu (sudo apt install ncdu)
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (sudo apt install rsync)
@@ -89,6 +90,7 @@ DEPENDENCIES_LINUX=(
     "githubtakeout"
     "go"
     "google_drive_export"
+    "metaflac"
     "ncdu"
     "pyenv"
     "rsync"
