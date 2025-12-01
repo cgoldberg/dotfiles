@@ -20,6 +20,8 @@
 
 [core]
     safecrlf = true
+    fsmonitor = true
+    untrackedcache = true
 
 [pull]
     rebase = true
