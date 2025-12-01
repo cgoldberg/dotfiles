@@ -87,5 +87,5 @@
 
 
 # overrides for Windows
-[includeIf "gitdir:C:"]
+[includeIf "gitdir:C:/"]
     path = ~/.gitconfig_win
