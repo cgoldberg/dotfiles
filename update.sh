@@ -10,6 +10,7 @@
 #    - bat (https://github.com/sharkdp/bat)
 #    - cargo-cache (cargo install cargo-cache)
 #    - deno (curl -fsSL https://deno.land/install.sh | sh)
+#    - difft (https://github.com/Wilfred/difftastic/releases)
 #    - exiftool (sudo apt install exiftool)
 #    - eza (cargo install eza)
 #    - fd (https://github.com/sharkdp/fd)
@@ -62,6 +63,7 @@ REQUIREMENTS=(
 DEPENDENCIES=(
     "bat"
     "cargo-cache"
+    "difft"
     "exiftool"
     "deno"
     "eza"
