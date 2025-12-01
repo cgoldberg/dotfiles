@@ -72,7 +72,7 @@ export LESSHISTFILE=-
 
 
 # set termcap colors (used by less pager)
-export LESS_TERMCAP_mb=$(printf '\e[01;31m')
+export =$(printf '\e[01;31m')
 export LESS_TERMCAP_md=$(printf '\e[01;38;5;75m')
 export LESS_TERMCAP_me=$(printf '\e[0m')
 export LESS_TERMCAP_se=$(printf '\e[0m')
@@ -83,6 +83,8 @@ export LESS_TERMCAP_us=$(printf '\e[04;38;5;200m')
 
 # disable suspend/resume feature in terminal
 stty -ixon
+
+
 
 
 # set shell behavior

@@ -86,6 +86,6 @@
     }; f"
 
 
-# overrides for Windows/ADO
-[includeIf "hasconfig:remote.*.url:git@ssh.dev.azure.com:*/**"]
+# overrides for Windows
+[includeIf "gitdir:C:"]
     path = ~/.gitconfig_win
