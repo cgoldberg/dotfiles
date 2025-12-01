@@ -36,7 +36,8 @@
 - Go to "Applications"
 - Click the cog wheel icon next to the application
 - In the drop-down menu, select "Recreate"
+- Verify the `.yml` file and click "Update"
 - The application will be undeployed and recreated (all configurations are
   kept as it is mounted in a bind volume)
-- You can remove the old image after deploying
-- You will need to set the network configuration again
+- Remove the old image after deploying
+- Set the network configuration to bridge mode again
