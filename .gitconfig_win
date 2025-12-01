@@ -11,3 +11,6 @@
 
 [diff]
     external = difft --skip-unchanged --display=inline
+
+[alias]
+    show = show --ext-diff
