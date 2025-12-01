@@ -77,10 +77,6 @@ alias ncdu="ncdu --disable-delete --group-directories-first \
     --one-file-system --show-itemcount"
 
 
-# list directories and files in tree format
-alias tree="tree -ash -CF --du"
-
-
 # ip addresses
 alias internalip="echo 'internal ip address:' && echo '---------------------' && \
     hostname --all-ip-addresses | awk '{print \$1}'"

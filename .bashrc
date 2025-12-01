@@ -252,6 +252,13 @@ if [ -x "$(type -pP eza)" ]; then
     alias l="eza --all --git --git-repos-no-status --group-directories-first \
         --header --long --modified --no-quotes --classify=always --sort=Name \
         --time-style=long-iso"
+else
+    alias l="ll"
+fi
+if [ -x "$(type -pP eza)" ]; then
+    alias tree="eza --tree --all --group-directories-first --no-git \
+        --no-quotes --classify=always --sort=Name \
+        --ignore-glob='venv|.git|.tox|__pycache__'"
 fi
 
 
