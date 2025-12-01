@@ -249,16 +249,17 @@ alias ls="LC_ALL=C \ls --almost-all --classify --group-directories-first \
 alias ll="LC_ALL=C \ls -l --almost-all --classify --group-directories-first \
     --human-readable --no-group --color=always"
 if [ -x "$(type -pP eza)" ]; then
-    alias l="eza --all --git --git-repos-no-status --group-directories-first \
-        --header --long --modified --no-quotes --classify=always --sort=Name \
-        --time-style=long-iso"
+    alias l="eza --long --all --git --git-repos-no-status \
+        --group-directories-first --header --modified --no-quotes \
+        --classify=always --sort=Name --time-style=long-iso"
 else
     alias l="ll"
 fi
 if [ -x "$(type -pP eza)" ]; then
     alias tree="eza --tree --all --group-directories-first --no-git \
-        --no-quotes --classify=always --sort=Name \
-        --ignore-glob='venv|.git|.tox|__pycache__'"
+        --no-quotes --classify=always --color=always --sort=Name \
+        --ignore-glob='venv|.git|.tox|*_cache|__pycache__' \
+        | less"
 fi
 
 
