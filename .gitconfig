@@ -21,9 +21,6 @@
 [core]
     safecrlf = true
 
-[diff]
-    external = difft --skip-unchanged --display=inline
-
 [pull]
     rebase = true
 

@@ -10,7 +10,6 @@
 #    - bat (https://github.com/sharkdp/bat)
 #    - cargo-cache (cargo install cargo-cache)
 #    - deno (curl -fsSL https://deno.land/install.sh | sh)
-#    - difft (https://github.com/Wilfred/difftastic/releases)
 #    - exiftool (sudo apt install exiftool)
 #    - eza (cargo install eza)
 #    - fd (https://github.com/sharkdp/fd)
@@ -45,6 +44,7 @@
 #
 #  - windows only:
 #    - alacritty (scoop install alacritty)
+#    - difft (scoop install difftastic)
 
 
 set -e
@@ -63,7 +63,6 @@ REQUIREMENTS=(
 DEPENDENCIES=(
     "bat"
     "cargo-cache"
-    "difft"
     "exiftool"
     "deno"
     "eza"
@@ -99,6 +98,7 @@ DEPENDENCIES_LINUX=(
 )
 DEPENDENCIES_WINDOWS=(
     "alacritty"
+    "difft"
 )
 CONFIGS=(
     ".bashrc"
