@@ -1,4 +1,4 @@
-# Instructions for running Lyrion in QNAP QTS Container Station (Docker)
+## Running Lyrion Music Server on QNAP QTS Container Station (Docker)
 
 ----
 
