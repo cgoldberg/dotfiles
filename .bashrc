@@ -480,6 +480,9 @@ update-rust-bins () {
         cargo install "${rust_pkg}"
         echo
     done
+    clean-rust
+    echo
+    ok "updated all rust binaries"
 }
 
 
