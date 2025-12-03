@@ -1,6 +1,6 @@
 # ~/.gitconfig_win
 #
-# global git configuration overrides for Windows
+# global git configuration additions for Windows
 # (set in each repo's .git/config to override these)
 
 [core]
@@ -9,8 +9,3 @@
 [credential]
     helper = manager
 
-[diff]
-    external = difft --skip-unchanged --display=inline
-
-[alias]
-    show = show --ext-diff

@@ -23,6 +23,9 @@
     fsmonitor = true
     untrackedcache = true
 
+[diff]
+    colorMoved = plain
+
 [pull]
     rebase = true
 
@@ -86,6 +89,6 @@
     }; f"
 
 
-# overrides for Windows
+# additional config for Windows
 [includeIf "gitdir:C:/"]
     path = ~/.gitconfig_win
