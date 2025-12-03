@@ -317,12 +317,12 @@ update-pyenv () {
     pyenv rehash
     echo
     local minor_versions=( $(pyenv versions --bare | \grep "${py_version}") )
+    for minor_version in "${minor_versions[@]}"; do
+        echo "uninstalling Python ${minor_version} ..."
+        pyenv uninstall --force "${minor_version}"
+        echo
+    done
     for py_version in "${PY_VERSIONS[@]}"; do
-        for minor_version in "${minor_versions[@]}"; do
-            echo "uninstalling Python ${minor_version} ..."
-            pyenv uninstall --force "${minor_version}"
-            echo
-        done
         echo "installing latest version of Python ${py_version} ..."
         pyenv install --force --verbose "${py_version}"
         pyenv global "${py_version}"
