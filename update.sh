@@ -7,28 +7,29 @@
 # install dependencies for full functionality:
 #
 #  - all platforms:
-#    - bat (https://github.com/sharkdp/bat)
+#    - bat (https://github.com/sharkdp/bat, scoop install bat)
 #    - cargo-cache (cargo install cargo-cache)
-#    - deno (curl -fsSL https://deno.land/install.sh | sh)
-#    - exiftool (sudo apt install exiftool)
-#    - eza (cargo install eza)
-#    - fd (https://github.com/sharkdp/fd)
-#    - ffmpeg (sudo apt install ffmpeg)
-#    - fzf (https://github.com/junegunn/fzf)
-#    - gcc (sudo apt install build-essential, on Windows: scoop install mingw)
-#    - gh (https://github.com/cli/cli)
+#    - delta (cargo install git-delta, scoop install delta)
+#    - deno (curl -fsSL https://deno.land/install.sh | sh, scoop install deno)
+#    - exiftool (sudo apt install exiftool, scoop install exiftool)
+#    - eza (cargo install eza, scoop install eza)
+#    - fd (https://github.com/sharkdp/fd, scoop install fd)
+#    - ffmpeg (sudo apt install ffmpeg, scoop install ffmpeg)
+#    - fzf (https://github.com/junegunn/fzf, scoop install fzf)
+#    - gcc (sudo apt install build-essential, scoop install mingw)
+#    - gh (https://github.com/cli/cli, scoop install gh)
 #    - git-who (https://github.com/sinclairtarget/git-who)
-#    - java (sudo apt install default-jdk)
-#    - jq (sudo apt install jq)
-#    - magick (https://github.com/ImageMagick/ImageMagick)
-#    - pandoc (https://github.com/jgm/pandoc)
+#    - java (sudo apt install default-jdk, scoop install openjdk)
+#    - jq (sudo apt install jq, scoop install jq)
+#    - magick (https://github.com/ImageMagick/ImageMagick, scoop install imagemagick)
+#    - pandoc (https://github.com/jgm/pandoc, scoop install pandoc)
 #    - pipx (pip install --user pipx)
 #    - pyupgrade (pipx-install pyupgrade)
 #    - refurb (pipx-install refurb)
-#    - rg (cargo install ripgrep)
-#    - ruby (sudo apt install ruby)
+#    - rg (cargo install ripgrep, scoop install ripgrep)
+#    - ruby (sudo apt install ruby, scoop install ruby)
 #    - rustup (https://rustup.rs - on Windows: scoop install rustup-gnu)
-#    - shellcheck (sudo apt install shellcheck)
+#    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - yt-dlp (pipx-install yt-dlp[default])
 #    - zoxide (cargo install zoxide)
@@ -61,6 +62,7 @@ REQUIREMENTS=(
 DEPENDENCIES=(
     "bat"
     "cargo-cache"
+    "delta"
     "exiftool"
     "deno"
     "eza"
