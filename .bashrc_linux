@@ -343,7 +343,7 @@ update-pyenv () {
     echo "global python versions installed:"
     pyenv global
     echo
-    ok "done updating Pythons"
+    ok "done updating pythons"
 }
 
 
