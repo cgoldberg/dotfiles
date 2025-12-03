@@ -264,7 +264,7 @@ apt-update-local-pkgs () {
     local original_dir=${PWD}
     rm -f /tmp/*.deb
     for pkg in ${packages[@]}; do
-        pkg_repo_dir="${HOME}/code/${pkg}"
+        local pkg_repo_dir="${HOME}/code/${pkg}"
         if [ ! -d "${pkg_repo_dir}" ]; then
             echo
             err "can't find git repo for package: ${pkg}"
@@ -273,9 +273,11 @@ apt-update-local-pkgs () {
             for pkg in ${packages[@]}; do
                 echo " - ${HOME}/code/${pkg}"
             done
-            cd "${original_dir}"
             return 1
         fi
+    done
+    for pkg in ${packages[@]}; do
+        local pkg_repo_dir="${HOME}/code/${pkg}"
         cd "${pkg_repo_dir}"
         echo
         echo "downloading latest release of package: '${pkg}' ..."
