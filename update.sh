@@ -44,10 +44,8 @@
 #
 #  - windows only:
 #    - alacritty (scoop install alacritty)
-#    - difft (scoop install difftastic)
 
-
-set -e
+set -eo pipefail
 
 
 DOTFILES_HOME="${HOME}/code/dotfiles"
@@ -98,7 +96,6 @@ DEPENDENCIES_LINUX=(
 )
 DEPENDENCIES_WINDOWS=(
     "alacritty"
-    "difft"
 )
 CONFIGS=(
     ".bashrc"
