@@ -15,7 +15,7 @@
 #    - fd (https://github.com/sharkdp/fd)
 #    - ffmpeg (sudo apt install ffmpeg)
 #    - fzf (https://github.com/junegunn/fzf)
-#    - gcc (sudo apt install build-essential - on Windows: scoop install mingw)
+#    - gcc (sudo apt install build-essential, on Windows: scoop install mingw)
 #    - gh (https://github.com/cli/cli)
 #    - git-who (https://github.com/sinclairtarget/git-who)
 #    - java (sudo apt install default-jdk)
@@ -241,6 +241,12 @@ git checkout "${default_branch}" >/dev/null 2>&1
 echo "updating local configs and scripts from github ..."
 echo
 
+echo "copying configs from dotfiles repo ${default_branch} branch to ${HOME}"
+for config in "${CONFIGS[@]}"; do
+    echo -e "  copying: ${config}"
+    cp "${config}" "${HOME}"
+done
+
 if [[ "${OSTYPE}" == "msys" ]]; then
     echo "copying windows configs from dotfiles repo ${default_branch} branch to ${HOME}"
     for config in "${WIN_CONFIGS[@]}"; do
@@ -266,12 +272,6 @@ else
         cp "${script}" "${BIN_DIR}"
     done
 fi
-
-echo "copying configs from dotfiles repo ${default_branch} branch to ${HOME}"
-for config in "${CONFIGS[@]}"; do
-    echo -e "  copying: ${config}"
-    cp "${config}" "${HOME}"
-done
 
 echo "copying pandoc templates from dotfiles repo ${default_branch} branch to ${PANDOC_TEMPLATE_DIR}"
 for template in "${PANDOC_TEMPLATES[@]}"; do
@@ -304,5 +304,6 @@ if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ] || [ -n 
 else
     ok "all dependencies installed"
 fi
+
 echo
 ok "done updating configs and scripts"
