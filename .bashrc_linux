@@ -324,8 +324,7 @@ update-pyenv () {
             echo
         done
         echo "installing latest version of Python ${py_version} ..."
-        pyenv install --force --verbose "${py_version}" \
-            || err "error installing ${py_version}" && return 1
+        pyenv install --force --verbose "${py_version}"
         pyenv global "${py_version}"
         echo "installed $(python3 --version)"
         echo
