@@ -337,6 +337,10 @@ update-pyenv () {
     eval "pyenv global ${PY_VERSIONS[*]}"
     echo "global python versions installed:"
     pyenv global
+    echo
+    pipx-upgrade-all
+    echo
+    ok "done updating Pythons"
 }
 
 
