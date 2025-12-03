@@ -334,11 +334,14 @@ update-pyenv () {
         echo
     done
     pyenv rehash
-    eval "pyenv global ${PY_VERSIONS[*]}"
+    pyenv global "${PY_VERSIONS[0]}"
+    pip-uninstall-all
+    gpip-install pipx
+    pipx-upgrade-all
+    echo
+    pyenv global ${PY_VERSIONS[*]}
     echo "global python versions installed:"
     pyenv global
-    echo
-    pipx-upgrade-all
     echo
     ok "done updating Pythons"
 }
