@@ -36,7 +36,24 @@ case $- in
 esac
 
 
+# set shell variables
 ORIGINAL_PATH="${PATH}"
+SQUEEZEBOX_URL="http://10.0.0.100:9000"
+SQUEEZEBOX_MAC="00:04:20:23:82:6f"
+
+
+# export environment variables
+export LANGUAGE="en_US"
+export PAGER="less"
+export EDITOR="vi"
+export GITHUB_USERNAME="cgoldberg"
+export PIP_REQUIRE_VIRTUALENV=true
+export LESSHISTFILE=- # don't leave .lesshst files
+if [ -x "$(type -pP subl)" ]; then
+    export VISUAL="subl --new-window --wait"
+else
+    export VISUAL="vi"
+fi
 
 
 # set a colored prompt with:
@@ -52,23 +69,6 @@ PS1=\
 '\[\033[1;38;5;123m\]\w\[\033[00m\]'\
 '\[\033[0;38;5;046m\]$(__git_ps1 " (%s)")\[\033[0m\] '\
 '\[\033[1;38;5;255m\]\$ \[\033[0m\]'
-
-
-# export environment variables
-export LANGUAGE="en_US"
-export PAGER="less"
-export EDITOR="vi"
-export GITHUB_USERNAME="cgoldberg"
-export PIP_REQUIRE_VIRTUALENV=true
-if [ -x "$(type -pP subl)" ]; then
-    export VISUAL="subl --new-window --wait"
-else
-    export VISUAL="vi"
-fi
-
-
-# don't leave .lesshst files in home directory
-export LESSHISTFILE=-
 
 
 # set termcap colors (used by less pager)
@@ -401,6 +401,36 @@ yt-mp3 () {
     fi
     yt-dlp --extract-audio --audio-format mp3 --audio-quality 320k "$1"
 }
+
+
+# send request to Squeezebox player API on local nextwork
+send-squeezebox-cmd () {
+    local payload="$1"
+    curl -sS -o /dev/null -X POST \
+        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_MAC}"'",'"${payload}"']}' \
+        "${SQUEEZEBOX_URL}/jsonrpc.js"
+}
+
+
+# skip to next track in playlist on Squeezebox player
+squeeze-next () {
+    send-squeezebox-cmd '["button","jump_fwd"]'
+}
+alias n=squeeze-next
+
+
+# play random song mix on Squeezebox player
+squeeze-mix () {
+    send-squeezebox-cmd '["randomplay","tracks"]'
+}
+alias m="squeeze-mix"
+
+
+# pause/resume audio on Squeezebox player
+squeeze-pause () {
+    send-squeezebox-cmd '["pause"]'
+}
+alias p="squeeze-pause"
 
 
 # colored diffs
