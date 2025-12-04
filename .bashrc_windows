@@ -79,7 +79,7 @@ scoop-update-all () {
     echo "Deleting Cache..."
     scoop cache rm --all
     echo
-    ok "done"
+    ok "done updating apps"
 }
 
 
