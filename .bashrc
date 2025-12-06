@@ -89,14 +89,14 @@ stty -ixon
 # ------------------
 # change to directory by name without cd command
 shopt -s autocd
-# check window size after each command and update the
-# values of LINES and COLUMNS
+# check window size after each command and update the values
+# of LINES and COLUMNS
 shopt -s checkwinsize
 # include filenames beginning with a "." in the results of
 # filename expansion
 shopt -s dotglob
-# the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories
+# the pattern "**" used in a pathname expansion context will match
+# all files and zero or more directories and subdirectories
 shopt -s globstar
 # automatically close file descriptors assigned using the
 # "{varname}" redirection syntax instead of leaving them
@@ -110,8 +110,7 @@ shopt -s varredir_close
 shopt -s histappend
 # edit recalled history line before executing
 shopt -s histverify
-# save each line of a multi-line command in the same
-# history entry
+# save each line of a multi-line command in the same history entry
 shopt -s cmdhist
 # save multi-line commands with embedded newlines rather than
 # semicolon separators where possible
@@ -685,7 +684,6 @@ rg () {
 # usage: h <pattern>
 h () {
     local num="50"
-    history -n; history -w; history -c; history -r;
     history | \grep -v "  h " | \grep --ignore-case --color=always "$1" \
         | tail -n "${num}"
 }
