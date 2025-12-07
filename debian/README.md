@@ -62,9 +62,8 @@ sudo apt install \
 ## Remove packages
 
 ```
-sudo apt remove --purge avahi*
-sudo apt remove --purge cups*
-sudo apt remove --purge bluez
+sudo apt remove --purge \
+    avahi* cups* bluez modemmanager
 ```
 
 ----
