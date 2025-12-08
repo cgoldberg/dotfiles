@@ -19,7 +19,6 @@ NAS_SHARE="public"
 BACKUP_LOCAL_PATH="${HOME}/backup"
 BACKUP_DESTINATION_PATH="${HOME}/${NAS_HOST}"
 GITHUB_BACKUP_DIR="GitHub_Backup"
-GITHUB_TOKEN_FILE="github_token.txt"
 ORIGINAL_DIR="${PWD}"
 SEP="----------------------------------------------------------------"
 
@@ -94,7 +93,7 @@ timer () {
 do_backup () {
     echo "downloading backups of GitHub repos ..."
     echo
-    githubtakeout "${GITHUB_USERNAME}" --gists
+    githubtakeout "${GITHUB_USERNAME}" --gists --history --skip_forks
     echo
     echo "${SEP}"
     mv ./backups "./${GITHUB_BACKUP_DIR}"
