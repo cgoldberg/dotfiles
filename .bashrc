@@ -803,7 +803,7 @@ py-refurb () {
         -print0 \
             | xargs --null --no-run-if-empty refurb \
                 --enable-all \
-                --python-version 3.9 \
+                --python-version 3.10 \
                 --disable FURB107 \
                 --disable FURB173 \
                 --disable FURB183 \
