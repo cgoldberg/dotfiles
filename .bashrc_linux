@@ -297,10 +297,12 @@ apt-update-local-pkgs () {
 }
 
 
-# update pyenv
-# uninstall each python installation
-# install latest of each major python version
-# update pip in each python installation
+# update python interpreters with pyenv
+# - update pyenv
+# - uninstall every python installation
+# - install latest version of each python interpreter
+# - update pip in each python installation
+# - re-install pipx with most recent python interpreter and update all pipx applications
 update-pyenv () {
     if [ ! -d "${HOME}/.pyenv" ]; then
         err "pyenv is not installed"
