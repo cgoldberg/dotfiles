@@ -838,7 +838,10 @@ clean-pip () {
 
 # clean python dev/temp files from current directory and subdirectories
 clean-py () {
-    echo "cleaning python dev/temp files ..."
+    if [ ! -x "$(type -pP fd)" ]; then
+        err "fd not found"
+        return 1
+    fi
     local dirs=(
         build/
         dist/
@@ -859,6 +862,8 @@ clean-py () {
         echo "deactivating venv"
         deactivate
     fi
+    echo "cleaning python dev/temp files ..."
+    echo
     for d in "${dirs[@]}"; do
         if [ -d ${d} ]; then
             echo "deleting ${d}"
@@ -875,6 +880,8 @@ clean-py () {
             \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" \
                  --exec rm -r
     done
+    echo
+    ok "done"
 }
 
 
