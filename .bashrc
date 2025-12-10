@@ -851,6 +851,9 @@ clean-py () {
         __pycache__
         venv
     )
+    local recurse_files=(
+        *.spec
+    )
     if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
         deactivate
@@ -860,6 +863,11 @@ clean-py () {
             echo "deleting ${d}"
             rm -rf ${d}
         fi
+    done
+    for rf in "${recurse_files[@]}"; do
+        echo "recursively deleting ${rf}/"
+            \fd --hidden --no-ignore --glob --exclude=".git/" --type=f "${rf}" \
+                 --exec rm -r
     done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
