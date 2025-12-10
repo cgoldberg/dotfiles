@@ -853,6 +853,7 @@ clean-py () {
     )
     local recurse_files=(
         *.spec
+        *.pyc
     )
     if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
