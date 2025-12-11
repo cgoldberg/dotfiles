@@ -870,14 +870,14 @@ clean-py () {
             rm -rf ${d}
         fi
     done
-    for rf in "${recurse_files[@]}"; do
-        echo "recursively deleting ${rf}/"
-            \fd --hidden --no-ignore --glob --exclude=".git/" --type=f "${rf}" \
-                 --exec rm -r
-    done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
             \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" \
+                 --exec rm -r
+    done
+    for rf in "${recurse_files[@]}"; do
+        echo "recursively deleting ${rf}/"
+            \fd --hidden --no-ignore --glob --exclude=".git/" --type=f "${rf}" \
                  --exec rm -r
     done
     echo
