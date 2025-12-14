@@ -78,8 +78,8 @@ alias ncdu="ncdu --disable-delete --group-directories-first \
 
 
 # ip addresses
-alias internalip="echo 'internal ip address:' && echo '--------------------' && \
-    hostname --all-ip-addresses | awk '{print \$1}'"
+alias internalip="echo 'internal ip addresses:' && echo '----------------------' && \
+    hostname --all-ip-addresses | tr -d '\n' | sed 's/ /\n/g'"
 alias externalip="echo 'external ip addresses:' && echo '----------------------' && \
     curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
 alias ips="internalip && echo && externalip"
