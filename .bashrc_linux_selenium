@@ -158,6 +158,18 @@ selenium-server () {
 # delete and re-install all webdrivers and browsers used by selenium
 # also delete and re-download selenium grid server
 update-webrivers () {
+    if [ "$(arch)" == "aarch64" ]; then
+        err "unsupported architecture for selenium manager"
+        return 1
+    fi
+    if [ ! -x "$(type -pP gh)" ]; then
+        err "can't find github cli"
+        return 1
+    fi
+    if [ ! -x "$(type -pP java)" ]; then
+        err "can't find java"
+        return 1
+    fi
     kill-webdrivers
     local sel_home="${SELENIUM_HOME}"
     local sel_mgr_home="${SELENIUM_MANAGER_HOME}"
@@ -179,18 +191,6 @@ update-webrivers () {
     fi
     if [ ! -d "${sel_mgr_home}" ]; then
         err "${sel_mgr_home} not found"
-        return 1
-    fi
-    if [ ! -x "$(type -pP gh)" ]; then
-        err "can't find github cli"
-        return 1
-    fi
-    if [ ! -x "$(type -pP java)" ]; then
-        err "can't find java"
-        return 1
-    fi
-    if [ "$(arch)" == "aarch64" ]; then
-        err "unsupported architecture for selenium manager"
         return 1
     fi
     for d in ${dirs[@]}; do
