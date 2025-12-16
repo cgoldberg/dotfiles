@@ -35,6 +35,7 @@
 #    - zoxide (cargo install zoxide)
 #
 #  - linux only:
+#    - bmon (sudo apt install bmon)
 #    - githubtakeout (pipx-install githubtakeout)
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install google-drive-export)
@@ -88,6 +89,7 @@ DEPENDENCIES=(
     "zoxide"
 )
 DEPENDENCIES_LINUX=(
+    "bmon"
     "githubtakeout"
     "go"
     "google_drive_export"

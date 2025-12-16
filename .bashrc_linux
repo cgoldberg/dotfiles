@@ -39,6 +39,10 @@ alias diskwatch="watch --no-wrap --interval 5 --exec bash -c diskspace"
 alias dw="diskwatch"
 
 
+# monitor bandwidth
+alias bmon="bmon --use-bit --policy='eth*,wlan*' --rate-interval=2 --read-interval=2"
+
+
 # kill process group by name (case-insensitive)
 alias killall="\killall --ignore-case --process-group --wait"
 
