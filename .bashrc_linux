@@ -40,7 +40,7 @@ alias dw="diskwatch"
 
 
 # monitor bandwidth (wireless interface only)
-alias bmon="bmon --use-bit --policy='wlan*'"
+alias bmon="bmon --use-bit --use-si --policy='wlan*'"
 
 
 # kill process group by name (case-insensitive)
