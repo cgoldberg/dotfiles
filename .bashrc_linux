@@ -48,7 +48,7 @@ alias wget="wget --hsts-file=/dev/null"
 
 
 # remove CUE sheet from FLAC file
-alias clean-flac-cuesheet="metaflac --remove --block-type='CUESHEET'"
+alias clean-flac-cuesheets="metaflac --remove --block-type='CUESHEET' *.flac"
 
 
 # python virtual env
@@ -75,14 +75,6 @@ alias web="sensible-browser"
 # ncurses disk usage
 alias ncdu="ncdu --disable-delete --group-directories-first \
     --one-file-system --show-itemcount"
-
-
-# ip addresses
-alias internalip="echo 'internal ip addresses:' && echo '----------------------' && \
-    hostname --all-ip-addresses | tr -d '\n' | sed 's/ /\n/g'"
-alias externalip="echo 'external ip addresses:' && echo '----------------------' && \
-    curl ipv4.icanhazip.com && curl ipv6.icanhazip.com"
-alias ips="internalip && echo && externalip"
 
 
 # --------------------------------- FUNCTIONS ---------------------------------
@@ -155,6 +147,18 @@ install-chrome () {
         sudo apt update --no-allow-insecure-repositories
         sudo apt install "${package}" -y
     fi
+}
+
+
+# show internal/external ip addresses
+ips () {
+    echo "internal ip addresses:"
+    echo "----------------------"
+    hostname --all-ip-addresses | tr -d '\n' | sed 's/ /\n/g'
+    echo "external ip addresses:"
+    echo "----------------------"
+    curl ipv4.icanhazip.com
+    curl ipv6.icanhazip.com
 }
 
 
