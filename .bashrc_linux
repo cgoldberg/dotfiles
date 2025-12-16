@@ -40,7 +40,7 @@ alias dw="diskwatch"
 
 
 # monitor bandwidth
-alias bmon="bmon --use-bit --policy='eth*,wlan*' --rate-interval=2 --read-interval=2"
+alias bmon="bmon --use-bit --policy='!lo'"
 
 
 # kill process group by name (case-insensitive)
