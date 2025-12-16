@@ -39,8 +39,8 @@ alias diskwatch="watch --no-wrap --interval 5 --exec bash -c diskspace"
 alias dw="diskwatch"
 
 
-# monitor bandwidth
-alias bmon="bmon --use-bit --policy='!lo'"
+# monitor bandwidth (wireless interface only)
+alias bmon="bmon --use-bit --policy='wlan*'"
 
 
 # kill process group by name (case-insensitive)
