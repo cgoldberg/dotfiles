@@ -402,6 +402,17 @@ yt-mp3 () {
 }
 
 
+# show currently playing track on Squeezebox player
+squeeze-show () {
+    local payload='["status", "-", "1", "tags:a"]'
+    curl -sS -X POST \
+        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_MAC}"'",'"${payload}"']}' \
+        "${SQUEEZEBOX_URL}/jsonrpc.js" \
+        | jq -r '.result.playlist_loop | .[0] | "\(.artist) - \(.title)"'
+}
+alias s=squeeze-show
+
+
 # send request to Squeezebox player API on local nextwork
 send-squeezebox-cmd () {
     local payload="$1"
@@ -414,6 +425,7 @@ send-squeezebox-cmd () {
 # skip to next track in playlist on Squeezebox player
 squeeze-next () {
     send-squeezebox-cmd '["button","jump_fwd"]'
+    squeeze-show
 }
 alias n=squeeze-next
 
@@ -421,6 +433,7 @@ alias n=squeeze-next
 # play random song mix on Squeezebox player
 squeeze-mix () {
     send-squeezebox-cmd '["randomplay","tracks"]'
+    squeeze-show
 }
 alias m="squeeze-mix"
 
