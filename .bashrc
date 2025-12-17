@@ -38,8 +38,6 @@ esac
 
 # set shell variables
 ORIGINAL_PATH="${PATH}"
-SQUEEZEBOX_URL="http://10.0.0.100:9000"
-SQUEEZEBOX_MAC="00:04:20:23:82:6f"
 
 
 # export environment variables
@@ -400,49 +398,6 @@ yt-mp3 () {
     fi
     yt-dlp --extract-audio --audio-format mp3 --audio-quality 320k "$1"
 }
-
-
-# show currently playing track on Squeezebox player
-squeeze-show () {
-    local payload='["status", "-", "1", "tags:a"]'
-    curl -sS -X POST \
-        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_MAC}"'",'"${payload}"']}' \
-        "${SQUEEZEBOX_URL}/jsonrpc.js" \
-        | jq -r '.result.playlist_loop | .[0] | "\(.artist) - \(.title)"'
-}
-alias s=squeeze-show
-
-
-# send request to Squeezebox player API on local nextwork
-send-squeezebox-cmd () {
-    local payload="$1"
-    curl -sS -o /dev/null -X POST \
-        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_MAC}"'",'"${payload}"']}' \
-        "${SQUEEZEBOX_URL}/jsonrpc.js"
-}
-
-
-# skip to next track in playlist on Squeezebox player
-squeeze-next () {
-    send-squeezebox-cmd '["button","jump_fwd"]'
-    squeeze-show
-}
-alias n=squeeze-next
-
-
-# play random song mix on Squeezebox player
-squeeze-mix () {
-    send-squeezebox-cmd '["randomplay","tracks"]'
-    squeeze-show
-}
-alias m="squeeze-mix"
-
-
-# pause/resume audio on Squeezebox player
-squeeze-pause () {
-    send-squeezebox-cmd '["pause"]'
-}
-alias p="squeeze-pause"
 
 
 # colored diffs
@@ -1017,6 +972,7 @@ load-bash-configs () {
         "${HOME}/.bashrc_linux"
         "${HOME}/.bashrc_linux_selenium"
         "${HOME}/.bashrc_windows"
+        "${HOME}/.bashrc_squeezebox"
     )
     for config_file in "${config_files[@]}"; do
         if [ -f "${config_file}" ]; then

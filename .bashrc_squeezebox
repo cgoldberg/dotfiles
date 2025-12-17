@@ -1,0 +1,52 @@
+# ~/.bashrc_squeeze
+# ============================================
+#  bash shell configuration:
+#  squeezebox and lyrion music server controls
+# ============================================
+
+
+LMS_URL="http://10.0.0.100:9000"
+SQUEEZEBOX_MAC="00:04:20:23:82:6f"
+
+
+# show currently playing track on Squeezebox player
+squeeze-show () {
+    local payload='["status", "-", "1", "tags:a"]'
+    curl -sS -X POST \
+        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_MAC}"'",'"${payload}"']}' \
+        "${LMS_URL}/jsonrpc.js" \
+        | jq -r '.result.playlist_loop | .[0] | "\(.artist) - \(.title)"'
+}
+alias s=squeeze-show
+
+
+# send request to Squeezebox player API on local nextwork
+send-squeezebox-cmd () {
+    local payload="$1"
+    curl -sS -o /dev/null -X POST \
+        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_MAC}"'",'"${payload}"']}' \
+        "${LMS_URL}/jsonrpc.js"
+}
+
+
+# skip to next track in playlist on Squeezebox player
+squeeze-next () {
+    send-squeezebox-cmd '["button","jump_fwd"]'
+    squeeze-show
+}
+alias n=squeeze-next
+
+
+# play random song mix on Squeezebox player
+squeeze-mix () {
+    send-squeezebox-cmd '["randomplay","tracks"]'
+    squeeze-show
+}
+alias m="squeeze-mix"
+
+
+# pause/resume audio on Squeezebox player
+squeeze-pause () {
+    send-squeezebox-cmd '["pause"]'
+}
+alias p="squeeze-pause"

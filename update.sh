@@ -103,6 +103,7 @@ DEPENDENCIES_WINDOWS=(
 )
 CONFIGS=(
     ".bashrc"
+    ".bashrc_squeezebox"
     ".bash_logout"
     ".profile"
     ".gitconfig"
