@@ -1,8 +1,7 @@
-# ~/.bashrc_squeeze
-# ============================================
-#  bash shell configuration:
-#  squeezebox and lyrion music server controls
-# ============================================
+# ~/.bashrc_squeezebox
+# =======================================================================
+#  bash shell configuration - squeezebox and lyrion music server controls
+# =======================================================================
 
 
 LMS_URL="http://10.0.0.100:9000"
@@ -10,38 +9,46 @@ SQUEEZEBOX_MAC="00:04:20:23:82:6f"
 TIMEOUT=0.2
 
 
-check-endpoint () {
-    if ! curl -4 -sI --fail -o /dev/null --max-time "${TIMEOUT}" "${LMS_URL}"; then
+# check if we can reach LMS
+check-url () {
+    if ! curl -4 -sI -o /dev/null --max-time "${TIMEOUT}" "${LMS_URL}"; then
         err "can't reach LMS"
         return 1
     fi
 }
 
 
-# show currently playing track on Squeezebox player
-squeeze-show () {
-    if ! check-endpoint; then
-        return 1
-    fi
-    local payload='["status", "-", "1", "tags:a"]'
-    curl -4 -sS -X POST \
-        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_MAC}"'",'"${payload}"']}' \
-        "${LMS_URL}/jsonrpc.js" \
-        | jq -r '.result.playlist_loop | .[0] | "\(.artist) - \(.title)"'
-}
-alias s=squeeze-show
-
-
 # send request to Squeezebox player API on local nextwork
 send-squeezebox-cmd () {
-    if ! check-endpoint; then
-        return 1
+    local command="$1"
+    local payload='
+        {
+            "id":1,
+            "method":"slim.request",
+            "params":[
+                "'"${SQUEEZEBOX_MAC}"'",
+                '"${command}"'
+            ]
+        }'
+    if check-url; then
+        lms_result=$(curl -4 -sS -X POST \
+            -d  "${payload}" \
+            "${LMS_URL}/jsonrpc.js")
+    else
+        lms_result=""
     fi
-    local payload="$1"
-    curl -4 -sS -o /dev/null -X POST \
-        -d '{"id":1,"method":"slim.request","params":["'"${SQUEEZEBOX_MAC}"'",'"${payload}"']}' \
-        "${LMS_URL}/jsonrpc.js"
 }
+
+
+# show currently playing track on Squeezebox player
+squeeze-show () {
+    send-squeezebox-cmd '["status", "-", "1", "tags:a"]'
+    if [ -n "${lms_result}" ]; then
+        jq -r '.result.playlist_loop | .[0] | "\(.artist) - \(.title)"' \
+            <<< "${lms_result}"
+    fi
+}
+alias s=squeeze-show
 
 
 # skip to next track in playlist on Squeezebox player
