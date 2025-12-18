@@ -51,7 +51,15 @@ alias killall="\killall --ignore-case --process-group --wait"
 alias wget="wget --hsts-file=/dev/null"
 
 
-# remove CUE sheet from FLAC file
+# whack the thumbnail cache
+alias clean-thumbnails="rm -rf ${HOME}/.cache/thumbnails/"
+
+
+# whack the package resource lists
+alias clean-apt-indexx="sudo rm -rf /var/lib/apt/lists/*"
+
+
+# remove CUE sheet from FLAC files in current directory
 alias clean-flac-cuesheets="metaflac --remove --block-type='CUESHEET' *.flac"
 
 
@@ -202,19 +210,6 @@ killblog () {
         pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
         psgrep "${jekyll_proc}"
     fi
-}
-
-
-# whack the thumbnail cache
-clean-thumbnails () {
-    rm -rf "${HOME}/.cache/thumbnails/"
-}
-
-
-# whack the package resource lists and re-downloaded them
-clean-apt-index () {
-    sudo rm -rf /var/lib/apt/lists/*
-    sudo apt update --no-allow-insecure-repositories
 }
 
 
