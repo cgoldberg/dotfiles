@@ -291,12 +291,6 @@ alias github="web https://github.com/${GITHUB_USERNAME}"
 alias gist="web https://gist.github.com/${GITHUB_USERNAME}"
 
 
-# better cat
-if [ -x "$(type -pP bat)" ]; then
-    alias cat="bat"
-fi
-
-
 # python
 alias py="python"
 
