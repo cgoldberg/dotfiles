@@ -51,18 +51,6 @@ alias killall="\killall --ignore-case --process-group --wait"
 alias wget="wget --hsts-file=/dev/null"
 
 
-# whack the thumbnail cache
-alias clean-thumbnails="rm -rf ${HOME}/.cache/thumbnails/"
-
-
-# whack the package resource lists
-alias clean-apt-indexx="sudo rm -rf /var/lib/apt/lists/*"
-
-
-# remove CUE sheet from FLAC files in current directory
-alias clean-flac-cuesheets="metaflac --remove --block-type='CUESHEET' *.flac"
-
-
 # python virtual env
 alias activate="source ./venv/bin/activate"
 alias deact="deactivate"
@@ -210,6 +198,32 @@ killblog () {
         pkill -9 -f "${jekyll_proc}" && pidwait -f "${jekyll_proc}"
         psgrep "${jekyll_proc}"
     fi
+}
+
+
+# whack the thumbnail cache
+clean-thumbnails () {
+    rm -rf "${HOME}/.cache/thumbnails/"
+    ok "cleaned thumbnail cache"
+}
+
+
+# whack the package resource lists
+clean-apt-index () {
+    sudo rm -rf /var/lib/apt/lists/*
+    ok "cleaned package resore lists"
+}
+
+
+# remove CUE sheet from FLAC files in current directory
+clean-flac-cuesheets () {
+    if [ ! -x "$(type -pP metaflac)" ]; then
+        err "metaflac not found"
+        return 1
+    fi
+    local num_files="$(\ls -1q *.flac | wc -l)"
+    metaflac --remove --block-type='CUESHEET' *.flac
+    ok "cleaned CUE sheets from ${num_files} FLAC files"
 }
 
 
