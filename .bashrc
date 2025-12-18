@@ -552,8 +552,8 @@ help () {
 
 
 # search recursively for files or directories matching pattern
-# (case-insensitive unless pattern contains an uppercase)
-# - uses fd if available: https://github.com/sharkdp/fd
+# - case-insensitive unless pattern contains an uppercase
+# - uses fd if available
 # usage: ff <regex>
 ff () {
     if [ -x "$(type -pP fd)" ]; then
@@ -579,7 +579,8 @@ ff () {
         fi
         find . \
             -xdev \
-            ! -readable -prune \
+            ! -readable \
+            -prune \
             -o \
             -iname "*$1*" \
             ! -path "*/.git/*" \
@@ -652,7 +653,8 @@ rg () {
 # usage: h <pattern>
 h () {
     local num="50"
-    history | \grep -v "  h " | \grep --ignore-case --color=always "$1" \
+    history | \grep -v "  h " \
+        | \grep --ignore-case --color=always "$1" \
         | tail -n "${num}"
 }
 
@@ -690,17 +692,32 @@ weather () {
 alias w="weather"
 
 
-# count all files in current directory (recursive)
+# count all files and symlinks in current directory
+# - recursive
+# - also shows tracked file if in a git repo
+# - ignores .git directories
+# - uses fd if available
 countfiles () {
     if [ ! -x "$(type -pP git)" ]; then
         err "git not found"
         return 1
     fi
-    echo -n "files: "
-    find . -type f ! -path './.git/*' | wc -l
-    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-        echo -n "tracked files: "
-        git ls-files | wc -l
+    if [ -n "$1" ]; then
+        local path=". $1"
+    else
+        local path="."
+    fi
+    if [ -x "$(type -pP fd)" ]; then
+        local num_files=$(\fd --hidden --no-ignore --type=f --type=l --exclude=.git/ "${path}" | wc -l)
+    else
+        local num_files="$(find . -type f,l ! -path './.git/*' | wc -l)"
+    fi
+    echo "files: ${num_files}"
+    if [ -x "$(type -pP git)" ]; then
+        if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+            local num_files="$(git ls-files | wc -l)"
+            echo "tracked files: ${num_files}"
+        fi
     fi
 }
 
