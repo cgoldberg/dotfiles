@@ -13,7 +13,7 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 
 cd ~/code
 git clone --recurse-submodules --shallow-submodules --depth=1 \
-    https://github.com/transmission/transmission
+    https://github.com/transmission/transmission.git
 cd transmission
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cd build
