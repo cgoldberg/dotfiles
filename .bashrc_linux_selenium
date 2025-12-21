@@ -49,6 +49,7 @@ clean-selenium-dev-full () {
         ${sel_home}/py/selenium/webdriver/common/linux/
         ${sel_home}/py/selenium/webdriver/common/macos/
         ${sel_home}/py/selenium/webdriver/common/windows/
+        ${sel_home}/rust/target/
     )
     local symlinks=(
         ${sel_home}/bazel-bin
