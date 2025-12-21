@@ -173,7 +173,7 @@ update-webrivers () {
     kill-webdrivers
     local sel_home="${SELENIUM_HOME}"
     local sel_mgr_home="${SELENIUM_MANAGER_HOME}"
-    local sel_mgr_bin="selenium-manager-linux"
+    local sel_mgr_bin="selenium-manager"
     local server_jar="selenium-server.jar"
     local original_dir="${PWD}"
     local dirs=(
@@ -202,7 +202,7 @@ update-webrivers () {
     echo
     cd "${sel_mgr_home}"
     echo "updating selenium manager ..."
-    gh release download --clobber --pattern="${sel_mgr_bin}" --dir="${sel_home}"
+    gh release download --clobber --pattern="${sel_mgr_bin}-linux" --dir="${sel_home}" --output="${sel_mgr_bin}"
     cd "${sel_home}"
     chmod +x "./${sel_mgr_bin}"
     "./${sel_mgr_bin}" --version
