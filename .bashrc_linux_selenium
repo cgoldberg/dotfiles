@@ -202,7 +202,7 @@ update-webrivers () {
     echo
     cd "${sel_mgr_home}"
     echo "updating selenium manager ..."
-    gh release download --clobber --pattern="${sel_mgr_bin}-linux" --dir="${sel_home}" --output="${sel_mgr_bin}"
+    gh release download --clobber --pattern="${sel_mgr_bin}-linux" --output="${sel_home}/${sel_mgr_bin}"
     cd "${sel_home}"
     chmod +x "./${sel_mgr_bin}"
     "./${sel_mgr_bin}" --version
