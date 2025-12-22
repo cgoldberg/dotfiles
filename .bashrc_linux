@@ -43,6 +43,10 @@ alias dw="diskwatch"
 alias bmon="bmon --use-bit --use-si --policy='wlan*,eth*'"
 
 
+# monitor resources (cpu/mem/disk/net/procs)
+alias btop="btop --preset 0 --update 2000"
+
+
 # kill process group by name (case-insensitive)
 alias killall="\killall --ignore-case --process-group --wait"
 

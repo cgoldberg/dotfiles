@@ -30,7 +30,7 @@ Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
 
 ```
 sudo apt install \
-    audacious btop build-essential gnome-terminal gvfs-backends htop \
+    audacious build-essential gnome-terminal gvfs-backends htop \
     libfuse2 nano nemo python-is-python3
 
 ```

@@ -36,6 +36,7 @@
 #
 #  - linux only:
 #    - bmon (sudo apt install bmon)
+#    - btop (sudo apt install btop)
 #    - githubtakeout (pipx-install githubtakeout)
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install google-drive-export)
@@ -52,10 +53,6 @@ set -eo pipefail
 
 DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
-PANDOC_TEMPLATE_DIR="${HOME}/.pandoc"
-if [[ "${OSTYPE}" == "msys" ]]; then
-    ALACRITTY_DIR="${APPDATA//\\//}/alacritty"
-fi
 REQUIREMENTS=(
     "git"
     "curl"
@@ -90,6 +87,7 @@ DEPENDENCIES=(
 )
 DEPENDENCIES_LINUX=(
     "bmon"
+    "btop"
     "githubtakeout"
     "go"
     "google_drive_export"
@@ -116,13 +114,6 @@ WIN_CONFIGS=(
     ".bashrc_windows"
     ".gitconfig_win"
     ".minttyrc"
-)
-ALACRITTY_CONFIGS=(
-    "./alacritty/alacritty.toml"
-)
-PANDOC_TEMPLATES=(
-    "./pandoc/template.html"
-    "./pandoc/template.css"
 )
 SCRIPTS=(
     "./bin/colors"
@@ -225,10 +216,6 @@ check-dependencies
 echo
 
 mkdir --parents "${BIN_DIR}"
-mkdir --parents "${PANDOC_TEMPLATE_DIR}"
-if [[ "${OSTYPE}" == "msys" ]]; then
-    mkdir --parents "${ALACRITTY_DIR}"
-fi
 
 cd "${DOTFILES_HOME}"
 
@@ -256,12 +243,13 @@ if [[ "${OSTYPE}" == "msys" ]]; then
         cp "${config}" "${HOME}"
     done
 
-    echo "copying alacritty configs from dotfiles repo ${default_branch} branch to ${ALACRITTY_DIR}"
-    for config in "${ALACRITTY_CONFIGS[@]}"; do
-        echo -e "  copying: ${config}"
-        cp "${config}" "${ALACRITTY_DIR}"
-    done
-else
+    alacritty_dir="${APPDATA//\\//}/alacritty"
+    alacritty_config="./alacritty/alacritty.toml"
+    echo "copying alacritty config from dotfiles repo ${default_branch} branch to ${alacritty_dir}"
+    mkdir --parents "${alacritty_dir}"
+    echo -e "  copying: ${alacritty_config}"
+    cp "${alacritty_config}" "${alacritty_dir}"
+elif [[ "${OSTYPE}" == "linux"* ]]; then
     echo "copying linux configs from dotfiles repo ${default_branch} branch to ${HOME}"
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
@@ -273,12 +261,22 @@ else
         echo -e "  copying: ${script}"
         cp "${script}" "${BIN_DIR}"
     done
+
+    btop_dir="${HOME}/.config/btop"
+    btop_config="./btop/btop.conf"
+    echo "copying btop config from dotfiles repo ${default_branch} branch to ${btop_dir}"
+    mkdir --parents "${btop_dir}"
+    echo -e "  copying: ${btop_config}"
+    cp "${btop_config}" "${btop_dir}"
 fi
 
-echo "copying pandoc templates from dotfiles repo ${default_branch} branch to ${PANDOC_TEMPLATE_DIR}"
-for template in "${PANDOC_TEMPLATES[@]}"; do
+pandoc_template_dir="${HOME}/.pandoc"
+pandoc_templates=("./pandoc/template.html" "./pandoc/template.css")
+echo "copying pandoc templates from dotfiles repo ${default_branch} branch to ${pandoc_template_dir}"
+mkdir --parents "${pandoc_template_dir}"
+for template in "${pandoc_templates[@]}"; do
     echo -e "  copying: ${template}"
-    cp "${template}" "${PANDOC_TEMPLATE_DIR}"
+    cp "${template}" "${pandoc_template_dir}"
 done
 
 echo "copying scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
