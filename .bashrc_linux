@@ -39,6 +39,10 @@ alias diskwatch="watch --no-wrap --interval 5 --exec bash -c diskspace"
 alias dw="diskwatch"
 
 
+# monitor device and partition input/output stats
+alias iostat="iostat -p --human --pretty 2"
+
+
 # monitor bandwidth (wireless interface only)
 alias bmon="bmon --use-bit --use-si --policy='wlan*,eth*'"
 
