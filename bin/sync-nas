@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+#
+# NAS sync script:
+#  - mounts NAS servers with GVfs/Samba
+#  - syncsall mounted filesystems
+#  - unmounts NAS servers
+#
+# requires:
+#  - gvfs-backends
+
+set -eou pipefail
+
+
+NAS_USERNAME="cgoldberg"
+NAS_SHARE="public"
+
+# 2-bay QNAP
+NAS_HOST1="bitz"
+NAS_IP1="10.0.0.5"
+NAS_SYMLINK1="${HOME}/${NAS_HOST1}"
+
+# 1-bay QNAP
+NAS_HOST2="bytez"
+NAS_IP2="10.0.0.6"
+NAS_SYMLINK2="${HOME}/${NAS_HOST2}"
+
+NAS_HOSTS=("${NAS_HOST1}" "${NAS_HOST2}")
+NAS_IPS=("${NAS_IP1}" "${NAS_IP2}")
+NAS_SYMLINKS=("${NAS_SYMLINK1}" "${NAS_SYMLINK2}")
+
+SEP="----------------------------------------------------------------"
+
+die () {
+    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+    exit 1
+}
+
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+check_configuration () {
+    for symlink in "${NAS_SYMLINK1}" "${NAS_SYMLINK2}"; do
+        if [ ! -d "${symlink}" ]; then
+            die "fatal: can't find mounted storage: ${symlink}"
+        fi
+    done
+}
+
+mount_nas () {
+    for i in {0..1}; do
+        nas_host="${NAS_HOSTS[${i}]}"
+        nas_ip="${NAS_IPS[${i}]}"
+        nas_symlink="${NAS_SYMLINKS[${i}]}"
+        gio mount --unmount "smb://${NAS_USERNAME}@${nas_ip}/${NAS_SHARE}" \
+            2>/dev/null || true
+        gio mount "smb://${NAS_USERNAME}@${nas_ip}/${NAS_SHARE}"
+        ln -s \
+            "/run/user/1000/gvfs/smb-share:server=${nas_ip}," \
+            "share=${NAS_SHARE},user=${NAS_USERNAME}" \
+            "${HOME}/${nas_host}" \
+            2>/dev/null || true
+        until [ -d "${nas_symlink}" ]; do
+            sleep .5
+        done
+    done
+}
+
+unmount_nas () {
+    for i in {0..1}; do
+        nas_ip="${NAS_IPS[${i}]}"
+        gio mount --unmount "smb://${NAS_USERNAME}@${nas_ip}/${NAS_SHARE}"
+    done
+}
+
+echo
+echo "mounting NAS storage ..."
+mount_nas
+echo "verifying configuration ..."
+check_configuration
+echo "syncing filesystems ..."
+sudo sync
+echo "unmounting NAS storage ..."
+unmount_nas
+echo
+ok "sync complete"

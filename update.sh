@@ -127,6 +127,7 @@ LINUX_SCRIPTS=(
     "./bin/backup-nas-to-external"
     "./bin/backup-nas-to-nas"
     "./bin/now"
+    "./bin/sync-nas"
     "./bin/sysinfo"
     "./bin/test-nas-data-xfer"
 )
