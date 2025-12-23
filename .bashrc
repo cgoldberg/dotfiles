@@ -204,11 +204,11 @@ alias cd.........="cd ../../../../../../../.."
 
 
 # enable color support for grep
-alias grep="\grep --color=always"
+alias grep="grep --color=always"
 
 
 # pagers
-alias less="\less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen \
+alias less="less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen \
     --quit-on-intr --RAW-CONTROL-CHARS"
 alias more="less"
 
@@ -218,7 +218,7 @@ alias g="git"
 
 
 # disk usage (directory sizes)
-alias du="\du --human-readable --max-depth=1"
+alias du="du --human-readable --max-depth=1"
 
 
 # show how a command would be interpreted (includes: aliases, builtins,
@@ -263,7 +263,7 @@ fi
 # show names of all bash aliases and functions
 alias aliases="\
     { \
-        \alias -p | sed -E 's/^alias ([^=]+)=.*/\1/'; compgen -a -A function \
+        alias -p | sed -E 's/^alias ([^=]+)=.*/\1/'; compgen -a -A function \
         | grep -v ^_; \
     } \
         | sort \

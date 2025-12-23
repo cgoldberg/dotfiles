@@ -31,7 +31,7 @@ alias busy="cat /dev/urandom | hexdump -C | \grep --color=always 'ca fe'"
 
 
 # disk space
-alias df="\df --human-readable --local --sync"
+alias df="df --human-readable --local --sync"
 
 
 # watch disk space
@@ -39,7 +39,7 @@ alias diskwatch="watch --no-wrap --interval 5 --exec bash -c diskspace"
 alias dw="diskwatch"
 
 
-# monitor device and partition input/output stats
+# monitor cpu and device/partition i/o stats
 alias iostat="iostat -p --human --pretty 2"
 
 
@@ -52,7 +52,7 @@ alias btop="btop --preset 0 --update 2000"
 
 
 # kill process group by name (case-insensitive)
-alias killall="\killall --ignore-case --process-group --wait"
+alias killall="killall --ignore-case --process-group --wait"
 
 
 # don't leave .wget-hsts file in home directory
