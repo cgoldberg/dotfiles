@@ -276,7 +276,7 @@ apt-show-local-pkgs () {
 
 
 # update locally installed .deb packages
-apt-update-local-pkgs () {
+update-local-apt-pkgs () {
     if [ ! -x "$(type -pP gh)" ]; then
         err "can't find github cli"
         return 1
