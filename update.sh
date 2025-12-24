@@ -38,6 +38,7 @@
 #    - bmon (sudo apt install bmon)
 #    - btop (sudo apt install btop)
 #    - githubtakeout (pipx-install githubtakeout)
+#    - gnome-terminal (sudo apt install gnome-terminal)
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install google-drive-export)
 #    - iostat (sudo apt install sysstat)
@@ -90,6 +91,7 @@ DEPENDENCIES_LINUX=(
     "bmon"
     "btop"
     "githubtakeout"
+    "gnome-terminal"
     "go"
     "google_drive_export"
     "iostat"
@@ -210,6 +212,8 @@ check-dependencies () {
 }
 
 
+# -----------------------------------------------------------------------------
+
 if [ ! -d "${DOTFILES_HOME}" ]; then
     die "fatal: can't find local dotfiles repo"
 fi
@@ -217,30 +221,28 @@ fi
 check-requirements
 check-dependencies
 echo
-
 mkdir --parents "${BIN_DIR}"
-
 cd "${DOTFILES_HOME}"
 
 current_branch=$(git branch --show-current)
 default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's/.*\///')
 
-echo "syncing local branches in ${DOTFILES_HOME} ..."
+echo "syncing local branches in ${DOTFILES_HOME} from github ..."
 git sync
 echo
+echo "checking out ${default_branch} branch ..."
 git checkout "${default_branch}" >/dev/null 2>&1
 
-echo "updating local configs and scripts from github ..."
-echo
+# --------------------------------- CONFIGS -----------------------------------
 
-echo "copying configs from dotfiles repo ${default_branch} branch to ${HOME}"
+echo "copying configs from dotfiles repo to ${HOME} ..."
 for config in "${CONFIGS[@]}"; do
     echo -e "  copying: ${config}"
     cp "${config}" "${HOME}"
 done
 
 if [[ "${OSTYPE}" == "msys" ]]; then
-    echo "copying windows configs from dotfiles repo ${default_branch} branch to ${HOME}"
+    echo "copying windows configs from dotfiles repo to ${HOME} ..."
     for config in "${WIN_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
@@ -248,49 +250,55 @@ if [[ "${OSTYPE}" == "msys" ]]; then
 
     alacritty_dir="${APPDATA//\\//}/alacritty"
     alacritty_config="./alacritty/alacritty.toml"
-    echo "copying alacritty config from dotfiles repo ${default_branch} branch to ${alacritty_dir}"
+    echo "copying alacritty config from dotfiles repo to ${alacritty_dir} ..."
     mkdir --parents "${alacritty_dir}"
     echo -e "  copying: ${alacritty_config}"
     cp "${alacritty_config}" "${alacritty_dir}"
 elif [[ "${OSTYPE}" == "linux"* ]]; then
-    echo "copying linux configs from dotfiles repo ${default_branch} branch to ${HOME}"
+    echo "copying linux configs from dotfiles repo to ${HOME} ..."
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
 
-    echo "copying linux scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
-    for script in "${LINUX_SCRIPTS[@]}"; do
-        echo -e "  copying: ${script}"
-        cp "${script}" "${BIN_DIR}"
-    done
-
     btop_dir="${HOME}/.config/btop"
     btop_config="./btop/btop.conf"
-    echo "copying btop config from dotfiles repo ${default_branch} branch to ${btop_dir}"
+    echo "copying btop config from dotfiles repo to ${btop_dir} ..."
     mkdir --parents "${btop_dir}"
     echo -e "  copying: ${btop_config}"
     cp "${btop_config}" "${btop_dir}"
+
+    gnome_terminal_config="./debian/dconf/gnome-terminal.properties"
+    echo "loading gnome-terminal dconf config from dotfiles repo ..."
+    cat "${gnome_terminal_config}" | dconf load /org/gnome/terminal/
 fi
 
 pandoc_template_dir="${HOME}/.pandoc"
 pandoc_templates=("./pandoc/template.html" "./pandoc/template.css")
-echo "copying pandoc templates from dotfiles repo ${default_branch} branch to ${pandoc_template_dir}"
+echo "copying pandoc templates from dotfiles repo to ${pandoc_template_dir} ..."
 mkdir --parents "${pandoc_template_dir}"
 for template in "${pandoc_templates[@]}"; do
     echo -e "  copying: ${template}"
     cp "${template}" "${pandoc_template_dir}"
 done
 
-echo "copying scripts from dotfiles repo ${default_branch} branch to ${BIN_DIR}"
+# --------------------------------- SCRIPTS -----------------------------------
+
+if [[ "${OSTYPE}" == "linux"* ]]; then
+    echo "copying linux scripts from dotfiles repo to ${BIN_DIR} ..."
+    for script in "${LINUX_SCRIPTS[@]}"; do
+        echo -e "  copying: ${script}"
+        cp "${script}" "${BIN_DIR}"
+    done
+fi
+
+echo "copying scripts from dotfiles repo to ${BIN_DIR} ..."
 for script in "${SCRIPTS[@]}"; do
     echo -e "  copying: ${script}"
     cp "${script}" "${BIN_DIR}"
 done
 
-git checkout "${current_branch}" >/dev/null 2>&1
-
-echo "downloading git scripts from github to ${BIN_DIR}"
+echo "downloading git scripts from github to ${BIN_DIR} ..."
 for script in "${GIT_SCRIPTS[@]}"; do
     url="https://raw.githubusercontent.com/cgoldberg/git-scripts/refs/heads/main/${script}"
     echo -e "  downloading: ./${BIN_DIR##*/}/${script}"
@@ -301,8 +309,15 @@ for script in "${GIT_SCRIPTS[@]}"; do
     fi
 done
 
+# -----------------------------------------------------------------------------
+
+git checkout "${current_branch}" >/dev/null 2>&1
+
 echo
-if [ -n "${check_deps_failed}" ] || [ -n "${check_linux_deps_failed}" ] || [ -n "${check_win_deps_failed}" ]; then
+if \
+    [ -n "${check_deps_failed}" ] || \
+    [ -n "${check_linux_deps_failed}" ] || \
+    [ -n "${check_win_deps_failed}" ]; then
     err "missing dependency"
 else
     ok "all dependencies installed"
