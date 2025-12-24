@@ -227,19 +227,11 @@ cd "${DOTFILES_HOME}"
 current_branch=$(git branch --show-current)
 default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's/.*\///')
 
+git checkout "${default_branch}" >/dev/null 2>&1
 echo "syncing local branches in ${DOTFILES_HOME} from github ..."
 git sync
-echo
-echo "checking out ${default_branch} branch ..."
-git checkout "${default_branch}" >/dev/null 2>&1
 
 # --------------------------------- CONFIGS -----------------------------------
-
-echo "copying configs from dotfiles repo to ${HOME} ..."
-for config in "${CONFIGS[@]}"; do
-    echo -e "  copying: ${config}"
-    cp "${config}" "${HOME}"
-done
 
 if [[ "${OSTYPE}" == "msys" ]]; then
     echo "copying windows configs from dotfiles repo to ${HOME} ..."
@@ -247,6 +239,7 @@ if [[ "${OSTYPE}" == "msys" ]]; then
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
+    echo
 
     alacritty_dir="${APPDATA//\\//}/alacritty"
     alacritty_config="./alacritty/alacritty.toml"
@@ -254,12 +247,14 @@ if [[ "${OSTYPE}" == "msys" ]]; then
     mkdir --parents "${alacritty_dir}"
     echo -e "  copying: ${alacritty_config}"
     cp "${alacritty_config}" "${alacritty_dir}"
+    echo
 elif [[ "${OSTYPE}" == "linux"* ]]; then
     echo "copying linux configs from dotfiles repo to ${HOME} ..."
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
+    echo
 
     btop_dir="${HOME}/.config/btop"
     btop_config="./btop/btop.conf"
@@ -267,11 +262,20 @@ elif [[ "${OSTYPE}" == "linux"* ]]; then
     mkdir --parents "${btop_dir}"
     echo -e "  copying: ${btop_config}"
     cp "${btop_config}" "${btop_dir}"
+    echo
 
     gnome_terminal_config="./debian/dconf/gnome-terminal.properties"
     echo "loading gnome-terminal dconf config from dotfiles repo ..."
     cat "${gnome_terminal_config}" | dconf load /org/gnome/terminal/
+    echo
 fi
+
+echo "copying configs from dotfiles repo to ${HOME} ..."
+for config in "${CONFIGS[@]}"; do
+    echo -e "  copying: ${config}"
+    cp "${config}" "${HOME}"
+done
+echo
 
 pandoc_template_dir="${HOME}/.pandoc"
 pandoc_templates=("./pandoc/template.html" "./pandoc/template.css")
@@ -281,6 +285,7 @@ for template in "${pandoc_templates[@]}"; do
     echo -e "  copying: ${template}"
     cp "${template}" "${pandoc_template_dir}"
 done
+echo
 
 # --------------------------------- SCRIPTS -----------------------------------
 
@@ -291,12 +296,14 @@ if [[ "${OSTYPE}" == "linux"* ]]; then
         cp "${script}" "${BIN_DIR}"
     done
 fi
+echo
 
 echo "copying scripts from dotfiles repo to ${BIN_DIR} ..."
 for script in "${SCRIPTS[@]}"; do
     echo -e "  copying: ${script}"
     cp "${script}" "${BIN_DIR}"
 done
+echo
 
 echo "downloading git scripts from github to ${BIN_DIR} ..."
 for script in "${GIT_SCRIPTS[@]}"; do
@@ -308,12 +315,12 @@ for script in "${GIT_SCRIPTS[@]}"; do
         unix2dos "${BIN_DIR}/${script}" >/dev/null 2>&1
     fi
 done
+echo
 
 # -----------------------------------------------------------------------------
 
 git checkout "${current_branch}" >/dev/null 2>&1
 
-echo
 if \
     [ -n "${check_deps_failed}" ] || \
     [ -n "${check_linux_deps_failed}" ] || \
