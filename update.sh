@@ -230,6 +230,7 @@ default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's/.*\///')
 git checkout "${default_branch}" >/dev/null 2>&1
 echo "syncing local branches in ${DOTFILES_HOME} from github ..."
 git sync
+echo
 
 # --------------------------------- CONFIGS -----------------------------------
 
@@ -264,9 +265,10 @@ elif [[ "${OSTYPE}" == "linux"* ]]; then
     cp "${btop_config}" "${btop_dir}"
     echo
 
-    gnome_terminal_config="./debian/dconf/gnome-terminal.properties"
-    echo "loading gnome-terminal dconf config from dotfiles repo ..."
-    cat "${gnome_terminal_config}" | dconf load /org/gnome/terminal/
+    gnome_terminal_config="gnome-terminal.properties"
+    echo "setting gnome-terminal dconf config from dotfiles repo ..."
+    echo -e "  loading: ${gnome_terminal_config}"
+    cat "./debian/dconf/${gnome_terminal_config}" | dconf load /org/gnome/terminal/
     echo
 fi
 
