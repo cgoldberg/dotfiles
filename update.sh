@@ -248,8 +248,10 @@ if [[ "${OSTYPE}" == "msys" ]]; then
     mkdir --parents "${alacritty_dir}"
     echo -e "  copying: ${alacritty_config}"
     cp "${alacritty_config}" "${alacritty_dir}"
-    echo
-elif [[ "${OSTYPE}" == "linux"* ]]; then
+
+fi
+
+if [[ "${OSTYPE}" == "linux"* ]]; then
     echo "copying linux configs from dotfiles repo to ${HOME} ..."
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
@@ -265,13 +267,21 @@ elif [[ "${OSTYPE}" == "linux"* ]]; then
     cp "${btop_config}" "${btop_dir}"
     echo
 
+    sublime_dir="${HOME}/.config/sublime-text/Packages/User"
+    sublime_config="./sublime/Preferences.sublime-settings"
+    echo "copying sublime config from dotfiles repo to ${sublime_dir} ..."
+    mkdir --parents "${sublime_dir}"
+    echo -e "  copying: ${sublime_config}"
+    cp "${sublime_config}" "${sublime_dir}"
+    echo
+
     gnome_terminal_config="gnome-terminal.properties"
     echo "setting gnome-terminal dconf config from dotfiles repo ..."
     echo -e "  loading: ${gnome_terminal_config}"
     cat "./debian/dconf/${gnome_terminal_config}" | dconf load /org/gnome/terminal/
-    echo
 fi
 
+echo
 echo "copying configs from dotfiles repo to ${HOME} ..."
 for config in "${CONFIGS[@]}"; do
     echo -e "  copying: ${config}"
