@@ -21,7 +21,7 @@ send-squeezebox-cmd () {
             ]
         }'
     lms_result=$(curl -4 --fail --silent --request POST \
-        --max-time 1.0 --data "${payload}" "${LMS_URL}/jsonrpc.js")
+        --max-time 2.0 --data "${payload}" "${LMS_URL}/jsonrpc.js")
     if [ -z "${lms_result}" ]; then
         err "can't reach LMS or Squeezebox"
     fi
