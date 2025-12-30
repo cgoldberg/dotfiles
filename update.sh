@@ -240,15 +240,14 @@ if [[ "${OSTYPE}" == "msys" ]]; then
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
-    echo
 
+    echo
     alacritty_dir="${APPDATA//\\//}/alacritty"
     alacritty_config="./alacritty/alacritty.toml"
     echo "copying alacritty config from dotfiles repo to ${alacritty_dir} ..."
     mkdir --parents "${alacritty_dir}"
     echo -e "  copying: ${alacritty_config}"
     cp "${alacritty_config}" "${alacritty_dir}"
-
 fi
 
 if [[ "${OSTYPE}" == "linux"* ]]; then
@@ -287,8 +286,8 @@ for config in "${CONFIGS[@]}"; do
     echo -e "  copying: ${config}"
     cp "${config}" "${HOME}"
 done
-echo
 
+echo
 pandoc_template_dir="${HOME}/.pandoc"
 pandoc_templates=("./pandoc/template.html" "./pandoc/template.css")
 echo "copying pandoc templates from dotfiles repo to ${pandoc_template_dir} ..."
@@ -297,7 +296,6 @@ for template in "${pandoc_templates[@]}"; do
     echo -e "  copying: ${template}"
     cp "${template}" "${pandoc_template_dir}"
 done
-echo
 
 # --------------------------------- SCRIPTS -----------------------------------
 
