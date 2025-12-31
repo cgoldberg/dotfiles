@@ -240,14 +240,15 @@ if [[ "${OSTYPE}" == "msys" ]]; then
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
-
     echo
+
     alacritty_dir="${APPDATA//\\//}/alacritty"
     alacritty_config="./alacritty/alacritty.toml"
     echo "copying alacritty config from dotfiles repo to ${alacritty_dir} ..."
     mkdir --parents "${alacritty_dir}"
     echo -e "  copying: ${alacritty_config}"
     cp "${alacritty_config}" "${alacritty_dir}"
+    echo
 fi
 
 if [[ "${OSTYPE}" == "linux"* ]]; then
@@ -278,16 +279,16 @@ if [[ "${OSTYPE}" == "linux"* ]]; then
     echo "setting gnome-terminal dconf config from dotfiles repo ..."
     echo -e "  loading: ${gnome_terminal_config}"
     cat "./debian/dconf/${gnome_terminal_config}" | dconf load /org/gnome/terminal/
+    echo
 fi
 
-echo
 echo "copying configs from dotfiles repo to ${HOME} ..."
 for config in "${CONFIGS[@]}"; do
     echo -e "  copying: ${config}"
     cp "${config}" "${HOME}"
 done
-
 echo
+
 pandoc_template_dir="${HOME}/.pandoc"
 pandoc_templates=("./pandoc/template.html" "./pandoc/template.css")
 echo "copying pandoc templates from dotfiles repo to ${pandoc_template_dir} ..."
@@ -296,6 +297,7 @@ for template in "${pandoc_templates[@]}"; do
     echo -e "  copying: ${template}"
     cp "${template}" "${pandoc_template_dir}"
 done
+echo
 
 # --------------------------------- SCRIPTS -----------------------------------
 
@@ -305,8 +307,8 @@ if [[ "${OSTYPE}" == "linux"* ]]; then
         echo -e "  copying: ${script}"
         cp "${script}" "${BIN_DIR}"
     done
+    echo
 fi
-echo
 
 echo "copying scripts from dotfiles repo to ${BIN_DIR} ..."
 for script in "${SCRIPTS[@]}"; do
