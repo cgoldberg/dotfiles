@@ -619,6 +619,7 @@ rg () {
             --glob='!.git/' \
             --glob='!.tox/' \
             --glob='!.venv/' \
+            --glob=!'.*_cache/' \
             --glob='!__pycache__/' \
             --glob='!venv/' \
             "${escaped_pattern}" \
