@@ -219,7 +219,7 @@ clean-thumbnails () {
 # whack the package resource lists
 clean-apt-index () {
     sudo rm -rf /var/lib/apt/lists/*
-    ok "cleaned package resore lists"
+    ok "cleaned package resource lists"
 }
 
 
