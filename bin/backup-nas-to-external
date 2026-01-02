@@ -2,7 +2,6 @@
 #
 # NAS backup script:
 #  - sync files from NAS (mounted with GVfs/Samba) to external USB drive
-#  - insert external drive, in 'Files' app right-click 'backup' directory and 'Share with Linux'
 #
 # requires:
 #  - gvfs-backends
