@@ -30,8 +30,9 @@ Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
 
 ```
 sudo apt install \
-    audacious build-essential gvfs-backends htop \
-    libfuse2 nano nemo python-is-python3
+    audacious bmon btop build-essential default-jdk exiftool ffmpeg \
+    gvfs-backends gnome-terminal htop iostat jq libfuse2 metaflac nano \
+    nemo python-is-python3 rsync ruby shellcheck
 
 ```
 
