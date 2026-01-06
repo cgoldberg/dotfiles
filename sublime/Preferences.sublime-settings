@@ -6,6 +6,9 @@
 //
 // Settings in here override those in "Default/Preferences.sublime-settings",
 // and are overridden in turn by syntax-specific settings.
+//
+// Also install "FIleIcons" package via Package Control.
+//
 
 {
     "always_show_minimap_viewport": true,
