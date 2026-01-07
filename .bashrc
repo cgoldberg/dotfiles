@@ -818,6 +818,10 @@ clean-pip () {
 
 # clean python dev/temp files from current directory and subdirectories
 clean-py () {
+    if [[ "${PWD}" != *"/code"* ]]; then
+        err "can't run from this directory"
+        return 1
+    fi
     if [ ! -x "$(type -pP fd)" ]; then
         err "fd not found"
         return 1
