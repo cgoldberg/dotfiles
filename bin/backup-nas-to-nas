@@ -98,8 +98,6 @@ timer () {
 }
 
 do_backup () {
-    sync "${SOURCE_PATH}"
-    sync "${DESTINATION_PATH}"
     echo "syncing ${SOURCE_PATH} to ${DESTINATION_PATH} ..."
     echo
     rsync \
@@ -119,8 +117,6 @@ do_backup () {
         "${SOURCE_PATH}/" \
         "${DESTINATION_PATH}/" \
         | grep -v "file_list pointer array"
-    sync "${SOURCE_PATH}"
-    sync "${DESTINATION_PATH}"
 }
 
 echo
@@ -134,6 +130,8 @@ echo "starting backup job ..."
 echo
 echo "${SEP}"
 echo
+sync
+sleep 2
 timer do_backup
 echo
 echo "${SEP}"
@@ -145,4 +143,5 @@ unmount_destination_nas
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
+sync-nas
 ok "backup complete"

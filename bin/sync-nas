@@ -1,16 +1,22 @@
 #!/usr/bin/env bash
 #
 # NAS sync script:
-#  - mounts NAS servers with GVfs/Samba
-#  - syncsall mounted filesystems
-#  - unmounts NAS servers
+#  - mounts remote NAS filesystems with GVfs/Samba
+#  - syncs local filesystems
+#    - flushes kernel page cache associated with FUSE files
+#    - kernel pushes dirty pages to the FUSE layer
+#  - syncs remote filesystems via ssh
+#  - unmounts remote NAS filesystems
+#    - forces GVfs to flush and close connections
 #
 # requires:
 #  - gvfs-backends
+#  - sshpass (file with password must exist)
 
 set -eou pipefail
 
 
+PASSWORD_FILE="${HOME}/.ssh/nas_pass.txt"
 NAS_USERNAME="cgoldberg"
 NAS_SHARE="public"
 
@@ -42,6 +48,12 @@ ok () {
 }
 
 check_configuration () {
+    if [ ! -x "$(type -pP sshpass)" ]; then
+        die "sshpass not installed"
+    fi
+    if [ ! -f "${PASSWORD_FILE}" ]; then
+        die "password file not found: ${PASSWORD_FILE}"
+    fi
     for symlink in "${NAS_SYMLINK1}" "${NAS_SYMLINK2}"; do
         if [ ! -d "${symlink}" ]; then
             die "fatal: can't find mounted storage: ${symlink}"
@@ -82,6 +94,10 @@ echo "verifying configuration ..."
 check_configuration
 echo "syncing filesystems ..."
 sync
+sleep 2
+for ip_addr in "${NAS_IP1}" "${NAS_IP2}"; do
+    sshpass -f "${PASSWORD_FILE}" ssh "admin@${ip_addr}" "sync"
+done
 echo "unmounting NAS storage ..."
 unmount_nas
 echo

@@ -46,6 +46,7 @@
 #    - ncdu (sudo apt install ncdu)
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (sudo apt install rsync)
+#    - sshpass (sudo apt install sshpass)
 #
 #  - windows only:
 #    - alacritty (scoop install alacritty)
@@ -99,6 +100,7 @@ DEPENDENCIES_LINUX=(
     "ncdu"
     "pyenv"
     "rsync"
+    "sshpass"
 )
 DEPENDENCIES_WINDOWS=(
     "alacritty"
