@@ -144,4 +144,5 @@ echo
 echo "elapsed time: ${elapsed_time}"
 echo
 sync-nas
+echo
 ok "backup complete"
