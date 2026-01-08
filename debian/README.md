@@ -93,6 +93,22 @@ verify with: `resolvectl status`
 
 ----
 
+## Mount NAS at boot
+
+```
+sudo apt install cifs-utils
+sudo mkdir -p /mnt/bitz
+sudo chmod 755 /mnt/bitz
+```
+
+set in `/etc/fstab`:
+
+```
+//10.0.0.5/public /mnt/bitz cifs defaults,nofail,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,username=cgoldberg,password=SECRET,iocharset=utf8  0  0
+```
+
+----
+
 ## Build ImageMagick from source
 
 install dependencies:
