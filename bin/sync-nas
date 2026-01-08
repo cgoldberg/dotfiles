@@ -81,7 +81,7 @@ mount_nas
 echo "verifying configuration ..."
 check_configuration
 echo "syncing filesystems ..."
-sudo sync
+sync
 echo "unmounting NAS storage ..."
 unmount_nas
 echo
