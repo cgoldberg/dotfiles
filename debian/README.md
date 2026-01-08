@@ -104,8 +104,10 @@ sudo chmod 755 /mnt/bitz
 set in `/etc/fstab`:
 
 ```
-//10.0.0.5/public /mnt/bitz cifs defaults,nofail,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,username=cgoldberg,password=SECRET,iocharset=utf8  0  0
+//10.0.0.5/public /mnt/bitz cifs _netdev,nofail,x-systemd.automount,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,username=cgoldberg,password=SECRET,iocharset=utf8  0  0
 ```
+
+Note: mount happens on first access (`x-systemd.automount`) when the network is up (`_netdev`)
 
 ----
 
