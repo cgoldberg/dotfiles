@@ -95,7 +95,7 @@ verify with: `resolvectl status`
 
 ## Mount NAS at boot
 
-create mount point:
+create mount points:
 
 ```
 sudo mkdir -p /mnt/bitz
