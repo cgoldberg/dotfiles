@@ -13,6 +13,8 @@
 set -eou pipefail
 
 
+EXPECTED_HOST="raspberrypi"
+
 FILE_NAME="test.img"
 FILE_SIZE=100M
 
@@ -46,9 +48,10 @@ ok () {
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
-check_os () {
-    if [[ "${OSTYPE}" != "linux"* ]]; then
-        err "fatal: requires Linux"
+check_host () {
+    if [ "${HOSTNAME}" != "${EXPECTED_HOST}" ]; then
+        die "fatal: can't run on this host: ${HOSTNAME}" \
+            "(required: ${EXPECTED_HOST})"
     fi
 }
 
@@ -110,7 +113,7 @@ run_test () {
     sync "${NAS_MNT2}"
 }
 
-check_os
+check_host
 echo
 echo "settings:"
 echo

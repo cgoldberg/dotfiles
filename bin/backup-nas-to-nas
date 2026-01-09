@@ -10,6 +10,7 @@
 set -eou pipefail
 
 
+EXPECTED_HOST="raspberrypi"
 NAS_SHARE="public"
 
 # 2-bay QNAP
@@ -37,6 +38,13 @@ die () {
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+check_host () {
+    if [ "${HOSTNAME}" != "${EXPECTED_HOST}" ]; then
+        die "fatal: can't run on this host: ${HOSTNAME}" \
+            "(required: ${EXPECTED_HOST})"
+    fi
 }
 
 check_configuration () {
@@ -92,6 +100,7 @@ do_backup () {
         | grep -v "file_list pointer array"
 }
 
+check_host
 echo
 check_configuration
 mount_nas

@@ -12,6 +12,7 @@
 set -eou pipefail
 
 
+EXPECTED_HOST="raspberrypi"
 NAS_HOST="bitz"
 NAS_IP="10.0.0.5"
 NAS_SHARE="//${NAS_IP}/public"
@@ -31,6 +32,13 @@ die () {
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+check_host () {
+    if [ "${HOSTNAME}" != "${EXPECTED_HOST}" ]; then
+        die "fatal: can't run on this host: ${HOSTNAME}" \
+            "(required: ${EXPECTED_HOST})"
+    fi
 }
 
 check_configuration () {
@@ -97,6 +105,7 @@ do_backup () {
     sync "${NAS_MNT}"
 }
 
+check_host
 echo
 echo "changing directory to: ${BACKUP_LOCAL_PATH} ..."
 cd "${BACKUP_LOCAL_PATH}"
