@@ -44,7 +44,8 @@ alias iostat="iostat -p --human --pretty 2"
 
 
 # monitor bandwidth (wireless interface only)
-alias bmon="bmon --use-bit --use-si --sleep-interval=2.0 --policy='wlan*,eth*'"
+alias bmon="bmon --use-bit --use-si --rate-interval=2.0 --read-interval=2.0 \
+    --sleep-interval=2.0 --policy='wlan*,eth*'"
 
 
 # monitor resources (cpu/mem/disk/net/procs)
