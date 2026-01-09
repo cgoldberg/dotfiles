@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 #
 # GitHub backup script:
-#  - download public GitHub repos and gists as tarballs
-#  - sync files to remote storage (NAS mounted with GVfs/Samba)
+#  - mount remote NAS filesystem with CIFS/SMB if needed
+#  - download public GitHub repos/gists (except forks)
+#  - archive as zip files
+#  - sync files to remote NAS
 #
 # requires:
-#  - gvfs-backends
 #  - rsync
 #  - githubtakeout
 
@@ -14,10 +15,9 @@ set -eou pipefail
 
 NAS_HOST="bitz"
 NAS_IP="10.0.0.5"
-NAS_USERNAME="cgoldberg"
-NAS_SHARE="public"
+NAS_SHARE="//${NAS_IP}/public"
 BACKUP_LOCAL_PATH="${HOME}/backup"
-BACKUP_DESTINATION_PATH="${HOME}/${NAS_HOST}"
+NAS_MNT="/mnt/${NAS_HOST}"
 GITHUB_BACKUP_DIR="GitHub_Backup"
 ORIGINAL_DIR="${PWD}"
 SEP="----------------------------------------------------------------"
@@ -35,22 +35,12 @@ ok () {
 }
 
 check_configuration () {
-    if [ ! -d "${BACKUP_LOCAL_PATH}" ]; then
-        die "fatal: backup directory not found: ${BACKUP_LOCAL_PATH}"
-    fi
-
-    if [ ! -d "${BACKUP_DESTINATION_PATH}" ]; then
-        die "fatal: can't find mounted storage: ${BACKUP_DESTINATION_PATH}"
-    fi
-
     if [ ! -x "$(type -pP rsync)" ]; then
         die "fatal: rsync not found"
     fi
-
     if [ ! -x "$(type -pP githubtakeout)" ]; then
         die "fatal: githubtakeout not found"
     fi
-
     if [ ! -f "./.env" ]; then
         die "fatal: can't find .env file with GITHUB_TOKEN"
     fi
@@ -62,21 +52,12 @@ delete_old_backups () {
 }
 
 mount_nas () {
-    gio mount --unmount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}" \
-        2>/dev/null || true
-    gio mount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}"
-    ln -s \
-        "/run/user/1000/gvfs/smb-share:server=${NAS_IP}," \
-        "share=${NAS_SHARE},user=${NAS_USERNAME}" \
-        "${HOME}/${NAS_HOST}" \
-        2>/dev/null || true
-    until [ -d "${BACKUP_DESTINATION_PATH}" ]; do
-        sleep .5
-    done
-}
-
-unmount_nas () {
-    gio mount --unmount "smb://${NAS_USERNAME}@${NAS_IP}/${NAS_SHARE}"
+    if ! findmnt "${NAS_MNT}" >/dev/null; then
+        echo
+        echo "mounting ${NAS_SHARE} at ${NAS_MNT} ..."
+        sudo mount -t cifs "${NAS_SHARE}" "${NAS_MNT}" \
+            -o credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
+    fi
 }
 
 timer () {
@@ -101,7 +82,7 @@ do_backup () {
     echo
     echo "syncing "\
         "${BACKUP_LOCAL_PATH}/${GITHUB_BACKUP_DIR} to "\
-        "${BACKUP_DESTINATION_PATH}/${GITHUB_BACKUP_DIR} ..."
+        "${NAS_MNT}/${GITHUB_BACKUP_DIR} ..."
     echo
     rsync \
         --cvs-exclude \
@@ -118,17 +99,16 @@ do_backup () {
         --verbose \
         --info=progress2 \
         "${BACKUP_LOCAL_PATH}/${GITHUB_BACKUP_DIR}/" \
-        "${BACKUP_DESTINATION_PATH}/${GITHUB_BACKUP_DIR}/"
-    sync "${BACKUP_DESTINATION_PATH}"
+        "${NAS_MNT}/${GITHUB_BACKUP_DIR}/"
+    sync "${NAS_MNT}"
 }
 
 echo
-echo "mounting remote storage ..."
-mount_nas
 echo "changing directory to: ${BACKUP_LOCAL_PATH} ..."
 cd "${BACKUP_LOCAL_PATH}"
-echo "verifying configuration ..."
 check_configuration
+mount_nas
+echo
 echo "deleting old local backups ..."
 delete_old_backups
 echo "starting backup job ..."
@@ -139,8 +119,6 @@ timer do_backup
 echo
 echo "${SEP}"
 echo
-echo "unmounting remote storage ..."
-unmount_nas
 echo "changing directory back to: ${ORIGINAL_DIR} ..."
 cd "${ORIGINAL_DIR}"
 echo

@@ -31,7 +31,7 @@ alias busy="cat /dev/urandom | hexdump -C | \grep --color=always 'ca fe'"
 
 
 # disk space
-alias df="df --human-readable --local --sync"
+alias df="df --human-readable --portability --print-type --sync"
 
 
 # watch disk space
@@ -88,58 +88,35 @@ alias ncdu="ncdu --disable-delete --group-directories-first \
 # --------------------------------- FUNCTIONS ---------------------------------
 
 
-# show disk space of root filesystem and include remote storage if its mounted
 diskspace () {
-    local dirs=(
-        "${HOME}/bitz"
-        "${HOME}/bytez"
-        "/media/${USER}/T7Shield"
-    )
-    echo -e "Location\tFilesystem      Size  Used Avail Use% Mounted on"
-    echo "----------------------------------------------------------------"
-    echo -en "local\t\t"
-    df --human-readable --local --sync / | \grep -v "Filesystem"
-    for d in "${dirs[@]}"; do
-        if [ -d "${d}" ]; then
-            local name="$(basename ${d})"
-            if [ "${#name}" -ge 8 ]; then
-                echo -en "${name}\t"
-            else
-                echo -en "${name}\t\t"
-            fi
-            \df --human-readable --local --sync "${d}" | \grep -v "Filesystem"
-        fi
-    done
+    echo "Filesystem        Type      Size  Used Avail Use% Mounted on"
+    echo "------------------------------------------------------------"
+    df | \grep -E -- 'ext4|cifs|media'
 }
-export -f diskspace # needed so diskwatch can call it in subshell
+# make it available in non-interactive shells so watch can see it
+export -f diskspace
 alias ds="diskspace"
 
 
 # mount 2-bay NAS
 bitz () {
-    # requires `gvfs-backends`
-    local host="bitz"
-    local ip="10.0.0.5"
-    local username="cgoldberg"
-    local share="public"
-    gio mount "smb://${username}@${ip}/${share}" 2>/dev/null
-    ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" \
-        "${HOME}/${host}" 2>/dev/null
-    cd "${HOME}/${host}" 2>/dev/null
+    local mnt="/mnt/bitz"
+    if ! findmnt "${mnt}" >/dev/null; then
+        sudo mount -t cifs //10.0.0.5/public "${mnt}" \
+            -o credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
+    fi
+    cd "${mnt}"
 }
 
 
 # mount 1-bay NAS
 bytez () {
-    # requires `gvfs-backends`
-    local host="bytez"
-    local ip="10.0.0.6"
-    local username="cgoldberg"
-    local share="public"
-    gio mount "smb://${username}@${ip}/${share}" 2>/dev/null
-    ln -s "/run/user/1000/gvfs/smb-share:server=${ip},share=${share},user=${username}" \
-        "${HOME}/${host}" 2>/dev/null
-    cd "${HOME}/${host}" 2>/dev/null
+    local mnt="/mnt/bytez"
+    if ! findmnt "${mnt}" >/dev/null; then
+        sudo mount -t cifs //10.0.0.5/public "${mnt}" \
+            -o credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
+    fi
+    cd "${mnt}"
 }
 
 

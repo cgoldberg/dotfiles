@@ -3,36 +3,35 @@
 # data transfer test
 # ------------------
 # This script tests data transfer speed between 2 remote storage servers
-# on my LAN mounted with GVfs and Samba.
 #
-# - mounts source NAS and destination NAS with GVfs/Samba
-# - creates a symlink to each mount point
+# - mounts remote NAS filesystems with CIFS/SMB if needed
 # - writes a binary test file to the root directory of the source NAS
 # - reads test file from source NAS and writes it to root directory of destination NAS
 # - deletes test file from source NAS and destination NAS
-# - results show transfer speed
-#
-# requires:
-#  - gvfs-backends (apt install)
+# - results show transfer speed and elapsed time
 
 set -eou pipefail
 
 
 FILE_NAME="test.img"
-FILE_SIZE=50M
+FILE_SIZE=100M
 
 NAS_USERNAME="cgoldberg"
 NAS_SHARE="public"
 
 # 2-bay QNAP
-SOURCE_NAS_HOST="bitz"
-SOURCE_NAS_IP="10.0.0.5"
-SOURCE_PATH="${HOME}/${SOURCE_NAS_HOST}"
+NAS_HOST1="bitz"
+NAS_IP1="10.0.0.5"
+NAS_MNT1="/mnt/${NAS_HOST1}"
 
 # 1-bay QNAP
-DESTINATION_NAS_HOST="bytez"
-DESTINATION_NAS_IP="10.0.0.6"
-DESTINATION_PATH="${HOME}/${DESTINATION_NAS_HOST}"
+NAS_HOST2="bytez"
+NAS_IP2="10.0.0.6"
+NAS_MNT2="/mnt/${NAS_HOST2}"
+
+NAS_HOSTS=("${NAS_HOST1}" "${NAS_HOST2}")
+NAS_IPS=("${NAS_IP1}" "${NAS_IP2}")
+NAS_MNTS=("${NAS_MNT1}" "${NAS_MNT2}")
 
 SEP="----------------------------------------------------------------"
 
@@ -53,53 +52,25 @@ check_os () {
     fi
 }
 
-check_configuration () {
-    if [ ! -d "${SOURCE_PATH}" ]; then
-        die "fatal: can't find mounted storage: ${SOURCE_PATH}"
-    fi
-
-    if [ ! -d "${DESTINATION_PATH}" ]; then
-        die "fatal: can't find mounted storage: ${DESTINATION_PATH}"
-    fi
-}
-
-mount_source_nas () {
-    gio mount --unmount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}" 2>/dev/null || true
-    gio mount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}"
-    ln -s \
-        "/run/user/1000/gvfs/smb-share:server=${SOURCE_NAS_IP},share=${NAS_SHARE},user=${NAS_USERNAME}" \
-        ~/"${SOURCE_NAS_HOST}" \
-        2>/dev/null || true
-    until [ -d "${SOURCE_PATH}" ]; do
-        sleep .5
+mount_nas () {
+    for i in {0..1}; do
+        local nas_host="${NAS_HOSTS[${i}]}"
+        local nas_ip="${NAS_IPS[${i}]}"
+        local nas_mnt="${NAS_MNTS[${i}]}"
+        if ! findmnt "${nas_mnt}" >/dev/null; then
+            echo
+            echo "mounting //${nas_ip}/${NAS_SHARE} at ${nas_mnt} ..."
+            sudo mount -t cifs "//${nas_ip}/public" "${nas_mnt}" \
+                -o credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
+        fi
     done
-}
-
-mount_destination_nas () {
-    gio mount --unmount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}" 2>/dev/null || true
-    gio mount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}"
-    ln -s \
-        "/run/user/1000/gvfs/smb-share:server=${DESTINATION_NAS_IP},share=${NAS_SHARE},user=${NAS_USERNAME}" \
-        ~/"${DESTINATION_NAS_HOST}" \
-        2>/dev/null || true
-    until [ -d "${DESTINATION_PATH}" ]; do
-        sleep .5
-    done
-}
-
-unmount_source_nas () {
-    gio mount --unmount "smb://${NAS_USERNAME}@${SOURCE_NAS_IP}/${NAS_SHARE}"
-}
-
-unmount_destination_nas () {
-    gio mount --unmount "smb://${NAS_USERNAME}@${DESTINATION_NAS_IP}/${NAS_SHARE}"
 }
 
 delete_test_files () {
-    rm -f "${SOURCE_PATH}/${FILE_NAME}"
-    rm -f "${DESTINATION_PATH}/${FILE_NAME}"
-    sync "${SOURCE_PATH}"
-    sync "${DESTINATION_PATH}"
+    rm -f "${NAS_MNT1}/${FILE_NAME}"
+    rm -f "${NAS_MNT2}/${FILE_NAME}"
+    sync "${NAS_MNT1}"
+    sync "${NAS_MNT2}"
 }
 
 timer () {
@@ -117,18 +88,18 @@ run_test () {
     # generate the file
     dd \
         if=/dev/zero \
-        of="${SOURCE_PATH}/${FILE_NAME}" \
+        of="${NAS_MNT1}/${FILE_NAME}" \
         bs="${FILE_SIZE}" \
         count=1 \
         oflag=dsync \
         conv=fdatasync \
         status=none
-    sync "${SOURCE_PATH}"
+    sync "${NAS_MNT1}"
     # transfer the file
     test_results=$( \
         dd \
-            if="${SOURCE_PATH}/${FILE_NAME}" \
-            of="${DESTINATION_PATH}/${FILE_NAME}" \
+            if="${NAS_MNT1}/${FILE_NAME}" \
+            of="${NAS_MNT2}/${FILE_NAME}" \
             bs="${FILE_SIZE}" \
             count=1 \
             oflag=dsync,nocache \
@@ -136,39 +107,30 @@ run_test () {
             2>&1 \
             | grep "copied" \
         )
-    sync "${DESTINATION_PATH}"
+    sync "${NAS_MNT2}"
 }
 
 check_os
 echo
 echo "settings:"
-echo "  - test file size: ${FILE_SIZE}"
-echo "  - source: ${SOURCE_PATH}"
-echo "  - destination: ${DESTINATION_PATH}"
 echo
-echo "mounting remote storage source ..."
-mount_source_nas
-echo "mounting remote storage destination ..."
-mount_destination_nas
-echo "verifying configuration ..."
-check_configuration
+echo "  - file size: ${FILE_SIZE}"
+echo "  - source: ${NAS_MNT1}"
+echo "  - destination: ${NAS_MNT2}"
+mount_nas
 echo
 echo "running data transfer test ..."
 echo
 timer run_test
 echo "${SEP}"
 echo
-echo "TEST RESULTS:"
+echo "results:"
 echo
-tput bold; tput setaf 10; echo "${test_results}"; tput sgr0
+tput bold; tput setaf 10; echo "  - ${test_results}"; tput sgr0
+echo
 echo "elapsed time: ${elapsed_time}"
+delete_test_files
 echo
 echo "${SEP}"
-echo
-delete_test_files
-echo "unmounting remote storage source ..."
-unmount_source_nas
-echo "unmounting remote storage destination ..."
-unmount_destination_nas
 echo
 ok "test complete!"

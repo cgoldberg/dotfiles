@@ -4,7 +4,7 @@
 
 ## Add package sources
 
-Remove `/etc/apt/sources.list` if it exists (old format).
+Remove `/etc/apt/sources.list` if it exists (old format)
 
 Update or add `/etc/apt/sources.list.d/debian.sources`:
 
@@ -30,9 +30,9 @@ Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
 
 ```
 sudo apt install \
-    audacious bmon btop build-essential default-jdk exiftool ffmpeg git \
-    gvfs-backends gnome-terminal htop iostat jq libfuse2 metaflac nano \
-    nemo python-is-python3 rsync ruby shellcheck smplayer sshpass
+    audacious bmon btop build-essential cifs-utils default-jdk exiftool \
+    ffmpeg git gvfs-backends gnome-terminal htop iostat jq libfuse2 metaflac \
+    nano nemo python-is-python3 rsync ruby shellcheck smplayer sshpass
 
 ```
 
@@ -95,19 +95,34 @@ verify with: `resolvectl status`
 
 ## Mount NAS at boot
 
+create mount point:
+
 ```
-sudo apt install cifs-utils
 sudo mkdir -p /mnt/bitz
 sudo chmod 755 /mnt/bitz
+sudo mkdir -p /mnt/bytez
+sudo chmod 755 /mnt/bytez
+```
+
+create `/root/.smbcredentials`:
+
+```
+username=cgoldberg
+password=secret
+```
+
+secure it:
+
+```
+sudo chmod 600 /root/.smbcredentials
 ```
 
 set in `/etc/fstab`:
 
 ```
-//10.0.0.5/public /mnt/bitz cifs _netdev,nofail,x-systemd.automount,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,username=cgoldberg,password=SECRET,iocharset=utf8  0  0
+//10.0.0.5/public /mnt/bitz cifs credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8  0  0
+//10.0.0.6/public /mnt/bytez cifs credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8  0  0
 ```
-
-Note: mount happens on first access (`x-systemd.automount`) when the network is up (`_netdev`)
 
 ----
 

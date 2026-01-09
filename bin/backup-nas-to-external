@@ -1,22 +1,21 @@
 #!/usr/bin/env bash
 #
 # NAS backup script:
-#  - sync files from NAS (mounted with GVfs/Samba) to external USB drive
+#  - mount remote NAS filesystem with CIFS/SMB if needed
+#  - sync files from NAS to external USB drive
 #
 # requires:
-#  - gvfs-backends
 #  - rsync
 
 set -eou pipefail
 
 
 EXPECTED_HOST="raspberrypi"
-SOURCE_NAS_HOST="bitz"
-SOURCE_NAS_IP="10.0.0.5"
-SOURCE_NAS_USERNAME="cgoldberg"
-SOURCE_NAS_SHARE="public"
-SOURCE_NAS_PATH="${HOME}/${SOURCE_NAS_HOST}"
-DESTINATION_PATH="/media/cgoldberg/T7Shield/backup"
+NAS_HOST="bitz"
+NAS_IP="10.0.0.5"
+NAS_SHARE="//${NAS_IP}/public"
+NAS_MNT="/mnt/${NAS_HOST}"
+DESTINATION_MNT="/media/${USER}/T7Shield/backup"
 
 SEP="----------------------------------------------------------------"
 
@@ -39,35 +38,18 @@ check_host () {
 }
 
 check_configuration () {
-    if [ ! -d "${SOURCE_NAS_PATH}" ]; then
-        die "fatal: can't find mounted storage: ${SOURCE_NAS_PATH}"
-    fi
-
-    if [ ! -d "${DESTINATION_PATH}" ]; then
-        die "fatal: can't find mounted storage: ${DESTINATION_PATH}"
-    fi
-
     if [ ! -x "$(type -pP rsync)" ]; then
         die "fatal: rsync not found"
     fi
 }
 
-mount_source_nas () {
-    gio mount --unmount "smb://${SOURCE_NAS_USERNAME}@${SOURCE_NAS_IP}/${SOURCE_NAS_SHARE}" \
-        2>/dev/null || true
-    gio mount "smb://${SOURCE_NAS_USERNAME}@${SOURCE_NAS_IP}/${SOURCE_NAS_SHARE}"
-    ln -s \
-        "/run/user/1000/gvfs/smb-share:server=${SOURCE_NAS_IP}," \
-        "share=${SOURCE_NAS_SHARE},user=${SOURCE_NAS_USERNAME}" \
-        ~/"${SOURCE_NAS_HOST}" \
-        2>/dev/null || true
-    until [ -d "${SOURCE_NAS_PATH}" ]; do
-        sleep .5
-    done
-}
-
-unmount_source_nas () {
-    gio mount --unmount "smb://${SOURCE_NAS_USERNAME}@${SOURCE_NAS_IP}/${SOURCE_NAS_SHARE}"
+mount_nas () {
+    if ! findmnt "${NAS_MNT}" >/dev/null; then
+        echo
+        echo "mounting ${NAS_SHARE} at ${NAS_MNT} ..."
+        sudo mount -t cifs "${NAS_SHARE}" "${NAS_MNT}" \
+            -o credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
+    fi
 }
 
 timer () {
@@ -82,9 +64,7 @@ timer () {
 }
 
 do_backup () {
-    sync "${SOURCE_NAS_PATH}"
-    sync "${DESTINATION_PATH}"
-    echo "syncing ${SOURCE_NAS_PATH} to ${DESTINATION_PATH} ..."
+    echo "syncing ${NAS_MNT} to ${DESTINATION_MNT} ..."
     echo
     rsync \
         --delete-during \
@@ -102,19 +82,16 @@ do_backup () {
         --exclude='d0/' \
         --exclude='d1/' \
         --info=progress2 \
-        "${SOURCE_NAS_PATH}/" \
-        "${DESTINATION_PATH}/" \
+        "${NAS_MNT}/" \
+        "${DESTINATION_MNT}/" \
         | grep -v "file_list pointer array"
-    sync "${SOURCE_NAS_PATH}"
-    sync "${DESTINATION_PATH}"
+    sync "${DESTINATION_MNT}"
 }
 
 check_host
-echo
-echo "mounting remote storage source ..."
-mount_source_nas
-echo "verifying configuration ..."
 check_configuration
+mount_nas
+echo
 echo "starting backup job ..."
 echo
 echo "${SEP}"
@@ -122,9 +99,6 @@ echo
 timer do_backup
 echo
 echo "${SEP}"
-echo
-echo "unmounting remote storage source ..."
-unmount_source_nas
 echo
 echo "elapsed time: ${elapsed_time}"
 echo

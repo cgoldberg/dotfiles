@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 #
 # NAS sync script:
-#  - mounts remote NAS filesystems with GVfs/Samba
+#  - mounts remote NAS filesystems with CIFS/SMB if needed
 #  - syncs local filesystems
-#    - flushes kernel page cache associated with FUSE files
-#    - kernel pushes dirty pages to the FUSE layer
 #  - syncs remote filesystems via ssh
-#  - unmounts remote NAS filesystems
-#    - forces GVfs to flush and close connections
 #
 # requires:
-#  - gvfs-backends
 #  - sshpass (file with password must exist)
 
 set -eou pipefail
@@ -23,16 +18,16 @@ NAS_SHARE="public"
 # 2-bay QNAP
 NAS_HOST1="bitz"
 NAS_IP1="10.0.0.5"
-NAS_SYMLINK1="${HOME}/${NAS_HOST1}"
+NAS_MNT1="/mnt/${NAS_HOST1}"
 
 # 1-bay QNAP
 NAS_HOST2="bytez"
 NAS_IP2="10.0.0.6"
-NAS_SYMLINK2="${HOME}/${NAS_HOST2}"
+NAS_MNT2="/mnt/${NAS_HOST2}"
 
 NAS_HOSTS=("${NAS_HOST1}" "${NAS_HOST2}")
 NAS_IPS=("${NAS_IP1}" "${NAS_IP2}")
-NAS_SYMLINKS=("${NAS_SYMLINK1}" "${NAS_SYMLINK2}")
+NAS_MNTS=("${NAS_MNT1}" "${NAS_MNT2}")
 
 SEP="----------------------------------------------------------------"
 
@@ -54,51 +49,34 @@ check_configuration () {
     if [ ! -f "${PASSWORD_FILE}" ]; then
         die "password file not found: ${PASSWORD_FILE}"
     fi
-    for symlink in "${NAS_SYMLINK1}" "${NAS_SYMLINK2}"; do
-        if [ ! -d "${symlink}" ]; then
-            die "fatal: can't find mounted storage: ${symlink}"
-        fi
-    done
 }
 
 mount_nas () {
     for i in {0..1}; do
-        nas_host="${NAS_HOSTS[${i}]}"
-        nas_ip="${NAS_IPS[${i}]}"
-        nas_symlink="${NAS_SYMLINKS[${i}]}"
-        gio mount --unmount "smb://${NAS_USERNAME}@${nas_ip}/${NAS_SHARE}" \
-            2>/dev/null || true
-        gio mount "smb://${NAS_USERNAME}@${nas_ip}/${NAS_SHARE}"
-        ln -s \
-            "/run/user/1000/gvfs/smb-share:server=${nas_ip}," \
-            "share=${NAS_SHARE},user=${NAS_USERNAME}" \
-            "${HOME}/${nas_host}" \
-            2>/dev/null || true
-        until [ -d "${nas_symlink}" ]; do
-            sleep .5
-        done
+        local nas_host="${NAS_HOSTS[${i}]}"
+        local nas_ip="${NAS_IPS[${i}]}"
+        local nas_mnt="${NAS_MNTS[${i}]}"
+        if ! findmnt "${nas_mnt}" >/dev/null; then
+            echo
+            echo "mounting //${nas_ip}/${NAS_SHARE} at ${nas_mnt} ..."
+            sudo mount -t cifs "//${nas_ip}/${NAS_SHARE}" "${nas_mnt}" \
+                -o credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
+        fi
     done
 }
 
-unmount_nas () {
+sync_all () {
+    sync
     for i in {0..1}; do
-        nas_ip="${NAS_IPS[${i}]}"
-        gio mount --unmount "smb://${NAS_USERNAME}@${nas_ip}/${NAS_SHARE}"
+        sshpass -f "${PASSWORD_FILE}" ssh "admin@${NAS_IPS[${i}]}" "sync"
     done
+    sleep 3
 }
 
-echo
-echo "mounting NAS storage ..."
-mount_nas
-echo "verifying configuration ..."
 check_configuration
+mount_nas
+echo
 echo "syncing filesystems ..."
-sync
-sleep 2
-for ip_addr in "${NAS_IP1}" "${NAS_IP2}"; do
-    sshpass -f "${PASSWORD_FILE}" ssh "admin@${ip_addr}" "sync"
-done
-echo "unmounting NAS storage ..."
-unmount_nas
+sync_all
 echo
 ok "sync complete"
