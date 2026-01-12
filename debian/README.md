@@ -125,3 +125,21 @@ set in `/etc/fstab`:
 ```
 
 ----
+
+## Build Transmission GTK from source
+
+- download latest tarball from: https://transmissionbt.com/download
+
+```
+sudo apt install -y \
+    build-essential cmake git libcurl4-openssl-dev libb64-dev libdeflate-dev \
+    libevent-dev libminiupnpc-dev libnatpmp-dev libsystemd-dev gettext \
+    libgtkmm-4.0-dev
+
+tar xf transmission-*.tar.xz
+cd transmission-*
+cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cd build
+cmake --build .
+sudo cmake --install .
+```
