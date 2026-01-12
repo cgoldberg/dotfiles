@@ -6,7 +6,7 @@ set -e
 
 
 sudo apt install -y \
-    clang cmake libcurl4-openssl-dev libb64-dev libdeflate-dev libevent-dev \
+    clang-tidy cmake libcurl4-openssl-dev libb64-dev libdeflate-dev libevent-dev \
     libminiupnpc-dev libnatpmp-dev libsystemd-dev gettext libgtkmm-4.0-dev
 
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
