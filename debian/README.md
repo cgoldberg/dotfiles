@@ -30,7 +30,7 @@ Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
 
 ```
 sudo apt install \
-    audacious bmon btop build-essential cifs-utils default-jdk exiftool \
+    audacious bmon btop build-essential cifs-utils clang default-jdk exiftool \
     ffmpeg git gvfs-backends gnome-terminal htop iostat jq libfuse2 metaflac \
     nano nemo python-is-python3 rsync ruby shellcheck smplayer sshpass
 
