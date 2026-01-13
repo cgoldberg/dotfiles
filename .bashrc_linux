@@ -98,28 +98,6 @@ export -f diskspace
 alias ds="diskspace"
 
 
-# mount 2-bay NAS
-bitz () {
-    local mnt="/mnt/bitz"
-    if ! findmnt "${mnt}" >/dev/null; then
-        sudo mount -t cifs //10.0.0.5/public "${mnt}" \
-            -o credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
-    fi
-    cd "${mnt}"
-}
-
-
-# mount 1-bay NAS
-bytez () {
-    local mnt="/mnt/bytez"
-    if ! findmnt "${mnt}" >/dev/null; then
-        sudo mount -t cifs //10.0.0.5/public "${mnt}" \
-            -o credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
-    fi
-    cd "${mnt}"
-}
-
-
 # install chrome from google repo
 install-chrome () {
     local package="google-chrome-stable"

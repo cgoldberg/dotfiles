@@ -11,6 +11,7 @@
 #  * `ncal` package for calendar (sudo apt install ncal)
 #  * `toilet` package for clock font (sudo apt install toilet)
 
+
 if [ ! -x "$(command -v cal)" ]; then
     echo "Command not found. Please install the 'ncal' package"
     exit 1
@@ -59,7 +60,7 @@ while [ $((++i)) -lt 10 ]; do
     tput cuu1
 done
 
-if [[ "$WeatherSuccess" == true ]]; then
+if [[ "${WeatherSuccess}" == true ]]; then
     # depending on length of your city name and country name you will:
     #   1. comment out next three lines of code. uncomment fourth code line.
     #   2. change subtraction value and set number of print spaces to match
@@ -69,7 +70,7 @@ if [[ "$WeatherSuccess" == true ]]; then
     # Blank out ", country" with x spaces
     printf "          "
 else
-    tput cuf $DateColumn  # position to column 27 for date display
+    tput cuf ${DateColumn}  # position to column 27 for date display
 fi
 
 cal > /tmp/terminal1
@@ -83,7 +84,7 @@ printf "\033[32m"  # color green
 while IFS= read -r Cal
 do
     printf "%s" "$Cal"
-    if [[ $CalLineCnt -gt 2 ]]; then
+    if [[ ${CalLineCnt} -gt 2 ]]; then
         # see if today is on current line & invert background
         tput cub 22
         for (( j=0 ; j <= 18 ; j += 3 )); do
@@ -101,7 +102,7 @@ do
     fi
 
     tput cud1  # down one line
-    tput cuf $DateColumn  # move 27 columns right
+    tput cuf ${DateColumn}  # move 27 columns right
     CalLineCnt=$((++CalLineCnt))
 done < /tmp/terminal
 
@@ -120,7 +121,7 @@ while [ $((++i)) -lt 9 ]; do
     tput cuu1
 done
 
-tput cuf $TimeColumn # move 49 columns right
+tput cuf ${TimeColumn} # move 49 columns right
 
 echo " $(date +"%I:%M %P") " | toilet -f future --filter border > /tmp/terminal
 
@@ -128,7 +129,7 @@ while IFS= read -r Time; do
     printf "\033[01;92m"  # color intense green
     printf "%s" "$Time"
     tput cud1  # up one line
-    tput cuf $TimeColumn  # move 49 columns right
+    tput cuf ${TimeColumn}  # move 49 columns right
 done < /tmp/terminal
 
 tput rc  # restore saved cursor position.

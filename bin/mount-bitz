@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+#
+# mount remote NAS filesystem with CIFS/SMB if needed
+
+set -e
+
+
+NAS_HOST="bitz"
+NAS_IP="10.0.0.5"
+NAS_SHARE="//${NAS_IP}/public"
+NAS_MNT="/mnt/${NAS_HOST}"
+EXPECTED_HOSTS=("minime" "raspberrypi")
+
+die () {
+    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+    exit 1
+}
+
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+check_host () {
+    local can_run="false"
+    for i in {0..1}; do
+        local host="${EXPECTED_HOSTS[${i}]}"
+        if [ "${HOSTNAME}" == "${host}" ]; then
+            can_run="true"
+        fi
+    done
+    if [ "${can_run}" == "false" ] ; then
+        die "fatal: can't run on this host: ${HOSTNAME}"
+    fi
+}
+
+mount_nas () {
+    if ! findmnt "${NAS_MNT}" >/dev/null; then
+        echo
+        echo "mounting ${NAS_SHARE} at ${NAS_MNT} ..."
+        sudo mount -t cifs "${NAS_SHARE}" "${NAS_MNT}" \
+            -o credentials=/root/.smbcredentials,relatime,nofail,serverino,nosharesock,_netdev,cache=strict,actimeo=60,rsize=1048576,wsize=1048576,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
+    fi
+}
+
+check_host
+mount_nas
+ok "${NAS_HOST} is mounted"

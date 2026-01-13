@@ -43,10 +43,12 @@
 #    - google_drive_export (pipx install google-drive-export)
 #    - iostat (sudo apt install sysstat)
 #    - metaflac (sudo apt install flac)
+#    - ncal (sudo apt install ncal)
 #    - ncdu (sudo apt install ncdu)
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (sudo apt install rsync)
 #    - sshpass (sudo apt install sshpass)
+#    - toilet (sudo apt install toilet)
 #
 #  - windows only:
 #    - alacritty (scoop install alacritty)
@@ -97,10 +99,12 @@ DEPENDENCIES_LINUX=(
     "google_drive_export"
     "iostat"
     "metaflac"
+    "ncal"
     "ncdu"
     "pyenv"
     "rsync"
     "sshpass"
+    "toilet"
 )
 DEPENDENCIES_WINDOWS=(
     "alacritty"

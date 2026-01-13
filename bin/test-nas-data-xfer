@@ -13,26 +13,20 @@
 set -eou pipefail
 
 
-EXPECTED_HOST="raspberrypi"
+EXPECTED_HOSTS=("minime" "raspberrypi")
 
 FILE_NAME="test.img"
 FILE_SIZE=100M
 
-NAS_USERNAME="cgoldberg"
-NAS_SHARE="public"
-
 # 2-bay QNAP
 NAS_HOST1="bitz"
-NAS_IP1="10.0.0.5"
 NAS_MNT1="/mnt/${NAS_HOST1}"
 
 # 1-bay QNAP
 NAS_HOST2="bytez"
-NAS_IP2="10.0.0.6"
 NAS_MNT2="/mnt/${NAS_HOST2}"
 
 NAS_HOSTS=("${NAS_HOST1}" "${NAS_HOST2}")
-NAS_IPS=("${NAS_IP1}" "${NAS_IP2}")
 NAS_MNTS=("${NAS_MNT1}" "${NAS_MNT2}")
 
 SEP="----------------------------------------------------------------"
@@ -49,24 +43,16 @@ ok () {
 }
 
 check_host () {
-    if [ "${HOSTNAME}" != "${EXPECTED_HOST}" ]; then
-        die "fatal: can't run on this host: ${HOSTNAME}" \
-            "(required: ${EXPECTED_HOST})"
-    fi
-}
-
-mount_nas () {
+    local can_run="false"
     for i in {0..1}; do
-        local nas_host="${NAS_HOSTS[${i}]}"
-        local nas_ip="${NAS_IPS[${i}]}"
-        local nas_mnt="${NAS_MNTS[${i}]}"
-        if ! findmnt "${nas_mnt}" >/dev/null; then
-            echo
-            echo "mounting //${nas_ip}/${NAS_SHARE} at ${nas_mnt} ..."
-            sudo mount -t cifs "//${nas_ip}/public" "${nas_mnt}" \
-                -o credentials=/root/.smbcredentials,relatime,nofail,serverino,nosharesock,_netdev,cache=strict,actimeo=60,rsize=1048576,wsize=1048576,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
+        local host="${EXPECTED_HOSTS[${i}]}"
+        if [ "${HOSTNAME}" == "${host}" ]; then
+            can_run="true"
         fi
     done
+    if [ "${can_run}" == "false" ] ; then
+        die "fatal: can't run on this host: ${HOSTNAME}"
+    fi
 }
 
 delete_test_files () {
@@ -120,10 +106,12 @@ echo
 echo "  - file size: ${FILE_SIZE}"
 echo "  - source: ${NAS_MNT1}"
 echo "  - destination: ${NAS_MNT2}"
-mount_nas
+mount-bitz
+mount-bytez
 echo
 echo "running data transfer test ..."
 echo
+sleep 2
 timer run_test
 echo "${SEP}"
 echo

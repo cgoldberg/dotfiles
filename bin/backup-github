@@ -13,10 +13,8 @@
 set -eou pipefail
 
 
-EXPECTED_HOST="raspberrypi"
+EXPECTED_HOSTS=("minime" "raspberrypi")
 NAS_HOST="bitz"
-NAS_IP="10.0.0.5"
-NAS_SHARE="//${NAS_IP}/public"
 BACKUP_LOCAL_PATH="${HOME}/backup"
 NAS_MNT="/mnt/${NAS_HOST}"
 GITHUB_BACKUP_DIR="GitHub_Backup"
@@ -36,9 +34,15 @@ ok () {
 }
 
 check_host () {
-    if [ "${HOSTNAME}" != "${EXPECTED_HOST}" ]; then
-        die "fatal: can't run on this host: ${HOSTNAME}" \
-            "(required: ${EXPECTED_HOST})"
+    local can_run="false"
+    for i in {0..1}; do
+        local host="${EXPECTED_HOSTS[${i}]}"
+        if [ "${HOSTNAME}" == "${host}" ]; then
+            can_run="true"
+        fi
+    done
+    if [ "${can_run}" == "false" ] ; then
+        die "fatal: can't run on this host: ${HOSTNAME}"
     fi
 }
 
@@ -57,15 +61,6 @@ check_configuration () {
 delete_old_backups () {
     rm -rf ./backups
     rm -rf "./${GITHUB_BACKUP_DIR}"
-}
-
-mount_nas () {
-    if ! findmnt "${NAS_MNT}" >/dev/null; then
-        echo
-        echo "mounting ${NAS_SHARE} at ${NAS_MNT} ..."
-        sudo mount -t cifs "${NAS_SHARE}" "${NAS_MNT}" \
-            -o credentials=/root/.smbcredentials,relatime,nofail,serverino,nosharesock,_netdev,cache=strict,actimeo=60,rsize=1048576,wsize=1048576,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
-    fi
 }
 
 timer () {
@@ -116,7 +111,7 @@ echo
 echo "changing directory to: ${BACKUP_LOCAL_PATH} ..."
 cd "${BACKUP_LOCAL_PATH}"
 check_configuration
-mount_nas
+mount-bitz
 echo
 echo "deleting old local backups ..."
 delete_old_backups
