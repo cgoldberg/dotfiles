@@ -68,7 +68,7 @@ mount_nas () {
             echo
             echo "mounting //${nas_ip}/${NAS_SHARE} at ${nas_mnt} ..."
             sudo mount -t cifs "//${nas_ip}/${NAS_SHARE}" "${nas_mnt}" \
-                -o credentials=/root/.smbcredentials,relatime,nofail,_netdev,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
+                -o credentials=/root/.smbcredentials,relatime,nofail,serverino,nosharesock,_netdev,cache=strict,actimeo=60,rsize=1048576,wsize=1048576,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8
         fi
     done
 }
