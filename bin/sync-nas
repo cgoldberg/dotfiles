@@ -73,6 +73,7 @@ sync_all () {
 
 check_host
 check_configuration
+echo
 mount-bitz
 mount-bytez
 echo

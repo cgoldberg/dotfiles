@@ -85,6 +85,7 @@ do_backup () {
 
 check_host
 check_configuration
+echo
 mount-bitz
 echo
 echo "starting backup job ..."

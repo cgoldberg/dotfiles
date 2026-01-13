@@ -106,6 +106,7 @@ echo
 echo "  - file size: ${FILE_SIZE}"
 echo "  - source: ${NAS_MNT1}"
 echo "  - destination: ${NAS_MNT2}"
+echo
 mount-bitz
 mount-bytez
 echo

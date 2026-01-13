@@ -89,10 +89,9 @@ do_backup () {
 }
 
 check_host
+check_configuration
 echo
-check_configuration
 mount-bitz
-check_configuration
 mount-bytez
 echo
 echo "starting backup job ..."

@@ -105,6 +105,7 @@ echo
 echo "changing directory to: ${BACKUP_LOCAL_PATH} ..."
 cd "${BACKUP_LOCAL_PATH}"
 check_configuration
+echo
 mount-bitz
 echo
 echo "deleting old local backups ..."
