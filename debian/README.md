@@ -138,6 +138,7 @@ sudo apt install -y \
 
 tar xf transmission-*.tar.xz
 cd transmission-*
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
 cd build
 cmake --build .
