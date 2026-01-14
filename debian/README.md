@@ -68,6 +68,19 @@ sudo apt remove --purge \
 
 ----
 
+
+## Disable file indexing service
+
+in `/etc/xdg/autostart/localsearch-3.desktop`, set `X-GNOME-Autostart-enabled=false` and add `Hidden=true`
+
+```
+sudo systemctl --global mask tracker-miner-fs-3.service
+sudo systemctl --global mask tracker-xdg-portal-3.service
+rm -rf ~/.cache/tracker3
+```
+
+----
+
 ## Configure custom DNS
 
 ```
@@ -92,9 +105,9 @@ verify with: `resolvectl status`
 
 ----
 
-## Set mount options NAS
+## Set mount options for main disk
 
-set mount options for main disk in `/etc/fstab` to:
+set mount options in `/etc/fstab` to:
 
 ```
 defaults,relatime,errors=remount-ro
