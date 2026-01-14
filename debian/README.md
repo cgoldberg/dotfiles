@@ -30,9 +30,8 @@ Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
 
 ```
 sudo apt install \
-    audacious bmon btop build-essential cifs-utils default-jdk exiftool \
-    ffmpeg git gvfs-backends gnome-terminal htop iostat jq libfuse2 metaflac \
-    nano nemo python-is-python3 rsync ruby shellcheck smplayer sshpass
+    audacious build-essential cifs-utils curl git gvfs-backends \
+    gnome-terminal htop libfuse2 nano nemo python-is-python3 smplayer
 
 ```
 
@@ -64,7 +63,7 @@ sudo apt install \
 
 ```
 sudo apt remove --purge \
-    avahi* cups* bluez modemmanager
+    cups* apache* libreoffice* bluez modemmanager
 ```
 
 ----
@@ -98,7 +97,7 @@ verify with: `resolvectl status`
 set mount options for main disk in `/etc/fstab` to:
 
 ```
-defaults,relatime
+defaults,relatime,errors=remount-ro
 ```
 
 ----

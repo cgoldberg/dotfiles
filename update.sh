@@ -21,7 +21,7 @@
 #    - git-who (https://github.com/sinclairtarget/git-who)
 #    - java (sudo apt install default-jdk, scoop install openjdk)
 #    - jq (sudo apt install jq, scoop install jq)
-#    - magick (https://github.com/ImageMagick/ImageMagick, scoop install imagemagick)
+#    - magick (sudo apt install imagemagick, scoop install imagemagick)
 #    - pandoc (https://github.com/jgm/pandoc, scoop install pandoc)
 #    - pipx (pip install --user pipx)
 #    - pyupgrade (pipx-install pyupgrade)
