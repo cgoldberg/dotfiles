@@ -101,7 +101,6 @@ echo
 sync
 timer do_backup
 echo "${SEP}"
-echo
 sync-nas
 echo
 echo "elapsed time: ${elapsed_time}"
