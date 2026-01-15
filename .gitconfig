@@ -62,29 +62,25 @@
     ls = log --pretty=tformat:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
 
     # list git aliases
-    alias = !git config --list | grep alias | cut -c 7- | tr -s ' ' | sort
+    alias = "!git config --list | grep alias | cut -c 7- | tr -s ' ' | sort"
 
     # commit all staged/unstaged changes with inline message
-    ci = !git commit --all --message $2
+    ci = "!f() { git commit --all --message \"$*\"; }; f"
 
-    # open Github page for default remote repository (requires GitHub CLI)
-    open = !gh repo view --web
+    # open Github web page for default remote repository (requires GitHub CLI)
+    open = "!gh repo view --web >/dev/null 2>&1 &"
 
     # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
-    tidy = "!f() { \
-        git fetch --prune --verbose && git prune --progress --verbose \
-            && git remote prune origin && git gc --prune=now; \
-    }; f"
+    tidy = "!git fetch --prune --verbose && git prune --progress --verbose \
+            && git remote prune origin && git gc --prune=now"
 
     # sync remote with parent if in a fork, and rebase all local branches
-    up = "!f() { git syncrepo; sleep 3; git sync; }; f"
+    up = "!git syncrepo && sleep 3 && git sync"
 
     # list local branches with last commit date and commit hash, sorted by last modified
-    branches = "!f() { \
-        git for-each-ref --sort='-authordate' \
+    branches = "!git for-each-ref --sort='-authordate' \
             --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads \
-            | sed -e 's-refs/heads/--'; \
-    }; f"
+            | sed -e 's-refs/heads/--'"
 
 # delta pager - https://github.com/dandavison/delta
 [delta]
