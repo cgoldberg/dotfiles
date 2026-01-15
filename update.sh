@@ -7,7 +7,7 @@
 # install dependencies for full functionality:
 #
 #  - all platforms:
-#    - bat (https://github.com/sharkdp/bat, scoop install bat)
+#    - bat (cargo install bat, scoop install bat)
 #    - cargo-cache (cargo install cargo-cache)
 #    - delta (cargo install git-delta, scoop install delta)
 #    - deno (curl -fsSL https://deno.land/install.sh | sh, scoop install deno)
