@@ -214,15 +214,15 @@ update-webrivers () {
     echo
     echo "updating chrome/chromedriver ..."
     start_spinner
-    "./${sel_mgr_bin}" --browser=chrome --driver=chromedriver
+    "./${sel_mgr_bin}" --force-browser-download --browser=chrome --driver=chromedriver
     stop_spinner
     echo "updating edge/edgedriver ..."
     start_spinner
-    "./${sel_mgr_bin}" --browser=edge --driver=edgedriver
+    "./${sel_mgr_bin}" --force-browser-download --browser=edge --driver=edgedriver
     stop_spinner
     echo "updating firefox/geckodriver ..."
     start_spinner
-    "./${sel_mgr_bin}" --browser=firefox --driver=geckodriver
+    "./${sel_mgr_bin}" --force-browser-download --browser=firefox --driver=geckodriver
     stop_spinner
     cd "${original_dir}"
 }
