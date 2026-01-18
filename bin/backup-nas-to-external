@@ -7,14 +7,13 @@
 # requires:
 #  - rsync
 
-set -eou pipefail
-
 
 EXPECTED_HOSTS=("minime" "raspberrypi")
 NAS_HOST="bitz"
 NAS_MNT="/mnt/${NAS_HOST}"
 DESTINATION_MNT="/media/${USER}/T7Shield"
 DESTINATION_DIR="${DESTINATION_MNT}/backup"
+MOUNTS=("${NAS_MNT}" "${DESTINATION_MNT}")
 
 SEP="----------------------------------------------------------------"
 
@@ -40,6 +39,14 @@ check_host () {
     if [ "${can_run}" == "false" ] ; then
         die "fatal: can't run on this host: ${HOSTNAME}"
     fi
+}
+
+check_mounts () {
+    for mnt in "${MOUNTS[@]}"
+        if ! findmnt "${mnt}" >/dev/null; then
+            die "fatal: ${mnt} not mounted"
+        fi
+    done
 }
 
 check_configuration () {
@@ -88,6 +95,7 @@ check_host
 check_configuration
 echo
 mount-bitz
+check_mounts
 echo
 echo "starting backup job ..."
 echo

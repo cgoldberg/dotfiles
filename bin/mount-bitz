@@ -2,8 +2,6 @@
 #
 # mount remote NAS filesystem with CIFS/SMB if needed
 
-set -e
-
 
 NAS_HOST="bitz"
 NAS_IP="10.0.0.5"
@@ -44,6 +42,13 @@ mount_nas () {
     fi
 }
 
+check_mount () {
+    if ! findmnt "${NAS_MNT}" >/dev/null; then
+        die "fatal: ${mnt} not mounted"
+    fi
+}
+
 check_host
 mount_nas
+check_mount
 ok "${NAS_HOST} is mounted"
