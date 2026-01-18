@@ -42,7 +42,7 @@ check_host () {
 }
 
 check_mounts () {
-    for mnt in "${MOUNTS[@]}"
+    for mnt in "${MOUNTS[@]}"; do
         if ! findmnt "${mnt}" >/dev/null; then
             die "fatal: ${mnt} not mounted"
         fi
