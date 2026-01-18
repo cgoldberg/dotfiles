@@ -7,6 +7,10 @@
 #
 # requires:
 #  - sshpass (file with password must exist)
+#
+# note:
+#  - run ssh once to each host to accept host keys before running this
+#    for the first time or it will fail silently
 
 set -eou pipefail
 
