@@ -13,7 +13,8 @@ set -eou pipefail
 EXPECTED_HOSTS=("minime" "raspberrypi")
 NAS_HOST="bitz"
 NAS_MNT="/mnt/${NAS_HOST}"
-DESTINATION_MNT="/media/${USER}/T7Shield/backup"
+DESTINATION_MNT="/media/${USER}/T7Shield"
+DESTINATION_DIR="${DESTINATION_MNT}/backup"
 
 SEP="----------------------------------------------------------------"
 
@@ -59,7 +60,7 @@ timer () {
 }
 
 do_backup () {
-    echo "syncing ${NAS_MNT} to ${DESTINATION_MNT} ..."
+    echo "syncing ${NAS_MNT} to ${DESTINATION_DIR} ..."
     echo
     rsync \
         --delete-during \
@@ -78,7 +79,7 @@ do_backup () {
         --exclude='d1/' \
         --info=progress2 \
         "${NAS_MNT}/" \
-        "${DESTINATION_MNT}/" \
+        "${DESTINATION_DIR}/" \
         | grep -v "file_list pointer array"
     sync "${DESTINATION_MNT}"
 }
@@ -97,5 +98,8 @@ echo
 echo "${SEP}"
 echo
 echo "elapsed time: ${elapsed_time}"
+echo
+sudo eject "${DESTINATION_MNT}"
+ok "ejected external drive"
 echo
 ok "backup complete"
