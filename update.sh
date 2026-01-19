@@ -13,7 +13,7 @@
 #    - deno (curl -fsSL https://deno.land/install.sh | sh, scoop install deno)
 #    - exiftool (sudo apt install exiftool, scoop install exiftool)
 #    - eza (cargo install eza, scoop install eza)
-#    - fd (https://github.com/sharkdp/fd, scoop install fd)
+#    - fd (cargo install fd-find, scoop install fd)
 #    - ffmpeg (sudo apt install ffmpeg, scoop install ffmpeg)
 #    - fzf (https://github.com/junegunn/fzf, scoop install fzf)
 #    - gcc (sudo apt install build-essential, scoop install mingw)
