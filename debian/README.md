@@ -30,7 +30,7 @@ Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
 
 ```
 sudo apt install \
-    audacious build-essential cifs-utils curl git gvfs-backends \
+    audacious build-essential cifs-utils curl gdu git gvfs-backends \
     gnome-terminal htop libfuse2 nano nemo python-is-python3 smplayer
 
 ```

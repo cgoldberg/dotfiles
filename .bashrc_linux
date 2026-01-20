@@ -80,11 +80,6 @@ alias sockets="ss --summary --processes --resolve --tcp --udp"
 alias web="sensible-browser"
 
 
-# ncurses disk usage
-alias ncdu="ncdu --disable-delete --group-directories-first \
-    --one-file-system --show-itemcount"
-
-
 # --------------------------------- FUNCTIONS ---------------------------------
 
 

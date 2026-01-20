@@ -44,7 +44,6 @@
 #    - iostat (sudo apt install sysstat)
 #    - metaflac (sudo apt install flac)
 #    - ncal (sudo apt install ncal)
-#    - ncdu (sudo apt install ncdu)
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (sudo apt install rsync)
 #    - sshpass (sudo apt install sshpass)
@@ -100,7 +99,6 @@ DEPENDENCIES_LINUX=(
     "iostat"
     "metaflac"
     "ncal"
-    "ncdu"
     "pyenv"
     "rsync"
     "sshpass"

@@ -218,10 +218,11 @@ alias g="git"
 
 
 # disk usage (directory sizes)
-alias du="du --human-readable --max-depth=1"
+alias du="du --human-readable --max-depth=1 | sort --human-numeric-sort --reverse"
 
 
-# show how a command would be interpreted (includes: aliases, builtins,
+# show how a command would be interpreted
+# - includes: aliases, builtins,
 # functions, scripts/executables on PATH)
 alias which="type"
 
