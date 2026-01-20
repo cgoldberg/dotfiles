@@ -135,6 +135,35 @@ set in `/etc/fstab`:
 
 ----
 
+
+## Un-enshittify Chromium browser
+
+apply settings from https://github.com/corbindavenport/just-the-browser
+
+```
+sudo mkdir -p /etc/chromium/policies/managed
+sudo touch /etc/chromium/policies/managed/managed_policies.json
+```
+
+add to `managed_policies.json`:
+
+```
+{
+  "AIModeSettings": 1,
+  "CreateThemesSettings": 2,
+  "GeminiSettings": 1,
+  "GenAILocalFoundationalModelSettings": 1,
+  "HelpMeWriteSettings": 2,
+  "HistorySearchSettings": 2,
+  "TabCompareSettings": 2,
+  "BuiltInDnsClientEnabled": false,
+  "DefaultBrowserSettingEnabled": false,
+  "DevToolsGenAiSettings": 2
+}
+```
+
+----
+
 ## Build Transmission GTK from source
 
 - download latest tarball from: https://transmissionbt.com/download
