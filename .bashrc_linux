@@ -44,7 +44,7 @@ alias iostat="iostat -p --human --pretty 2"
 
 
 # monitor bandwidth
-alias bmon="bmon --use-bit --use-si --policy='wlan*,en*,eth*'"
+alias bmon="bmon --use-bit --use-si --policy='wlan*,eno*,eth*'"
 
 
 # monitor resources (cpu/mem/disk/net/procs)
