@@ -68,6 +68,29 @@ sudo apt remove --purge \
 
 ----
 
+## Disable autosuspend for all USB devices
+
+set kernel command-line parameter:
+
+- edit `/etc/default/grub`
+- find `GRUB_CMDLINE_LINUX_DEFAULT`, and add `usbcore.autosuspend=-1`
+  - i.e. `GRUB_CMDLINE_LINUX_DEFAULT="quiet usbcore.autosuspend=-1"`
+- `sudo update-grub`
+
+after reboot, check status with:
+
+```
+cat /proc/cmdline | grep usbcore
+```
+
+and
+
+```
+cat /sys/module/usbcore/parameters/autosuspend
+```
+
+----
+
 ## Configure custom DNS
 
 ```
