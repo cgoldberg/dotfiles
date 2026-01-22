@@ -83,10 +83,11 @@ alias web="sensible-browser"
 # --------------------------------- FUNCTIONS ---------------------------------
 
 
+# show disk space used by root filesystem and mounted filesystems
 diskspace () {
     echo "Filesystem        Type      Size  Used Avail Use% Mounted on"
     echo "------------------------------------------------------------"
-    df | \grep -E -- 'btrfs|ext4|cifs|media'
+    df | \grep -E -- '/$|/media/|/mnt/'
 }
 # make it available in non-interactive shells so watch can see it
 export -f diskspace
