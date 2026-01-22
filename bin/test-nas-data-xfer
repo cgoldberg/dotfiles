@@ -9,10 +9,9 @@
 # - reads test file from source NAS and writes it to root directory of destination NAS
 # - deletes test file from source NAS and destination NAS
 
-
 EXPECTED_HOSTS=("minime" "raspberrypi")
 
-ITERATIONS=3
+ITERATIONS=5
 FILE_NAME="test.img"
 FILE_SIZE="100M"
 
@@ -116,25 +115,23 @@ run () {
 }
 
 check_host
+sync-nas
+sleep 1
 echo
-echo "settings:"
+echo "test settings:"
 echo
 echo "  - iterations: ${ITERATIONS}"
 echo "  - file size: ${FILE_SIZE}"
 echo "  - source: ${NAS_MNT1}"
 echo "  - destination: ${NAS_MNT2}"
 echo
-sync-nas
-echo
 echo "running data transfer tests ..."
 echo
-sleep 1
 echo "${SEP}"
 echo
 echo "results:"
 echo
 timer run
-echo
 echo "${SEP}"
 echo
 echo "elapsed time: ${elapsed_time}"
