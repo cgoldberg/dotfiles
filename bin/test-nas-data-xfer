@@ -8,15 +8,13 @@
 # - writes a binary test file to the root directory of the source NAS
 # - reads test file from source NAS and writes it to root directory of destination NAS
 # - deletes test file from source NAS and destination NAS
-# - results show transfer speed and elapsed time
-
-set -eou pipefail
 
 
 EXPECTED_HOSTS=("minime" "raspberrypi")
 
+ITERATIONS=3
 FILE_NAME="test.img"
-FILE_SIZE=100M
+FILE_SIZE="100M"
 
 # 2-bay QNAP
 NAS_HOST1="bitz"
@@ -99,30 +97,46 @@ run_test () {
     sync "${NAS_MNT2}"
 }
 
+run () {
+    for i in $(seq 1 ${ITERATIONS}); do
+        echo "- test #${i}:"
+        run_test
+        delete_test_files
+        tput bold; tput setaf 10
+        echo "  - ${test_results}"
+        if [[ ${test_results} =~ ([0-9]+([.][0-9]+)?)[[:space:]]*MB/s ]]; then
+            speed_megabyte_per_sec="${BASH_REMATCH[1]}"
+            speed_megabit_per_sec=$(( ${speed_megabyte_per_sec%.*} * 8 ))
+            echo "  - ${speed_megabit_per_sec} Mbps"
+        fi
+        echo
+        sleep 0.5
+        tput sgr0
+    done
+}
+
 check_host
 echo
 echo "settings:"
 echo
+echo "  - iterations: ${ITERATIONS}"
 echo "  - file size: ${FILE_SIZE}"
 echo "  - source: ${NAS_MNT1}"
 echo "  - destination: ${NAS_MNT2}"
 echo
-mount-bitz
-mount-bytez
+sync-nas
 echo
-echo "running data transfer test ..."
+echo "running data transfer tests ..."
 echo
-sleep 2
-timer run_test
+sleep 1
 echo "${SEP}"
 echo
 echo "results:"
 echo
-tput bold; tput setaf 10; echo "  - ${test_results}"; tput sgr0
-echo
-echo "elapsed time: ${elapsed_time}"
-delete_test_files
+timer run
 echo
 echo "${SEP}"
 echo
-ok "test complete!"
+echo "elapsed time: ${elapsed_time}"
+echo
+ok "tests complete"
