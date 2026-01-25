@@ -87,7 +87,7 @@ alias web="sensible-browser"
 diskspace () {
     echo "Filesystem        Type      Size  Used Avail Use% Mounted on"
     echo "------------------------------------------------------------"
-    df | \grep -E '/$|/media/|/mnt/' | \grep -E 'ext4|btrfs'
+    df | \grep -E '/$|/media/|/mnt/' | \grep -E 'ext4|btrfs|cifs|exfat'
 }
 # make it available in non-interactive shells so watch can see it
 export -f diskspace
