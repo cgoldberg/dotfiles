@@ -140,6 +140,7 @@ LINUX_SCRIPTS=(
     "./bin/test-nas-data-xfer"
 )
 GIT_SCRIPTS=(
+    "git-branches"
     "git-clean-untracked"
     "git-contribs"
     "git-info"

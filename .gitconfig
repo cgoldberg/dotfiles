@@ -75,12 +75,7 @@
             && git remote prune origin && git gc --prune=now"
 
     # sync remote with parent if in a fork, and rebase all local branches
-    up = "!git syncrepo && sleep 3 && git sync"
-
-    # list local branches with last commit date and commit hash, sorted by last modified
-    branches = "!git for-each-ref --sort='-authordate' \
-            --format='%(authordate)%09%09%(objectname:short)%09%09%(refname)' refs/heads \
-            | sed -e 's-refs/heads/--'"
+    up = "!git syncrepo && sleep 3 && git sync && git branches"
 
 # delta pager - https://github.com/dandavison/delta
 [delta]
