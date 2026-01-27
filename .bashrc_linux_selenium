@@ -66,6 +66,7 @@ clean-selenium-dev-full () {
         ${HOME}/.cache/mozilla/
         ${HOME}/.cache/pnpm/
         ${HOME}/.cache/selenium/
+        ${HOME}/.config/mozilla/
         ${HOME}/.config/google-chrome*/
         ${HOME}/.config/microsoft-edge*/
         ${HOME}/.mozilla/
@@ -182,6 +183,7 @@ update-webrivers () {
         ${HOME}/.cache/Microsoft/
         ${HOME}/.cache/mozilla/
         ${HOME}/.cache/selenium/
+        ${HOME}/.config/mozilla/
         ${HOME}/.config/google-chrome*/
         ${HOME}/.config/microsoft-edge*/
         ${HOME}/.mozilla/
