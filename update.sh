@@ -177,7 +177,7 @@ check-programs () {
     local programs=("$@")
     unset check_failed
     for prog in "${programs[@]}"; do
-        if [ ! -x "$(type -pP ${prog})" ]; then
+        if ! type "${prog}" >/dev/null 2>&1; then
             err "${prog} is not installed"
             check_failed="true"
         else

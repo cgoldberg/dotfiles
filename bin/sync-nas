@@ -59,8 +59,8 @@ check_host () {
 }
 
 check_configuration () {
-    if [ ! -x "$(type -pP sshpass)" ]; then
-        die "sshpass not installed"
+    if ! type sshpass >/dev/null 2>&1; then
+        die "sshpass not found"
     fi
     if [ ! -f "${PASSWORD_FILE}" ]; then
         die "password file not found: ${PASSWORD_FILE}"

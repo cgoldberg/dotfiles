@@ -50,7 +50,7 @@ check_mounts () {
 }
 
 check_configuration () {
-    if [ ! -x "$(type -pP rsync)" ]; then
+    if ! type rsync >/dev/null 2>&1; then
         die "fatal: rsync not found"
     fi
 }

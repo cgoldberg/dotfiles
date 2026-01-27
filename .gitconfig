@@ -75,7 +75,7 @@
             && git remote prune origin && git gc --prune=now"
 
     # sync remote with parent if in a fork, and rebase all local branches
-    up = "!git syncrepo && sleep 3 && git sync && git branches"
+    up = "!git syncrepo && sleep 3 && git sync"
 
 # delta pager - https://github.com/dandavison/delta
 [delta]

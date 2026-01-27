@@ -49,8 +49,8 @@ web () {
 
 # update all packages installed by scoop
 scoop-update-all () {
-    if [ ! -x "$(type -pP fd)" ]; then
-        err "scoop not installed"
+    if ! type scoop >/dev/null 2>&1; then
+        err "scoop not found"
         return 1
     fi
     scoop update

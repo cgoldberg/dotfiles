@@ -140,12 +140,12 @@ selenium-server () {
     local sel_home="${SELENIUM_HOME}"
     local server_jar="selenium-server.jar"
     local original_dir="${PWD}"
-    if [ ! -x "$(type -pP gh)" ]; then
-        err "can't find github cli"
+    if ! type gh >/dev/null 2>&1; then
+        err "GitHub CLI not found"
         return 1
     fi
-    if [ ! -x "$(type -pP java)" ]; then
-        err "can't find java"
+    if ! type java >/dev/null 2>&1; then
+        err "java not found"
         return 1
     fi
     cd "${sel_home}"
@@ -164,12 +164,12 @@ update-webrivers () {
         err "unsupported architecture for selenium manager"
         return 1
     fi
-    if [ ! -x "$(type -pP gh)" ]; then
-        err "can't find github cli"
+    if ! type gh >/dev/null 2>&1; then
+        err "GitHub CLI not found"
         return 1
     fi
-    if [ ! -x "$(type -pP java)" ]; then
-        err "can't find java"
+    if ! type java >/dev/null 2>&1; then
+        err "java not found"
         return 1
     fi
     kill-webdrivers

@@ -47,7 +47,7 @@ export EDITOR="vi"
 export GITHUB_USERNAME="cgoldberg"
 export PIP_REQUIRE_VIRTUALENV=true
 export LESSHISTFILE=- # don't leave .lesshst files
-if [ -x "$(type -pP subl)" ]; then
+if type subl >/dev/null 2>&1; then
     export VISUAL="subl --new-window --wait"
 else
     export VISUAL="vi"
@@ -168,13 +168,13 @@ fi
 
 
 # pipx
-if [ -x "$(type -pP pipx)" ]; then
+if ! type pipx >/dev/null 2>&1; then
     eval "$(register-python-argcomplete pipx)"
 fi
 
 
 # zoxide (jump to directory)
-if [ -x "$(type -pP zoxide)" ]; then
+if type zoxide >/dev/null 2>&1; then
     export _ZO_DOCTOR=0 # disable configuration error message
     eval "$(zoxide init bash)"
     unalias z 2>/dev/null # we define our own z() below
@@ -246,14 +246,14 @@ alias ls="LC_ALL=C \ls --almost-all --classify --group-directories-first \
     --color=always"
 alias ll="LC_ALL=C \ls -l --almost-all --classify --group-directories-first \
     --human-readable --no-group --color=always"
-if [ -x "$(type -pP eza)" ]; then
+if type eza >/dev/null 2>&1; then
     alias l="eza --long --all --git --git-repos-no-status \
         --group-directories-first --header --modified --no-quotes \
         --classify=always --sort=Name --time-style=long-iso"
 else
     alias l="ll"
 fi
-if [ -x "$(type -pP eza)" ]; then
+if type eza >/dev/null 2>&1; then
     alias tree="eza --tree --all --group-directories-first --no-git \
         --no-quotes --classify=always --color=always --sort=Name \
         --ignore-glob='venv|.git|.tox|*_cache|__pycache__' \
@@ -272,7 +272,7 @@ alias aliases="\
 
 
 # editors (sublime/vim)
-if [ -x "$(type -pP subl)" ]; then
+if type subl >/dev/null 2>&1; then
     alias edit="subl"
     alias ed="subl"
     alias e="subl --new-window ."
@@ -372,7 +372,10 @@ z () {
     && cd "${dir}"
 }
 # just disable this if zoxide and fzf aren't installed so we don't have to check every use
-if [ ! -x "$(type -pP zoxide)" ] || [ ! -x "$(type -pP fzf)" ]; then
+if ! type zoxide >/dev/null 2>&1; then
+    unset z
+fi
+if ! type fzf >/dev/null 2>&1; then
     unset z
 fi
 
@@ -383,11 +386,11 @@ yt-mp3 () {
         err "please specify a YouTube URL"
         return 1
     fi
-    if [ ! -x "$(type -pP yt-dlp)" ]; then
+    if ! type yt-dlp >/dev/null 2>&1; then
         err "yt-dlp not found"
         return 1
     fi
-    if [ ! -x "$(type -pP ffmpeg)" ]; then
+    if ! type ffmpeg >/dev/null 2>&1; then
         err "ffmpeg not found"
         return 1
     fi
@@ -446,12 +449,12 @@ remove-trailing-whitespace-from-files () {
 # update rust toolchain, remove cargo crate source checkouts
 # and git repo checkouts
 clean-rust () {
-    if [ ! -x "$(type -pP rustup)" ]; then
-        err "can't find rustup"
+    if ! type rustup >/dev/null 2>&1; then
+        err "rustup not found"
         return 1
     fi
-    if [ ! -x "$(type -pP cargo-cache)" ]; then
-        err "can't find cargo-cache"
+    if ! type cargo-cache >/dev/null 2>&1; then
+        err "cargo-cache not found"
         return 1
     fi
     rustup update
@@ -461,8 +464,8 @@ clean-rust () {
 
 # rebuild all rust binaries that were installed with cargo
 update-rust-bins () {
-    if [ ! -x "$(type -pP cargo)" ]; then
-        err "can't find cargo"
+    if ! type zoxide >/dev/null 2>&1; then
+        err "cargo not found"
         return 1
     fi
     clean-rust
@@ -485,8 +488,8 @@ clean-img-metadata () {
         err "please specify an image file or glob pattern"
         return 1
     fi
-    if [ ! -x "$(type -pP exiftool)" ]; then
-        err "exiftool not installed"
+    if ! type exiftool >/dev/null 2>&1; then
+        err "exiftool not found"
         return 1
     fi
     # we don't strip "-all=" because that also removes orientation tag
@@ -505,7 +508,7 @@ md2html () {
         err "please specify a markdown file"
         return 1
     fi
-    if [ ! -x "$(type -pP pandoc)" ]; then
+    if ! type pandoc >/dev/null 2>&1; then
         err "pandoc not found"
         return 1
     fi
@@ -538,7 +541,7 @@ path () {
 
 # use bat for colored help if available
 help () {
-    if [ -x "$(type -pP bat)" ]; then
+    if type bat >/dev/null 2>&1; then
         "$@" --help 2>&1 | bat --plain --language=help
     else
         builtin help "$@"
@@ -551,7 +554,7 @@ help () {
 # - uses fd if available
 # usage: ff <regex>
 ff () {
-    if [ -x "$(type -pP fd)" ]; then
+    if type fd >/dev/null 2>&1; then
         local command_name="\fd --hidden --no-ignore --color=always "
         local exclude_patterns=(
             ".git/"
@@ -694,7 +697,7 @@ alias w="weather"
 # - ignores .git directories
 # - uses fd if available
 countfiles () {
-    if [ ! -x "$(type -pP git)" ]; then
+    if ! type git >/dev/null 2>&1; then
         err "git not found"
         return 1
     fi
@@ -703,17 +706,15 @@ countfiles () {
     else
         local path="."
     fi
-    if [ -x "$(type -pP fd)" ]; then
+    if type fd >/dev/null 2>&1; then
         local num_files=$(\fd --hidden --no-ignore --type=f --type=l --exclude=.git/ "${path}" | wc -l)
     else
         local num_files="$(find . -type f,l ! -path './.git/*' | wc -l)"
     fi
     echo "files: ${num_files}"
-    if [ -x "$(type -pP git)" ]; then
-        if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-            local num_files="$(git ls-files | wc -l)"
-            echo "tracked files: ${num_files}"
-        fi
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        local num_files="$(git ls-files | wc -l)"
+        echo "tracked files: ${num_files}"
     fi
 }
 
@@ -735,7 +736,7 @@ psgrep () {
 # run pyupgrade against all python files in current directory (recursive)
 # and fix recommendations in-place
 py-upgrade () {
-    if [ ! -x "$(type -pP pyupgrade)" ]; then
+    if ! type pyupgrade >/dev/null 2>&1; then
         err "pyupgrade not found"
         return 1
     fi
@@ -769,7 +770,7 @@ py-upgrade () {
 # run refurb against all python files in current directory (recursive)
 # and display recommendations
 py-refurb () {
-    if [ ! -x "$(type -pP refurb)" ]; then
+    if ! type refurb >/dev/null 2>&1; then
         err "refurb not found"
         return 1
     fi
@@ -823,7 +824,7 @@ clean-py () {
         err "can't run from this directory"
         return 1
     fi
-    if [ ! -x "$(type -pP fd)" ]; then
+    if ! type fd >/dev/null 2>&1; then
         err "fd not found"
         return 1
     fi
@@ -878,7 +879,7 @@ pipx-install () {
         err "please specify a package"
         return 1
     fi
-    if [ ! -x "$(type -pP pipx)" ]; then
+    if ! type pipx >/dev/null 2>&1; then
         err "pipx not found"
         return 1
     fi
@@ -897,7 +898,7 @@ pipx-install () {
 # upgrade all pipx applications
 # - reinstalls apps if they don't match the current python interpreter version
 pipx-upgrade-all () {
-    if [ ! -x "$(type -pP pipx)" ]; then
+    if ! type pipx >/dev/null 2>&1; then
         err "pipx not found"
         return 1
     fi
@@ -938,7 +939,7 @@ pipx-upgrade-all () {
 # - requires GitHub CLI (gh) and gh-markdown-preview extension
 #   - install extension with: `gh extension install yusukebe/gh-markdown-preview`
 preview-md () {
-    if [ ! -x "$(type -pP gh)" ]; then
+    if ! type gh >/dev/null 2>&1; then
         err "GitHub CLI not found"
         return 1
     fi
@@ -952,7 +953,7 @@ preview-md () {
 #  - files are overwritten in-place
 # usage: shrink-images <width>
 shrink-images () {
-    if [ ! -x "$(type -pP magick)" ]; then
+    if ! type magick >/dev/null 2>&1; then
         err "ImageMagick not found"
         return 1
     fi
@@ -1024,7 +1025,7 @@ load-bash-completions () {
     for completion_loader_func in "${completion_loader_funcs[@]}"; do
         if declare -f "${completion_loader_func}" >/dev/null; then
             # git completions
-            if [ -x "$(type -pP git)" ]; then
+            if type git >/dev/null 2>&1; then
                 "${completion_loader_func}" git
                 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main git
                 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g

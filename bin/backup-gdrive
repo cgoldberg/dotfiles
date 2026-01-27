@@ -46,10 +46,10 @@ check_host () {
 }
 
 check_configuration () {
-    if [ ! -x "$(type -pP rsync)" ]; then
+    if ! type rsync >/dev/null 2>&1; then
         die "fatal: rsync not found"
     fi
-    if [ ! -x "$(type -pP google_drive_export)" ]; then
+    if ! type google_drive_export >/dev/null 2>&1; then
         die "fatal: google_drive_export not found"
     fi
 }

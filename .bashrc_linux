@@ -129,7 +129,8 @@ blog () {
     if [ ! -d "${blog_dir}" ]; then
         err "${blog_dir} not found"
         return 1
-    elif [ ! -x "$(type -pP bundle)" ]; then
+    fi
+    if ! type bundle >/dev/null 2>&1; then
         err "bundler not found"
         return 1
     fi
@@ -176,7 +177,7 @@ clean-apt-index () {
 
 # remove CUE sheet from FLAC files in current directory
 clean-flac-cuesheets () {
-    if [ ! -x "$(type -pP metaflac)" ]; then
+    if ! type metaflac >/dev/null 2>&1; then
         err "metaflac not found"
         return 1
     fi
@@ -245,8 +246,8 @@ apt-show-local-pkgs () {
 
 # update locally installed .deb packages
 update-apt-local-pkgs () {
-    if [ ! -x "$(type -pP gh)" ]; then
-        err "can't find github cli"
+    if ! type gh >/dev/null 2>&1; then
+        err "GitHub CLI not found"
         return 1
     fi
     if [ "$(arch)" == "aarch64" ]; then
