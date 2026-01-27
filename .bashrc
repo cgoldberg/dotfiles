@@ -832,11 +832,11 @@ clean-py () {
         dist/
     )
     local recurse_dirs=(
+        __pycache__
         .tox
         .venv
         .*_cache
         *.egg-info
-        __pycache__
         venv
     )
     local recurse_files=(
