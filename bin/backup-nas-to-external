@@ -59,8 +59,8 @@ eject_usb () {
     local partition=$(findmnt -rno SOURCE "${USB_MNT}")
     local device_name=$(lsblk -rno PKNAME "${partition}")
     local disk="/dev/${device_name}"
-    sudo udisksctl unmount -b "${partition}"
-    sudo udisksctl power-off -b "${disk}"
+    sudo udisksctl unmount -b "${partition}" >/dev/null
+    sudo udisksctl power-off -b "${disk}" >/dev/null
 }
 
 timer () {
