@@ -828,8 +828,8 @@ clean-py () {
         return 1
     fi
     local dirs=(
-        build/
-        dist/
+        build
+        dist
     )
     local recurse_dirs=(
         __pycache__
@@ -851,8 +851,8 @@ clean-py () {
     echo
     for d in "${dirs[@]}"; do
         if [ -d ${d} ]; then
-            echo "deleting ${d}"
-            rm -rf ${d}
+            echo "deleting ${d}/"
+            rm -rf "${d}/"
         fi
     done
     for rd in "${recurse_dirs[@]}"; do
@@ -861,7 +861,7 @@ clean-py () {
                  --exec rm -r
     done
     for rf in "${recurse_files[@]}"; do
-        echo "recursively deleting ${rf}/"
+        echo "recursively deleting ${rf}"
             \fd --hidden --no-ignore --glob --exclude=".git/" --type=f "${rf}" \
                  --exec rm -r
     done
@@ -973,8 +973,7 @@ shrink-images () {
         magick "${f}" -resize "${width}" "${f}"
         local dim_after=$(magick identify -format '%wx%h' "${f}")
         local size_after=$(stat -c%s "${f}" | numfmt --to=iec)
-        ok "resized ${f} from ${dim_before} \
-            (${size_before}) to ${dim_after} (${size_after})"
+        ok "resized ${f} from ${dim_before} (${size_before}) to ${dim_after} (${size_after})"
     done
 }
 
@@ -987,8 +986,8 @@ load-bash-configs () {
     local config_files=(
         "${HOME}/.bashrc_linux"
         "${HOME}/.bashrc_linux_selenium"
-        "${HOME}/.bashrc_windows"
         "${HOME}/.bashrc_squeezebox"
+        "${HOME}/.bashrc_windows"
     )
     for config_file in "${config_files[@]}"; do
         if [ -f "${config_file}" ]; then
