@@ -11,9 +11,9 @@
 EXPECTED_HOSTS=("minime" "raspberrypi")
 NAS_HOST="bitz"
 NAS_MNT="/mnt/${NAS_HOST}"
-DESTINATION_MNT="/media/${USER}/T7Shield"
-DESTINATION_DIR="${DESTINATION_MNT}/backup"
-MOUNTS=("${NAS_MNT}" "${DESTINATION_MNT}")
+USB_MNT="/media/${USER}/T7Shield"
+USB_DIR="${USB_MNT}/backup"
+MOUNTS=("${NAS_MNT}" "${USB_MNT}")
 
 SEP="----------------------------------------------------------------"
 
@@ -55,6 +55,14 @@ check_configuration () {
     fi
 }
 
+eject_usb () {
+    local partition=$(findmnt -rno SOURCE "${USB_MNT}")
+    local device_name=$(lsblk -rno PKNAME "${partition}")
+    local disk="/dev/${device_name}"
+    sudo udisksctl unmount -b "${partition}"
+    sudo udisksctl power-off -b "${disk}"
+}
+
 timer () {
     local start_time=${SECONDS}
     "$@"
@@ -67,7 +75,7 @@ timer () {
 }
 
 do_backup () {
-    echo "syncing ${NAS_MNT} to ${DESTINATION_DIR} ..."
+    echo "syncing ${NAS_MNT} to ${USB_DIR} ..."
     echo
     rsync \
         --delete-during \
@@ -86,9 +94,9 @@ do_backup () {
         --exclude='d1/' \
         --info=progress2 \
         "${NAS_MNT}/" \
-        "${DESTINATION_DIR}/" \
+        "${USB_DIR}/" \
         | grep -v "file_list pointer array"
-    sync "${DESTINATION_MNT}"
+    sync "${USB_MNT}"
 }
 
 check_host
@@ -107,7 +115,7 @@ echo "${SEP}"
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
-sudo eject "${DESTINATION_MNT}"
+eject_usb
 ok "ejected external drive"
 echo
 ok "backup complete"
