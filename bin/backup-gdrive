@@ -10,6 +10,7 @@
 #  - google-drive-export
 
 set -eou pipefail
+trap 'echo "Aborted."; exit 1' INT
 
 
 EXPECTED_HOSTS=("minime" "raspberrypi")

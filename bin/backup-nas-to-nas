@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# NAS backup script:
+# NAS to NAS backup script:
 #  - mount remote NAS filesystems with CIFS/SMB if needed
 #  - sync files from source NAS to destination NAS
 #
@@ -8,6 +8,7 @@
 #  - rsync
 
 set -eou pipefail
+trap 'echo "Aborted."; exit 1' INT
 
 
 EXPECTED_HOSTS=("minime" "raspberrypi")
@@ -47,6 +48,14 @@ check_host () {
     if [ "${can_run}" == "false" ] ; then
         die "fatal: can't run on this host: ${HOSTNAME}"
     fi
+}
+
+check_mounts () {
+    for mnt in "${NAS_MNTS[@]}"; do
+        if ! findmnt "${mnt}" >/dev/null; then
+            die "fatal: ${mnt} not mounted"
+        fi
+    done
 }
 
 check_configuration () {

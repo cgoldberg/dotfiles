@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 #
-# NAS backup script:
+# NAS to external backup script:
 #  - mount remote NAS filesystem with CIFS/SMB if needed
 #  - sync files from NAS to external USB drive
 #
 # requires:
 #  - rsync
+
+set -eou pipefail
+trap 'echo "Aborted."; exit 1' INT
 
 
 EXPECTED_HOSTS=("minime" "raspberrypi")
