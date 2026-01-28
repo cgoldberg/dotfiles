@@ -15,7 +15,7 @@ padding = { x = 5, y = 0 }
 position = { x = 0, y = 0 }
 
 [font]
-size = 11
+size = 10
 
 [cursor]
 style = { shape = "Block", blinking = "Always" }
