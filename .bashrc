@@ -488,7 +488,7 @@ update-rust-bins () {
 # usage: clean-img-metadata <image_file_or_glob> ...
 clean-img-metadata () {
     if [ -z "$1" ]; then
-        err "please specify an image file or glob pattern"
+        err "please specify an image file or glob pattern with matches"
         return 1
     fi
     if ! type exiftool >/dev/null 2>&1; then
