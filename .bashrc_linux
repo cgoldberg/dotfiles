@@ -48,7 +48,8 @@ alias bmon="bmon --use-bit --use-si --policy='wlan*,eno*,eth*'"
 
 
 # monitor resources (cpu/mem/disk/net/procs)
-alias btop="btop --preset 0 --update 2000"
+# see ~/.config/btop/btop.conf
+alias btop="btop --preset 0"
 
 
 # kill process group by name (case-insensitive)

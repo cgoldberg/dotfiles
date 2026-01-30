@@ -36,7 +36,7 @@
 #
 #  - linux only:
 #    - bmon (sudo apt install bmon)
-#    - btop (sudo apt install btop)
+#    - btop (https://github.com/aristocratos/btop)
 #    - githubtakeout (pipx-install githubtakeout)
 #    - gnome-terminal (sudo apt install gnome-terminal)
 #    - go (https://go.dev/doc/install)
