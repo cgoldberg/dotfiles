@@ -4,9 +4,8 @@
 
 ## Add package sources
 
-Remove `/etc/apt/sources.list` if it exists (old format)
-
-Update or add `/etc/apt/sources.list.d/debian.sources`:
+- remove `/etc/apt/sources.list` if it exists (old format)
+- update or add `/etc/apt/sources.list.d/debian.sources`:
 
 ```
 Types: deb deb-src
@@ -70,13 +69,69 @@ sudo apt remove --purge \
 
 ## Install/Configure Gnome Shell extensions
 
-- `sudo apt install gnome-shell-extensions`
+- install: `sudo apt install gnome-shell-extensions`
 - add system extensions:
-  - native window placement
-- add user-installed extsnsions:
-  - astra monitor
-  - dash to panel
-  - quick shutdown
+  - Native Window Placement
+- add user-installed extensions:
+  - Astra Monitor
+  - Dash to Panel
+  - Quick Shutdown
+
+----
+
+## Set systemd log limits and retention
+
+set in `/etc/systemd/journald.conf`:
+
+```
+[Journal]
+# Storage
+Storage=persistent
+Compress=yes
+Seal=yes
+SplitMode=uid
+
+# Persistent disk usage
+SystemMaxUse=2G
+SystemKeepFree=5G
+SystemMaxFileSize=200M
+SystemMaxFiles=20
+
+# Runtime (RAM) logs
+RuntimeMaxUse=300M
+RuntimeKeepFree=300M
+RuntimeMaxFileSize=100M
+RuntimeMaxFiles=10
+
+# Durability
+SyncIntervalSec=1m
+
+# Rate limiting
+RateLimitIntervalSec=30s
+RateLimitBurst=2000
+
+# Forwarding
+ForwardToSyslog=yes
+ForwardToKMsg=no
+ForwardToConsole=no
+ForwardToWall=no
+
+# Log levels
+MaxLevelStore=debug
+MaxLevelSyslog=debug
+MaxLevelKMsg=notice
+MaxLevelConsole=info
+MaxLevelWall=emerg
+```
+
+wipe old logs:
+
+```
+sudo systemctl stop systemd-journald
+sudo rm -rf /var/log/journal/*
+sudo rm -rf /run/log/journal/*
+sudo systemctl start systemd-journald
+```
 
 ----
 
