@@ -498,7 +498,7 @@ clean-img-metadata () {
     echo "removing metadata ..."
     echo
     # keep orientation tag
-    exiftool -all= -tagsfromfile @ -Orientation -overwrite_original_in_place "$@" 2>/dev/null
+    exiftool -all= -tagsfromfile @ -Orientation -overwrite_original "$@" 2>/dev/null
 }
 
 
