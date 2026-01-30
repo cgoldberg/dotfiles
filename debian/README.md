@@ -68,6 +68,17 @@ sudo apt remove --purge \
 
 ----
 
+## Install/Configure Gnome Shell extensions
+
+- `sudo apt install gnome-shell-extensions`
+- add system extensions:
+  - native window placement
+- add user-installed extsnsions:
+  - astra monitor
+  - dash to panel
+
+----
+
 ## Disable autosuspend for all USB devices
 
 set kernel command-line parameter:
