@@ -76,6 +76,7 @@ sudo apt remove --purge \
 - add user-installed extsnsions:
   - astra monitor
   - dash to panel
+  - quick shutdown
 
 ----
 
