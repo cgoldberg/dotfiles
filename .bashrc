@@ -126,7 +126,7 @@ HISTSIZE=9999
 # number of previous commands stored in history file
 HISTFILESIZE=9999
 # immediately add commands to history instead of waiting for end of session
-PROMPT_COMMAND="history -n; history -w; history -c; history -r; ${PROMPT_COMMAND}"
+PROMPT_COMMAND="history -n; history -w; history -c; history -r"
 
 
 # add local bin directories to the end of PATH if they don't exist in PATH
