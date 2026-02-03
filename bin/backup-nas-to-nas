@@ -64,7 +64,7 @@ check_configuration () {
 }
 
 diskspace () {
-    df --human-readable --type=cifs | sed '1{p;s/./-/g;}'
+    df --human-readable --sync --type=cifs | sed '1{p;s/./-/g;}'
 }
 
 timer () {

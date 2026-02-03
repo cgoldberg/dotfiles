@@ -57,11 +57,14 @@ check_configuration () {
     fi
 }
 
+diskspace () {
+    df --human-readable --sync --type=exfat | sed '1{p;s/./-/g;}'
+}
+
 eject_usb () {
     local partition=$(findmnt -rno SOURCE "${USB_MNT}")
     local device_name=$(lsblk -rno PKNAME "${partition}")
     local disk="/dev/${device_name}"
-    sync "${USB_MNT}"
     sudo udisksctl unmount -b "${partition}" >/dev/null
     sudo udisksctl power-off -b "${disk}" >/dev/null
 }
@@ -116,7 +119,10 @@ timer do_backup
 echo
 echo "${SEP}"
 echo
+sync "${USB_MNT}"
 echo "elapsed time: ${elapsed_time}"
+echo
+diskspace
 echo
 eject_usb
 ok "ejected external drive"
