@@ -7,7 +7,6 @@
 # requires:
 #  - rsync
 
-set -eou pipefail
 trap 'echo "Aborted."; exit 1' INT
 
 

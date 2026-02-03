@@ -31,7 +31,7 @@ alias busy="cat /dev/urandom | hexdump -C | \grep --color=always 'ca fe'"
 
 
 # disk space
-alias df="df --human-readable --portability --print-type --sync"
+alias df="df --human-readable --print-type --sync"
 
 
 # watch disk space
@@ -86,9 +86,9 @@ alias web="sensible-browser"
 
 # show disk space used by root filesystem and mounted filesystems
 diskspace () {
-    echo "Filesystem        Type      Size  Used Avail Use% Mounted on"
-    echo "------------------------------------------------------------"
-    df | \grep -E '/$|/media/|/mnt/' | \grep -E 'ext4|btrfs|cifs|exfat'
+    \df --human-readable --sync --type=ext4 --type=btrfs --type=cifs --type=exfat \
+        | awk 'NR==1 || $NF == "/" || $NF ~ /^\/(mnt|media)\//' \
+        | sed '1{p;s/./-/g;}'
 }
 # make it available in non-interactive shells so watch can see it
 export -f diskspace
