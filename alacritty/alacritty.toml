@@ -7,7 +7,7 @@
 live_config_reload = true
 
 [terminal]
-shell = { program = "bash", args = ["--login"] }
+shell = { program = "C:/Users/corey.goldberg/Scoop/apps/git/current/bin/bash.exe", args = ["--login"] }
 
 [window]
 dimensions = { columns = 148, lines = 38 }
