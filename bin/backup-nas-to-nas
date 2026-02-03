@@ -87,6 +87,7 @@ do_backup () {
         --human-readable \
         --links \
         --no-whole-file \
+        --numeric-ids \
         --progress \
         --recursive \
         --safe-links \

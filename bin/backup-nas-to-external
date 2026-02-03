@@ -61,6 +61,7 @@ eject_usb () {
     local partition=$(findmnt -rno SOURCE "${USB_MNT}")
     local device_name=$(lsblk -rno PKNAME "${partition}")
     local disk="/dev/${device_name}"
+    sync "${USB_MNT}"
     sudo udisksctl unmount -b "${partition}" >/dev/null
     sudo udisksctl power-off -b "${disk}" >/dev/null
 }
@@ -85,6 +86,7 @@ do_backup () {
         --human-readable \
         --links \
         --no-whole-file \
+        --numeric-ids \
         --progress \
         --recursive \
         --safe-links \
@@ -92,13 +94,12 @@ do_backup () {
         --times \
         --verbose \
         --verbose \
+        --info=progress2 \
         --exclude='d0/' \
         --exclude='d1/' \
-        --info=progress2 \
         "${NAS_MNT}/" \
         "${USB_DIR}/" \
         | grep -v "file_list pointer array"
-    sync "${USB_MNT}"
 }
 
 check_host
