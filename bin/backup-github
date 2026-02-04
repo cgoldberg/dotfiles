@@ -89,21 +89,23 @@ do_backup () {
         "${NAS_MNT}/${GITHUB_BACKUP_DIR} ..."
     echo
     rsync \
-        --cvs-exclude \
         --delete-during \
         --fsync \
         --human-readable \
         --links \
         --no-whole-file \
+        --numeric-ids \
         --progress \
         --recursive \
         --safe-links \
         --stats \
         --times \
         --verbose \
+        --verbose \
         --info=progress2 \
         "${BACKUP_LOCAL_PATH}/${GITHUB_BACKUP_DIR}/" \
-        "${NAS_MNT}/${GITHUB_BACKUP_DIR}/"
+        "${NAS_MNT}/${GITHUB_BACKUP_DIR}/" \
+        | grep -v "file_list pointer array"
     sync "${NAS_MNT}"
 }
 

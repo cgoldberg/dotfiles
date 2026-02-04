@@ -89,15 +89,18 @@ do_backup () {
         --human-readable \
         --links \
         --no-whole-file \
+        --numeric-ids \
         --progress \
         --recursive \
         --safe-links \
         --stats \
         --times \
         --verbose \
+        --verbose \
         --info=progress2 \
         "${BACKUP_LOCAL_PATH}/${GOOGLE_DRIVE_BACKUP_DIR}/" \
-        "${NAS_MNT}/${GOOGLE_DRIVE_BACKUP_DIR}/"
+        "${NAS_MNT}/${GOOGLE_DRIVE_BACKUP_DIR}/" \
+        | grep -v "file_list pointer array"
     sync "${NAS_MNT}"
 }
 
