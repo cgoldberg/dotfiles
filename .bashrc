@@ -96,9 +96,6 @@ shopt -s dotglob
 # the pattern "**" used in a pathname expansion context will match
 # all files and zero or more directories and subdirectories
 shopt -s globstar
-# filename expansion patterns which match no files expand to nothing
-# and are removed, rather than expanding to themselves
-shopt -s nullglob
 # automatically close file descriptors assigned using the
 # "{varname}" redirection syntax instead of leaving them
 # open when a command completes
@@ -860,13 +857,13 @@ clean-py () {
     done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
-            \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" \
-                 --exec rm -r
+        \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" \
+            --exec rm -r
     done
     for rf in "${recurse_files[@]}"; do
         echo "recursively deleting ${rf}"
-            \fd --hidden --no-ignore --glob --exclude=".git/" --type=f "${rf}" \
-                 --exec rm -r
+        \fd --hidden --no-ignore --glob --exclude=".git/" --type=f "${rf}" \
+            --exec rm -r
     done
     echo
     ok "done"
