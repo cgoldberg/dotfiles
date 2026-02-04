@@ -11,7 +11,7 @@
 #  - githubtakeout
 
 set -euo pipefail
-trap 'echo "Aborted."; exit 1' INT
+trap 'echo -e "\nAborted"; exit 1' INT
 
 
 EXPECTED_HOSTS=("minime" "raspberrypi")

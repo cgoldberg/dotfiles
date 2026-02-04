@@ -2,18 +2,28 @@
 #
 # data transfer test
 # ------------------
-# This script tests data transfer speed between 2 remote storage servers
+# Test data transfer speed between 2 remote storage servers
 #
 # - mounts remote NAS filesystems with CIFS/SMB if needed
-# - writes a binary test file to the root directory of the source NAS
+# - writes a random binary test file to the root directory of the source NAS
 # - reads test file from source NAS and writes it to root directory of destination NAS
 # - deletes test file from source NAS and destination NAS
+# - drops client-side page cache and metadata cache
+# - uses random file name to bypass server-side cache
+#
+# requires:
+# - 'sync-nas' script
+
+trap 'echo -e "\nAborted"; delete_test_files; exit 1' INT
+
 
 EXPECTED_HOSTS=("minime" "raspberrypi")
 
-ITERATIONS=5
-FILE_NAME="test.img"
-FILE_SIZE="100M"
+ITERATIONS="3"
+FILE_NAME="$(mktemp -u testfile.XXXXXXXXXX.bin)"
+FILE_CHUNK_SIZE="4M"
+FILE_CHUNK_COUNT="50"
+FILE_SIZE="$(( FILE_CHUNK_COUNT * ${FILE_CHUNK_SIZE%M} ))M"
 
 # 2-bay QNAP
 NAS_HOST1="bitz"
@@ -73,22 +83,22 @@ timer () {
 run_test () {
     # generate the file
     dd \
-        if=/dev/zero \
+        if=/dev/urandom \
         of="${NAS_MNT1}/${FILE_NAME}" \
-        bs="${FILE_SIZE}" \
-        count=1 \
-        oflag=dsync \
+        bs="${FILE_CHUNK_SIZE}" \
+        count="${FILE_CHUNK_COUNT}" \
         conv=fdatasync \
         status=none
     sync "${NAS_MNT1}"
+    # drop local cache
+    sudo sh -c "echo 3 > /proc/sys/vm/drop_caches"
     # transfer the file
     test_results=$( \
         dd \
             if="${NAS_MNT1}/${FILE_NAME}" \
             of="${NAS_MNT2}/${FILE_NAME}" \
-            bs="${FILE_SIZE}" \
-            count=1 \
-            oflag=dsync,nocache \
+            bs="${FILE_CHUNK_SIZE}" \
+            count="${FILE_CHUNK_COUNT}" \
             conv=fdatasync \
             2>&1 \
             | grep "copied" \
@@ -98,7 +108,7 @@ run_test () {
 
 run () {
     for i in $(seq 1 ${ITERATIONS}); do
-        echo "- test #${i}:"
+        echo "- test #${i} of ${ITERATIONS}:"
         run_test
         delete_test_files
         tput bold; tput setaf 10
@@ -121,7 +131,7 @@ echo
 echo "test settings:"
 echo
 echo "  - iterations: ${ITERATIONS}"
-echo "  - file size: ${FILE_SIZE}"
+echo "  - file size: ${FILE_SIZE} (${FILE_CHUNK_SIZE} chunks)"
 echo "  - source: ${NAS_MNT1}"
 echo "  - destination: ${NAS_MNT2}"
 echo
