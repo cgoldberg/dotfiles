@@ -1,7 +1,8 @@
 # ~/.bashrc_linux
-# ================================
+# ===========================================================
 # Bash shell configuration - Linux
-# ================================
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+# ===========================================================
 
 
 # only use this file on Linux

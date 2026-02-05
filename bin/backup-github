@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 #
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+#
 # GitHub backup script:
 #  - mount remote NAS filesystem with CIFS/SMB if needed
 #  - download public GitHub repos/gists (except forks)

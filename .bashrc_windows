@@ -1,7 +1,8 @@
 # ~/.bashrc_windows
-# ==================================
+# ===========================================================
 # Bash shell configuration - Windows
-# ==================================
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+# ===========================================================
 
 
 # only use this file on Windows/MinGW

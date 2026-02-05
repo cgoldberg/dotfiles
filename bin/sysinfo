@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 #
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+#
 # sysinfo - display Linux system information
 
 get_cpu_info () {

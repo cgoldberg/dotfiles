@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 #
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+#
 # NAS sync script:
 #  - mounts remote NAS filesystems with CIFS/SMB if needed
 #  - syncs local filesystems
