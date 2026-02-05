@@ -1,7 +1,7 @@
 # ~/.bash_logout
-# =========================
-#  bash shell configuration
-# =========================
+# ========================
+# Bash shell configuration
+# ========================
 
 
 # read all history lines not already read from the history file
