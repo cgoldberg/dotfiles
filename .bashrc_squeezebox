@@ -24,7 +24,6 @@ send-squeezebox-cmd () {
             --fail \
             --ipv4 \
             --silent \
-            --request POST \
             --retry 0 \
             --connect-timeout 2 \
             --max-time 5 \
