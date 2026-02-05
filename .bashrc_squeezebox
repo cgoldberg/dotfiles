@@ -12,7 +12,6 @@ SQUEEZEBOX_MAC="00:04:20:23:82:6f"
 send-squeezebox-cmd () {
     local command="$1"
     local payload='{
-            "id": 1,
             "method": "slim.request",
             "params": [
                 "'"${SQUEEZEBOX_MAC}"'",
