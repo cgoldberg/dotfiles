@@ -65,7 +65,7 @@ squeezebox-mix () {
 alias m="squeezebox-mix"
 
 
-# pause/resume audio on Squeezebox player
+# pause/play audio on Squeezebox player
 squeezebox-pause () {
     send-squeezebox-cmd '["pause"]'
 }
