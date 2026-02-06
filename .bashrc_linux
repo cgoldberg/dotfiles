@@ -177,18 +177,6 @@ clean-apt-index () {
 }
 
 
-# remove CUE sheet from FLAC files in current directory
-clean-flac-cuesheets () {
-    if ! type metaflac >/dev/null 2>&1; then
-        err "metaflac not found"
-        return 1
-    fi
-    local num_files="$(\ls -1q *.flac | wc -l)"
-    metaflac --remove --block-type='CUESHEET' *.flac
-    ok "cleaned CUE sheets from ${num_files} FLAC files"
-}
-
-
 # package maintenance
 apt-up () {
     sudo apt update --no-allow-insecure-repositories \

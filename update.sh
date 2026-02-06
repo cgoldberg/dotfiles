@@ -42,7 +42,6 @@
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install google-drive-export)
 #    - iostat (sudo apt install sysstat)
-#    - metaflac (sudo apt install flac)
 #    - ncal (sudo apt install ncal)
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (sudo apt install rsync)
@@ -97,7 +96,6 @@ DEPENDENCIES_LINUX=(
     "go"
     "google_drive_export"
     "iostat"
-    "metaflac"
     "ncal"
     "pyenv"
     "rsync"
