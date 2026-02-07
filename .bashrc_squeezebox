@@ -26,7 +26,7 @@ send-squeezebox-cmd () {
             --silent \
             --retry 0 \
             --connect-timeout 3 \
-            --max-time 7 \
+            --max-time 10 \
             --data "${payload}" \
             "${LMS_URL}/jsonrpc.js"
     )"
