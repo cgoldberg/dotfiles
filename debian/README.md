@@ -81,7 +81,7 @@ sudo apt remove --purge \
 
 ## Set systemd log limits and retention
 
-set in `/etc/systemd/journald.conf`:
+- set in `/etc/systemd/journald.conf`:
 
 ```
 [Journal]
@@ -124,7 +124,7 @@ MaxLevelConsole=info
 MaxLevelWall=emerg
 ```
 
-wipe old logs:
+- wipe old logs:
 
 ```
 sudo systemctl stop systemd-journald
@@ -137,34 +137,54 @@ sudo systemctl start systemd-journald
 
 ## Disable autosuspend for all USB devices
 
-set kernel command-line parameter:
-
-- edit `/etc/default/grub`
-- find `GRUB_CMDLINE_LINUX_DEFAULT`, and add `usbcore.autosuspend=-1`
-  - i.e. `GRUB_CMDLINE_LINUX_DEFAULT="quiet usbcore.autosuspend=-1"`
-- `sudo update-grub`
-
-after reboot, check status with:
+- set kernel command-line parameter:
+  - edit `/etc/default/grub`
+  - find `GRUB_CMDLINE_LINUX_DEFAULT`, and add `usbcore.autosuspend=-1`
+    - i.e. `GRUB_CMDLINE_LINUX_DEFAULT="quiet usbcore.autosuspend=-1"`
+  - `sudo update-grub`
+- after reboot, check status with:
 
 ```
 cat /proc/cmdline | grep usbcore
-```
-
-and
-
-```
 cat /sys/module/usbcore/parameters/autosuspend
 ```
 
 ----
 
+## Disable Energy Efficient Ethernet so network doesn't go to sleep
+
+- install: `sudo apt install ethtool`
+- find the active ethernet interface:
+  - `ip -br link`
+- assuming `eno1` is the interface, check status:
+  - `sudo /usr/sbin/ethtool --show-eee eno1 | grep 'EEE status'`
+- if it is "active", create a systemd unit to disable it:
+
+```
+sudo tee /etc/systemd/system/disable-eee@.service <<'EOF'
+[Unit]
+Description=Disable EEE on %i
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/ethtool --set-eee %i eee off
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+- enable it for the interface: `sudo systemctl enable disable-eee@eno1`
+- after reboot, check status: `sudo /usr/sbin/ethtool --show-eee eno1 | grep 'EEE status'`
+- it should be "disabled"
+
+----
+
 ## Configure custom DNS
 
-```
-sudo apt install systemd-resolved
-```
-
-set in `/etc/systemd/resolved.conf`:
+- install: `sudo apt install systemd-resolved`
+- set in `/etc/systemd/resolved.conf`:
 
 ```
 [Resolve]
@@ -178,13 +198,13 @@ ReadEtcHosts=yes
 sudo systemctl restart systemd-resolved
 ```
 
-verify with: `resolvectl status`
+- verify with: `resolvectl status`
 
 ----
 
 ## Set mount options for main disk
 
-set mount options in `/etc/fstab` to:
+- set mount options in `/etc/fstab` to:
 
 ```
 defaults,relatime,errors=remount-ro
@@ -194,7 +214,7 @@ defaults,relatime,errors=remount-ro
 
 ## Mount NAS at boot
 
-create mount points:
+- create mount points:
 
 ```
 sudo mkdir -p /mnt/bitz
@@ -203,20 +223,20 @@ sudo mkdir -p /mnt/bytez
 sudo chmod 755 /mnt/bytez
 ```
 
-create `/root/.smbcredentials`:
+- create `/root/.smbcredentials`:
 
 ```
 username=cgoldberg
 password=secret
 ```
 
-secure it:
+- secure it:
 
 ```
 sudo chmod 600 /root/.smbcredentials
 ```
 
-set in `/etc/fstab`:
+- set in `/etc/fstab`:
 
 ```
 //10.0.0.5/public /mnt/bitz cifs credentials=/root/.smbcredentials,relatime,nofail,serverino,nosharesock,_netdev,cache=strict,actimeo=60,rsize=1048576,wsize=1048576,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8  0  0
@@ -228,14 +248,14 @@ set in `/etc/fstab`:
 
 ## Un-enshittify Chromium browser
 
-apply settings from https://github.com/corbindavenport/just-the-browser
+- apply settings from https://github.com/corbindavenport/just-the-browser
 
 ```
 sudo mkdir -p /etc/chromium/policies/managed
 sudo touch /etc/chromium/policies/managed/managed_policies.json
 ```
 
-add to `managed_policies.json`:
+- add to `managed_policies.json`:
 
 ```
 {
