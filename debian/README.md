@@ -25,6 +25,14 @@ Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
 
 ----
 
+## Update kernel and dependencies to backports version
+
+```
+sudo apt install -t trixie-backports linux-image-amd64 linux-headers-amd64
+```
+
+----
+
 ## Install packages
 
 ```
