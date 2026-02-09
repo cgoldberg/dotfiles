@@ -11,7 +11,7 @@
 #  - rsync
 #  - google-drive-export
 
-set -euo pipefail
+set -o pipefail
 trap 'echo -e "\nAborted"; exit 1' INT
 
 
