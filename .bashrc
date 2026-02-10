@@ -42,19 +42,18 @@ ORIGINAL_PATH="${PATH}"
 # export environment variables
 export LANGUAGE="en_US"
 export PAGER="less"
-export EDITOR="vi"
 export GITHUB_USERNAME="cgoldberg"
 export PIP_REQUIRE_VIRTUALENV=true
 export BAT_PAGER="less --LONG-PROMPT --RAW-CONTROL-CHARS --no-init --quit-at-eof --quit-if-one-screen"
 export LESSHISTFILE=- # don't leave .lesshst files
 if type subl >/dev/null 2>&1; then
-    export VISUAL="subl --new-window --wait"
+    export EDITOR="subl --new-window --wait"
 elif type nano >/dev/null 2>&1; then
-    export VISUAL="nano"
+    export EDITOR="nano"
 else
-    export VISUAL="vi"
+    export EDITOR="vi"
 fi
-
+export VISUAL="${EDITOR}"
 
 # set a colored prompt with:
 # - user:dir
