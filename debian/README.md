@@ -37,7 +37,7 @@ sudo apt install -t trixie-backports linux-image-amd64 linux-headers-amd64
 
 ```
 sudo apt install \
-    audacious build-essential cifs-utils curl gdu git gvfs-backends htop \
+    audacious build-essential cifs-utils curl git gvfs-backends htop \
     libfuse2 nano nemo python-is-python3 smplayer
 
 ```

@@ -17,6 +17,7 @@
 #    - ffmpeg (sudo apt install ffmpeg, scoop install ffmpeg)
 #    - fzf (https://github.com/junegunn/fzf, scoop install fzf)
 #    - gcc (sudo apt install build-essential, scoop install mingw)
+#    - gdu (sudo apt install gdu, scoop install gdu)
 #    - gh (https://github.com/cli/cli, scoop install gh)
 #    - git-who (https://github.com/sinclairtarget/git-who)
 #    - java (sudo apt install default-jdk, scoop install openjdk)
@@ -71,6 +72,7 @@ DEPENDENCIES=(
     "ffmpeg"
     "fzf"
     "gcc"
+    "gdu"
     "gh"
     "git-who"
     "java"
