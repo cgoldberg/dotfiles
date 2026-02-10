@@ -45,9 +45,12 @@ export PAGER="less"
 export EDITOR="vi"
 export GITHUB_USERNAME="cgoldberg"
 export PIP_REQUIRE_VIRTUALENV=true
+export BAT_PAGER="less --LONG-PROMPT --RAW-CONTROL-CHARS --no-init --quit-at-eof --quit-if-one-screen"
 export LESSHISTFILE=- # don't leave .lesshst files
 if type subl >/dev/null 2>&1; then
     export VISUAL="subl --new-window --wait"
+elif type nano >/dev/null 2>&1; then
+    export VISUAL="nano"
 else
     export VISUAL="vi"
 fi
@@ -207,8 +210,7 @@ alias grep="grep --color=always"
 
 
 # pagers
-alias less="less --LONG-PROMPT --no-init --quit-at-eof --quit-if-one-screen \
-    --quit-on-intr --RAW-CONTROL-CHARS"
+alias less="less --LONG-PROMPT --RAW-CONTROL-CHARS --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr"
 alias more="less"
 
 
@@ -227,8 +229,7 @@ alias which="type"
 
 
 # shell script static analysis
-alias shellcheck="shellcheck --color=always --shell=bash \
-    --exclude=SC1090,SC1091,SC2155"
+alias shellcheck="shellcheck --color=always --shell=bash --exclude=SC1090,SC1091,SC2155"
 
 
 # extract a tarball
@@ -260,25 +261,19 @@ if type eza >/dev/null 2>&1; then
 fi
 
 
-# show names of all bash aliases and functions
-alias aliases="\
-    { \
-        alias -p | sed -E 's/^alias ([^=]+)=.*/\1/'; compgen -a -A function \
-        | grep -v ^_; \
-    } \
-        | sort \
-        | uniq"
-
-
-# editors (sublime/vim)
+# editors (sublime/nano/vim)
 if type subl >/dev/null 2>&1; then
     alias edit="subl"
     alias ed="subl"
     alias e="subl --new-window ."
+elif type nano >/dev/null 2>&1; then
+    alias edit="nano"
+    alias ed="nano"
+    alias e="nano"
 else
     alias edit="vi"
     alias ed="vi"
-    alias e="vi ."
+    alias e="vi"
 fi
 
 

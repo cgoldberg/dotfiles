@@ -51,7 +51,7 @@
 #  - windows only:
 #    - alacritty (scoop install alacritty)
 
-set -eo pipefail
+set -o pipefail
 
 
 DOTFILES_HOME="${HOME}/code/dotfiles"
