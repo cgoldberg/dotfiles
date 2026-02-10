@@ -25,7 +25,7 @@ Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
 
 ----
 
-## Update kernel and dependencies to backports version
+## Update kernel to backports version
 
 ```
 sudo apt install -t trixie-backports linux-image-amd64 linux-headers-amd64
@@ -37,8 +37,8 @@ sudo apt install -t trixie-backports linux-image-amd64 linux-headers-amd64
 
 ```
 sudo apt install \
-    audacious build-essential cifs-utils curl gdu git gvfs-backends \
-    gnome-terminal htop libfuse2 nano nemo python-is-python3 smplayer
+    audacious build-essential cifs-utils curl gdu git gvfs-backends htop \
+    libfuse2 nano nemo python-is-python3 smplayer
 
 ```
 
