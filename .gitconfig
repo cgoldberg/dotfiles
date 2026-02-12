@@ -85,10 +85,10 @@
 
 # delta pager - https://github.com/dandavison/delta
 [delta]
-    features = arctic-fox
+    features = custom-theme
 
 # more themes: https://raw.githubusercontent.com/dandavison/delta/main/themes.gitconfig
-[delta "arctic-fox"]
+[delta "custom-theme"]
     dark = true
     syntax-theme = Nord
     file-added-label = [+]
