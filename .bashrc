@@ -220,8 +220,7 @@ fi
 
 
 # show how a command would be interpreted
-# - includes: aliases, builtins,
-# functions, scripts/executables on PATH)
+# - includes: aliases, builtins, functions, executables on PATH
 alias which="type"
 
 
@@ -239,22 +238,19 @@ alias c="clear"
 
 
 # list directory contents
-alias ls="LC_ALL=C \ls --almost-all --classify --group-directories-first \
-    --color=always"
+alias ls="LC_ALL=C \ls --almost-all --classify --group-directories-first --color=always"
 alias ll="LC_ALL=C \ls -l --almost-all --classify --group-directories-first \
     --human-readable --no-group --color=always"
 if type eza >/dev/null 2>&1; then
     alias l="eza --long --all --git --git-repos-no-status \
         --group-directories-first --header --modified --no-quotes \
         --classify=always --sort=Name --time-style=long-iso"
-else
-    alias l="ll"
-fi
-if type eza >/dev/null 2>&1; then
     alias tree="eza --tree --all --group-directories-first --no-git \
         --no-quotes --classify=always --color=always --sort=Name \
         --ignore-glob='venv|.git|.tox|*_cache|__pycache__' \
         | less"
+else
+    alias l="ll"
 fi
 
 
