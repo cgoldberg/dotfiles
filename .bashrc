@@ -215,7 +215,7 @@ alias g="git"
 # disk usage (directory sizes)
 alias du="du --human-readable --max-depth=1 | sort --human-numeric-sort --reverse"
 if type gdu >/dev/null 2>&1; then
-    alias gdu="gdu --no-delete --show-item-count"
+    alias gdu="gdu --show-item-count"
 fi
 
 
