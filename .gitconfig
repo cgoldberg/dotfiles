@@ -22,7 +22,6 @@
     safecrlf = true
     fsmonitor = true
     untrackedcache = true
-    pager = delta
 
 [pull]
     rebase = true
@@ -30,6 +29,11 @@
 [push]
     default = simple
     autoSetupRemote = true
+
+[pager]
+    diff = delta
+    log = less
+    show = less
 
 [rebase]
     autoStash = true
