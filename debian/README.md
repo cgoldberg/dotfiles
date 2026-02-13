@@ -44,6 +44,17 @@ sudo apt install \
 
 ----
 
+## Remove packages
+
+```
+sudo apt remove --purge \
+    cups* apache* libreoffice* blueman bluez bolt modemmanager
+```
+
+(this removes cellular data, print services, bluetooth support, thunderbolt support, etc)
+
+----
+
 ## Install fonts
 
 ```
@@ -62,15 +73,6 @@ sudo apt install \
     libbz2-dev libffi-dev libgdbm-dev libgdbm-compat-dev liblzma-dev \
     libncurses-dev libreadline-dev libsqlite3-dev libssl-dev lzma tk-dev \
     uuid-dev zlib1g-dev libzstd-dev inetutils-inetd
-```
-
-----
-
-## Remove packages
-
-```
-sudo apt remove --purge \
-    cups* apache* libreoffice* bluez modemmanager
 ```
 
 ----
