@@ -112,12 +112,12 @@ install-chrome () {
 
 # show internal/external ip addresses
 ips () {
-    echo "internal ip addresses:"
-    echo "----------------------"
+    echo "internal ip addresses"
+    echo "---------------------"
     hostname --all-ip-addresses | tr -d '\n' | sed 's/ /\n/g'
     echo
-    echo "external ip addresses:"
-    echo "----------------------"
+    echo "external ip addresses"
+    echo "---------------------"
     curl ipv4.icanhazip.com
     curl ipv6.icanhazip.com
 }
