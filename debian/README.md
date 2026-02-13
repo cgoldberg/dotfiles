@@ -191,6 +191,19 @@ EOF
 
 ----
 
+## Setup firewall
+
+- install: `sudo apt install ufw`
+- set default policies (block all incoming and allow outgoing):
+  - `sudo ufw default deny incoming`
+  - `sudo ufw default allow outgoing`
+- enable UFW
+  - `sudo ufw enable`
+- check status
+  - `sudo ufw status verbose`
+
+----
+
 ## Configure custom DNS
 
 - install: `sudo apt install systemd-resolved`
@@ -209,6 +222,18 @@ sudo systemctl restart systemd-resolved
 ```
 
 - verify with: `resolvectl status`
+
+----
+
+## Disable LLMNR + Avahi
+
+- LLMNR:
+  - edit: `/etc/systemd/resolved.conf`
+    - set: `LLMNR=no`
+  - restart: `sudo systemctl restart systemd-resolved`
+
+- Avahi:
+  - `sudo systemctl disable --now avahi-daemon`
 
 ----
 
