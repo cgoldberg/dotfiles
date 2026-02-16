@@ -217,11 +217,6 @@ alias du="du --human-readable --max-depth=1 | sort --human-numeric-sort --revers
 alias gdu="gdu --no-delete --show-item-count"
 
 
-# show how a command would be interpreted
-# - includes: aliases, builtins, functions, executables on PATH
-alias which="type"
-
-
 # shell script static analysis
 alias shellcheck="shellcheck --color=always --shell=bash --exclude=SC1090,SC1091,SC2155"
 
