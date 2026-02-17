@@ -1,0 +1,157 @@
+#!/usr/bin/env bash
+#
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+#
+# data transfer test
+# ------------------
+# test data transfer speed between 2 remote storage servers
+#
+# - mounts remote NAS filesystems with CIFS/SMB if needed
+# - drops client-side page cache and metadata cache
+# - uses random file name to bypass server-side cache
+# - writes a random binary test file to the root directory of the source NAS
+# - reads test file from source NAS and writes it to root directory of destination NAS
+# - deletes test file from source NAS and destination NAS
+#
+# requires:
+# - 'sync-nas' script
+
+trap cleanup SIGINT SIGTERM
+
+
+EXPECTED_HOSTS=("minime" "raspberrypi")
+
+ITERATIONS="3"
+FILE_NAME="$(mktemp -u testfile.XXXXXXXXXX.bin)"
+FILE_CHUNK_SIZE="4M"
+FILE_CHUNK_COUNT="50"
+FILE_SIZE="$(( FILE_CHUNK_COUNT * ${FILE_CHUNK_SIZE%M} ))M"
+
+# 2-bay QNAP
+NAS_HOST1="bitz"
+NAS_MNT1="/mnt/${NAS_HOST1}"
+
+# 1-bay QNAP
+NAS_HOST2="bytez"
+NAS_MNT2="/mnt/${NAS_HOST2}"
+
+SEP="----------------------------------------------------------------"
+
+die () {
+    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+    exit 1
+}
+
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+cleanup () {
+    echo
+    delete_test_files
+    sudo umount -l "${NAS_MNT2}"
+    die "Aborted"
+}
+
+check_host () {
+    local can_run="false"
+    for i in {0..1}; do
+        local host="${EXPECTED_HOSTS[${i}]}"
+        if [ "${HOSTNAME}" == "${host}" ]; then
+            can_run="true"
+        fi
+    done
+    if [ "${can_run}" == "false" ] ; then
+        die "fatal: can't run on this host: ${HOSTNAME}"
+    fi
+}
+
+delete_test_files () {
+    rm -f "${NAS_MNT1}/${FILE_NAME}"
+    rm -f "${NAS_MNT2}/${FILE_NAME}"
+    sync "${NAS_MNT1}"
+    sync "${NAS_MNT2}"
+}
+
+timer () {
+    local start_time=${SECONDS}
+    "$@"
+    local end_time=${SECONDS}
+    local duration=$((end_time - start_time))
+    local hours=$((duration / 3600))
+    local minutes=$(((duration % 3600) / 60))
+    local seconds=$((duration % 60))
+    printf  -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
+}
+
+run_test () {
+    # generate the file
+    dd \
+        if=/dev/urandom \
+        of="${NAS_MNT1}/${FILE_NAME}" \
+        bs="${FILE_CHUNK_SIZE}" \
+        count="${FILE_CHUNK_COUNT}" \
+        conv=fdatasync \
+        status=none
+    sync "${NAS_MNT1}"
+    # drop local cache
+    sudo sh -c "echo 3 > /proc/sys/vm/drop_caches"
+    # transfer the file
+    test_results=$( \
+        dd \
+            if="${NAS_MNT1}/${FILE_NAME}" \
+            of="${NAS_MNT2}/${FILE_NAME}" \
+            bs="${FILE_CHUNK_SIZE}" \
+            count="${FILE_CHUNK_COUNT}" \
+            conv=fdatasync \
+            2>&1 \
+            | grep "copied" \
+        )
+    sync "${NAS_MNT2}"
+}
+
+run () {
+    for i in $(seq 1 ${ITERATIONS}); do
+        echo "- test #${i} of ${ITERATIONS}:"
+        run_test
+        delete_test_files
+        tput bold; tput setaf 10
+        echo "  - ${test_results}"
+        if [[ ${test_results} =~ ([0-9]+([.][0-9]+)?)[[:space:]]*MB/s ]]; then
+            speed_megabyte_per_sec="${BASH_REMATCH[1]}"
+            speed_megabit_per_sec=$(( ${speed_megabyte_per_sec%.*} * 8 ))
+            echo "  - ${speed_megabit_per_sec} Mbps"
+        fi
+        echo
+        sleep 0.5
+        tput sgr0
+    done
+}
+
+check_host
+mount-bytez >/dev/null 2>&1
+sync-nas >/dev/null 2>&1
+sleep 1
+echo
+echo "test settings:"
+echo
+echo "  - iterations: ${ITERATIONS}"
+echo "  - file size: ${FILE_SIZE} (${FILE_CHUNK_SIZE} chunks)"
+echo "  - source: ${NAS_MNT1}"
+echo "  - destination: ${NAS_MNT2}"
+echo
+echo "running data transfer tests ..."
+echo
+echo "${SEP}"
+echo
+echo "results:"
+echo
+timer run
+echo "${SEP}"
+echo
+echo "elapsed time: ${elapsed_time}"
+echo
+sudo umount "${NAS_MNT2}"
+ok "tests complete"

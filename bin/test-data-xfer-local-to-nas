@@ -4,14 +4,14 @@
 #
 # data transfer test
 # ------------------
-# Test data transfer speed between 2 remote storage servers
+# test data transfer speed between local disk and remote storage server
 #
-# - mounts remote NAS filesystems with CIFS/SMB if needed
-# - writes a random binary test file to the root directory of the source NAS
-# - reads test file from source NAS and writes it to root directory of destination NAS
-# - deletes test file from source NAS and destination NAS
+# - mounts remote NAS filesystem with CIFS/SMB if needed
+# - writes a random binary test file to the /tmp directory of the local disk
 # - drops client-side page cache and metadata cache
 # - uses random file name to bypass server-side cache
+# - reads test file from local disk and writes it to root directory of remote NAS
+# - deletes test file from local disk and remote NAS
 #
 # requires:
 # - 'sync-nas' script
@@ -24,16 +24,14 @@ EXPECTED_HOSTS=("minime" "raspberrypi")
 ITERATIONS="3"
 FILE_NAME="$(mktemp -u testfile.XXXXXXXXXX.bin)"
 FILE_CHUNK_SIZE="4M"
-FILE_CHUNK_COUNT="50"
+FILE_CHUNK_COUNT="100"
 FILE_SIZE="$(( FILE_CHUNK_COUNT * ${FILE_CHUNK_SIZE%M} ))M"
 
-# 2-bay QNAP
-NAS_HOST1="bitz"
-NAS_MNT1="/mnt/${NAS_HOST1}"
+SOURCE_DIR="/tmp"
 
-# 1-bay QNAP
-NAS_HOST2="bytez"
-NAS_MNT2="/mnt/${NAS_HOST2}"
+# 2-bay QNAP
+NAS_HOST="bitz"
+NAS_MNT="/mnt/${NAS_HOST}"
 
 SEP="----------------------------------------------------------------"
 
@@ -51,7 +49,6 @@ ok () {
 cleanup () {
     echo
     delete_test_files
-    sudo umount -l "${NAS_MNT2}"
     die "Aborted"
 }
 
@@ -69,10 +66,10 @@ check_host () {
 }
 
 delete_test_files () {
-    rm -f "${NAS_MNT1}/${FILE_NAME}"
+    rm -f "${SOURCE_DIR}/${FILE_NAME}"
     rm -f "${NAS_MNT2}/${FILE_NAME}"
-    sync "${NAS_MNT1}"
-    sync "${NAS_MNT2}"
+    sync
+    sync "${NAS_MNT}"
 }
 
 timer () {
@@ -90,26 +87,26 @@ run_test () {
     # generate the file
     dd \
         if=/dev/urandom \
-        of="${NAS_MNT1}/${FILE_NAME}" \
+        of="${SOURCE_DIR}/${FILE_NAME}" \
         bs="${FILE_CHUNK_SIZE}" \
         count="${FILE_CHUNK_COUNT}" \
         conv=fdatasync \
         status=none
-    sync "${NAS_MNT1}"
+    sync
     # drop local cache
     sudo sh -c "echo 3 > /proc/sys/vm/drop_caches"
     # transfer the file
     test_results=$( \
         dd \
-            if="${NAS_MNT1}/${FILE_NAME}" \
-            of="${NAS_MNT2}/${FILE_NAME}" \
+            if="${SOURCE_DIR}/${FILE_NAME}" \
+            of="${NAS_MNT}/${FILE_NAME}" \
             bs="${FILE_CHUNK_SIZE}" \
             count="${FILE_CHUNK_COUNT}" \
             conv=fdatasync \
             2>&1 \
             | grep "copied" \
         )
-    sync "${NAS_MNT2}"
+    sync "${NAS_MNT}"
 }
 
 run () {
@@ -131,8 +128,6 @@ run () {
 }
 
 check_host
-mount-bitz >/dev/null 2>&1
-mount-bytez >/dev/null 2>&1
 sync-nas >/dev/null 2>&1
 sleep 1
 echo
@@ -140,8 +135,8 @@ echo "test settings:"
 echo
 echo "  - iterations: ${ITERATIONS}"
 echo "  - file size: ${FILE_SIZE} (${FILE_CHUNK_SIZE} chunks)"
-echo "  - source: ${NAS_MNT1}"
-echo "  - destination: ${NAS_MNT2}"
+echo "  - source: ${SOURCE_DIR}"
+echo "  - destination: ${NAS_MNT}"
 echo
 echo "running data transfer tests ..."
 echo
@@ -154,5 +149,4 @@ echo "${SEP}"
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
-sudo umount "${NAS_MNT2}"
 ok "tests complete"

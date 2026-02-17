@@ -135,7 +135,8 @@ LINUX_SCRIPTS=(
     "./bin/now"
     "./bin/sync-nas"
     "./bin/sysinfo"
-    "./bin/test-nas-data-xfer"
+    "./bin/test-data-xfer-nas-to-nas"
+    "./bin/test-data-xfer-local-to-nas"
 )
 GIT_SCRIPTS=(
     "git-branches"
