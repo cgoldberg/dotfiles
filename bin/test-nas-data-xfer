@@ -54,6 +54,7 @@ ok () {
 cleanup () {
     echo
     delete_test_files
+    sudo umount -l "${NAS_MNT2}"
     die "Aborted"
 }
 
