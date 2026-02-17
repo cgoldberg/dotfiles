@@ -127,9 +127,9 @@ run () {
 }
 
 check_host
-mount-bitz
-mount-bytez
-sync-nas
+mount-bitz >/dev/null
+mount-bytez >/dev/null
+sync-nas >/dev/null
 sleep 1
 echo
 echo "test settings:"
@@ -150,5 +150,5 @@ echo "${SEP}"
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
-umount "${NAS_MNT2}"
+sudo umount "${NAS_MNT2}"
 ok "tests complete"

@@ -108,9 +108,9 @@ do_backup () {
 check_host
 check_configuration
 echo
-mount-bitz
-mount-bytez
-sync-nas
+mount-bitz >/dev/null
+mount-bytez >/dev/null
+sync-nas >/dev/null
 echo
 echo "starting backup job ..."
 echo
@@ -119,7 +119,7 @@ echo
 sync
 timer do_backup
 echo "${SEP}"
-sync-nas
+sync-nas >/dev/null
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
