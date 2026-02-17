@@ -148,4 +148,5 @@ echo "${SEP}"
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
+umount "${NAS_MNT2}"
 ok "tests complete"
