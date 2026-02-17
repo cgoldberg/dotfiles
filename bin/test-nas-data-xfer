@@ -127,9 +127,9 @@ run () {
 }
 
 check_host
-mount-bitz >/dev/null
-mount-bytez >/dev/null
-sync-nas >/dev/null
+mount-bitz >/dev/null 2>&1
+mount-bytez >/dev/null 2>&1
+sync-nas >/dev/null 2>&1
 sleep 1
 echo
 echo "test settings:"
