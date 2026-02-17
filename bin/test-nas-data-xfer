@@ -35,9 +35,6 @@ NAS_MNT1="/mnt/${NAS_HOST1}"
 NAS_HOST2="bytez"
 NAS_MNT2="/mnt/${NAS_HOST2}"
 
-NAS_HOSTS=("${NAS_HOST1}" "${NAS_HOST2}")
-NAS_MNTS=("${NAS_MNT1}" "${NAS_MNT2}")
-
 SEP="----------------------------------------------------------------"
 
 die () {
