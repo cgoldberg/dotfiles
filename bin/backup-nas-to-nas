@@ -11,7 +11,7 @@
 #  - rsync
 # - 'sync-nas' script
 
-trap 'echo -e "\nAborted"; exit 1' INT
+trap cleanup SIGINT SIGTERM
 
 
 EXPECTED_HOSTS=("minime" "raspberrypi")
@@ -38,6 +38,12 @@ die () {
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+cleanup () {
+    echo
+    sudo umount -l "${DESTINATION_NAS_MNT}"
+    die "Aborted"
 }
 
 check_host () {
@@ -125,5 +131,5 @@ echo "elapsed time: ${elapsed_time}"
 echo
 diskspace
 echo
-umount "${NAS_MNT2}"
+sudo umount -l "${DESTINATION_NAS_MNT}"
 ok "backup complete"

@@ -16,7 +16,7 @@
 # requires:
 # - 'sync-nas' script
 
-trap 'echo -e "\nAborted"; delete_test_files; exit 1' INT
+trap cleanup SIGINT SIGTERM
 
 
 EXPECTED_HOSTS=("minime" "raspberrypi")
@@ -49,6 +49,12 @@ die () {
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+cleanup () {
+    echo
+    delete_test_files
+    die "Aborted"
 }
 
 check_host () {

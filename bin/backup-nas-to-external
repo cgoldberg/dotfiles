@@ -9,7 +9,7 @@
 # requires:
 #  - rsync
 
-trap 'echo -e "\nAborted"; exit 1' INT
+trap cleanup SIGINT SIGTERM
 
 
 EXPECTED_HOSTS=("minime" "raspberrypi")
@@ -30,6 +30,12 @@ die () {
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
+}
+
+cleanup () {
+    echo
+    eject_usb
+    die "Aborted"
 }
 
 check_host () {
@@ -64,6 +70,7 @@ diskspace () {
 }
 
 eject_usb () {
+    sync
     local partition=$(findmnt -rno SOURCE "${USB_MNT}")
     local device_name=$(lsblk -rno PKNAME "${partition}")
     local disk="/dev/${device_name}"
