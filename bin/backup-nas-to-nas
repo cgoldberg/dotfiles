@@ -110,6 +110,7 @@ check_configuration
 echo
 mount-bitz
 mount-bytez
+sync-nas
 echo
 echo "starting backup job ..."
 echo

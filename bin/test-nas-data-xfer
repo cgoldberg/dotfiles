@@ -127,6 +127,8 @@ run () {
 }
 
 check_host
+mount-bitz
+mount-bytez
 sync-nas
 sleep 1
 echo
