@@ -3,15 +3,15 @@
 # Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
 #
 # NAS sync script:
-#  - mounts remote NAS filesystems with CIFS/SMB if needed
-#  - syncs local filesystems
-#  - syncs remote filesystems via ssh
+#  - mounts remote NAS filesystem with CIFS/SMB if needed
+#  - syncs local filesystem
+#  - syncs remote filesystem via ssh
 #
 # requires:
 #  - sshpass (file with password must exist at: `~/.ssh/nas_pass.txt`)
 #
 # note:
-#  - run ssh once to each host to accept host keys before running this
+#  - run ssh once on host to accept host keys before running this
 #    for the first time or it will fail silently
 
 
@@ -19,18 +19,9 @@ EXPECTED_HOSTS=("minime" "raspberrypi")
 PASSWORD_FILE="${HOME}/.ssh/nas_pass.txt"
 
 # 2-bay QNAP
-NAS_HOST1="bitz"
-NAS_IP1="10.0.0.5"
-NAS_MNT1="/mnt/${NAS_HOST1}"
-
-# 1-bay QNAP
-NAS_HOST2="bytez"
-NAS_IP2="10.0.0.6"
-NAS_MNT2="/mnt/${NAS_HOST2}"
-
-NAS_HOSTS=("${NAS_HOST1}" "${NAS_HOST2}")
-NAS_IPS=("${NAS_IP1}" "${NAS_IP2}")
-NAS_MNTS=("${NAS_MNT1}" "${NAS_MNT2}")
+NAS_HOST="bitz"
+NAS_IP="10.0.0.5"
+NAS_MNT="/mnt/${NAS_HOST}"
 
 SEP="----------------------------------------------------------------"
 
@@ -67,21 +58,13 @@ check_configuration () {
     fi
 }
 
-sync_all () {
-    sync
-    for i in {0..1}; do
-        sshpass -f "${PASSWORD_FILE}" ssh "admin@${NAS_IPS[${i}]}" "sync"
-    done
-    sleep 3
-}
-
 check_host
 check_configuration
 echo
 mount-bitz
-mount-bytez
 echo
-echo "syncing filesystems ..."
-sync_all
+echo "syncing filesystem ..."
+sync
+sshpass -f "${PASSWORD_FILE}" ssh "admin@${NAS_IP}" "sync"
 echo
 ok "sync complete"
