@@ -144,7 +144,7 @@ add-bins
 
 
 # ruby gems
-if [ -d "${HOME}/.gems" ]; then
+if type ruby >/dev/null 2>&1; then
     export GEM_HOME="${HOME}/.gems"
     export PATH="${PATH}:${HOME}/.gems/bin"
 fi
@@ -169,7 +169,7 @@ fi
 
 
 # pipx
-if ! type pipx >/dev/null 2>&1; then
+if type pipx >/dev/null 2>&1; then
     eval "$(register-python-argcomplete pipx)"
 fi
 
