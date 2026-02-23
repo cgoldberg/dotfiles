@@ -137,6 +137,7 @@ LINUX_SCRIPTS=(
     "./bin/sysinfo"
     "./bin/test-data-xfer-nas-to-nas"
     "./bin/test-data-xfer-local-to-nas"
+    "./bin/toggle-audio-sink"
 )
 GIT_SCRIPTS=(
     "git-branches"

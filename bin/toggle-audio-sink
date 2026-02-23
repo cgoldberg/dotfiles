@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+#
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+#
+# toggle-audio-sync - toggle PipeWire audio output device/sink
+#
+# - uses WirePlumber to switch audio output between HDMI (headphones) and
+#   USB/IEC958 DAC (speakers)
+
+
+ok () {
+    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
+    tput bold; echo -e "$*" 1>&2; tput sgr0
+}
+
+
+headphone_sink=35 # HDMI
+speaker_sink=57 #
+
+current_sink=$(wpctl status | awk '
+    /\*/ {
+        match($0, /[0-9]+\./)
+        if (RSTART) { print substr($0,RSTART,RLENGTH); exit }
+    }
+' | tr -d '.')
+
+if [ "${current_sink}" = "${headphone_sink}" ]; then
+    new_sink="${speaker_sink}"
+else
+    new_sink="${headphone_sink}"
+fi
+
+wpctl set-default "${new_sink}"
+
+# move currently playing audio streams to the new sink
+wpctl status | awk '
+    /Streams:/ {in_streams=1}
+    /Video/ {in_streams=0}
+    in_streams && /^[[:space:]]*[0-9]+\.\s+output/ {
+        match($0, /[0-9]+\./)
+        if (RSTART) print substr($0,RSTART,RLENGTH)
+    }
+' | tr -d '.' | xargs -r -I{} wpctl set {} "${new_sink}"
+
+ok "switched audio output to sink ${new_sink}"
