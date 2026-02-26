@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+#
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+#
+# generate playlist files from music library for Lyrion Music Server
+
+from collections import defaultdict
+from pathlib import Path
+
+MUSIC_DIR = "/mnt/bitz/Tunes"
+FORMATS = ("FLAC", "MP3")
+
+for fmt in FORMATS:
+    playlist_dir = Path(MUSIC_DIR, "Playlists", "Lyrion", fmt)
+    for f in playlist_dir.glob("*.m3u"):
+        f.unlink()
+    playlist_dir.mkdir(exist_ok=True)
+    artists_files = defaultdict(list)
+    for f in Path(MUSIC_DIR, fmt).iterdir():
+        artist = f.name.split(" - ")[0]
+        artists_files[artist].append(f)
+    for artist, files in artists_files.items():
+        playlist_name = f"{artist}.m3u"
+        print(f"writing: {playlist_dir / playlist_name}")
+        with open(playlist_dir / playlist_name, "w") as f:
+            f.write("#EXTM3U\n")
+            for file in files:
+                f.write(f"/music/{fmt}/{file.name}\n")
