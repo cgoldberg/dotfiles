@@ -33,6 +33,20 @@ sudo apt install -t trixie-backports linux-image-amd64 linux-headers-amd64
 
 ----
 
+## Disable automatic updates
+
+```
+sudo apt remove --purge unattended-upgrades
+sudo systemctl stop apt-daily.service
+sudo systemctl mask apt-daily.service
+sudo systemctl mask apt-daily.timer
+sudo systemctl stop apt-daily-upgrade.service
+sudo systemctl mask apt-daily-upgrade.service
+sudo systemctl mask apt-daily-upgrade.timer
+```
+
+----
+
 ## Install packages
 
 ```
@@ -48,8 +62,7 @@ sudo apt install \
 
 ```
 sudo apt remove --purge \
-    cups* apache* libreoffice* blueman bluez bolt modemmanager \
-    unattended-upgrades
+    cups* apache* libreoffice* blueman bluez bolt modemmanager
 ```
 
 (this removes cellular data, print services, bluetooth support, thunderbolt support, etc)
