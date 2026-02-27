@@ -178,6 +178,7 @@ clean-apt-index () {
 
 # package maintenance
 apt-up () {
+    clean-apt-index
     sudo apt update --no-allow-insecure-repositories || (err "apt error" && return 1)
     ok "updated list of available packages\n"
     sudo apt install --fix-broken || (err "apt error" && return 1)
