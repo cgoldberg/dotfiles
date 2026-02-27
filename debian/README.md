@@ -294,7 +294,7 @@ sudo chmod 600 /root/.smbcredentials
 ----
 
 
-## Un-enshittify Chromium browser (remove AI features and add privacy hardening)
+## Add managed policy for Chromium browser (un-enshittify, remove AI features, add privacy hardening)
 
 - create a managed policy:
 
@@ -304,39 +304,40 @@ sudo touch /etc/chromium/policies/managed/managed_policies.json
 ```
 
 - set in `managed_policies.json`:
-  - must be valid JSON
+  - must be valid JSON:
     - no trailing comma
     - no comments
 
 ```
 {
-  "AIModeSettings": 0,
+  "AIModeSettings": 1,
   "BackgroundModeEnabled": false,
   "BrowserSignin": 0,
   "BuiltInDnsClientEnabled": true,
-  "CreateThemesSettings": 0,
-  "DevToolsGenAiSettings": 0,
-  "DnsOverHttpsMode": "automatic",
+  "CreateThemesSettings": 2,
+  "DevToolsGenAiSettings": 2,
+  "DnsOverHttpsMode": "secure",
   "DnsOverHttpsTemplates": "https://cloudflare-dns.com/dns-query",
   "DefaultBrowserSettingEnabled": false,
-  "GeminiSettings": 0,
-  "GenAILocalFoundationalModelSettings": 0,
-  "HelpMeWriteSettings": 0,
-  "HistorySearchSettings": 0,
+  "GeminiSettings": 1,
+  "GenAILocalFoundationalModelSettings": 1,
+  "HelpMeWriteSettings": 2,
+  "HistorySearchSettings": 2,
   "MetricsReportingEnabled": false,
-  "NetworkPredictionOptions": 0,
   "PasswordLeakDetectionEnabled": false,
   "PasswordManagerEnabled": false,
   "SafeBrowsingExtendedReportingEnabled": false,
   "SafeBrowsingSurveysEnabled": false,
+  "SearchContentSharingSettings": 1,
   "SearchSuggestEnabled": false,
   "SyncDisabled": true,
-  "TabCompareSettings": 0,
+  "TabCompareSettings": 2,
   "UrlKeyedAnonymizedDataCollectionEnabled": false,
 }
 ```
 
-- verify policies are enabled: chrome://policy
+- verify policies are enabled (status "OK"): chrome://policy
+- lookup settings for each policy at: https://chromeenterprise.google/policies/?policy=<policy>
 
 ----
 
