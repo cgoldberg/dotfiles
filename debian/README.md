@@ -280,31 +280,49 @@ sudo chmod 600 /root/.smbcredentials
 ----
 
 
-## Un-enshittify Chromium browser
+## Un-enshittify Chromium browser (remove AI features and add privacy hardening)
 
-- apply settings from https://github.com/corbindavenport/just-the-browser
+- create a managed policy:
 
 ```
 sudo mkdir -p /etc/chromium/policies/managed
 sudo touch /etc/chromium/policies/managed/managed_policies.json
 ```
 
-- add to `managed_policies.json`:
+- set in `managed_policies.json`:
+  - must be valid JSON
+    - no trailing comma
+    - no comments
 
 ```
 {
-  "AIModeSettings": 1,
-  "CreateThemesSettings": 2,
-  "GeminiSettings": 1,
-  "GenAILocalFoundationalModelSettings": 1,
-  "HelpMeWriteSettings": 2,
-  "HistorySearchSettings": 2,
-  "TabCompareSettings": 2,
-  "BuiltInDnsClientEnabled": false,
+  "AIModeSettings": 0,
+  "BackgroundModeEnabled": false,
+  "BrowserSignin": 0,
+  "BuiltInDnsClientEnabled": true,
+  "CreateThemesSettings": 0,
+  "DevToolsGenAiSettings": 0,
+  "DnsOverHttpsMode": "automatic",
+  "DnsOverHttpsTemplates": "https://cloudflare-dns.com/dns-query",
   "DefaultBrowserSettingEnabled": false,
-  "DevToolsGenAiSettings": 2
+  "GeminiSettings": 0,
+  "GenAILocalFoundationalModelSettings": 0,
+  "HelpMeWriteSettings": 0,
+  "HistorySearchSettings": 0,
+  "MetricsReportingEnabled": false,
+  "NetworkPredictionOptions": 0,
+  "PasswordLeakDetectionEnabled": false,
+  "PasswordManagerEnabled": false,
+  "SafeBrowsingExtendedReportingEnabled": false,
+  "SafeBrowsingSurveysEnabled": false,
+  "SearchSuggestEnabled": false,
+  "SyncDisabled": true,
+  "TabCompareSettings": 0,
+  "UrlKeyedAnonymizedDataCollectionEnabled": false,
 }
 ```
+
+- verify policies are enabled: chrome://policy
 
 ----
 
