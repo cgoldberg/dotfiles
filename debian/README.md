@@ -48,7 +48,8 @@ sudo apt install \
 
 ```
 sudo apt remove --purge \
-    cups* apache* libreoffice* blueman bluez bolt modemmanager
+    cups* apache* libreoffice* blueman bluez bolt modemmanager \
+    unattended-upgrades
 ```
 
 (this removes cellular data, print services, bluetooth support, thunderbolt support, etc)
