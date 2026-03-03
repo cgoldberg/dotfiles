@@ -8,14 +8,35 @@
 #   USB/IEC958 DAC (speakers)
 
 
+EXPECTED_HOSTS=("minime")
+HEADPHONE_SINK=35 # HDMI
+SPEAKER_SINK=57 # USB DAC
+
+die () {
+    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
+    tput bold; echo "$*" 1>&2; tput sgr0
+    exit 1
+}
+
 ok () {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo -e "$*" 1>&2; tput sgr0
 }
 
+check_host () {
+    local can_run="false"
+    for i in {0..1}; do
+        local host="${EXPECTED_HOSTS[${i}]}"
+        if [ "${HOSTNAME}" == "${host}" ]; then
+            can_run="true"
+        fi
+    done
+    if [ "${can_run}" == "false" ] ; then
+        die "fatal: can't run on this host: ${HOSTNAME}"
+    fi
+}
 
-headphone_sink=35 # HDMI
-speaker_sink=57 #
+check_host
 
 current_sink=$(wpctl status | awk '
     /\*/ {
@@ -24,10 +45,10 @@ current_sink=$(wpctl status | awk '
     }
 ' | tr -d '.')
 
-if [ "${current_sink}" = "${headphone_sink}" ]; then
-    new_sink="${speaker_sink}"
+if [ "${current_sink}" = "${HEADPHONE_SINK}" ]; then
+    new_sink="${SPEAKER_SINK}"
 else
-    new_sink="${headphone_sink}"
+    new_sink="${HEADPHONE_SINK}"
 fi
 
 wpctl set-default "${new_sink}"

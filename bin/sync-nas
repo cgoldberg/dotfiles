@@ -8,7 +8,7 @@
 #  - syncs remote filesystem via ssh
 #
 # requires:
-#  - sshpass (file with password must exist at: `~/.ssh/nas_pass.txt`)
+#  - sshpass (file with password must exist at: ~/.ssh/nas_pass.txt)
 #
 # note:
 #  - run ssh once on host to accept host keys before running this
