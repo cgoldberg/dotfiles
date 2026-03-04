@@ -426,11 +426,14 @@ remove-trailing-whitespace-from-files () {
 }
 
 
-# update rust toolchain, remove cargo crate source checkouts
-# and git repo checkouts
+# update rust toolchain, remove cargo registry and git dependency cache
 clean-rust () {
     if ! type rustup >/dev/null 2>&1; then
         err "rustup not found"
+        return 1
+    fi
+    if ! type cargo >/dev/null 2>&1; then
+        err "cargo not found"
         return 1
     fi
     if ! type cargo-cache >/dev/null 2>&1; then
@@ -438,17 +441,19 @@ clean-rust () {
         return 1
     fi
     rustup update
-    cargo-cache --autoclean
+    cargo cache --autoclean
+    if [ -d "${HOME}/.cargo " ]; then
+        rm -rf "${HOME}/.cargo/registry"
+        rm -rf "${HOME}/.cargo/git"
+    fi
 }
 
 
 # rebuild all rust binaries that were installed with cargo
 update-rust-bins () {
-    if ! type zoxide >/dev/null 2>&1; then
-        err "cargo not found"
+    if ! clean-rust; then
         return 1
     fi
-    clean-rust
     echo
     for rust_pkg in $(cargo install --list | cut -d' ' -f1 | \grep .); do
         echo "rebuilding ${rust_pkg} ..."
