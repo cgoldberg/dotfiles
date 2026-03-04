@@ -27,6 +27,6 @@ dconf dump /org/gnome/terminal/ > gnome-terminal.properties
 cat gnome-terminal.properties | dconf load /org/gnome/terminal/
 ```
 
-*Note: "Ubuntu Mono" font requires the `fonts-ubuntu` package.*
+*Note: "UbuntuMono Nerd Font Mono" font is required.*
 
 ----
