@@ -288,6 +288,17 @@ if [[ "${OSTYPE}" == "linux"* ]]; then
     echo -e "  loading: ${gnome_terminal_config}"
     cat "./debian/dconf/${gnome_terminal_config}" | dconf load /org/gnome/terminal/
     echo
+
+    fonts_dir="${HOME}/.local/share/fonts"
+    echo "copying fonts from dotfiles repo to ${fonts_dir} ..."
+    mkdir --parents "${fonts_dir}"
+    for ttf in ./debian/fonts/*.ttf; do
+        echo -e "  copying: ${ttf}"
+        cp "${ttf}" "${fonts_dir}"
+    done
+    echo "rebuilding font cache ..."
+    fc-cache -f "${fonts_dir}"
+    echo
 fi
 
 echo "copying configs from dotfiles repo to ${HOME} ..."
