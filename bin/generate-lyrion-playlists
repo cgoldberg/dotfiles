@@ -20,7 +20,7 @@ def generate_playlists(drive_path, formats):
         for f in playlist_dir.glob("*.m3u"):
             f.unlink()
         artists_files = defaultdict(list)
-        for f in Path(music_dir, fmt).iterdir():
+        for f in sorted(Path(music_dir, fmt).iterdir()):
             artist = f.name.split(" - ")[0]
             artists_files[artist].append(f)
         for artist, files in artists_files.items():
