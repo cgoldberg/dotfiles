@@ -11,7 +11,7 @@ shell = { program = "C:/Users/corey.goldberg/Scoop/apps/git/current/bin/bash.exe
 
 [window]
 dimensions = { columns = 180, lines = 46 }
-padding = { x = 6, y = 2 }
+padding = { x = 8, y = 4 }
 position = { x = 0, y = 0 }
 
 [font]
