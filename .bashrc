@@ -374,7 +374,12 @@ yt-mp3 () {
         err "ffmpeg not found"
         return 1
     fi
-    yt-dlp --extract-audio --audio-format mp3 --audio-quality 320k "$1"
+    yt-dlp \
+      --format "bestaudio[ext=m4a]/bestaudio" \
+      --extract-audio \
+      --audio-format mp3 \
+      --audio-quality 320k \
+      "$1"
 }
 
 
