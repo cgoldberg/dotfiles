@@ -229,7 +229,7 @@ apt-check-available-backports () {
     local num_pkgs debian_codename installed_version backports_version
     debian_codename="$(lsb_release -c | awk '{print $2}')"
     num_pkgs="$(dpkg -l | grep -c '^ii')"
-    echo "checking ${num_pkgs} installed packages for updated versions " \
+    echo "checking ${num_pkgs} installed packages for updated versions" \
         "in ${debian_codename}-backports ..."
     echo
     for pkg in $(dpkg --get-selections | grep -v deinstall | cut -f1); do
