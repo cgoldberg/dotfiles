@@ -205,6 +205,10 @@ apt-up () {
 
 # show which system package an executable on PATH comes from
 which-pkg () {
+    if [ -z "$1" ]; then
+        err "no package specified"
+        return 1
+    fi
     bin_path="$(realpath $(\which $1) 2>/dev/null)"
     if [ -z "${bin_path}" ]; then
         err "'$1' not found on PATH"
@@ -217,6 +221,42 @@ which-pkg () {
         fi
     fi
     ok "'${bin_path}' found in package '${pkg%%:*}'"
+}
+
+
+# check all installed packages against backports and show if a newer version is available
+apt-check-available-backports () {
+    local num_pkgs debian_codename installed_version backports_version
+    debian_codename="$(lsb_release -c | awk '{print $2}')"
+    num_pkgs="$(dpkg -l | grep -c '^ii')"
+    echo "checking ${num_pkgs} installed packages for updated versions " \
+        "in ${debian_codename}-backports ..."
+    echo
+    for pkg in $(dpkg --get-selections | grep -v deinstall | cut -f1); do
+        installed_version=$(dpkg-query -W -f='${Version}' "${pkg}")
+        backports_version=$(apt-cache madison "${pkg}" | grep -oP \
+            ".*${debian_codename}-backports.*" | awk '{print $3}' | head -n 1)
+        # if backports_version is empty or invalid, skip this package
+        if [[ -z "$backports_version" || ! "$backports_version" =~ ^[0-9] ]]; then
+            continue
+        fi
+        # compare backports version with installed version
+        if dpkg --compare-versions "${backports_version}" gt "${installed_version}"; then
+            echo -e "\033[1;32m${pkg}\033[0m: Installed version: ${installed_version}," \
+                "Backports version: ${backports_version}"
+        fi
+    done
+}
+
+
+# install or upgrade a package from backports
+apt-install-package-from-backports () {
+    if [ -z "$1" ]; then
+        err "no package specified"
+        return 1
+    fi
+    local debian_codename="$(lsb_release -c | awk '{print $2}')"
+    sudo apt install -t "${debian_codename}-backports" "$1"
 }
 
 
