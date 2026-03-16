@@ -47,6 +47,7 @@
     "show_encoding": true,
     "show_full_path": false,
     "show_line_endings": true,
+    "side_bar_visible": true,
     "sidebar_on_right": true,
     "tab_size": 4,
     "translate_tabs_to_spaces": true,
