@@ -194,6 +194,18 @@ clean-system-logs () {
     sudo systemctl start systemd-journald
     echo
     ok "cleaned all system logs"
+    echo
+    echo "reboot now?"
+    echo
+    local result
+    select result in "yes" "no"; do
+        if [ "${result}" == "yes" ]; then
+            echo
+            ok "rebooting now ..."
+            sudo reboot
+        fi
+        break
+    done
 }
 
 
