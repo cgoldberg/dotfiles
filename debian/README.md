@@ -148,15 +148,6 @@ MaxLevelConsole=info
 MaxLevelWall=emerg
 ```
 
-- wipe old logs:
-
-```
-sudo systemctl stop systemd-journald
-sudo rm -rf /var/log/journal/*
-sudo rm -rf /run/log/journal/*
-sudo systemctl start systemd-journald
-```
-
 ----
 
 ## Disable autosuspend for all USB devices
@@ -338,24 +329,3 @@ sudo touch /etc/chromium/policies/managed/managed_policies.json
 
 - verify policies are enabled (status "OK"): chrome://policy
 - lookup settings for each policy at: https://chromeenterprise.google/policies/?policy=<policy>
-
-----
-
-## Build Transmission GTK from source
-
-- download latest tarball from: https://transmissionbt.com/download
-
-```
-sudo apt install -y \
-    build-essential cmake git libcurl4-openssl-dev libb64-dev libdeflate-dev \
-    libevent-dev libminiupnpc-dev libnatpmp-dev libsystemd-dev gettext \
-    libgtkmm-4.0-dev
-
-tar xf transmission-*.tar.xz
-cd transmission-*
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
-cd build
-cmake --build .
-sudo cmake --install .
-```

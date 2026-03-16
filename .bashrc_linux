@@ -176,6 +176,23 @@ clean-apt-index () {
 }
 
 
+# whack all system logs
+clean-system-logs () {
+    # stop systemd logging
+    sudo systemctl stop systemd-journald
+    # remove systemd logs
+    sudo rm -rf /var/log/journal/*
+    sudo rm -rf /run/log/journal/*
+    # truncate all .log files
+    sudo find /var/log -type f -name "*.log" -exec truncate -s 0 {} \;
+    # remove rotated log files and their archives
+    sudo find /var/log -type f -name "*.log.*" -exec rm -f {} \;
+    # remove other archived log files (like .gz, .xz, .tar)
+    sudo find /var/log -type f \( -name "*.gz" -o -name "*.xz" -o -name "*.tar" \) -exec rm -f {} \;
+    sudo systemctl start systemd-journald
+}
+
+
 # package maintenance
 apt-up () {
     sudo apt update --no-allow-insecure-repositories || (err "apt error" && return 1)
