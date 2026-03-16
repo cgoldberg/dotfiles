@@ -179,7 +179,7 @@ clean-apt-index () {
 # whack all system logs
 clean-system-logs () {
     # stop systemd logging
-    sudo systemctl stop systemd-journald
+    sudo systemctl --quiet stop systemd-journald
     # remove systemd logs
     sudo rm -rf /var/log/journal/*
     sudo rm -rf /run/log/journal/*
