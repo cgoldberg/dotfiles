@@ -183,8 +183,9 @@ clean-system-logs () {
     echo "removing systemd-journald logs ..."
     sudo rm -rf /var/log/journal/*
     sudo rm -rf /run/log/journal/*
-    echo "truncating all system .log files ..."
+    echo "truncating all system log files ..."
     sudo find /var/log -type f -name "*.log" -exec truncate -s 0 {} \;
+    sudo truncate -s 0 /var/log/wtmp /var/log/wtmp.db
     echo "removing rotated log files and their archives ..."
     sudo find /var/log -type f -name "*.log.*" -exec rm -f {} \;
     echo "removing other archived log files ..."
