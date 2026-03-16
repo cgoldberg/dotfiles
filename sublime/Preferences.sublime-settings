@@ -40,6 +40,7 @@
     "hot_exit_projects": false,
     "indent_subsequent_lines": true,
     "indent_to_bracket": true,
+    "indexer_telemetry": false,
     "rulers": [[120, "stippled", 0.5]],
     "scroll_past_end": false,
     "scroll_speed": 2.0,
@@ -53,4 +54,5 @@
     "translate_tabs_to_spaces": true,
     "trim_trailing_white_space_on_save": "all",
     "theme": "auto",
+    "update_check": false,
 }
