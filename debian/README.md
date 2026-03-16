@@ -279,7 +279,7 @@ sudo chmod 600 /root/.smbcredentials
 - set in `/etc/fstab`:
 
 ```
-//10.0.0.5/public /mnt/bitz cifs credentials=/root/.smbcredentials,relatime,nofail,serverino,nosharesock,_netdev,cache=strict,actimeo=60,rsize=1048576,wsize=1048576,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8  0  0
+//10.0.0.5/public /mnt/bitz cifs credentials=/root/.smbcredentials,relatime,nofail,serverino,nosharesock,_netdev,cache=strict,actimeo=60,rsize=262144,wsize=262144,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8  0  0
 ```
 
 ----
