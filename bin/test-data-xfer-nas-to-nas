@@ -138,7 +138,7 @@ echo
 echo "test settings:"
 echo
 echo "  - iterations: ${ITERATIONS}"
-echo "  - file size: ${FILE_SIZE} (${FILE_CHUNK_SIZE} chunks)"
+echo "  - file size: ${FILE_SIZE}"
 echo "  - source: ${NAS_MNT1}"
 echo "  - destination: ${NAS_MNT2}"
 echo
