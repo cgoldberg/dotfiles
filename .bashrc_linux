@@ -275,6 +275,7 @@ apt-install-package-from-backports () {
         return 1
     fi
     local debian_codename="$(lsb_release -c | awk '{print $2}')"
+    sudo apt update --no-allow-insecure-repositories
     sudo apt install -t "${debian_codename}-backports" "$1"
 }
 
