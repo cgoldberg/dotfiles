@@ -178,18 +178,21 @@ clean-apt-index () {
 
 # whack all system logs
 clean-system-logs () {
-    # stop systemd logging
+    echo "stopping systemd-journald service ..."
     sudo systemctl --quiet stop systemd-journald
-    # remove systemd logs
+    echo "removing systemd-journald logs ..."
     sudo rm -rf /var/log/journal/*
     sudo rm -rf /run/log/journal/*
-    # truncate all .log files
+    echo "truncating all system .log files ..."
     sudo find /var/log -type f -name "*.log" -exec truncate -s 0 {} \;
-    # remove rotated log files and their archives
+    echo "removing rotated log files and their archives ..."
     sudo find /var/log -type f -name "*.log.*" -exec rm -f {} \;
-    # remove other archived log files (like .gz, .xz, .tar)
+    echo "removing other archived log files ..."
     sudo find /var/log -type f \( -name "*.gz" -o -name "*.xz" -o -name "*.tar" \) -exec rm -f {} \;
+    echo "restarting systemd-journald service ..."
     sudo systemctl start systemd-journald
+    echo
+    ok "cleaned all system logs"
 }
 
 
