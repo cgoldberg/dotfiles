@@ -2,9 +2,10 @@
 #
 # Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
 #
-# generate playlist files from music library for Lyrion Music Server
+# generate shuffled playlist files from music library for Lyrion Music Server
 
 
+import random
 from collections import defaultdict
 from pathlib import Path
 
@@ -24,6 +25,7 @@ def generate_playlists(drive_path, formats):
             artist = f.name.split(" - ")[0]
             artists_files[artist].append(f)
         for artist, files in artists_files.items():
+            random.shuffle(files)
             playlist = playlist_dir / f"{artist}.m3u"
             print(f"writing: {playlist}")
             with open(playlist, "w") as f:
