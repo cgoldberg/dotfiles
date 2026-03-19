@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>$pagetitle$</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
-  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">code { white-space: pre-wrap; }</style>
 $if(quotes)$
   <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
 $endif$
@@ -15,7 +14,7 @@ $highlighting-css$
   </style>
 $endif$
 $for(css)$
-  <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
+  <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$>
 $endfor$
 $for(header-includes)$
   $header-includes$
