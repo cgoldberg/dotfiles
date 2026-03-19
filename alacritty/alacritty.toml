@@ -10,7 +10,7 @@ live_config_reload = true
 shell = { program = "C:/Users/corey.goldberg/Scoop/apps/git/current/bin/bash.exe", args = ["--login"] }
 
 [window]
-dimensions = { columns = 180, lines = 46 }
+dimensions = { columns = 180, lines = 50 }
 padding = { x = 8, y = 4 }
 position = { x = 0, y = 0 }
 
