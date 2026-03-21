@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+# Copyright (c) 2026 Corey Goldberg (https://github.com/cgoldberg)
 #
-# toggle-audio-sync - toggle PipeWire audio output device/sink
+# toggle-audio-sink - toggle PipeWire audio output device/sink
 #
 # - uses WirePlumber to switch audio output between HDMI (headphones) and
 #   USB/IEC958 DAC (speakers)
