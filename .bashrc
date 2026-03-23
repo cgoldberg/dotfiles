@@ -809,7 +809,7 @@ clean-pip () {
 
 # clean python dev/temp files from current directory and subdirectories
 clean-py () {
-    if [[ "${PWD}" != *"/code"* ]]; then
+    if [[ "${PWD}" == "${HOME}" || "${PWD}" != "${HOME}"/* ]]; then
         err "can't run from this directory"
         return 1
     fi
