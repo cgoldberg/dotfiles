@@ -8,7 +8,6 @@
 #
 #  - all platforms:
 #    - bat (cargo install bat, scoop install bat)
-#    - cargo-cache (cargo install cargo-cache)
 #    - delta (cargo install git-delta, scoop install delta)
 #    - deno (curl -fsSL https://deno.land/install.sh | sh, scoop install deno)
 #    - exiftool (sudo apt install exiftool, scoop install exiftool)
@@ -16,7 +15,6 @@
 #    - fd (cargo install fd-find, scoop install fd)
 #    - ffmpeg (sudo apt install ffmpeg, scoop install ffmpeg)
 #    - fzf (https://github.com/junegunn/fzf, scoop install fzf)
-#    - gcc (sudo apt install build-essential, scoop install mingw)
 #    - gdu (https://github.com/dundee/gdu, scoop install gdu)
 #    - gh (https://github.com/cli/cli, scoop install gh)
 #    - git-who (https://github.com/sinclairtarget/git-who)
@@ -29,7 +27,6 @@
 #    - refurb (pipx-install refurb)
 #    - rg (cargo install ripgrep, scoop install ripgrep)
 #    - ruby (sudo apt install ruby, scoop install ruby)
-#    - rustup (https://rustup.rs - on Windows: scoop install rustup-gnu)
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - yt-dlp (pipx-install yt-dlp[default])
@@ -38,6 +35,8 @@
 #  - linux only:
 #    - bmon (sudo apt install bmon)
 #    - btop (https://github.com/aristocratos/btop - download/unarchive, then: `sudo make install && sudo make setcap`)
+#    - cargo-cache (cargo install cargo-cache)
+#    - gcc (sudo apt install build-essential)
 #    - githubtakeout (pipx-install githubtakeout)
 #    - gnome-terminal (sudo apt install gnome-terminal)
 #    - go (https://go.dev/doc/install)
@@ -46,6 +45,7 @@
 #    - ncal (sudo apt install ncal)
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (sudo apt install rsync)
+#    - rustup (https://rustup.rs)
 #    - sshpass (sudo apt install sshpass)
 #    - toilet (sudo apt install toilet)
 #
@@ -61,7 +61,6 @@ REQUIREMENTS=(
 )
 DEPENDENCIES=(
     "bat"
-    "cargo-cache"
     "delta"
     "exiftool"
     "deno"
@@ -69,7 +68,6 @@ DEPENDENCIES=(
     "fd"
     "ffmpeg"
     "fzf"
-    "gcc"
     "gdu"
     "gh"
     "git-who"
@@ -82,7 +80,6 @@ DEPENDENCIES=(
     "refurb"
     "rg"
     "ruby"
-    "rustup"
     "shellcheck"
     "subl"
     "yt-dlp"
@@ -91,14 +88,17 @@ DEPENDENCIES=(
 DEPENDENCIES_LINUX=(
     "bmon"
     "btop"
+    "cargo-cache"
     "githubtakeout"
     "gnome-terminal"
+    "gcc"
     "go"
     "google_drive_export"
     "iostat"
     "ncal"
     "pyenv"
     "rsync"
+    "rustup"
     "sshpass"
     "toilet"
 )
