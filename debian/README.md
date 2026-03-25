@@ -207,6 +207,7 @@ EOF
   - allow outgoing loopback (lo) traffic
   - allow outbound DNS (port 53 TCP/UDP)
   - allow outbound encrypted DNS (port 853 TCP)
+  - allow outbound SSH (port 22 TCP)
   - allow outbound HTTP/HTTPS (port 80/443 TCP)
   - allow outbound QUIC (port 443 UDP)
   - allow outbound NTP (port 123 UDP)
@@ -226,6 +227,7 @@ sudo ufw allow in on lo
 sudo ufw allow out on lo
 sudo ufw allow out 53
 sudo ufw allow out 853/tcp
+sudo ufw allow out 22/tcp
 sudo ufw allow out 80/tcp
 sudo ufw allow out 443/tcp
 sudo ufw allow out 443/udp
