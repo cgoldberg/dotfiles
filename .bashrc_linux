@@ -73,12 +73,12 @@ alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate ||
 
 # show tcp/udp listening sockets
 # and summary of network connections
-alias listening="ss --summary --listening --processes --resolve --tcp --udp"
+alias listening="ss --summary --listening --numeric --processes --resolve --tcp --udp"
 
 
 # show tcp/udp non-listening sockets
 # and summary of network connections
-alias sockets="ss --summary --processes --resolve --tcp --udp"
+alias sockets="ss --summary --numeric --processes --resolve --tcp --udp"
 
 
 # open url or file in default browser
