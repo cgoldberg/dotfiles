@@ -886,20 +886,20 @@ pipx-upgrade-all () {
 
 # preview markdown file in browser
 # - requires GitHub CLI (gh) and gh-markdown-preview extension
-#   - install extension with: `gh extension install yusukebe/gh-markdown-preview`
+# - install extension with: `gh extension install yusukebe/gh-markdown-preview`
 preview-md () {
     if ! type gh >/dev/null 2>&1; then
         err "GitHub CLI not found"
         return 1
     fi
-    gh markdown-preview --light-mode "$1"
+    gh markdown-preview --light-mode --markdown-mode "$1"
 }
 
 
 # resize all .jpg and .png images in the current directory to
 # specified pixel width
-#  - won't resize images that are already the same or smaller width
-#  - files are overwritten in-place
+# - won't resize images that are already the same or smaller width
+# - files are overwritten in-place
 # usage: shrink-images <width>
 shrink-images () {
     if ! type magick >/dev/null 2>&1; then
