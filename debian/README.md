@@ -209,6 +209,7 @@ EOF
   - allow inbound Neighbor Discovery for IPv6 (all-nodes multicast ff02::1)
   - allow inbound Neighbor Discovery for IPv6 (solicited-node multicast ff02::1:ff00:0/104)
   - allow inbound MLDv2 for IPv6, restricted to link-local LAN (multicast address ff02::16)
+  - allow inbound multicast traffic, restricted to LAN (range 224.0.0.0/4)
   - enable firewall
   - check status
 
@@ -222,6 +223,7 @@ sudo ufw allow in from fe80::/10 port 547 to any port 546 proto udp
 sudo ufw allow in from ff02::1
 sudo ufw allow in from ff02::1:ff00:0/104
 sudo ufw allow in from ff02::16
+sudo ufw allow in from 224.0.0.0/4
 sudo ufw --force enable
 sudo ufw status verbose
 ```
