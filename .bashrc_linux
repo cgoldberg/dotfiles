@@ -27,6 +27,10 @@ alias watch="watch "
 alias x="exit"
 
 
+# show firewall logs in reverse order
+alias firewall-log="sudo journalctl -k -r | \grep 'UFW' | less"
+
+
 # look all busy and fancy to non-technical people
 alias busy="cat /dev/urandom | hexdump -C | \grep --color=always 'ca fe'"
 
