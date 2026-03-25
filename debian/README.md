@@ -199,13 +199,47 @@ EOF
 ## Setup firewall
 
 - install: `sudo apt install ufw`
-- set default policies (block all incoming and allow outgoing):
-  - `sudo ufw default deny incoming`
-  - `sudo ufw default allow outgoing`
-- enable UFW
-  - `sudo ufw enable`
-- check status
-  - `sudo ufw status verbose`
+- configure:
+  - reset configuration
+  - set default policy to deny all incoming traffic
+  - set default policy to deny all outgoing traffic
+  - allow incoming loopback (lo) traffic
+  - allow outgoing loopback (lo) traffic
+  - allow outbound DNS (port 53 TCP/UDP)
+  - allow outbound encrypted DNS (port 853 TCP)
+  - allow outbound HTTP/HTTPS (port 80/443 TCP)
+  - allow outbound QUIC (port 443 UDP)
+  - allow outbound NTP (port 123 UDP)
+  - allow outbound high ports (ports 1024–65535 TCP/UDP)
+  - allow outbound SMB restricted to 10.x LAN (port 445 TCP)
+  - allow outbound HTTP/HTTPS restricted to 10.x LAN (port 8443/9000 TCP)
+  - allow DHCP for IPv4, restricted to 10.x LAN port 67 (port 68 UDP)
+  - allow DHCP for IPv6, restricted to link-local LAN port 547 (port 546 UDP)
+  - enable firewall
+  - check status
+
+```
+sudo ufw --force reset
+sudo ufw default deny incoming
+sudo ufw default deny outgoing
+sudo ufw allow in on lo
+sudo ufw allow out on lo
+sudo ufw allow out 53
+sudo ufw allow out 853/tcp
+sudo ufw allow out 80/tcp
+sudo ufw allow out 443/tcp
+sudo ufw allow out 443/udp
+sudo ufw allow out 123/udp
+sudo ufw allow out 1024:65535/tcp
+sudo ufw allow out 1024:65535/udp
+sudo ufw allow out to 10.0.0.0/8 port 8443 proto tcp
+sudo ufw allow out to 10.0.0.0/8 port 9000 proto tcp
+sudo ufw allow out to 10.0.0.0/8 port 445 proto tcp
+sudo ufw allow out from any port 68 to 10.0.0.0/8 port 67 proto udp
+sudo ufw allow out from any port 546 to fe80::/10 port 547 proto udp
+sudo ufw --force enable
+sudo ufw status verbose
+```
 
 ----
 
