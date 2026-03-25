@@ -203,8 +203,10 @@ EOF
   - reset configuration
   - set default policy to deny all incoming traffic
   - set default policy to deny all outgoing traffic
-  - allow incoming loopback (lo) traffic
-  - allow outgoing loopback (lo) traffic
+  - allow inbound loopback (lo) traffic
+  - allow inbound DHCP for IPv4, restricted to 10.x LAN (from remote port 67 to local port 68 UDP)
+  - allow inbound DHCP for IPv6, restricted to link-local LAN (from remote port 547 to local port 546 UDP)
+  - allow outbound loopback (lo) traffic
   - allow outbound DNS (port 53 TCP/UDP)
   - allow outbound encrypted DNS (port 853 TCP)
   - allow outbound SSH (port 22 TCP)
@@ -214,8 +216,8 @@ EOF
   - allow outbound high ports (ports 1024–65535 TCP/UDP)
   - allow outbound SMB restricted to 10.x LAN (port 445 TCP)
   - allow outbound HTTP/HTTPS restricted to 10.x LAN (port 8443/9000 TCP)
-  - allow DHCP for IPv4, restricted to 10.x LAN port 67 (port 68 UDP)
-  - allow DHCP for IPv6, restricted to link-local LAN port 547 (port 546 UDP)
+  - allow outbound DHCP for IPv4, restricted to 10.x LAN (from local port 68 to remote port 67 UDP)
+  - allow outbound DHCP for IPv6, restricted to link-local LAN (from local port 546 to remote port 547 UDP)
   - enable firewall
   - check status
 
@@ -224,6 +226,8 @@ sudo ufw --force reset
 sudo ufw default deny incoming
 sudo ufw default deny outgoing
 sudo ufw allow in on lo
+sudo ufw allow in from 10.0.0.0/8 port 67 to any port 68 proto udp
+sudo ufw allow in from fe80::/10 port 547 to any port 546 proto udp
 sudo ufw allow out on lo
 sudo ufw allow out 53
 sudo ufw allow out 853/tcp
