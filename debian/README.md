@@ -204,11 +204,12 @@ EOF
   - set default policy to allow all outgoing traffic
   - set default policy to deny all incoming traffic
   - allow inbound loopback (lo) traffic
-  - allow inbound DHCP for IPv4, restricted to 10.x LAN (from remote port 67 to local port 68 UDP)
-  - allow inbound DHCP for IPv6, restricted to link-local LAN (from remote port 547 to local port 546 UDP)
-  - allow inbound Neighbor Discovery for IPv6 (all-nodes multicast ff02::1)
-  - allow inbound Neighbor Discovery for IPv6 (solicited-node multicast ff02::1:ff00:0/104)
-  - allow inbound MLDv2 for IPv6, restricted to link-local LAN (multicast address ff02::16)
+  - allow DHCP for IPv4 from router (UDP, remote port 67 to local port 68)
+  - allow multicast for IPv4 from router (IGMP)
+  - allow DHCP for IPv6 from router (UDP, remote port 547 to local port 546)
+  - allow multicast for IPv6 from router (MLD)
+  - allow IPv6 multicast from router (to range ff02::1:ff00:0/104)
+  - allow IPv6 MLD multicast from router (to ff02::16)
   - enable firewall
   - check status
 
@@ -217,11 +218,12 @@ sudo ufw --force reset
 sudo ufw default allow outgoing
 sudo ufw default deny incoming
 sudo ufw allow in on lo
-sudo ufw allow in from 10.0.0.0/8 port 67 to any port 68 proto udp
-sudo ufw allow in from fe80::/10 port 547 to any port 546 proto udp
-sudo ufw allow in from ff02::1
-sudo ufw allow in from ff02::1:ff00:0/104
-sudo ufw allow in from ff02::16
+sudo ufw allow in from 10.0.0.1 port 67 to any port 68 proto udp
+sudo ufw allow in from 10.0.0.1 proto igmp
+sudo ufw allow in from fe80::1 port 547 to any port 546 proto udp
+sudo ufw allow in from fe80::1 proto mld
+sudo ufw allow in from fe80::1 to ff02::1:ff00:0/104
+sudo ufw allow in from fe80::1 to ff02::16
 sudo ufw --force enable
 sudo ufw status verbose
 ```
