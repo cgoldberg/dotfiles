@@ -27,10 +27,6 @@ alias watch="watch "
 alias x="exit"
 
 
-# show firewall logs in reverse order
-alias firewall-log="sudo journalctl -k -r | \grep 'UFW' | less"
-
-
 # look all busy and fancy to non-technical people
 alias busy="cat /dev/urandom | hexdump -C | \grep --color=always 'ca fe'"
 
@@ -124,6 +120,33 @@ ips () {
     echo "---------------------"
     curl ipv4.icanhazip.com
     curl ipv6.icanhazip.com
+}
+
+
+# show blocked firewall connections from systemd logs in reverse order
+firewall-blocks () {
+    local blue='\x1b[34m'
+    local green='\x1b[32m'
+    local reset='\x1b[0m'
+
+    sudo journalctl -k -r | \grep 'UFW BLOCK' | \
+        awk -v blue="${blue}" -v green="${green}" -v reset="${reset}" '{
+            # Print timestamp (fields 1 and 2) and [UFW BLOCK]
+            printf "%s %s [UFW BLOCK]", $1,$2;
+            src=""; dst=""; proto=""; spt=""; dpt="";
+            for(i=1;i<=NF;i++){
+                if($i ~ /^SRC=/){
+                    split($i,a,"="); src=a[2]; printf " SRC=%s%s%s", blue, src, reset
+                }
+                if($i ~ /^DST=/){
+                    split($i,a,"="); dst=a[2]; printf " DST=%s%s%s", green, dst, reset
+                }
+                if($i ~ /^PROTO=/) printf " %s", $i
+                if($i ~ /^SPT=/) printf ":%s", substr($i,5)
+                if($i ~ /^DPT=/) printf ":%s", substr($i,5)
+            }
+            printf "\n"
+        }' | less
 }
 
 
