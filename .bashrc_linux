@@ -133,16 +133,19 @@ firewall-blocks () {
         awk -v blue="${blue}" -v green="${green}" -v reset="${reset}" '{
             # Print timestamp (date + time) and [UFW BLOCK]
             printf "%s %s %s [UFW BLOCK]", $1,$2,$3
+
             for(i=1;i<=NF;i++){
                 if($i ~ /^SRC=/){
-                    split($i,a,"="); printf " SRC=%s%s%s", blue, a[2], reset
+                    split($i,a,"=")
+                    printf " SRC=%s%s%s", blue, a[2], reset
                 }
                 if($i ~ /^DST=/){
-                    split($i,a,"="); printf " DST=%s%s%s", green, a[2], reset
+                    split($i,a,"=")
+                    printf " DST=%s%s%s", green, a[2], reset
                 }
                 if($i ~ /^PROTO=/) printf " %s", $i
-                if($i ~ /^SPT=/) printf ":%s", substr($i,5)
-                if($i ~ /^DPT=/) printf ":%s", substr($i,5)
+                if($i ~ /^SPT=/) printf " %s", $i
+                if($i ~ /^DPT=/) printf " %s", $i
             }
             printf "\n"
         }' | less
