@@ -71,6 +71,7 @@ check_host () {
 delete_test_files () {
     rm -f "${NAS_MNT1}/${FILE_NAME}"
     rm -f "${NAS_MNT2}/${FILE_NAME}"
+    sync
     sync "${NAS_MNT1}"
     sync "${NAS_MNT2}"
 }
