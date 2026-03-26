@@ -129,17 +129,16 @@ firewall-blocks () {
     local green='\x1b[32m'
     local reset='\x1b[0m'
 
-    sudo journalctl -k -r | \grep 'UFW BLOCK' | \
+    sudo journalctl -k -r | \grep 'UFW' | \
         awk -v blue="${blue}" -v green="${green}" -v reset="${reset}" '{
-            # Print timestamp (fields 1 and 2) and [UFW BLOCK]
-            printf "%s %s [UFW BLOCK]", $1,$2;
-            src=""; dst=""; proto=""; spt=""; dpt="";
+            # Print timestamp (date + time) and [UFW BLOCK]
+            printf "%s %s %s [UFW BLOCK]", $1,$2,$3
             for(i=1;i<=NF;i++){
                 if($i ~ /^SRC=/){
-                    split($i,a,"="); src=a[2]; printf " SRC=%s%s%s", blue, src, reset
+                    split($i,a,"="); printf " SRC=%s%s%s", blue, a[2], reset
                 }
                 if($i ~ /^DST=/){
-                    split($i,a,"="); dst=a[2]; printf " DST=%s%s%s", green, dst, reset
+                    split($i,a,"="); printf " DST=%s%s%s", green, a[2], reset
                 }
                 if($i ~ /^PROTO=/) printf " %s", $i
                 if($i ~ /^SPT=/) printf ":%s", substr($i,5)
