@@ -105,7 +105,7 @@ sudo apt install \
 
 ## Set systemd log limits and retention
 
-- create directory for persistent logs:
+- create directory for persistent logs if it doesn't exist:
 
 ```
 sudo mkdir -p /var/log/journal
