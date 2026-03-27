@@ -109,41 +109,43 @@ sudo apt install \
 
 ```
 [Journal]
+
 # Storage
 Storage=persistent
 Compress=yes
 Seal=yes
-SplitMode=uid
+SplitMode=none
 
 # Persistent disk usage
 SystemMaxUse=2G
 SystemKeepFree=5G
 SystemMaxFileSize=200M
 SystemMaxFiles=20
+MaxRetentionSec=14day
 
 # Runtime (RAM) logs
-RuntimeMaxUse=300M
+RuntimeMaxUse=400M
 RuntimeKeepFree=300M
 RuntimeMaxFileSize=100M
 RuntimeMaxFiles=10
 
 # Durability
-SyncIntervalSec=1m
+SyncIntervalSec=2m
 
 # Rate limiting
 RateLimitIntervalSec=30s
-RateLimitBurst=2000
+RateLimitBurst=10000
 
 # Forwarding
-ForwardToSyslog=yes
+ForwardToSyslog=no
 ForwardToKMsg=no
 ForwardToConsole=no
 ForwardToWall=no
 
 # Log levels
-MaxLevelStore=debug
-MaxLevelSyslog=debug
-MaxLevelKMsg=notice
+MaxLevelStore=info
+MaxLevelSyslog=info
+MaxLevelKMsg=info
 MaxLevelConsole=info
 MaxLevelWall=emerg
 ```

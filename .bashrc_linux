@@ -129,7 +129,7 @@ firewall-blocks () {
     local green='\x1b[32m'
     local reset='\x1b[0m'
 
-    sudo journalctl -k -r | \grep 'UFW' | \
+    sudo journalctl -k -r -g 'UFW' | \
         awk -v blue="${blue}" -v green="${green}" -v reset="${reset}" '{
             # Print timestamp (date + time) and [UFW BLOCK]
             printf "%s %s %s [UFW BLOCK]", $1,$2,$3
