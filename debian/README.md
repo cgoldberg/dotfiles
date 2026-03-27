@@ -105,6 +105,13 @@ sudo apt install \
 
 ## Set systemd log limits and retention
 
+- create directory for persistent logs:
+
+```
+sudo mkdir -p /var/log/journal
+sudo systemd-tmpfiles --create --prefix /var/log/journal
+```
+
 - set in `/etc/systemd/journald.conf`:
 
 ```
@@ -149,6 +156,14 @@ MaxLevelKMsg=info
 MaxLevelConsole=info
 MaxLevelWall=emerg
 ```
+
+- restart logging service:
+
+```
+sudo systemctl restart systemd-journald
+```
+
+(or reboot)
 
 ----
 
