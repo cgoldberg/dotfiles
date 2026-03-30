@@ -93,7 +93,8 @@ sudo apt install \
 
 ## Install/Configure Gnome Shell extensions
 
-- install: `sudo apt install gnome-shell-extensions`
+- install:
+  - `sudo apt install gnome-shell-extensions`
 - add system extensions:
   - Native Window Placement
 - add user-installed extensions:
@@ -165,27 +166,24 @@ sudo systemctl restart systemd-journald
 
 ----
 
-## Remove boot splash screen
+## Configure bootloader (grub)
 
-- set kernel command-line parameter:
-  - edit `/etc/default/grub`
-  - find `GRUB_CMDLINE_LINUX_DEFAULT`, and remove `splash`
-  - `sudo update-grub`
-- remove Plymouth:
+- edit `/etc/default/grub`
+  - reduce timeout:
+    - set `GRUB_TIMEOUT=3`
+  - set kernel command-line parameters:
+    - remove boot splash screen
+      - find `GRUB_CMDLINE_LINUX_DEFAULT`, and remove `splash`
+    - hide kernel messages
+      - find `GRUB_CMDLINE_LINUX_DEFAULT`, and add `quiet`
+    - disable autosuspend for all USB devices
+      - find `GRUB_CMDLINE_LINUX_DEFAULT`, and add `usbcore.autosuspend=-1`
+    - final kernel parameters should be: `GRUB_CMDLINE_LINUX_DEFAULT="quiet usbcore.autosuspend=-1"`
+  - update grub:
+    - `sudo update-grub`
+  - reboot
 
-```
-sudo apt remove --purge plymouth plymouth-themes
-sudo update-initramfs -u -k all
-```
-
-## Disable autosuspend for all USB devices
-
-- set kernel command-line parameter:
-  - edit `/etc/default/grub`
-  - find `GRUB_CMDLINE_LINUX_DEFAULT`, and add `usbcore.autosuspend=-1`
-    - i.e. `GRUB_CMDLINE_LINUX_DEFAULT="quiet usbcore.autosuspend=-1"`
-  - `sudo update-grub`
-- after reboot, check status with:
+- after reboot, check USB autosuspend status with:
 
 ```
 cat /proc/cmdline | grep usbcore
@@ -196,7 +194,8 @@ cat /sys/module/usbcore/parameters/autosuspend
 
 ## Disable Energy Efficient Ethernet so network doesn't go to sleep
 
-- install: `sudo apt install ethtool`
+- install:
+  - `sudo apt install ethtool`
 - find the active ethernet interface:
   - `ip -br link`
 - assuming `eno1` is the interface, check status:
@@ -226,7 +225,8 @@ EOF
 
 ## Setup firewall
 
-- install: `sudo apt install ufw`
+- install:
+  - `sudo apt install ufw`
 - configure:
   - reset configuration
   - set default policy to allow all outgoing traffic
@@ -260,7 +260,8 @@ sudo ufw status verbose
 
 ## Configure custom DNS
 
-- install: `sudo apt install systemd-resolved`
+- install:
+  - `sudo apt install systemd-resolved`
 - set in `/etc/systemd/resolved.conf`:
 
 ```
@@ -284,7 +285,8 @@ sudo systemctl restart systemd-resolved
 - LLMNR:
   - edit: `/etc/systemd/resolved.conf`
     - set: `LLMNR=no`
-  - restart: `sudo systemctl restart systemd-resolved`
+  - restart:
+    - `sudo systemctl restart systemd-resolved`
 
 - Avahi:
   - `sudo systemctl disable --now avahi-daemon`
