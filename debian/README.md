@@ -128,7 +128,7 @@ SystemMaxUse=2G
 SystemKeepFree=5G
 SystemMaxFileSize=200M
 SystemMaxFiles=20
-MaxRetentionSec=14day
+MaxRetentionSec=7day
 
 # Runtime (RAM) logs
 RuntimeMaxUse=400M
@@ -157,13 +157,11 @@ MaxLevelConsole=info
 MaxLevelWall=emerg
 ```
 
-- restart logging service:
+- restart logging service (or reboot):
 
 ```
 sudo systemctl restart systemd-journald
 ```
-
-(or reboot)
 
 ----
 
