@@ -175,7 +175,7 @@ sudo systemctl restart systemd-journald
 
 ```
 sudo apt remove --purge plymouth plymouth-themes
-sudo update-initramfs -u
+sudo update-initramfs -u -k all
 ```
 
 ## Disable autosuspend for all USB devices
