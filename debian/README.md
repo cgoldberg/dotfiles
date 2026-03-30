@@ -165,6 +165,19 @@ sudo systemctl restart systemd-journald
 
 ----
 
+## Remove boot splash screen
+
+- set kernel command-line parameter:
+  - edit `/etc/default/grub`
+  - find `GRUB_CMDLINE_LINUX_DEFAULT`, and remove `splash`
+  - `sudo update-grub`
+- remove Plymouth:
+
+```
+sudo apt remove --purge plymouth plymouth-themes
+sudo update-initramfs -u
+```
+
 ## Disable autosuspend for all USB devices
 
 - set kernel command-line parameter:
