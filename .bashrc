@@ -865,7 +865,7 @@ pipx-upgrade-all () {
     local pipx_list_output=$(pipx list)
     echo "upgrading pipx apps ..."
     if [[ "${pipx_list_output}" == *"${py_version}"* ]]; then
-        pipx upgrade-all
+        pipx upgrade-all --pip-args=--upgrade-strategy=eager
     else
         echo "app versions don't match interpreter. reinstalling packages ..."
         echo
