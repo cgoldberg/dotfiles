@@ -111,16 +111,15 @@
     hunk-header-decoration-style = "#5E81AC ul"
     hunk-header-file-style = "blue ul bold"
     hunk-header-line-number-style = "yellow box bold"
-    hunk-header-style = "file line-number syntax bold italic"
+    hunk-header-style = "file line-number bold"
     line-numbers = true
     line-numbers-left-style = "#5E81AC"
     line-numbers-minus-style = brightred
     line-numbers-plus-style = brightgreen
     line-numbers-right-style = "#5E81AC"
     line-numbers-zero-style = "#4C566A"
-    max-line-distance = 0
-    merge-conflict-begin-symbol = ~
-    merge-conflict-end-symbol = ~
+    merge-conflict-begin-symbol = "<<<"
+    merge-conflict-end-symbol = ">>>"
     merge-conflict-ours-diff-header-decoration-style = "#5E81AC box"
     merge-conflict-ours-diff-header-style = "yellow bold"
     merge-conflict-theirs-diff-header-decoration-style = "#5E81AC box"
@@ -130,7 +129,7 @@
     plus-emph-style = "black green"
     plus-style = brightgreen
     syntax-theme = Nord
-    whitespace-error-style = "black bold"
+    whitespace-error-style = "red reverse"
     zero-style = syntax
 
 # additional config for Windows
