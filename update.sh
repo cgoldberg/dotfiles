@@ -30,7 +30,7 @@
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - yt-dlp (pipx-install yt-dlp[default])
-#    - zoxide (cargo install zoxide)
+#    - zoxide (cargo install zoxide, scoop install zoxide)
 #
 #  - linux only:
 #    - bmon (sudo apt install bmon)

@@ -174,11 +174,9 @@ if type pipx >/dev/null 2>&1; then
 fi
 
 
-# zoxide (jump to directory)
+# zoxide/fzf (jump to directory)
 if type zoxide >/dev/null 2>&1; then
-    export _ZO_DOCTOR=0 # disable configuration error message
     eval "$(zoxide init bash)"
-    unalias z 2>/dev/null # we define our own z() below
 fi
 
 
@@ -339,25 +337,6 @@ stop_spinner () {
     tput cnorm
     echo
 }
-
-
-# zoxide/fzf - jump to dirs with fuzzy find for interactive completions
-z () {
-    local dir=$(
-        zoxide query --list --score \
-            | fzf --height 40% --layout reverse --info inline \
-            --nth 2.. --no-sort --query "$*" \
-            --bind 'enter:become:echo {2..}'
-    ) \
-    && cd "${dir}"
-}
-# just disable this if zoxide and fzf aren't installed so we don't have to check every use
-if ! type zoxide >/dev/null 2>&1; then
-    unset z
-fi
-if ! type fzf >/dev/null 2>&1; then
-    unset z
-fi
 
 
 # extract an MP3 audio file from a YouTube video
