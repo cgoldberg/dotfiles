@@ -307,6 +307,14 @@ ok () {
 }
 
 
+# list bash functions and aliases
+funcs () {
+    ( alias | cut -d= -f1 | sed 's/^alias //' && \
+        declare -F | sed 's/^.* //g' | grep -v '^_' ) \
+        | sort | less
+}
+
+
 # chop lines at screen width
 # usage example: echo $really_long_line | nowrap
 nowrap () {
