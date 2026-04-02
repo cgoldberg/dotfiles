@@ -83,6 +83,15 @@
     # sync remote with parent if in a fork, and rebase all local branches
     up = "!git syncrepo && sleep 3; git sync; git branches"
 
+    # save a stash with a custom name
+    stash-save = "!f() { git stash push -m \"$*\"; }; f"
+
+    # pop a stash by its name/message (uses first stash matching partial name, does nothing if not found)
+    stash-pop = "!f() { \
+        ref=$(git stash list | grep -F \"$*\" | awk -F: '{print $1}'); \
+        [ -n \"$ref\" ] && git stash pop $ref; \
+    }; f"
+
 # delta pager - https://github.com/dandavison/delta
 [delta]
     features = custom-theme
