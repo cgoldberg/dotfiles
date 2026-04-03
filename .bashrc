@@ -176,7 +176,7 @@ fi
 
 # zoxide/fzf (jump to directory)
 if type zoxide >/dev/null 2>&1; then
-    eval "$(zoxide init bash)"
+    eval "$(zoxide init bash --hook prompt)"
 fi
 
 
