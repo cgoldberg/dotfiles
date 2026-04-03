@@ -62,10 +62,10 @@ sudo apt install \
 
 ```
 sudo apt remove --purge \
-    cups* apache* libreoffice* blueman bluez bolt modemmanager
+    cups* apache* libreoffice* sane* blueman bluez bolt modemmanager
 ```
 
-(this removes cellular data, print services, bluetooth support, thunderbolt support, etc)
+(this removes cellular data, print services, scanner utilities, bluetooth support, thunderbolt support, etc)
 
 ----
 
