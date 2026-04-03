@@ -176,6 +176,7 @@ fi
 
 # zoxide/fzf (jump to directory)
 if type zoxide >/dev/null 2>&1; then
+    _ZO_DOCTOR=0 # silence config warning
     eval "$(zoxide init bash --hook prompt)"
 fi
 
