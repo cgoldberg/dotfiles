@@ -124,6 +124,7 @@ WIN_CONFIGS=(
 SCRIPTS=(
     "./bin/colors"
     "./bin/prettyping"
+    "./bin/squeezebox-pause-play"
 )
 LINUX_SCRIPTS=(
     "./bin/backup-gdrive"
