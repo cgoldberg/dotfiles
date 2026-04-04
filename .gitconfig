@@ -84,12 +84,27 @@
     up = "!git syncrepo && sleep 3; git sync; git branches"
 
     # save a stash with a custom name
-    stash-save = "!f() { git stash push -m \"$*\"; }; f"
+    stash-save = "!f() { \
+        if [ -z \"$*\" ]; then \
+            echo \"Error: stash name required\" >&2; \
+            return 1; \
+        fi; \
+        git stash push -m \"$*\"; \
+    }; f"
 
-    # pop a stash by its name/message (uses first stash matching partial name, does nothing if not found)
+    # pop a stash by its name/message (uses first stash matching partial name)
     stash-pop = "!f() { \
-        ref=$(git stash list | grep -F \"$*\" | awk -F: '{print $1}'); \
-        [ -n \"$ref\" ] && git stash pop $ref; \
+        if [ -z \"$*\" ]; then \
+            echo \"Error: stash name required\" >&2; \
+            return 1; \
+        fi; \
+        ref=$(git stash list | grep -F \"$*\" | cut -d: -f1 | head -n1); \
+        if [ -n \"$ref\" ]; then \
+            git stash pop \"$ref\"; \
+        else \
+            echo \"Error: no matching stash found\" >&2; \
+            return 1; \
+        fi; \
     }; f"
 
 # delta pager - https://github.com/dandavison/delta
