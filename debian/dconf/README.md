@@ -15,18 +15,34 @@ Settings can be exported with `dconf dump` and restored with `dconf load`.
 
 `gnome-terminal.properties` contains settings for `gnome-terminal`.
 
-- #### generate a new file with current settings:
+- generate new file with current settings:
 
 ```
 dconf dump /org/gnome/terminal/ > gnome-terminal.properties
  ```
 
-* #### restore these settings:
+- restore settings:
 
 ```
-cat gnome-terminal.properties | dconf load /org/gnome/terminal/
+dconf load /org/gnome/terminal/ < gnome-terminal.properties
 ```
 
 *Note: "UbuntuMono Nerd Font Mono" font is required.*
 
 ----
+
+## keybindings
+
+`gnome-keybindings.properties` contains settings for keyboard keybindings.
+
+- generate new file with current settings:
+
+```
+dconf dump /org/gnome/settings-daemon/plugins/media-keys/ > gnome-keybindings.properties
+```
+
+- restore settings:
+
+```
+dconf load /org/gnome/settings-daemon/plugins/media-keys/ < gnome-keybindings.properties
+```

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 #
-# squeezebox-pause-play - pause or play Squeezebox Touch
+# squeezebox-function.sh - call a function to control Squeezebox Touch
+#
+# example:
+# $ squeezebox-function.sh squeezebox-pause
 
 
 # print bold message to stderr preceded with red ballot x
@@ -9,5 +12,6 @@ err () {
     tput bold; echo -e "$*" 1>&2; tput sgr0
 }
 
+function_name="$1"
 source ~/.bashrc_squeezebox
-squeezebox-pause
+"${function_name}"

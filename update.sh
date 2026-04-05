@@ -124,7 +124,6 @@ WIN_CONFIGS=(
 SCRIPTS=(
     "./bin/colors"
     "./bin/prettyping"
-    "./bin/squeezebox-pause-play"
 )
 LINUX_SCRIPTS=(
     "./bin/backup-gdrive"
@@ -135,6 +134,7 @@ LINUX_SCRIPTS=(
     "./bin/mount-bitz"
     "./bin/mount-bytez"
     "./bin/now"
+    "./bin/squeezebox-function"
     "./bin/sync-nas"
     "./bin/sysinfo"
     "./bin/test-data-xfer-nas-to-nas"
@@ -287,7 +287,13 @@ if [[ "${OSTYPE}" == "linux"* ]]; then
     gnome_terminal_config="gnome-terminal.properties"
     echo "setting gnome-terminal dconf config from dotfiles repo ..."
     echo -e "  loading: ${gnome_terminal_config}"
-    cat "./debian/dconf/${gnome_terminal_config}" | dconf load /org/gnome/terminal/
+    dconf load /org/gnome/terminal/ < "./debian/dconf/${gnome_terminal_config}"
+    echo
+
+    gnome_keybindings_config="gnome-keybindings.properties"
+    echo "setting keybindings dconf config from dotfiles repo ..."
+    echo -e "  loading: ${gnome_keybindings_config}"
+    dconf load /org/gnome/settings-daemon/plugins/media-keys/ < "./debian/dconf/${gnome_keybindings_config}"
     echo
 
     fonts_dir="${HOME}/.local/share/fonts"
