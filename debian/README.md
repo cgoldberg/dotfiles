@@ -69,31 +69,12 @@ sudo apt remove --purge \
 
 ----
 
-# Make Nemo the default file manager for Gnome
+## Use Nemo file manager
 
 - install:
   - `sudo apt install nemo`
 - open directories with Nemo:
   - `xdg-mime default nemo.desktop inode/directory application/x-gnome-saved-search`
-
-----
-
-# Check autostart applications:
-
-- check user autostart:
-  - `ls ~/.config/autostart/`
-- check system autostart:
-  - `ls /etc/xdg/autostart/`
-
-- Remove unused:
-
-```
-sudo rm /etc/xdg/autostart/geoclue-demo-agent.desktop
-sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.Smartcard.desktop
-sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.Wacom.desktop
-sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.MediaKeys.desktop
-sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.PrintNotifications.desktop
-```
 
 ----
 
