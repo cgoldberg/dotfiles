@@ -75,9 +75,6 @@ sudo apt remove --purge \
   - `sudo apt install nemo`
 - open directories with Nemo:
   - `xdg-mime default nemo.desktop inode/directory application/x-gnome-saved-search`
-- disable desktop icons management:
-  - `gsettings set org.gnome.desktop.background show-desktop-icons false`
-
 
 ----
 
@@ -96,7 +93,6 @@ sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.Smartcard.desktop
 sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.Wacom.desktop
 sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.MediaKeys.desktop
 sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.PrintNotifications.desktop
-sudo rm /etc/xdg/autostart/user-dirs-update-gtk.desktop
 ```
 
 ----
