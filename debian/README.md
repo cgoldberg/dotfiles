@@ -52,7 +52,7 @@ sudo systemctl mask apt-daily-upgrade.timer
 ```
 sudo apt install \
     audacious build-essential cifs-utils curl git gvfs-backends htop \
-    libfuse2 nano nemo pavucontrol python-is-python3 smplayer
+    libfuse2 nano pavucontrol python-is-python3 smplayer
 
 ```
 
@@ -66,6 +66,38 @@ sudo apt remove --purge \
 ```
 
 (this removes cellular data, print services, scanner utilities, bluetooth support, thunderbolt support, etc)
+
+----
+
+# Make Nemo the default file manager for Gnome
+
+- install:
+  - `sudo apt install nemo`
+- open directories with Nemo:
+  - `xdg-mime default nemo.desktop inode/directory application/x-gnome-saved-search`
+- disable desktop icons management:
+  - `gsettings set org.gnome.desktop.background show-desktop-icons false`
+
+
+----
+
+# Check autostart applications:
+
+- check user autostart:
+  - `ls ~/.config/autostart/`
+- check system autostart:
+  - `ls /etc/xdg/autostart/`
+
+- Remove unused:
+
+```
+sudo rm /etc/xdg/autostart/geoclue-demo-agent.desktop
+sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.Smartcard.desktop
+sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.Wacom.desktop
+sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.MediaKeys.desktop
+sudo rm /etc/xdg/autostart/org.gnome.SettingsDaemon.PrintNotifications.desktop
+sudo rm /etc/xdg/autostart/user-dirs-update-gtk.desktop
+```
 
 ----
 
