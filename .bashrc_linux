@@ -45,7 +45,7 @@ alias iostat="iostat -p --human --pretty 2"
 
 
 # monitor bandwidth by process/connection
-alias bw="bandwhich"
+alias bw="bandwhich --unit-family=si-bits"
 
 
 # monitor bandwidth by interface
