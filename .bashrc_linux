@@ -44,7 +44,11 @@ alias dw="diskwatch"
 alias iostat="iostat -p --human --pretty 2"
 
 
-# monitor bandwidth
+# monitor bandwidth by process/connection
+alias bw="bandwhich"
+
+
+# monitor bandwidth by interface
 alias bmon="bmon --use-bit --use-si --policy='wlan*,eno*,eth*'"
 
 
