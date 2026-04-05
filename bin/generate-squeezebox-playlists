@@ -3,7 +3,7 @@
 # Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
 #
 
-"""Generate playlist files from music library for Lyrion Music Server."""
+"""Generate playlist files from music library for Lyrion Music Server (Squeezebox)."""
 
 from collections import defaultdict
 from pathlib import Path
