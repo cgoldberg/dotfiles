@@ -449,7 +449,10 @@ update-pyenv () {
     done
     for py_version in "${PY_VERSIONS[@]}"; do
         echo "installing latest version of Python ${py_version} ..."
-        pyenv install --force --verbose "${py_version}"
+        # build with optimizations for maximum performance (builds take longer)
+        env PYTHON_CONFIGURE_OPTS='--enable-optimizations --with-lto' \
+            PYTHON_CFLAGS='-march=native -mtune=native' pyenv install \
+            --force --verbose "${py_version}"
         pyenv global "${py_version}"
         echo "installed $(python3 --version)"
         echo
