@@ -92,11 +92,13 @@ sudo apt install \
 ```
 sudo apt build-dep python3
 sudo apt install \
-    build-essential pkg-config python3-dev python-dev-is-python3 gdb lcov \
-    pkg-config libbz2-dev libffi-dev libgdbm-dev libgdbm-compat-dev \
-    liblzma-dev libmpdec-dev libncurses-dev libreadline-dev libsqlite3-dev \
-    libssl-dev libxmlsec1-dev libzstd-dev lzma tk-dev uuid-dev zlib1g-dev \
-    inetutils-inetd
+  build-essential checkinstall curl gdb lcov pkg-config python3-dev \
+  python-dev-is-python3 libbz2-dev libffi-dev libgdbm-dev libgdbm-compat-dev \
+  liblzma-dev libmpdec-dev libncurses-dev libnsl-dev libreadline-dev \
+  libsqlite3-dev libssl-dev libxmlsec1-dev libzstd-dev lzma tk-dev uuid-dev \
+  zlib1g-dev inetutils-inetd libexpat1-dev libx11-dev libxext-dev \
+  libxrender-dev libxtst-dev libjpeg-dev libpng-dev libtiff-dev libwebp-dev \
+  libkrb5-dev libdb-dev libtirpc-dev xz-utils
 ```
 
 ----
