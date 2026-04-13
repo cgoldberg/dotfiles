@@ -628,6 +628,22 @@ weather () {
 alias w="weather"
 
 
+# stock watchlist
+wl () {
+    if ! type tickrs >/dev/null 2>&1; then
+        err "tickrs not found"
+        return 1
+    fi
+    local tickers="^DJI,^GSPC,^IXIC,^RUT,AMZN,COPP,BTC-USD,ETH-USD,TXBC"
+    tickrs \
+        --show-x-labels \
+        --summary \
+        --trunc-pre \
+        --update-interval 30 \
+        --symbols "${tickers}"
+}
+
+
 # count all files and symlinks in current directory
 # - recursive
 # - also shows tracked file if in a git repo

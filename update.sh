@@ -29,6 +29,7 @@
 #    - ruby (sudo apt install ruby, scoop install ruby)
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
+#    - tickrs (cargo install tickrs, scoop install tickrs)
 #    - yt-dlp (pipx-install yt-dlp[default])
 #    - zoxide (cargo install zoxide, scoop install zoxide)
 #
@@ -83,6 +84,7 @@ DEPENDENCIES=(
     "ruby"
     "shellcheck"
     "subl"
+    "tickrs"
     "yt-dlp"
     "zoxide"
 )
