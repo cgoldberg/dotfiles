@@ -73,18 +73,18 @@ squeezebox-pause () {
 alias p="squeezebox-pause"
 
 
-# send POST request rescan music library (media and playlist directories)
+# send POST request rescan music library
 send-squeezebox-rescan () {
     local music_dir=$(printf '%s' "$1" | sed -e 's/ /%20/g' -e 's/\//%2F/g')
-    local playlist_dir=$(printf '%s' "$2" | sed -e 's/ /%20/g' -e 's/\//%2F/g')
     local payload
     printf -v payload '%s' \
         "page=BASIC_SERVER_SETTINGS&" \
         "pref_libraryname=Lyrion+Music+Server&" \
         "pref_mediadirs0=%2Fmusic%2F${music_dir}&" \
         "pref_ignoreInAudioScan0=1&" \
-        "pref_mediadirs1=&pref_ignoreInAudioScan1=1&" \
-        "pref_playlistdir=%2Fplaylist%2F${playlist_dir}&" \
+        "pref_mediadirs1=&" \
+        "pref_ignoreInAudioScan1=1&" \
+        "pref_playlistdir=&" \
         "pref_rescantype=2wipedb&" \
         "pref_rescan=Rescan&" \
         "pageAntiCSRFToken=&" \
@@ -106,9 +106,9 @@ send-squeezebox-rescan () {
     fi
     echo "scanning '$(printf '%b' "${1//%/\\x}")' library ..."
 }
-alias rescan-concerts="send-squeezebox-rescan 'Concerts' 'EMPTY'"
-alias rescan-edm="send-squeezebox-rescan 'EDM' 'EMPTY'"
-alias rescan-flac="send-squeezebox-rescan 'FLAC' 'FLAC'"
-alias rescan-hiphop="send-squeezebox-rescan 'HipHop' 'EMPTY'"
-alias rescan-mp3="send-squeezebox-rescan 'MP3' 'MP3'"
-alias rescan-howard="send-squeezebox-rescan 'Audio/Howard Stern' 'EMPTY'"
+alias rescan-concerts="send-squeezebox-rescan 'Concerts'"
+alias rescan-edm="send-squeezebox-rescan 'EDM'"
+alias rescan-flac="send-squeezebox-rescan 'FLAC'"
+alias rescan-hiphop="send-squeezebox-rescan 'HipHop'"
+alias rescan-mp3="send-squeezebox-rescan 'MP3'"
+alias rescan-howard="send-squeezebox-rescan 'Audio/Howard Stern'"
