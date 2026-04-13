@@ -132,7 +132,6 @@ LINUX_SCRIPTS=(
     "./bin/backup-github"
     "./bin/backup-nas-to-external"
     "./bin/backup-nas-to-nas"
-    "./bin/generate-squeezebox-playlists"
     "./bin/mount-bitz"
     "./bin/mount-bytez"
     "./bin/now"
