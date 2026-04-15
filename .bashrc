@@ -35,10 +35,6 @@ case $- in
 esac
 
 
-# set shell variables
-ORIGINAL_PATH="${PATH}"
-
-
 # export environment variables
 export LANGUAGE="en_US"
 export PAGER="/usr/bin/less"
@@ -607,7 +603,6 @@ alias md="makedir"
 re-source () {
     echo 'sourcing ~/.bashrc ...'
     unalias -a # remove all aliases
-    PATH="${ORIGINAL_PATH}"
     source "${HOME}/.bashrc"
     # if a virtual env is active, reactivate it, since the prompt
     # prefix gets clobbered
@@ -634,7 +629,7 @@ wl () {
         err "tickrs not found"
         return 1
     fi
-    local tickers="^DJI,^GSPC,^IXIC,^RUT,AMZN,BLOK,COPP,FBTC,FETH"
+    local tickers="^DJI,^GSPC,^IXIC,^RUT,AMZN,COPP,FBTC,FETH"
     tickrs \
         --show-x-labels \
         --summary \
