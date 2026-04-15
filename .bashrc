@@ -634,7 +634,7 @@ wl () {
         err "tickrs not found"
         return 1
     fi
-    local tickers="^DJI,^GSPC,^IXIC,^RUT,AMZN,COPP,BTC-USD,ETH-USD,TXBC"
+    local tickers="^DJI,^GSPC,^IXIC,^RUT,AMZN,BLOK,COPP,BTC-USD,ETH-USD"
     tickrs \
         --show-x-labels \
         --summary \
