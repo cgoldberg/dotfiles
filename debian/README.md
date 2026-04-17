@@ -275,6 +275,17 @@ sudo ufw status verbose
 
 - install:
   - `sudo apt install systemd-resolved`
+
+- find NetworkManager connection name:
+  - `nmcli connection show` (name will be something like `Wired connection 1`)
+
+- ensure NetworkManager doesn’t inject other DNS:
+
+```
+nmcli connection modify "Wired connection 1" ipv4.ignore-auto-dns yes
+nmcli connection modify "Wired connection 1" ipv6.ignore-auto-dns yes
+```
+
 - set in `/etc/systemd/resolved.conf`:
 
 ```
@@ -282,24 +293,21 @@ sudo ufw status verbose
 DNS=1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com
 FallbackDNS=8.8.8.8#dns.google 8.8.4.4#dns.google 2001:4860:4860::8888#dns.google 2001:4860:4860::8844#dns.google
 DNSOverTLS=yes
+DNSStubListener=yes
+LLMNR=no
+MulticastDNS=no
 ReadEtcHosts=yes
 ```
 
-```
-sudo systemctl restart systemd-resolved
-```
+- restart service:
+  - `sudo systemctl restart systemd-resolved`
 
-- verify with: `resolvectl status`
+- verify:
+  - `resolvectl status`
 
 ----
 
-## Disable LLMNR + Avahi
-
-- LLMNR:
-  - edit: `/etc/systemd/resolved.conf`
-    - set: `LLMNR=no`
-  - restart:
-    - `sudo systemctl restart systemd-resolved`
+## Disable Avahi
 
 - Avahi:
   - `sudo systemctl disable --now avahi-daemon`
@@ -358,10 +366,7 @@ sudo mkdir -p /etc/chromium/policies/managed
 sudo touch /etc/chromium/policies/managed/managed_policies.json
 ```
 
-- set in `managed_policies.json`:
-  - must be valid JSON:
-    - no trailing comma
-    - no comments
+- set in `managed_policies.json` (must be valid JSON, no comments):
 
 ```
 {
