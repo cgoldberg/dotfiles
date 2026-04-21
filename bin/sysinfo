@@ -1,46 +1,95 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+# Copyright (c) 2025-2026 Corey Goldberg (https://github.com/cgoldberg)
+# License: MIT
 #
 # sysinfo - display Linux system information
 
-get_cpu_info () {
-    local cpu_count="$(grep -c processor /proc/cpuinfo)"
-    local cpu_model="$(grep -m1 -i 'model name' /proc/cpuinfo | awk -F ': ' '{print $2}')"
-    if [ -z "${cpu_model}" ]; then
-        local cpu_model="$(grep -m1 -i 'model' /proc/cpuinfo | awk -F ': ' '{print $2}')"
-    fi
-    echo -e "${cpu_count} x ${cpu_model}"
-}
 
 GRAY="\033[1;37m"
 PURPLE="\033[1;35m"
 GREEN="\033[1;32m"
+RESET="\033[0m"
 
-HOST="$(hostname --long)"
-IP="$(hostname --all-ip-addresses | awk '{print $1}')"
-UPTIME="$(uptime -p | cut -d ' ' -f 2-)"
-DISTRIBUTION="$(lsb_release -s -d)"
-KERNEL="$(uname -r)"
-PLATFORM="$(uname -m)"
-CPUCOUNT="$(grep -c processor /proc/cpuinfo)"
-CPU="$(get_cpu_info)"
-PROCS="$(ps -e --no-header | grep -E -v 'ps$|grep$|wc$' | wc -l)"
-MEM="$(free -m \
-    | awk '/^Mem:/{printf "%.2fG Free of %.2fG Total", $4/1024, $2/1024}')"
-DISK="$(df --human-readable --local --si --sync / \
-    | grep -v 'Filesystem' \
-    | awk '{printf "%s Used of %s Total (%s)", $3, $2, $5}')"
+print_line () {
+    local label="$1"
+    local value="$2"
+    printf "${GRAY}%10s${PURPLE} = ${GREEN}%s${RESET}\n" "${label}" "${value}"
+}
 
-echo -e "
-${GRAY}        Host ${PURPLE}= ${GREEN}${HOST}
-${GRAY}          IP ${PURPLE}= ${GREEN}${IP}
-${GRAY}      Uptime ${PURPLE}= ${GREEN}${UPTIME}
-${GRAY}      Distro ${PURPLE}= ${GREEN}${DISTRIBUTION}
-${GRAY}      Kernel ${PURPLE}= ${GREEN}${KERNEL}
-${GRAY}    Platform ${PURPLE}= ${GREEN}${PLATFORM}
-${GRAY}         CPU ${PURPLE}= ${GREEN}${CPU}
-${GRAY}      Memory ${PURPLE}= ${GREEN}${MEM}
-${GRAY}        Disk ${PURPLE}= ${GREEN}${DISK}
-${GRAY}       Procs ${PURPLE}= ${GREEN}${PROCS}
-"
+get_cpu_info () {
+    local cpu_count cpu_model
+    cpu_count=$(nproc)
+    cpu_model=$(awk -F': ' '/model name/ {print $2; exit}' /proc/cpuinfo)
+    echo "${cpu_count} x ${cpu_model}"
+}
+
+get_disk_used () {
+    df --block-size=1 --local --portability / | awk 'NR==2 {
+        used=$3; total=$2;
+        used_gib = used / 1024 / 1024 / 1024
+        total_gib = total / 1024 / 1024 / 1024
+        printf "%.2fG / %.2fG Used (%.1f%%)",
+               used_gib, total_gib, (used/total)*100
+    }'
+}
+
+get_mem_used () {
+    awk '
+        /MemTotal/     { total=$2 }
+        /MemAvailable/ { avail=$2 }
+        END {
+            used = total - avail
+            printf "%.2fG / %.2fG Used (%.1f%%)",
+                   used/1024/1024,
+                   total/1024/1024,
+                   (used/total)*100
+        }' /proc/meminfo
+}
+
+get_ip_addresses () {
+    local ipv4 ipv6
+    ipv4=$(ip -4 route get 1.1.1.1 2>/dev/null)
+    ipv4=${ipv4#*src }
+    ipv4=${ipv4%% *}
+    ipv6=$(ip -6 route get 2606:4700:4700::1111 2>/dev/null)
+    ipv6=${ipv6#*src }
+    ipv6=${ipv6%% *}
+    if [ -n "${ipv4}" ]; then
+        print_line "IPv4" "${ipv4}"
+    fi
+    if [ -n "${ipv6}" ]; then
+        print_line "IPv6" "${ipv6}"
+    fi
+}
+
+get_uptime () {
+    uptime -p | cut -d ' ' -f 2-
+}
+
+get_process_count () {
+    ps -e --no-headers | wc -l
+}
+
+get_os_info () {
+    local host distro kernel arch
+    host=$(hostnamectl --static)
+    distro=$(lsb_release -s -d)
+    kernel=$(uname -r)
+    arch=$(uname -m)
+    print_line "Host" "${host}"
+    print_line "Distro" "${distro}"
+    print_line "Kernel" "${kernel}"
+    print_line "Platform" "${arch}"
+}
+
+
+echo
+get_os_info
+print_line "Uptime" "$(get_uptime)"
+print_line "CPU" "$(get_cpu_info)"
+get_ip_addresses
+print_line "Memory" "$(get_mem_used)"
+print_line "Disk" "$(get_disk_used)"
+print_line "Processes" "$(get_process_count)"
+echo
