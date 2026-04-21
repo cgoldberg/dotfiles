@@ -6,6 +6,11 @@
 # sysinfo - display Linux system information
 
 
+if [[ "${OSTYPE}" != "linux"* ]]; then
+    echo "This only works on Linux"
+    exit 1
+fi
+
 GRAY="\033[1;37m"
 PURPLE="\033[1;35m"
 GREEN="\033[1;32m"
