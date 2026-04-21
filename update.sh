@@ -178,6 +178,20 @@ ok () {
 }
 
 
+is_windows () {
+    if [[ "${OSTYPE}" != "msys" && "${OSTYPE}" != "cygwin" ]]; then
+        return 1
+    fi
+}
+
+
+is_linux () {
+    if [[ "${OSTYPE}" != "linux"* ]]; then
+        return 1
+    fi
+}
+
+
 check-programs () {
     local programs=("$@")
     unset check_failed
@@ -193,7 +207,7 @@ check-programs () {
 
 
 check-requirements () {
-    if [[ "${OSTYPE}" != "msys" ]] && [[ "${OSTYPE}" != "linux"* ]]; then
+    if ! is_windows && ! is_linux; then
         die "fatal: unknown operating system"
     fi
     check-programs "${REQUIREMENTS[@]}"
@@ -209,13 +223,13 @@ check-dependencies () {
     if [ -n "${check_failed}" ]; then
         check_deps_failed="true"
     fi
-    if [[ "${OSTYPE}" == "linux"* ]]; then
+    if is_linux; then
         check-programs "${DEPENDENCIES_LINUX[@]}"
         if [ -n "${check_failed}" ]; then
             check_linux_deps_failed="true"
         fi
     fi
-    if [[ "${OSTYPE}" == "msys" ]]; then
+    if is_windows; then
         check-programs "${DEPENDENCIES_WINDOWS[@]}"
         if [ -n "${check_failed}" ]; then
             check_win_deps_failed="true"
@@ -246,7 +260,7 @@ echo
 
 # --------------------------------- CONFIGS -----------------------------------
 
-if [[ "${OSTYPE}" == "msys" ]]; then
+if is_windows; then
     echo "copying windows configs from dotfiles repo to ${HOME} ..."
     for config in "${WIN_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
@@ -263,7 +277,7 @@ if [[ "${OSTYPE}" == "msys" ]]; then
     echo
 fi
 
-if [[ "${OSTYPE}" == "linux"* ]]; then
+if is_linux; then
     echo "copying linux configs from dotfiles repo to ${HOME} ..."
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
@@ -330,7 +344,14 @@ echo
 
 # --------------------------------- SCRIPTS -----------------------------------
 
-if [[ "${OSTYPE}" == "linux"* ]]; then
+echo "copying scripts from dotfiles repo to ${BIN_DIR} ..."
+for script in "${SCRIPTS[@]}"; do
+    echo -e "  copying: ${script}"
+    cp "${script}" "${BIN_DIR}"
+done
+echo
+
+if is_linux; then
     echo "copying linux scripts from dotfiles repo to ${BIN_DIR} ..."
     for script in "${LINUX_SCRIPTS[@]}"; do
         echo -e "  copying: ${script}"
@@ -339,20 +360,13 @@ if [[ "${OSTYPE}" == "linux"* ]]; then
     echo
 fi
 
-echo "copying scripts from dotfiles repo to ${BIN_DIR} ..."
-for script in "${SCRIPTS[@]}"; do
-    echo -e "  copying: ${script}"
-    cp "${script}" "${BIN_DIR}"
-done
-echo
-
 echo "downloading git scripts from github to ${BIN_DIR} ..."
 for script in "${GIT_SCRIPTS[@]}"; do
     url="https://raw.githubusercontent.com/cgoldberg/git-scripts/refs/heads/main/${script}"
     echo -e "  downloading: ./${BIN_DIR##*/}/${script}"
     curl -fsS --output "${BIN_DIR}/${script}" "${url}"
     chmod +x "${BIN_DIR}/${script}"
-    if [[ "${OSTYPE}" == "msys" ]]; then
+    if is_windows; then
         unix2dos "${BIN_DIR}/${script}" >/dev/null 2>&1
     fi
 done

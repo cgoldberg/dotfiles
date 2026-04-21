@@ -700,7 +700,7 @@ py-upgrade () {
             | xargs --null --no-run-if-empty pyupgrade --py310-plus
     # on Windows, pyupgrade rewrites files with LF line endings,
     # so we convert them back
-    if [[ "${OSTYPE}" == "msys" ]]; then
+    if [[ "${OSTYPE}" == "msys" || "${OSTYPE}" == "cygwin" ]]; then
         find . \
             -name "*.py" \
             ! -path "*/.git/*" \
