@@ -41,6 +41,7 @@ export PAGER="/usr/bin/less"
 export LESS="--LONG-PROMPT --RAW-CONTROL-CHARS --no-init --quit-at-eof --quit-if-one-screen --quit-on-intr"
 export GITHUB_USERNAME="cgoldberg"
 export PIP_REQUIRE_VIRTUALENV=true
+export DO_NOT_TRACK=true
 export LESSHISTFILE=- # don't leave .lesshst files
 if type subl >/dev/null 2>&1; then
     export EDITOR="subl --new-window --wait"
