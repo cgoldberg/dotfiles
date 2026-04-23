@@ -248,28 +248,27 @@ clean-system-logs () {
 
 # package maintenance
 apt-up () {
-    sudo apt update --no-allow-insecure-repositories || (err "apt error" && return 1)
+    run() { "$@" || { err "apt error: $*"; return 1; }; }
+    run sudo apt update --no-allow-insecure-repositories || return 1
     ok "updated list of available packages\n"
-    sudo apt install --fix-broken || (err "apt error" && return 1)
+    run sudo apt install --fix-broken || return 1
     ok "fixed broken dependencies\n"
-    sudo apt install --fix-missing || (err "apt error" && return 1)
-    ok "fixed missing dependencies\n"
-    sudo apt full-upgrade || (err "apt error" && return 1)
+    run sudo apt -o APT::Get::Always-Include-Phased-Updates=true full-upgrade || return 1
     ok "upgraded installed packages\n"
-    sudo apt autoremove --purge || (err "apt error" && return 1)
+    run sudo apt autoremove --purge || return 1
     ok "removed unused packages\n"
-    sudo apt clean || (err "apt error" && return 1)
+    run sudo apt clean || return 1
     ok "removed cached packages\n"
-    if dpkg -l | grep --quiet '^rc'; then
-        echo "$(dpkg -l | grep -c '^rc') packages have orphaned configs"
-        dpkg -l | grep '^rc' | awk '{print $2}' \
-            | xargs --no-run-if-empty sudo dpkg --purge
+    local rc_pkgs=$(dpkg-query -W -f='${db:Status-Abbrev} ${binary:Package}\n' \
+        | grep '^rc' | awk '{print $2}')
+    if [ -n "${rc_pkgs}" ]; then
+        echo "$(wc -w <<<"${rc_pkgs}") orphaned package configs found"
+        sudo dpkg --purge ${rc_pkgs} || return 1
     fi
     ok "purged orphaned package configs\n"
-    sudo apt update --no-allow-insecure-repositories || (err "apt error" && return 1)
-    ok "updated list of available packages\n"
-    # print number of installed packages
-    ok "$(dpkg -l | grep -c '^ii') packages installed"
+    local pkg_count=$(dpkg-query -W -f='${db:Status-Abbrev}\n' | grep -c '^ii')
+    ok "done (${pkg_count} packages installed)"
+    unset -f run
 }
 
 
