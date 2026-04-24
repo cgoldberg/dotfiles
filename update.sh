@@ -38,6 +38,7 @@
 #    - bmon (sudo apt install bmon)
 #    - btop (https://github.com/aristocratos/btop - download/unarchive, then: `sudo make install && sudo make setcap`)
 #    - cargo-cache (cargo install cargo-cache)
+#    - flatpak (sudo apt install flatpak)
 #    - gcc (sudo apt install build-essential)
 #    - githubtakeout (pipx-install githubtakeout)
 #    - gnome-terminal (sudo apt install gnome-terminal)
@@ -93,6 +94,7 @@ DEPENDENCIES_LINUX=(
     "bmon"
     "btop"
     "cargo-cache"
+    "flatpak"
     "githubtakeout"
     "gnome-terminal"
     "gcc"
