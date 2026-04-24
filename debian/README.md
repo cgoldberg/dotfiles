@@ -69,6 +69,18 @@ sudo apt remove --purge \
 
 ----
 
+## Install Flatpak support
+
+- install Flatpak:
+  - `sudo apt install flatpak`
+- add Flathub repository:
+  - `flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo`
+- reboot
+- install Flatseal:
+  - `flatpak install flathub com.github.tchx84.Flatseal`
+
+----
+
 ## Use Nemo file manager
 
 - install:
