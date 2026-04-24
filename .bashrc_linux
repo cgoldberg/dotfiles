@@ -246,7 +246,7 @@ clean-system-logs () {
 }
 
 
-# package maintenance
+# deb package maintenance
 apt-up () {
     run() { "$@" || { err "apt error: $*"; return 1; }; }
     run sudo apt update --no-allow-insecure-repositories || return 1
@@ -268,6 +268,19 @@ apt-up () {
     ok "purged orphaned package configs\n"
     local pkg_count=$(dpkg-query -W -f='${db:Status-Abbrev}\n' | grep -c '^ii')
     ok "done (${pkg_count} packages installed)"
+    unset -f run
+}
+
+
+# flatpak maintenance
+flat-up () {
+    run() { "$@" || { err "apt error: $*"; return 1; }; }
+    flatpak update || return 1
+    ok "upgraded all apps and runtimes"
+    flatpak uninstall --unused || return 1
+    ok "removed unused runtimes"
+    local app_count=$(flatpak list --app | wc -l)
+    ok "done (${app_count} apps installed)"
     unset -f run
 }
 
