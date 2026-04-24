@@ -280,7 +280,7 @@ flat-up () {
     flatpak uninstall --unused || return 1
     ok "removed unused runtimes"
     local app_count=$(flatpak list --app | wc -l)
-    local runtime_count=$(flatpak list --runtime --no-header | wc -l)
+    local runtime_count=$(flatpak list --runtime | wc -l)
     ok "done (${app_count} apps and ${runtime_count} runtimes installed)"
     unset -f run
 }
