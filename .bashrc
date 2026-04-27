@@ -171,6 +171,12 @@ if type pipx >/dev/null 2>&1; then
 fi
 
 
+# fzf (fuzzy matching)
+if type fzf >/dev/null 2>&1; then
+    eval "$(fzf --bash)"
+fi
+
+
 # zoxide/fzf (jump to directory)
 if type zoxide >/dev/null 2>&1; then
     _ZO_DOCTOR=0 # silence config warning
