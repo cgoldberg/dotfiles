@@ -748,14 +748,11 @@ py-refurb () {
 }
 
 
-# upgrade pip and clean pip/pipx cache
+# clean pip/pipx cache
 clean-pip () {
-    echo "upgrading pip, cleaning pip/pipx cache ..."
-    PIP_REQUIRE_VIRTUALENV=false python -m pip install --upgrade \
-        --upgrade-strategy=eager pip
+    echo "cleaning pip/pipx cache ..."
     pip cache purge
     local dirs=(
-        "${HOME}/AppData/Local/pip/cache/"
         "${HOME}/.cache/pip/"
         "${HOME}/.cache/pip-tools/"
         "${HOME}/.cache/pipx/"
@@ -763,6 +760,7 @@ clean-pip () {
         "${HOME}/.local/pipx/logs/"
         "${HOME}/pipx/.cache/"
         "${HOME}/pipx/logs/"
+        "${HOME}/AppData/Local/pip/cache/"
     )
     for d in ${dirs[@]}; do
         if [ -d ${d} ]; then
