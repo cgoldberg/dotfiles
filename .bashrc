@@ -217,7 +217,7 @@ alias g="git"
 
 # disk usage (directory sizes)
 alias du="du --human-readable --max-depth=1 | sort --human-numeric-sort --reverse"
-alias gdu="gdu --no-delete --show-item-count"
+alias gdu="gdu --no-cross --no-delete --show-item-count"
 
 
 # shell script static analysis
