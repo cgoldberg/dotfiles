@@ -99,21 +99,6 @@ export -f diskspace
 alias ds="diskspace"
 
 
-# install chrome from google repo
-install-chrome () {
-    local package="google-chrome-stable"
-    if dpkg-query -Wf'${db:Status-abbrev}' "${package}" 2>/dev/null | \grep -q '^i'; then
-        err "${package} is already installed"
-        return 1
-    else
-        echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" \
-            | sudo tee /etc/apt/sources.list.d/google-chrome.list
-        sudo apt update --no-allow-insecure-repositories
-        sudo apt install "${package}" -y
-    fi
-}
-
-
 # show internal ip addresses
 ips () {
     ipv4=$(ip -4 route get 1.1.1.1 2>/dev/null)
