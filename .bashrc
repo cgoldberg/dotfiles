@@ -321,7 +321,7 @@ funcs () {
 
 
 # chop lines at screen width
-# usage example: echo $really_long_line | nowrap
+# - usage: echo $really_long_line | nowrap
 nowrap () {
     cut -c-"$(tput cols)"
 }
@@ -424,7 +424,7 @@ remove-trailing-whitespace-from-files () {
 
 
 # remove metadata from an image
-# usage: clean-img-metadata <image_file_or_glob> ...
+# - usage: clean-img-metadata <image_file_or_glob> ...
 clean-img-metadata () {
     if [ -z "$1" ]; then
         err "please specify an image file or glob pattern with matches"
@@ -493,7 +493,7 @@ help () {
 # search recursively for files or directories matching pattern
 # - case-insensitive unless pattern contains an uppercase
 # - uses fd if available
-# usage: ff <regex>
+# - usage: ff <regex>
 ff () {
     if type fd >/dev/null 2>&1; then
         local command_name="\fd --hidden --no-ignore --color=always "
@@ -536,7 +536,7 @@ ff () {
 
 # search recursively in files for pattern (case-insensitive)
 # - uses ripgrep if available
-# usage: rg <pattern>
+# - usage: rg <pattern>
 rg () {
     if [ -z "$1" ]; then
         err "please specify a search pattern"
@@ -590,7 +590,7 @@ rg () {
 
 
 # search command history by regex (case-insensitive) show last n matches
-# usage: h <pattern>
+# - usage: h <pattern>
 h () {
     local num="50"
     history | \grep -v "  h " \
@@ -676,7 +676,7 @@ countfiles () {
 
 
 # search active processes for pattern (case-insensitive)
-# usage: psgrep <pattern>
+# - usage: psgrep <pattern>
 psgrep () {
     if [ -n "$1" ]; then
         ps -ef \
@@ -827,7 +827,7 @@ clean-py () {
 
 # install a python application in an isoloated environment with the
 # current global interpreter
-# usage: pipx-install <package>
+# - usage: pipx-install <package>
 pipx-install () {
     if [ -z "$1" ]; then
         err "please specify a package"
@@ -905,7 +905,7 @@ preview-md () {
 # specified pixel width
 # - won't resize images that are already the same or smaller width
 # - files are overwritten in-place
-# usage: shrink-images <width>
+# - usage: shrink-images <width>
 shrink-images () {
     if ! type magick >/dev/null 2>&1; then
         err "ImageMagick not found"

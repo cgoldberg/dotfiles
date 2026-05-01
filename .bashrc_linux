@@ -184,6 +184,13 @@ killblog () {
 }
 
 
+# trim ending from flac file (without re-encoding)
+# - usage: trim-flac input.flac mm:ss
+trim-flac () {
+    ffmpeg -i "$1" -ss 00:00:00 -to "00:$2" -c:a flac output.flac
+}
+
+
 # whack the thumbnail cache
 clean-thumbnails () {
     rm -rf "${HOME}/.cache/thumbnails/"
