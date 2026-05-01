@@ -240,33 +240,42 @@ clean-system-logs () {
 
 # deb package maintenance
 apt-up () {
-    run() { "$@" || { err "apt error: $*"; return 1; }; }
+    run () {
+        "$@" || { err "apt error: $*"; return 1; }
+    }
+    write () {
+        printf "\n${BOLD}%s${RESET}\n" "$*" >&2
+    }
+    write "updating list of available packages..."
     run sudo apt update --no-allow-insecure-repositories || return 1
-    ok "updated list of available packages\n"
+    write "fixing broken dependencies..."
     run sudo apt install --fix-broken || return 1
-    ok "fixed broken dependencies\n"
+    write "upgrading installed packages..."
     run sudo apt -o APT::Get::Always-Include-Phased-Updates=true full-upgrade || return 1
-    ok "upgraded installed packages\n"
+    write "removing unused packages..."
     run sudo apt autoremove --purge || return 1
-    ok "removed unused packages\n"
+    write "removing cached packages..."
     run sudo apt clean || return 1
-    ok "removed cached packages\n"
+    write "purging orphaned package configs..."
     local rc_pkgs=$(dpkg-query -W -f='${db:Status-Abbrev} ${binary:Package}\n' \
         | grep '^rc' | awk '{print $2}')
     if [ -n "${rc_pkgs}" ]; then
         echo "$(wc -w <<<"${rc_pkgs}") orphaned package configs found"
         sudo dpkg --purge ${rc_pkgs} || return 1
     fi
-    ok "purged orphaned package configs\n"
     local pkg_count=$(dpkg-query -W -f='${db:Status-Abbrev}\n' | grep -c '^ii')
+    echo
     ok "done (${pkg_count} packages installed)"
     unset -f run
+    unset -f write
 }
 
 
 # flatpak maintenance
 flat-up () {
-    run() { "$@" || { err "apt error: $*"; return 1; }; }
+    run () {
+        "$@" || { err "apt error: $*"; return 1; }
+    }
     flatpak update || return 1
     ok "upgraded all apps and runtimes"
     flatpak uninstall --unused || return 1

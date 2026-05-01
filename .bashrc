@@ -34,6 +34,13 @@ case $- in
         ;;
 esac
 
+# colors and symbols
+BOLD="\e[1m"
+GREEN="\e[32m"
+RED="\e[31m"
+RESET="\e[0m"
+CHECK="\u2714"
+CROSS="\u2717"
 
 # export environment variables
 export LANGUAGE="en_US"
@@ -299,16 +306,14 @@ alias webserver="python3 -m http.server"
 
 
 # print bold message to stderr preceded with red ballot x
-err () {
-    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
-    tput bold; echo -e "$*" 1>&2; tput sgr0
+err() {
+    printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" >&2
 }
 
 
 # print bold message to stderr preceded with green heavy check mark
-ok () {
-    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
-    tput bold; echo -e "$*" 1>&2; tput sgr0
+ok() {
+    printf "${BOLD}${GREEN}%b${RESET} ${BOLD}%s${RESET}\n" "${CHECK}" "$*" >&2
 }
 
 
