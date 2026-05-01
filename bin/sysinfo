@@ -16,20 +16,20 @@ PURPLE="\033[1;35m"
 GREEN="\033[1;32m"
 RESET="\033[0m"
 
-print_line () {
+print_line() {
     local label="$1"
     local value="$2"
     printf "${GRAY}%10s${PURPLE} = ${GREEN}%s${RESET}\n" "${label}" "${value}"
 }
 
-get_cpu_info () {
+get_cpu_info() {
     local cpu_count cpu_model
     cpu_count=$(nproc)
     cpu_model=$(awk -F': ' '/model name/ {print $2; exit}' /proc/cpuinfo)
     echo "${cpu_count} x ${cpu_model}"
 }
 
-get_disk_used () {
+get_disk_used() {
     df --block-size=1 --local --portability / | awk 'NR==2 {
         used=$3; total=$2;
         used_gib = used / 1024 / 1024 / 1024
@@ -39,7 +39,7 @@ get_disk_used () {
     }'
 }
 
-get_mem_used () {
+get_mem_used() {
     awk '
         /MemTotal/     { total=$2 }
         /MemAvailable/ { avail=$2 }
@@ -52,7 +52,7 @@ get_mem_used () {
         }' /proc/meminfo
 }
 
-get_ip_addresses () {
+get_ip_addresses() {
     local ipv4 ipv6
     ipv4=$(ip -4 route get 1.1.1.1 2>/dev/null)
     ipv4=${ipv4#*src }
@@ -68,15 +68,15 @@ get_ip_addresses () {
     fi
 }
 
-get_uptime () {
+get_uptime() {
     uptime -p | cut -d ' ' -f 2-
 }
 
-get_process_count () {
+get_process_count() {
     ps -e --no-headers | wc -l
 }
 
-get_os_info () {
+get_os_info() {
     local host distro kernel arch
     host=$(hostnamectl --static)
     distro=$(lsb_release -s -d)

@@ -11,18 +11,18 @@ NAS_SHARE="//${NAS_IP}/public"
 NAS_MNT="/mnt/${NAS_HOST}"
 EXPECTED_HOSTS=("minime" "raspberrypi")
 
-die () {
+die() {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
     exit 1
 }
 
-ok () {
+ok() {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
-check_host () {
+check_host() {
     local can_run="false"
     for i in {0..1}; do
         local host="${EXPECTED_HOSTS[${i}]}"
@@ -35,7 +35,7 @@ check_host () {
     fi
 }
 
-mount_nas () {
+mount_nas() {
     if ! findmnt "${NAS_MNT}" >/dev/null; then
         echo
         echo "mounting ${NAS_SHARE} at ${NAS_MNT} ..."
@@ -45,7 +45,7 @@ mount_nas () {
     fi
 }
 
-check_mount () {
+check_mount() {
     if ! findmnt "${NAS_MNT}" >/dev/null; then
         die "fatal: ${mnt} not mounted"
     fi

@@ -162,39 +162,39 @@ GIT_SCRIPTS=(
 )
 
 
-err () {
+err() {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
 
-die () {
+die() {
     err "$*"
     exit 1
 }
 
 
-ok () {
+ok() {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
 
-is_windows () {
+is_windows() {
     if [[ "${OSTYPE}" != "msys" && "${OSTYPE}" != "cygwin" ]]; then
         return 1
     fi
 }
 
 
-is_linux () {
+is_linux() {
     if [[ "${OSTYPE}" != "linux"* ]]; then
         return 1
     fi
 }
 
 
-check-programs () {
+check-programs() {
     local programs=("$@")
     unset check_failed
     for prog in "${programs[@]}"; do
@@ -208,7 +208,7 @@ check-programs () {
 }
 
 
-check-requirements () {
+check-requirements() {
     if ! is_windows && ! is_linux; then
         die "fatal: unknown operating system"
     fi
@@ -220,7 +220,7 @@ check-requirements () {
 }
 
 
-check-dependencies () {
+check-dependencies() {
     check-programs "${DEPENDENCIES[@]}"
     if [ -n "${check_failed}" ]; then
         check_deps_failed="true"

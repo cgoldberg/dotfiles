@@ -23,24 +23,24 @@ GITHUB_BACKUP_DIR="GitHub_Backup"
 ORIGINAL_DIR="${PWD}"
 SEP="----------------------------------------------------------------"
 
-die () {
+die() {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
     cd "${ORIGINAL_DIR}"
     exit 1
 }
 
-ok () {
+ok() {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
-cleanup () {
+cleanup() {
     echo
     die "Aborted"
 }
 
-check_host () {
+check_host() {
     local can_run="false"
     for i in {0..1}; do
         local host="${EXPECTED_HOSTS[${i}]}"
@@ -53,7 +53,7 @@ check_host () {
     fi
 }
 
-check_configuration () {
+check_configuration() {
     if ! type rsync >/dev/null 2>&1; then
         die "fatal: rsync not found"
     fi
@@ -65,12 +65,12 @@ check_configuration () {
     fi
 }
 
-delete_old_backups () {
+delete_old_backups() {
     rm -rf ./backups
     rm -rf "./${GITHUB_BACKUP_DIR}"
 }
 
-timer () {
+timer() {
     local start_time=${SECONDS}
     "$@"
     local end_time=${SECONDS}
@@ -81,7 +81,7 @@ timer () {
     printf -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
 }
 
-do_backup () {
+do_backup() {
     echo "downloading backups of GitHub repos ..."
     echo
     githubtakeout "${GITHUB_USERNAME}" --gists --history --skip_forks

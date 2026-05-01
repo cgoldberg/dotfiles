@@ -7,7 +7,7 @@
 
 
 # print bold message to stderr preceded with red ballot x
-err () {
+err() {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
     tput bold; echo -e "$*" 1>&2; tput sgr0
 }

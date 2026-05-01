@@ -29,24 +29,24 @@ NAS_MNTS=("${SOURCE_NAS_MNT}" "${DESTINATION_NAS_MNT}")
 
 SEP="----------------------------------------------------------------"
 
-die () {
+die() {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
     exit 1
 }
 
-ok () {
+ok() {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
-cleanup () {
+cleanup() {
     echo
     sudo umount -l "${DESTINATION_NAS_MNT}"
     die "Aborted"
 }
 
-check_host () {
+check_host() {
     local can_run="false"
     for i in {0..1}; do
         local host="${EXPECTED_HOSTS[${i}]}"
@@ -59,7 +59,7 @@ check_host () {
     fi
 }
 
-check_mounts () {
+check_mounts() {
     for mnt in "${NAS_MNTS[@]}"; do
         if ! findmnt "${mnt}" >/dev/null; then
             die "fatal: ${mnt} not mounted"
@@ -67,17 +67,17 @@ check_mounts () {
     done
 }
 
-check_configuration () {
+check_configuration() {
     if ! type rsync >/dev/null 2>&1; then
         die "fatal: rsync not found"
     fi
 }
 
-diskspace () {
+diskspace() {
     df --human-readable --sync --type=cifs | sed '1{p;s/./-/g;}'
 }
 
-timer () {
+timer() {
     local start_time=${SECONDS}
     "$@"
     local end_time=${SECONDS}
@@ -88,7 +88,7 @@ timer () {
     printf -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
 }
 
-do_backup () {
+do_backup() {
     echo "syncing ${SOURCE_NAS_MNT} to ${DESTINATION_NAS_MNT} ..."
     echo
     rsync \

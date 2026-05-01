@@ -35,24 +35,24 @@ NAS_MNT="/mnt/${NAS_HOST}"
 
 SEP="----------------------------------------------------------------"
 
-die () {
+die() {
     tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
     exit 1
 }
 
-ok () {
+ok() {
     tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
     tput bold; echo "$*" 1>&2; tput sgr0
 }
 
-cleanup () {
+cleanup() {
     echo
     delete_test_files
     die "Aborted"
 }
 
-check_host () {
+check_host() {
     local can_run="false"
     for i in {0..1}; do
         local host="${EXPECTED_HOSTS[${i}]}"
@@ -65,14 +65,14 @@ check_host () {
     fi
 }
 
-delete_test_files () {
+delete_test_files() {
     rm -f "${SOURCE_DIR}/${FILE_NAME}"
     rm -f "${NAS_MNT}/${FILE_NAME}"
     sync
     sync "${NAS_MNT}"
 }
 
-timer () {
+timer() {
     local start_time=${SECONDS}
     "$@"
     local end_time=${SECONDS}
@@ -83,7 +83,7 @@ timer () {
     printf  -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
 }
 
-run_test () {
+run_test() {
     # generate the file
     dd \
         if=/dev/urandom \
@@ -109,7 +109,7 @@ run_test () {
     sync "${NAS_MNT}"
 }
 
-run () {
+run() {
     for i in $(seq 1 ${ITERATIONS}); do
         echo "- test #${i} of ${ITERATIONS}:"
         run_test
