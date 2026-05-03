@@ -11,16 +11,20 @@
 EXPECTED_HOSTS=("minime")
 HEADPHONE_SINK=35 # HDMI
 SPEAKER_SINK=57 # USB DAC
+BOLD="\e[1m"
+GREEN="\e[32m"
+RED="\e[31m"
+RESET="\e[0m"
+CHECK="\u2714"
+CROSS="\u2717"
 
 die() {
-    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
-    tput bold; echo "$*" 1>&2; tput sgr0
+    printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
     exit 1
 }
 
 ok() {
-    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
-    tput bold; echo -e "$*" 1>&2; tput sgr0
+    printf "${BOLD}${GREEN}%b${RESET} ${BOLD}%s${RESET}\n" "${CHECK}" "$*" 1>&2
 }
 
 check_host() {
