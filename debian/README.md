@@ -33,6 +33,22 @@ sudo apt install -t trixie-backports linux-image-amd64 linux-headers-amd64
 
 ----
 
+## Enable zswap
+
+- install:
+  - `sudo apt install zram-tools`
+- enable:
+  - `sudo systemctl enable --now zramswap.service`
+- adjust swappiness:
+  - set:
+    - `echo "vm.swappiness=20" | sudo tee /etc/sysctl.d/99-swappiness.conf`
+  - apply:
+    - `sudo sysctl -p /etc/sysctl.d/99-swappiness.conf`
+  - verify:
+    - `cat /proc/sys/vm/swappiness`
+
+----
+
 ## Disable automatic updates
 
 ```
