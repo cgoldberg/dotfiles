@@ -18,15 +18,15 @@ position = { x = 0, y = 0 }
 size = 11
 
 [font.normal]
-family = "Hack Nerd Font Mono"
+family = "Hack Nerd Font"
 style = "Regular"
 
 [font.bold]
-family = "Hack Nerd Font Mono"
+family = "Hack Nerd Font"
 style = "Bold"
 
 [font.italic]
-family = "Hack Nerd Font Mono"
+family = "Hack Nerd Font"
 style = "Italic"
 
 [cursor]
