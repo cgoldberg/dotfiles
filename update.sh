@@ -56,6 +56,12 @@
 #    - alacritty (scoop install alacritty)
 
 
+BOLD="\e[1m"
+GREEN="\e[32m"
+RED="\e[31m"
+RESET="\e[0m"
+CHECK="\u2713"
+CROSS="\u2717"
 DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
 REQUIREMENTS=(
@@ -161,24 +167,18 @@ GIT_SCRIPTS=(
     "git-whack-branches"
 )
 
-
 err() {
-    tput bold; tput setaf 1; echo -en "\u2717 " 1>&2; tput sgr0
-    tput bold; echo "$*" 1>&2; tput sgr0
+    printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
 }
 
+ok() {
+    printf "${BOLD}${GREEN}%b${RESET} ${BOLD}%s${RESET}\n" "${CHECK}" "$*" 1>&2
+}
 
 die() {
     err "$*"
     exit 1
 }
-
-
-ok() {
-    tput bold; tput setaf 10; echo -en "\u2714  " 1>&2; tput sgr0
-    tput bold; echo "$*" 1>&2; tput sgr0
-}
-
 
 is_windows() {
     if [[ "${OSTYPE}" != "msys" && "${OSTYPE}" != "cygwin" ]]; then
@@ -186,13 +186,11 @@ is_windows() {
     fi
 }
 
-
 is_linux() {
     if [[ "${OSTYPE}" != "linux"* ]]; then
         return 1
     fi
 }
-
 
 check-programs() {
     local programs=("$@")
@@ -207,7 +205,6 @@ check-programs() {
     done
 }
 
-
 check-requirements() {
     if ! is_windows && ! is_linux; then
         die "fatal: unknown operating system"
@@ -218,7 +215,6 @@ check-requirements() {
         die "fatal: missing requirement"
     fi
 }
-
 
 check-dependencies() {
     check-programs "${DEPENDENCIES[@]}"
@@ -238,7 +234,6 @@ check-dependencies() {
         fi
     fi
 }
-
 
 # -----------------------------------------------------------------------------
 

@@ -39,7 +39,7 @@ BOLD="\e[1m"
 GREEN="\e[32m"
 RED="\e[31m"
 RESET="\e[0m"
-CHECK="\u2714"
+CHECK="\u2713"
 CROSS="\u2717"
 
 # export environment variables
@@ -311,7 +311,7 @@ err() {
 }
 
 
-# print bold message to stderr preceded with green heavy check mark
+# print bold message to stderr preceded with green check mark
 ok() {
     printf "${BOLD}${GREEN}%b${RESET} ${BOLD}%s${RESET}\n" "${CHECK}" "$*" 1>&2
 }
