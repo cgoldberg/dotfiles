@@ -357,7 +357,7 @@ stop_spinner() {
 }
 
 
-# extract an MP3 audio file from a YouTube video
+# extract audio from a YouTube video and save as .mp3
 yt-mp3() {
     if [ -z "$1" ]; then
         err "please specify a YouTube URL"
