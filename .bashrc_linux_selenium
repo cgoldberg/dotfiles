@@ -22,7 +22,7 @@ fi
 
 
 # kill all running webdrivers and selenium grid server
-kill-webdrivers () {
+kill-webdrivers() {
     local processes=(
         "chromedriver"
         "geckodriver"
@@ -41,7 +41,7 @@ kill-webdrivers () {
 
 
 # clean selenium dev environment (cache, browsers, webdrivers, build artifacts)
-clean-selenium-dev-full () {
+clean-selenium-dev-full() {
     clean-selenium-dev
     local sel_home="${SELENIUM_HOME}"
     local sel_dirs=(
@@ -99,7 +99,7 @@ clean-selenium-dev-full () {
 
 
 # clean selenium dev environment
-clean-selenium-dev () {
+clean-selenium-dev() {
     local sel_home="${SELENIUM_HOME}"
     local dirs=(
         ${sel_home}/.venv/
@@ -137,7 +137,7 @@ clean-selenium-dev () {
 
 # run selenium grid server in standalone mode (on port 4444)
 # download server first with github cli if it's not found
-selenium-server () {
+selenium-server() {
     local sel_home="${SELENIUM_HOME}"
     local server_jar="selenium-server.jar"
     local original_dir="${PWD}"
@@ -160,7 +160,7 @@ selenium-server () {
 
 # delete and re-install all webdrivers and browsers used by selenium
 # also delete and re-download selenium grid server
-update-webrivers () {
+update-webrivers() {
     if [ "$(arch)" == "aarch64" ]; then
         err "unsupported architecture for selenium manager"
         return 1

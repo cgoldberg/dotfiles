@@ -30,7 +30,7 @@ alias clean-tmp="rm -rf /tmp/* /tmp/.*"
 
 
 # open url or file in chrome browser
-web () {
+web() {
     if [ -z "$1" ]; then
         err "please enter a file or url"
         return 1
@@ -48,7 +48,7 @@ web () {
 
 
 # update all packages installed by scoop
-scoop-update-all () {
+scoop-update-all() {
     if ! type scoop >/dev/null 2>&1; then
         err "scoop not found"
         return 1

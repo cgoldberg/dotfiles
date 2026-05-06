@@ -89,7 +89,7 @@ alias web="sensible-browser"
 
 
 # show disk space used by root filesystem and mounted filesystems
-diskspace () {
+diskspace() {
     \df --human-readable --sync --type=ext4 --type=btrfs --type=cifs --type=exfat \
         | awk 'NR==1 || $NF == "/" || $NF ~ /^\/(mnt|media)\//' \
         | sed '1{p;s/./-/g;}'
@@ -100,7 +100,7 @@ alias ds="diskspace"
 
 
 # show internal ip addresses
-ips () {
+ips() {
     ipv4=$(ip -4 route get 1.1.1.1 2>/dev/null)
     ipv4=${ipv4#*src }
     ipv4=${ipv4%% *}
@@ -117,7 +117,7 @@ ips () {
 
 
 # show blocked firewall connections from systemd logs in reverse order
-firewall-blocks () {
+firewall-blocks() {
     local blue='\x1b[34m'
     local green='\x1b[32m'
     local reset='\x1b[0m'
@@ -146,7 +146,7 @@ firewall-blocks () {
 
 
 # run jekyll server for blog and open local url in browser
-blog () {
+blog() {
     local blog_dir="${HOME}/code/cgoldberg.github.io"
     local jekyll_server="127.0.0.1:4000"
     if [ ! -d "${blog_dir}" ]; then
@@ -168,7 +168,7 @@ blog () {
 
 
 # kill jekyll server running blog
-killblog () {
+killblog() {
     local blog_dir="${HOME}/code/cgoldberg.github.io"
     local jekyll_proc="jekyll s"
     local jekyll_server="127.0.0.1:4000"
@@ -186,27 +186,27 @@ killblog () {
 
 # trim ending from flac file (without re-encoding)
 # - usage: trim-flac input.flac mm:ss
-trim-flac () {
+trim-flac() {
     ffmpeg -i "$1" -ss 00:00:00 -to "00:$2" -c:a flac output.flac
 }
 
 
 # whack the thumbnail cache
-clean-thumbnails () {
+clean-thumbnails() {
     rm -rf "${HOME}/.cache/thumbnails/"
     ok "cleaned thumbnail cache"
 }
 
 
 # whack the package resource lists
-clean-apt-index () {
+clean-apt-index() {
     sudo rm -rf /var/lib/apt/lists/*
     ok "cleaned package resource lists"
 }
 
 
 # whack all system logs
-clean-system-logs () {
+clean-system-logs() {
     echo "stopping systemd-journald service ..."
     sudo systemctl --quiet stop systemd-journald
     echo "removing systemd-journald logs ..."
@@ -239,11 +239,11 @@ clean-system-logs () {
 
 
 # deb package maintenance
-apt-up () {
-    run () {
+apt-up() {
+    run() {
         "$@" || { err "apt error: $*"; return 1; }
     }
-    write () {
+    write() {
         printf "\n${BOLD}%s${RESET}\n" "$*" >&2
     }
     write "updating list of available packages..."
@@ -272,11 +272,11 @@ apt-up () {
 
 
 # flatpak maintenance
-flat-up () {
-    run () {
+flat-up() {
+    run() {
         "$@" || { err "apt error: $*"; return 1; }
     }
-    write () {
+    write() {
         printf "\n${BOLD}%s${RESET}\n" "$*" >&2
     }
     write "upgrading apps and runtimes..."
@@ -293,7 +293,7 @@ flat-up () {
 
 
 # show which system package an executable on PATH comes from
-which-pkg () {
+which-pkg() {
     if [ -z "$1" ]; then
         err "no package specified"
         return 1
@@ -314,7 +314,7 @@ which-pkg () {
 
 
 # check all installed packages against backports and show if a newer version is available
-apt-check-available-backports () {
+apt-check-available-backports() {
     local num_pkgs debian_codename installed_version backports_version pkg
     debian_codename="$(lsb_release -c | awk '{print $2}')"
     num_pkgs="$(dpkg -l | grep -c '^ii')"
@@ -338,7 +338,7 @@ apt-check-available-backports () {
 
 
 # install or upgrade a package from backports
-apt-install-package-from-backports () {
+apt-install-package-from-backports() {
     if [ -z "$1" ]; then
         err "no package specified"
         return 1
@@ -350,13 +350,13 @@ apt-install-package-from-backports () {
 
 
 # show locally installed .deb packages
-apt-show-local-pkgs () {
+apt-show-local-pkgs() {
     apt list --installed 2>/dev/null | \grep installed,local | cut -d'/' -f1
 }
 
 
 # update locally installed .deb packages
-update-apt-local-pkgs () {
+update-apt-local-pkgs() {
     if ! type gh >/dev/null 2>&1; then
         err "GitHub CLI not found"
         return 1
@@ -404,7 +404,7 @@ update-apt-local-pkgs () {
 
 
 # update rust toolchain, remove cargo registry and git dependency cache
-clean-rust () {
+clean-rust() {
     if ! type rustup >/dev/null 2>&1; then
         err "rustup not found"
         return 1
@@ -427,7 +427,7 @@ clean-rust () {
 
 
 # rebuild all rust binaries that were installed with cargo
-update-rust-bins () {
+update-rust-bins() {
     if ! clean-rust; then
         return 1
     fi
@@ -449,7 +449,7 @@ update-rust-bins () {
 # - install latest version of each python interpreter
 # - update pip in each python installation
 # - re-install pipx with most recent python interpreter and update all pipx applications
-update-pyenv () {
+update-pyenv() {
     if [ ! -d "${HOME}/.pyenv" ]; then
         err "pyenv is not installed"
         return 1

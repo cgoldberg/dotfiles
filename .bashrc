@@ -133,7 +133,7 @@ PROMPT_COMMAND="history -n; history -w; history -c; history -r"
 
 
 # add local bin directories to the end of PATH if they don't exist in PATH
-add-bins () {
+add-bins() {
     local bin_dirs=(
         "${HOME}/.local/bin"
         "${HOME}/bin"
@@ -318,7 +318,7 @@ ok() {
 
 
 # list bash functions and aliases
-funcs () {
+funcs() {
     ( alias | cut -d= -f1 | sed 's/^alias //' && \
         declare -F | sed 's/^.* //g' | grep -v '^_' ) \
         | sort | less
@@ -327,13 +327,13 @@ funcs () {
 
 # chop lines at screen width
 # - usage: echo $really_long_line | nowrap
-nowrap () {
+nowrap() {
     cut -c-"$(tput cols)"
 }
 
 
 # show spinner for indicating progress
-spinner () {
+spinner() {
     local shs=( - \\ \| / ) pnt=0
     printf '\e7'
     while ! read -rsn1 -t .2 _; do
@@ -343,14 +343,14 @@ spinner () {
 
 
 # start spinner background task
-start_spinner () {
+start_spinner() {
     tput civis
     exec {doSpinner}> >(spinner "$@")
 }
 
 
 # stop spinner background task
-stop_spinner () {
+stop_spinner() {
     echo >&"${doSpinner}" && exec {doSpinner}>&-
     tput cnorm
     echo
@@ -358,7 +358,7 @@ stop_spinner () {
 
 
 # extract an MP3 audio file from a YouTube video
-yt-mp3 () {
+yt-mp3() {
     if [ -z "$1" ]; then
         err "please specify a YouTube URL"
         return 1
@@ -381,7 +381,7 @@ yt-mp3 () {
 
 
 # colored diffs
-dff () {
+dff() {
     if [ -z "$1" ] || [ -z "$2" ]; then
         err "please enter 2 files to diff"
         return 1
@@ -394,14 +394,14 @@ alias diff="dff"
 
 
 # install python packages globally
-gpip-install () {
+gpip-install() {
     PIP_REQUIRE_VIRTUALENV=false \
         python -m pip install --user --upgrade --upgrade-strategy=eager "$@"
 }
 
 
 # uninstall python packages globally
-gpip-uninstall () {
+gpip-uninstall() {
     PIP_REQUIRE_VIRTUALENV=false \
         python -m pip uninstall "$@"
 }
@@ -410,7 +410,7 @@ gpip-uninstall () {
 # rename all files under the current directory (recursive),
 # replacing spaces with underscores. If inside a git repo,
 # renames will be tracked by git
-remove-whitespace-from-filenames () {
+remove-whitespace-from-filenames() {
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         find . -path ./.git -prune -o -type f -name "* *" \
             -exec bash -c 'git mv "$0" "${0// /_}"' {} \;
@@ -423,14 +423,14 @@ remove-whitespace-from-filenames () {
 
 # remove trailing whitespace from lines in all files
 # under current directory (recursive)
-remove-trailing-whitespace-from-files () {
+remove-trailing-whitespace-from-files() {
     find . -type f -print0 | xargs -r0 sed -e 's/[[:blank:]]\+$//' -i
 }
 
 
 # remove metadata from an image
 # - usage: clean-img-metadata <image_file_or_glob> ...
-clean-img-metadata () {
+clean-img-metadata() {
     if [ -z "$1" ]; then
         err "please specify an image file or glob pattern with matches"
         return 1
@@ -449,7 +449,7 @@ clean-img-metadata () {
 # generate a self-contained html from markdown
 # - uses modified bootstrap css
 # - usage: md2html <markdown_file>
-md2html () {
+md2html() {
     if [ -z "$1" ]; then
         err "please specify a markdown file"
         return 1
@@ -476,7 +476,7 @@ md2html () {
 
 
 # print system PATH
-path () {
+path() {
     IFS=":"
     for d in $PATH; do
         echo "$d"
@@ -486,7 +486,7 @@ path () {
 
 
 # use bat for colored help if available
-help () {
+help() {
     if type bat >/dev/null 2>&1; then
         "$@" --help 2>&1 | bat --plain --language=help
     else
@@ -499,7 +499,7 @@ help () {
 # - case-insensitive unless pattern contains an uppercase
 # - uses fd if available
 # - usage: ff <regex>
-ff () {
+ff() {
     if type fd >/dev/null 2>&1; then
         local command_name="\fd --hidden --no-ignore --color=always "
         local exclude_patterns=(
@@ -542,7 +542,7 @@ ff () {
 # search recursively in files for pattern (case-insensitive)
 # - uses ripgrep if available
 # - usage: rg <pattern>
-rg () {
+rg() {
     if [ -z "$1" ]; then
         err "please specify a search pattern"
         return 1
@@ -596,7 +596,7 @@ rg () {
 
 # search command history by regex (case-insensitive) show last n matches
 # - usage: h <pattern>
-h () {
+h() {
     local num="50"
     history | \grep -v "  h " \
         | \grep --ignore-case --color=always "$1" \
@@ -605,7 +605,7 @@ h () {
 
 
 # create directory (make parent directories as needed)
-makedir () {
+makedir() {
     mkdir --parents --verbose "$1"
     cd "$1"
 }
@@ -613,7 +613,7 @@ alias md="makedir"
 
 
 # reload shell configuration
-re-source () {
+re-source() {
     echo 'sourcing ~/.bashrc ...'
     unalias -a # remove all aliases
     source "${HOME}/.bashrc"
@@ -626,7 +626,7 @@ re-source () {
 
 
 # display weather in boston
-weather () {
+weather() {
     date
     echo
     echo -ne "fetching weather ...\r"
@@ -637,7 +637,7 @@ alias w="weather"
 
 
 # stock watchlist
-wl () {
+wl() {
     if ! type tickrs >/dev/null 2>&1; then
         err "tickrs not found"
         return 1
@@ -657,7 +657,7 @@ wl () {
 # - also shows tracked file if in a git repo
 # - ignores .git directories
 # - uses fd if available
-countfiles () {
+countfiles() {
     if ! type git >/dev/null 2>&1; then
         err "git not found"
         return 1
@@ -682,7 +682,7 @@ countfiles () {
 
 # search active processes for pattern (case-insensitive)
 # - usage: psgrep <pattern>
-psgrep () {
+psgrep() {
     if [ -n "$1" ]; then
         ps -ef \
             | \grep --color=always --extended-regexp --ignore-case "$1" \
@@ -696,7 +696,7 @@ psgrep () {
 
 # run pyupgrade against all python files in current directory (recursive)
 # and fix recommendations in-place
-py-upgrade () {
+py-upgrade() {
     if ! type pyupgrade >/dev/null 2>&1; then
         err "pyupgrade not found"
         return 1
@@ -730,7 +730,7 @@ py-upgrade () {
 
 # run refurb against all python files in current directory (recursive)
 # and display recommendations
-py-refurb () {
+py-refurb() {
     if ! type refurb >/dev/null 2>&1; then
         err "refurb not found"
         return 1
@@ -755,7 +755,7 @@ py-refurb () {
 
 
 # clean pip/pipx cache
-clean-pip () {
+clean-pip() {
     echo "cleaning pip/pipx cache ..."
     pip cache purge
     local dirs=(
@@ -778,7 +778,7 @@ clean-pip () {
 
 
 # clean python dev/temp files from current directory and subdirectories
-clean-py () {
+clean-py() {
     if [[ "${PWD}" == "${HOME}" || "${PWD}" != "${HOME}"/* ]]; then
         err "can't run from this directory"
         return 1
@@ -833,7 +833,7 @@ clean-py () {
 # install a python application in an isoloated environment with the
 # current global interpreter
 # - usage: pipx-install <package>
-pipx-install () {
+pipx-install() {
     if [ -z "$1" ]; then
         err "please specify a package"
         return 1
@@ -856,7 +856,7 @@ pipx-install () {
 
 # upgrade all pipx applications
 # - reinstalls apps if they don't match the current python interpreter version
-pipx-upgrade-all () {
+pipx-upgrade-all() {
     if ! type pipx >/dev/null 2>&1; then
         err "pipx not found"
         return 1
@@ -897,7 +897,7 @@ pipx-upgrade-all () {
 # preview markdown file in browser
 # - requires GitHub CLI (gh) and gh-markdown-preview extension
 # - install extension with: `gh extension install yusukebe/gh-markdown-preview`
-preview-md () {
+preview-md() {
     if ! type gh >/dev/null 2>&1; then
         err "GitHub CLI not found"
         return 1
@@ -911,7 +911,7 @@ preview-md () {
 # - won't resize images that are already the same or smaller width
 # - files are overwritten in-place
 # - usage: shrink-images <width>
-shrink-images () {
+shrink-images() {
     if ! type magick >/dev/null 2>&1; then
         err "ImageMagick not found"
         return 1
@@ -942,7 +942,7 @@ shrink-images () {
 
 
 # load additional bash configurations if they exist
-load-bash-configs () {
+load-bash-configs() {
     local config_files=(
         "${HOME}/.bashrc_linux"
         "${HOME}/.bashrc_linux_selenium"
@@ -961,7 +961,7 @@ load-bash-configs
 # enable programmable completion features
 # - if not available, download it and put it in ~/etc
 # - https://salsa.debian.org/debian/bash-completion/-/raw/master/bash_completion
-load-bash-completions () {
+load-bash-completions() {
     local found_completions="false"
     local completion_paths=(
         "/usr/share/bash-completion/bash_completion"
