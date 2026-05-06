@@ -372,11 +372,32 @@ yt-mp3() {
         return 1
     fi
     yt-dlp \
-      --format "bestaudio[ext=m4a]/bestaudio" \
+      --format "bestaudio" \
       --extract-audio \
       --audio-format mp3 \
       --audio-quality 320k \
       "$1"
+}
+
+
+# download a YouTube video and save as .mp4
+yt-video() {
+    if [ -z "$1" ]; then
+        err "please specify a YouTube URL"
+        return 1
+    fi
+    if ! type yt-dlp >/dev/null 2>&1; then
+        err "yt-dlp not found"
+        return 1
+    fi
+    if ! type ffmpeg >/dev/null 2>&1; then
+        err "ffmpeg not found"
+        return 1
+    fi
+    yt-dlp \
+        --format "bestvideo+bestaudio/best" \
+        --merge-output-format mp4 \
+        "$1"
 }
 
 
