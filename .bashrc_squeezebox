@@ -79,6 +79,7 @@ send-squeezebox-rescan() {
     local payload
     printf -v payload '%s' \
         "page=BASIC_SERVER_SETTINGS&" \
+        "pref_language=EN&" \
         "pref_libraryname=Lyrion+Music+Server&" \
         "pref_mediadirs0=%2Fmusic%2F${music_dir}&" \
         "pref_ignoreInAudioScan0=1&" \
@@ -87,7 +88,6 @@ send-squeezebox-rescan() {
         "pref_playlistdir=&" \
         "pref_rescantype=2wipedb&" \
         "pref_rescan=Rescan&" \
-        "pageAntiCSRFToken=&" \
         "saveSettings=1"
     lms_result="$(
         curl \
