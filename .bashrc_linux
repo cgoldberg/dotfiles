@@ -339,7 +339,7 @@ which-pkg() {
 apt-check-available-backports() {
     local num_pkgs debian_codename installed_version backports_version pkg
     debian_codename=$(lsb_release -cs)
-    num_pkgs=(dpkg-query -W -f='${db:Status-Abbrev}\n' | grep -c '^ii')
+    num_pkgs=$(dpkg-query -W -f='${db:Status-Abbrev}\n' | grep -c '^ii')
     echo "checking ${num_pkgs} installed packages for updated versions" \
         "in ${debian_codename}-backports ..."
     echo
