@@ -40,18 +40,9 @@ kill-webdrivers() {
 }
 
 
-# clean selenium dev environment (cache, browsers, webdrivers, build artifacts)
-clean-selenium-dev-full() {
-    clean-selenium-dev
+# clean selenium dev bazel cache
+clean-selenium-dev() {
     local sel_home="${SELENIUM_HOME}"
-    local sel_dirs=(
-        ${sel_home}/.aspect/
-        ${sel_home}/py/selenium/webdriver/common/devtools/
-        ${sel_home}/py/selenium/webdriver/common/linux/
-        ${sel_home}/py/selenium/webdriver/common/macos/
-        ${sel_home}/py/selenium/webdriver/common/windows/
-        ${sel_home}/rust/target/
-    )
     local symlinks=(
         ${sel_home}/bazel-bin
         ${sel_home}/bazel-genfiles
@@ -62,25 +53,9 @@ clean-selenium-dev-full() {
     local dot_dirs=(
         ${HOME}/.cache/bazel/
         ${HOME}/.cache/bazelisk/
-        ${HOME}/.cache/google-chrome*/
-        ${HOME}/.cache/Microsoft/
-        ${HOME}/.cache/mozilla/
         ${HOME}/.cache/pnpm/
-        ${HOME}/.cache/selenium/
-        ${HOME}/.config/mozilla/
-        ${HOME}/.config/google-chrome*/
-        ${HOME}/.config/microsoft-edge*/
-        ${HOME}/.mozilla/
     )
-    echo "cleaning up selenium cache, browsers, webdrivers, build artifacts ..."
-    if [ -d "${sel_home}" ]; then
-        for sd in ${sel_dirs[@]}; do
-            if [ -d ${sd} ]; then
-                echo "deleting ${sd}"
-                rm -rf ${sd}
-            fi
-        done
-    fi
+    echo "cleaning up selenium bazel cache ..."
     if [ -d "${sel_home}" ]; then
         for sl in ${symlinks[@]}; do
             if [ -L ${sl} ]; then
@@ -94,43 +69,6 @@ clean-selenium-dev-full() {
             echo "deleting ${dd}"
             sudo rm -rf ${dd}
         fi
-    done
-}
-
-
-# clean selenium dev environment
-clean-selenium-dev() {
-    local sel_home="${SELENIUM_HOME}"
-    local dirs=(
-        ${sel_home}/.venv/
-        ${sel_home}/build/
-        ${sel_home}/dist/
-        ${sel_home}/venv/
-        ${sel_home}/py/.venv/
-        ${sel_home}/py/build/
-        ${sel_home}/py/dist/
-        ${sel_home}/py/venv/
-    )
-    local recurse_dirs=(
-        ${sel_home}/**/.tox/
-        ${sel_home}/**/.*_cache/
-        ${sel_home}/**/*.egg-info/
-        ${sel_home}/**/__pycache__/
-    )
-    echo "cleaning up selenium dev environment ..."
-    if [ -n "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv"
-        deactivate
-    fi
-    for d in ${dirs[@]}; do
-        if [ -d ${d} ]; then
-            echo "deleting ${d}"
-            rm -rf ${d}
-        fi
-    done
-    for rd in ${recurse_dirs[@]}; do
-        echo "recursively deleting ${rd}"
-        rm -rf ${rd}
     done
 }
 
