@@ -160,6 +160,7 @@ blog() {
     killblog
     echo "running server at: ${jekyll_server}"
     cd "${blog_dir}"
+    bundle exec jekyll clean >/dev/null
     bundle exec jekyll s >/dev/null & disown # silence stdout
     sleep 3.5
     echo "opening browser at: http://${jekyll_server}"
