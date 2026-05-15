@@ -44,6 +44,7 @@
 #    - gnome-terminal (sudo apt install gnome-terminal)
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install google-drive-export)
+#    - mpv (sudo apt install mpv)
 #    - iostat (sudo apt install sysstat)
 #    - ncal (sudo apt install ncal)
 #    - pyenv (https://github.com/pyenv/pyenv)
@@ -107,6 +108,7 @@ DEPENDENCIES_LINUX=(
     "go"
     "google_drive_export"
     "iostat"
+    "mpv"
     "ncal"
     "pyenv"
     "rsync"

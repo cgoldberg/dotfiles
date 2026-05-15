@@ -85,6 +85,11 @@ alias sockets="ss --summary --numeric --processes --resolve --tcp --udp"
 alias web="sensible-browser"
 
 
+# display slideshow of images in given directory
+alias slideshow="mpv --fullscreen --shuffle --no-osd-bar --directory-mode=recursive \
+    --keep-open=no --loop-playlist=inf --image-display-duration=4"
+
+
 # --------------------------------- FUNCTIONS ---------------------------------
 
 
