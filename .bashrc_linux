@@ -86,8 +86,9 @@ alias web="sensible-browser"
 
 
 # display slideshow of images in given directory
-alias slideshow="mpv --fullscreen --shuffle --no-osd-bar --directory-mode=recursive \
-    --keep-open=no --loop-playlist=inf --image-display-duration=4"
+alias slideshow="mpv --fullscreen --shuffle --cursor-autohide=0 \
+    --directory-mode=recursive --image-display-duration=4 --keep-open=no \
+    --loop-playlist=inf --osd-level=0"
 
 
 # --------------------------------- FUNCTIONS ---------------------------------
