@@ -124,15 +124,9 @@ ips() {
 
 # show blocked firewall connections from systemd logs in reverse order
 firewall-blocks() {
-    local blue='\x1b[34m'
-    local green='\x1b[32m'
-    local reset='\x1b[0m'
-
     sudo journalctl -k -r -g 'UFW' | \
-        awk -v blue="${blue}" -v green="${green}" -v reset="${reset}" '{
-            # Print timestamp (date + time) and [UFW BLOCK]
+        awk -v blue="${BLUE}" -v green="${GREEN}" -v reset="${RESET}" '{
             printf "%s %s %s [UFW BLOCK]", $1,$2,$3
-
             for(i=1;i<=NF;i++){
                 if($i ~ /^SRC=/){
                     split($i,a,"=")
@@ -347,7 +341,7 @@ apt-check-available-backports() {
     local num_pkgs debian_codename installed_version backports_version pkg
     debian_codename=$(lsb_release -cs)
     num_pkgs=$(dpkg-query -W -f='${db:Status-Abbrev}\n' | grep -c '^ii')
-    echo "checking ${num_pkgs} installed packages for newer versions" \
+    echo "\nchecking ${num_pkgs} installed packages for newer versions" \
         "in ${debian_codename}-backports ..."
     echo
     printf "%b%-40s%b %-40s %-40s\n" \

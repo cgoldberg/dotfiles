@@ -36,6 +36,7 @@ esac
 
 # colors and symbols
 BOLD="\e[1m"
+BLUE="\e[34m"
 GREEN="\e[32m"
 RED="\e[31m"
 RESET="\e[0m"
