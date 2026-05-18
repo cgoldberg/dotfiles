@@ -347,9 +347,13 @@ apt-check-available-backports() {
     local num_pkgs debian_codename installed_version backports_version pkg
     debian_codename=$(lsb_release -cs)
     num_pkgs=$(dpkg-query -W -f='${db:Status-Abbrev}\n' | grep -c '^ii')
-    echo "checking ${num_pkgs} installed packages for updated versions" \
+    echo "checking ${num_pkgs} installed packages for newer versions" \
         "in ${debian_codename}-backports ..."
     echo
+    printf "%b%-40s%b %-40s %-40s\n" \
+        "${BOLD}${GREEN}" "Package" "${RESET}" \
+        "Installed Version" "Backports Version"
+    printf '%.0s-' {1..120}; echo
     for pkg in $(dpkg --get-selections | grep -v deinstall | cut -f1); do
         installed_version=$(dpkg-query -W -f='${Version}' "${pkg}")
         backports_version=$(apt-cache madison "${pkg}" | grep -oP \
@@ -359,8 +363,9 @@ apt-check-available-backports() {
             continue
         fi
         if dpkg --compare-versions "${backports_version}" gt "${installed_version}"; then
-            echo -e "\033[1;32m${pkg%%:*}\033[0m: Installed version: ${installed_version}," \
-                "Backports version: ${backports_version}"
+            printf "%b%-40s%b %-40s %-40s\n" \
+                "${BOLD}${GREEN}" "${pkg%%:*}" "${RESET}" \
+                "${installed_version}" "${backports_version}"
         fi
     done
 }
