@@ -124,8 +124,11 @@ ips() {
 
 # show blocked firewall connections from systemd logs in reverse order
 firewall-blocks() {
+    local blue="\x1b[34m"
+    local green="\x1b[32m"
+    local reset="\x1b[0m"
     sudo journalctl -k -r -g 'UFW' | \
-        awk -v blue="${BLUE}" -v green="${GREEN}" -v reset="${RESET}" '{
+        awk -v blue="${blue}" -v green="${green}" -v reset="${reset}" '{
             printf "%s %s %s [UFW BLOCK]", $1,$2,$3
             for(i=1;i<=NF;i++){
                 if($i ~ /^SRC=/){
