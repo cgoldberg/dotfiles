@@ -306,10 +306,16 @@ if is_linux; then
     dconf load /org/gnome/terminal/ < "./debian/dconf/${gnome_terminal_config}"
     echo
 
-    gnome_keybindings_config="gnome-keybindings.properties"
-    echo "setting keybindings dconf config from dotfiles repo ..."
-    echo -e "  loading: ${gnome_keybindings_config}"
-    dconf load /org/gnome/settings-daemon/plugins/media-keys/ < "./debian/dconf/${gnome_keybindings_config}"
+    gnome_media_keybindings_config="gnome-media-keybindings.properties"
+    echo "setting media keybindings dconf config from dotfiles repo ..."
+    echo -e "  loading: ${gnome_media_keybindings_config}"
+    dconf load /org/gnome/settings-daemon/plugins/media-keys/ < "./debian/dconf/${gnome_media_keybindings_config}"
+    echo
+
+    gnome_wm_keybindings_config="gnome-wm-keybindings.properties"
+    echo "setting window manager keybindings dconf config from dotfiles repo ..."
+    echo -e "  loading: ${gnome_wm_keybindings_config}"
+    dconf load /org/gnome/desktop/wm/keybindings/ < "./debian/dconf/${gnome_wm_keybindings_config}"
     echo
 
     fonts_dir="${HOME}/.local/share/fonts"

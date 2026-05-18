@@ -31,18 +31,36 @@ dconf load /org/gnome/terminal/ < gnome-terminal.properties
 
 ----
 
-## keybindings
+## keybindings (global shortcuts layer)
 
-`gnome-keybindings.properties` contains settings for keyboard keybindings.
+`gnome-media-keybindings.properties` contains settings for keyboard keybindings.
 
 - generate new file with current settings:
 
 ```
-dconf dump /org/gnome/settings-daemon/plugins/media-keys/ > gnome-keybindings.properties
+dconf dump /org/gnome/settings-daemon/plugins/media-keys/ > gnome-media-keybindings.properties
 ```
 
 - restore settings:
 
 ```
-dconf load /org/gnome/settings-daemon/plugins/media-keys/ < gnome-keybindings.properties
+dconf load /org/gnome/settings-daemon/plugins/media-keys/ < gnome-media-keybindings.properties
+```
+
+----
+
+## keybindings (window manager layer)
+
+`gnome-wm-keybindings.properties` contains settings for keyboard keybindings.
+
+- generate new file with current settings:
+
+```
+dconf dump /org/gnome/desktop/wm/keybindings/ > gnome-wm-keybindings.properties
+```
+
+- restore settings:
+
+```
+dconf load /org/gnome/desktop/wm/keybindings/ < gnome-wm-keybindings.properties
 ```
