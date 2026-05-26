@@ -180,6 +180,14 @@ if type pipx >/dev/null 2>&1; then
 fi
 
 
+# nvm
+if [ -d "${HOME}/.nvm" ]; then
+    export NVM_DIR="${HOME}/.nvm"
+    [ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"
+    [ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion"
+fi
+
+
 # fzf (fuzzy matching)
 if type fzf >/dev/null 2>&1; then
     eval "$(fzf --bash)"
