@@ -14,7 +14,6 @@
 #    - eza (cargo install eza, scoop install eza)
 #    - fd (cargo install fd-find, scoop install fd)
 #    - ffmpeg (sudo apt install ffmpeg, scoop install ffmpeg)
-#    - fzf (https://github.com/junegunn/fzf, scoop install fzf)
 #    - gdu (https://github.com/dundee/gdu, scoop install gdu)
 #    - gh (https://github.com/cli/cli, scoop install gh)
 #    - git-who (https://github.com/sinclairtarget/git-who)
@@ -31,7 +30,6 @@
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - tickrs (cargo install tickrs, scoop install tickrs)
 #    - yt-dlp (pipx-install yt-dlp[default])
-#    - zoxide (cargo install zoxide, scoop install zoxide)
 #
 #  - linux only:
 #    - bandwhich (cargo install bandwhich, then `sudo setcap cap_sys_ptrace,cap_dac_read_search,cap_net_raw,cap_net_admin+ep ~/.cargo/bin/bandwhich`)
@@ -77,7 +75,6 @@ DEPENDENCIES=(
     "eza"
     "fd"
     "ffmpeg"
-    "fzf"
     "gdu"
     "gh"
     "git-who"
@@ -94,7 +91,6 @@ DEPENDENCIES=(
     "subl"
     "tickrs"
     "yt-dlp"
-    "zoxide"
 )
 DEPENDENCIES_LINUX=(
     "bandwhich"
