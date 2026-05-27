@@ -869,9 +869,9 @@ pipx-install() {
         deactivate
     fi
     if [ -d "${HOME}/.pyenv" ]; then
-        pipx install "$1" --python "$(pyenv which python)"
+        pipx install "$1" --backend=pip --python "$(pyenv which python)"
     else
-        pipx install "$1"
+        pipx install "$1" --backend=pip
     fi
 }
 
@@ -897,14 +897,14 @@ pipx-upgrade-all() {
     local pipx_list_output=$(pipx list)
     echo "upgrading pipx apps ..."
     if [[ "${pipx_list_output}" == *"${py_version}"* ]]; then
-        pipx upgrade-all --pip-args=--upgrade-strategy=eager
+        pipx upgrade-all --backend=pip --pip-args=--upgrade-strategy=eager
     else
         echo "app versions don't match interpreter. reinstalling packages ..."
         echo
         if [ -d "${HOME}/.pyenv" ]; then
-            pipx reinstall-all --python "$(pyenv which python)"
+            pipx reinstall-all --backend=pip --python "$(pyenv which python)"
         else
-            pipx reinstall-all
+            pipx reinstall-all --backend=pip
         fi
     fi
     echo
