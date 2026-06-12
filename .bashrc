@@ -710,16 +710,19 @@ py-upgrade() {
         err "pyupgrade not found"
         return 1
     fi
-    find . \
-        -name "*.py" \
-        ! -path "*/.git/*" \
-        ! -path "*/.tox/*" \
-        ! -path "*/.pytest_cache/*" \
-        ! -path "*/__pycache__/*" \
-        ! -path "*/devtools/*" \
-        ! -path "*/venv/*" \
-        -print0 \
-            | xargs --null --no-run-if-empty pyupgrade --py310-plus
+    local count=0
+    while IFS= read -r -d '' file; do
+        pyupgrade --py310-plus "${file}"
+        count=$((count + 1))
+    done < <(
+        find . \
+            -name "*.py" \
+            ! -path "*/.git/*" \
+            ! -path "*/.tox/*" \
+            ! -path "*/venv/*" \
+            ! -path "*/"*"_cache/*" \
+            -print0
+    )
     # on Windows, pyupgrade rewrites files with LF line endings,
     # so we convert them back
     if [[ "${OSTYPE}" == "msys" || "${OSTYPE}" == "cygwin" ]]; then
@@ -727,13 +730,13 @@ py-upgrade() {
             -name "*.py" \
             ! -path "*/.git/*" \
             ! -path "*/.tox/*" \
-            ! -path "*/.pytest_cache/*" \
-            ! -path "*/__pycache__/*" \
-            ! -path "*/devtools/*" \
             ! -path "*/venv/*" \
+            ! -path "*/"*"_cache/*" \
             -print0 \
                 | xargs --null --no-run-if-empty unix2dos 2>/dev/null
         fi
+    echo
+    ok "Processed ${count} files"
 }
 
 
@@ -744,22 +747,28 @@ py-refurb() {
         err "refurb not found"
         return 1
     fi
-    find . \
-        -name "*.py" \
-        ! -path "*/.git/*" \
-        ! -path "*/.tox/*" \
-        ! -path "*/.pytest_cache/*" \
-        ! -path "*/__pycache__/*" \
-        ! -path "*/devtools/*" \
-        ! -path "*/venv/*" \
-        -print0 \
-            | xargs --null --no-run-if-empty refurb \
-                --enable-all \
-                --python-version 3.10 \
-                --disable FURB107 \
-                --disable FURB173 \
-                --disable FURB183 \
-                --disable FURB184
+    local count=0
+    while IFS= read -r -d '' file; do
+        refurb \
+            --enable-all \
+            --python-version 3.10 \
+            --disable FURB107 \
+            --disable FURB173 \
+            --disable FURB183 \
+            --disable FURB184 \
+        "${file}"
+        count=$((count + 1))
+    done < <(
+        find . \
+            -name "*.py" \
+            ! -path "*/.git/*" \
+            ! -path "*/.tox/*" \
+            ! -path "*/venv/*" \
+            ! -path "*/"*"_cache/*" \
+            -print0
+    )
+    echo
+    ok "Processed ${count} files"
 }
 
 
