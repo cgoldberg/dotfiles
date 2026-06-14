@@ -71,13 +71,11 @@ alias deact="deactivate"
 alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
 
 
-# show tcp/udp listening sockets
-# and summary of network connections
+# show tcp/udp listening sockets and summary of network connections
 alias listening="ss --summary --listening --numeric --processes --resolve --tcp --udp"
 
 
-# show tcp/udp non-listening sockets
-# and summary of network connections
+# show tcp/udp non-listening sockets and summary of network connections
 alias sockets="ss --summary --numeric --processes --resolve --tcp --udp"
 
 
@@ -92,6 +90,14 @@ alias slideshow="mpv --fullscreen --shuffle --cursor-autohide=0 \
 
 
 # --------------------------------- FUNCTIONS ---------------------------------
+
+
+# launch git client gui
+# opens repo in current directory or as specified in arg
+gitte() {
+    systemd-run --user --quiet flatpak run de.wwwtech.gitte "${1:-${PWD}}"
+    ok "Gitte launched"
+}
 
 
 # show disk space used by root filesystem and mounted filesystems
