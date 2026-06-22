@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: check-case-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=2000"]
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: detect-private-key
+      - id: check-json
+      - id: check-toml
+      - id: check-xml
+      - id: check-yaml
+  - repo: local
+    hooks:
+      - id: check-trailing-whitespace
+        name: check trailing whitespace
+        entry: bash -c 'git diff --cached --check'
+        language: system
+        stages: [pre-commit]

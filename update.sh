@@ -22,6 +22,7 @@
 #    - magick (sudo apt install imagemagick, scoop install imagemagick)
 #    - pandoc (https://github.com/jgm/pandoc, scoop install pandoc)
 #    - pipx (pip install --user pipx)
+#    - pre-commit (pipx-install pre-commit)
 #    - pyupgrade (pipx-install pyupgrade)
 #    - refurb (pipx-install refurb)
 #    - rg (cargo install ripgrep, scoop install ripgrep)
@@ -83,6 +84,7 @@ DEPENDENCIES=(
     "magick"
     "pandoc"
     "pipx"
+    "pre-commit"
     "pyupgrade"
     "refurb"
     "rg"
@@ -331,6 +333,18 @@ for config in "${CONFIGS[@]}"; do
     echo -e "  copying: ${config}"
     cp "${config}" "${HOME}"
 done
+echo
+
+git_hooks_dir="${HOME}/.git-hooks"
+pre_commit_git_hook="./pre-commit/pre-commit"
+echo "copying global pre-commit hook from dotfiles repo to ${git_hooks_dir} ..."
+mkdir --parents "${git_hooks_dir}"
+cp "${pre_commit_git_hook}" "${git_hooks_dir}"
+pre_commit_config_dir="${HOME}/.config/pre-commit"
+pre_commit_config="./pre-commit/pre-commit-config.yaml"
+echo "copying pre-commit config from dotfiles repo to ${pre_commit_config_dir} ..."
+mkdir --parents "${pre_commit_config_dir}"
+cp "${pre_commit_config}" "${pre_commit_config_dir}"
 echo
 
 pandoc_template_dir="${HOME}/.pandoc"

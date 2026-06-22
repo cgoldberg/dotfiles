@@ -22,6 +22,7 @@
     safecrlf = true
     fsmonitor = true
     untrackedcache = true
+    hooksPath = ~/.git-hooks
 
 [pull]
     rebase = true

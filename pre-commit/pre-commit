@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+CONFIG="${HOME}/.config/pre-commit/global-pre-commit-config.yaml"
+
+if [ -f "${CONFIG}" ]; then
+    exec pre-commit run --config "${CONFIG}" --hook-stage pre-commit
+fi
