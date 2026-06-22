@@ -419,7 +419,7 @@ gpip-uninstall() {
 # rename all files under the current directory (recursive),
 # replacing spaces with underscores. If inside a git repo,
 # renames will be tracked by git
-remove-whitespace-from-filenames() {
+replace-whitespace-in-filenames() {
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         find . -path ./.git -prune -o -type f -name "* *" \
             -exec bash -c 'git mv "$0" "${0// /_}"' {} \;
@@ -430,15 +430,28 @@ remove-whitespace-from-filenames() {
 }
 
 
-# remove trailing whitespace from lines in all files
-# under current directory (recursive)
-remove-trailing-whitespace-from-files() {
-    find . -type f -print0 | xargs -r0 sed -e 's/[[:blank:]]\+$//' -i
+# remove trailing whitespace from lines in given file
+# - usage: trim-trailing-whitespace <file>
+trim-trailing-whitespace() {
+    if [ -z "$1" ]; then
+        err "please specify a file name"
+        return 1
+    fi
+    echo "trimming whitespace ..."
+    sed -i -e 's/[[:blank:]]\+$//' "$1"
+}
+
+
+# remove trailing whitespace from lines in all files under
+# current directory (recursive)
+trim-trailing-whitespace-from-files() {
+    echo "trimming whitespace ..."
+    find . -type f -print0 | xargs -r0 sed -i -e 's/[[:blank:]]\+$//'
 }
 
 
 # remove metadata from an image
-# - usage: clean-img-metadata <image_file_or_glob> ...
+# - usage: clean-img-metadata <image_file_or_glob>
 clean-img-metadata() {
     if [ -z "$1" ]; then
         err "please specify an image file or glob pattern with matches"
@@ -449,7 +462,6 @@ clean-img-metadata() {
         return 1
     fi
     echo "removing metadata ..."
-    echo
     # keep orientation tag
     exiftool -all= -tagsfromfile @ -Orientation -overwrite_original "$@" 2>/dev/null
 }
