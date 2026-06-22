@@ -339,11 +339,15 @@ git_hooks_dir="${HOME}/.git-hooks"
 pre_commit_git_hook="./pre-commit/pre-commit"
 echo "copying global pre-commit hook from dotfiles repo to ${git_hooks_dir} ..."
 mkdir --parents "${git_hooks_dir}"
+echo -e "  copying: ${pre_commit_git_hook}"
 cp "${pre_commit_git_hook}" "${git_hooks_dir}"
+echo
+
 pre_commit_config_dir="${HOME}/.config/pre-commit"
-pre_commit_config="./pre-commit/pre-commit-config.yaml"
+pre_commit_config="./pre-commit/global-pre-commit-config.yaml"
 echo "copying pre-commit config from dotfiles repo to ${pre_commit_config_dir} ..."
 mkdir --parents "${pre_commit_config_dir}"
+echo -e "  copying: ${pre_commit_config}"
 cp "${pre_commit_config}" "${pre_commit_config_dir}"
 echo
 
