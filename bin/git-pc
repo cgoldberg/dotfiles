@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+#
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+#
+# run global pre-commit git hooks on all tracked files under the
+# current directory (recursive)
+
+
+CONFIG="${HOME}/.config/pre-commit/global-pre-commit-config.yaml"
+BOLD="\033[1m"
+WHITE="\033[97m"
+RESET="\033[0m"
+
+if ! type git >/dev/null 2>&1; then
+    die "fatal: can't find git"
+fi
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    die "fatal: not a git repository"
+fi
+
+if [ ! -f "${CONFIG}" ]; then
+    err "no config found at: ${CONFIG}"
+    return 1
+else
+    echo
+    echo -e "${BOLD}${WHITE}running pre-commit hooks...${RESET}"
+    start=$(date +%s%3N)
+    git ls-files -z -- . | xargs --null --no-run-if-empty \
+        pre-commit run --config "${CONFIG}" --files
+    status=$?
+    end=$(date +%s%3N)
+    elapsed_ms=$((end - start))
+    elapsed_s=$(awk "BEGIN {printf \"%.2f\", ${elapsed_ms} / 1000}")
+    num_files=$(git ls-files | wc -l | numfmt --grouping)
+    echo -e "${BOLD}${WHITE}pre-commit checked ${num_files} files in: ${elapsed_s}s${RESET}"
+    echo
+    exit ${status}
+fi
