@@ -24,4 +24,3 @@ if __name__ == '__main__':
                 path = os.path.join(root, f)
                 print(f'removing: {path}')
                 os.unlink(path)
-
