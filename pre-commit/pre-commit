@@ -3,19 +3,18 @@
 CONFIG="${HOME}/.config/pre-commit/global-pre-commit-config.yaml"
 
 BOLD="\033[1m"
-WHITE="\033[97m"
 RESET="\033[0m"
 
 if [ -f "${CONFIG}" ]; then
     echo
     echo -e "${BOLD}${WHITE}running pre-commit hooks...${RESET}"
     start=$(date +%s%3N)
-    pre-commit run --config "${CONFIG}" --hook-stage pre-commit
+    pre-commit run --config "${CONFIG}"
     status=$?
     end=$(date +%s%3N)
     elapsed_ms=$((end - start))
     elapsed_s=$(awk "BEGIN {printf \"%.2f\", ${elapsed_ms} / 1000}")
-    echo -e "${BOLD}${WHITE}pre-commit finished in: ${elapsed_s}s${RESET}"
+    echo -e "${BOLD}pre-commit finished in: ${elapsed_s}s${RESET}"
     echo
     exit ${status}
 fi
