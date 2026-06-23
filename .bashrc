@@ -438,7 +438,7 @@ trim-trailing-whitespace() {
         return 1
     fi
     echo "trimming whitespace ..."
-    sed -i -e 's/[[:blank:]]\+$//' "$1"
+    perl -pi -e 's/[ \t]+(?=\r?$)//' "$1"
 }
 
 
@@ -446,7 +446,8 @@ trim-trailing-whitespace() {
 # current directory (recursive)
 trim-trailing-whitespace-from-files() {
     echo "trimming whitespace ..."
-    find . -type f -print0 | xargs -r0 sed -i -e 's/[[:blank:]]\+$//'
+    find . -type f -print0 \
+        | xargs --null --no-run-if-empty sed -i -e 's/[[:blank:]]*$//'
 }
 
 
