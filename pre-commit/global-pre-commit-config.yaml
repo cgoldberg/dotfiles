@@ -5,16 +5,16 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: mixed-line-ending
+      - id: destroyed-symlinks
+      - id: detect-private-key
       - id: check-case-conflict
       - id: check-merge-conflict
         args: [--assume-in-merge]
       - id: check-added-large-files
         args: ["--maxkb=1000"]
-      - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
+      - id: check-executables-have-shebangs
       - id: check-symlinks
-      - id: destroyed-symlinks
-      - id: detect-private-key
       - id: check-json
       - id: check-toml
       - id: check-yaml
