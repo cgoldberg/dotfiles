@@ -1,20 +1,30 @@
 #!/usr/bin/env bash
 
 CONFIG="${HOME}/.config/pre-commit/global-pre-commit-config.yaml"
-BOLD="\033[1m"
-WHITE="\033[97m"
-RESET="\033[0m"
+BOLD="\e[1m"
+GREEN="\e[32m"
+RED="\e[31m"
+WHITE="\e[97m"
+RESET="\e[0m"
+CHECK="\u2713"
+CROSS="\u2717"
 
-if [ -f "${CONFIG}" ]; then
-    echo
-    echo -e "${BOLD}${WHITE}running pre-commit hooks...${RESET}"
-    start=$(date +%s%3N)
-    pre-commit run --config "${CONFIG}"
-    status=$?
-    end=$(date +%s%3N)
-    elapsed_ms=$((end - start))
-    elapsed_s=$(awk "BEGIN {printf \"%.2f\", ${elapsed_ms} / 1000}")
-    echo -e "${BOLD}${WHITE}pre-commit finished in: ${elapsed_s}s${RESET}"
-    echo
-    exit ${status}
+echo
+echo -e "${BOLD}${WHITE}running pre-commit hooks...${RESET}"
+start=$(date +%s%3N)
+pre-commit run --config "${CONFIG}"
+status=$?
+end=$(date +%s%3N)
+elapsed_ms=$((end - start))
+elapsed_s=$(awk "BEGIN {printf \"%.2f\", ${elapsed_ms} / 1000}")
+if [ "${status}" -eq 0 ]; then
+    marker="${CHECK}"
+    color="${GREEN}"
+else
+    marker="${CROSS}"
+    color="${RED}"
 fi
+echo -en "${BOLD}${color}${marker}${RESET} "
+echo -e "${BOLD}${WHITE}pre-commit checks finished in: ${elapsed_s}s${RESET}"
+echo
+exit ${status}

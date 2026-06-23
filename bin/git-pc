@@ -8,9 +8,11 @@
 
 CONFIG="${HOME}/.config/pre-commit/global-pre-commit-config.yaml"
 BOLD="\e[1m"
+GREEN="\e[32m"
 RED="\e[31m"
 WHITE="\e[97m"
 RESET="\e[0m"
+CHECK="\u2713"
 CROSS="\u2717"
 
 die() {
@@ -28,18 +30,26 @@ fi
 
 if [ ! -f "${CONFIG}" ]; then
     die "no config found at: ${CONFIG}"
-else
-    echo
-    echo -e "${BOLD}${WHITE}running pre-commit hooks...${RESET}"
-    start=$(date +%s%3N)
-    git ls-files -z -- . | xargs --null --no-run-if-empty \
-        pre-commit run --config "${CONFIG}" --files
-    status=$?
-    end=$(date +%s%3N)
-    elapsed_ms=$((end - start))
-    elapsed_s=$(awk "BEGIN {printf \"%.2f\", ${elapsed_ms} / 1000}")
-    num_files=$(git ls-files | wc -l | numfmt --grouping)
-    echo -e "${BOLD}${WHITE}pre-commit checked ${num_files} files in: ${elapsed_s}s${RESET}"
-    echo
-    exit ${status}
 fi
+
+echo
+echo -e "${BOLD}${WHITE}running pre-commit hooks...${RESET}"
+start=$(date +%s%3N)
+git ls-files -z -- . | xargs --null --no-run-if-empty \
+    pre-commit run --config "${CONFIG}" --files
+status=$?
+end=$(date +%s%3N)
+elapsed_ms=$((end - start))
+elapsed_s=$(awk "BEGIN {printf \"%.2f\", ${elapsed_ms} / 1000}")
+num_files=$(git ls-files | wc -l | numfmt --grouping)
+if [ "${status}" -eq 0 ]; then
+    marker="${CHECK}"
+    color="${GREEN}"
+else
+    marker="${CROSS}"
+    color="${RED}"
+fi
+echo -en "${BOLD}${color}${marker}${RESET} "
+echo -e "${BOLD}${WHITE}pre-commit checked ${num_files} files in: ${elapsed_s}s${RESET}"
+echo
+exit ${status}
