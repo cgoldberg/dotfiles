@@ -7,9 +7,16 @@
 
 
 CONFIG="${HOME}/.config/pre-commit/global-pre-commit-config.yaml"
-BOLD="\033[1m"
-WHITE="\033[97m"
-RESET="\033[0m"
+BOLD="\e[1m"
+RED="\e[31m"
+WHITE="\e[97m"
+RESET="\e[0m"
+CROSS="\u2717"
+
+die() {
+    printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
+    exit 1
+}
 
 if ! type git >/dev/null 2>&1; then
     die "fatal: can't find git"
@@ -20,8 +27,7 @@ if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
 fi
 
 if [ ! -f "${CONFIG}" ]; then
-    err "no config found at: ${CONFIG}"
-    return 1
+    die "no config found at: ${CONFIG}"
 else
     echo
     echo -e "${BOLD}${WHITE}running pre-commit hooks...${RESET}"
