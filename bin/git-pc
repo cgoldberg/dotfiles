@@ -50,6 +50,7 @@ else
     color="${RED}"
 fi
 echo -en "${BOLD}${color}${marker}${RESET} "
-echo -e "${BOLD}${WHITE}pre-commit checks finished in: ${elapsed_s}s${RESET} (${num_files} files)"
+echo -en "${BOLD}${WHITE}pre-commit checks finished in: "
+echo -e "${elapsed_s}s (${num_files} files)${RESET}"
 echo
 exit ${status}
