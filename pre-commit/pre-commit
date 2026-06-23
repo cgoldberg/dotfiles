@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 CONFIG="${HOME}/.config/pre-commit/global-pre-commit-config.yaml"
-
 BOLD="\033[1m"
+WHITE="\033[97m"
 RESET="\033[0m"
 
 if [ -f "${CONFIG}" ]; then
@@ -14,7 +14,7 @@ if [ -f "${CONFIG}" ]; then
     end=$(date +%s%3N)
     elapsed_ms=$((end - start))
     elapsed_s=$(awk "BEGIN {printf \"%.2f\", ${elapsed_ms} / 1000}")
-    echo -e "${BOLD}pre-commit finished in: ${elapsed_s}s${RESET}"
+    echo -e "${BOLD}${WHITE}pre-commit finished in: ${elapsed_s}s${RESET}"
     echo
     exit ${status}
 fi
