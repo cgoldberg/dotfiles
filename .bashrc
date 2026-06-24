@@ -34,6 +34,7 @@ case $- in
         ;;
 esac
 
+
 # colors and symbols
 BOLD="\e[1m"
 BLUE="\e[34m"
@@ -42,6 +43,7 @@ RED="\e[31m"
 RESET="\e[0m"
 CHECK="\u2713"
 CROSS="\u2717"
+
 
 # export environment variables
 export LANGUAGE="en_US"
@@ -60,6 +62,7 @@ else
     export EDITOR="vi"
 fi
 export VISUAL="${EDITOR}"
+
 
 # set a colored prompt with:
 # - user:dir
