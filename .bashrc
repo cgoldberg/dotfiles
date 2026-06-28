@@ -873,29 +873,16 @@ run-pytest-with-cov() {
         err "not a python project"
         return 1
     fi
-    local project_dirs cov_args d
-    mapfile -t project_dirs < <(
-        find . -type f -name "*.py" \
-            ! -path "*/tests/*" \
-            ! -path "*/test_*" \
-            ! -path "*/venv/*" \
-            ! -path "*/site-packages/*" \
-            ! -path "*/dist-packages/*" \
-            -exec dirname {} \; | sort -u
-    )
-    cov_args=(
-        --cov-branch
-        --cov-context=test
-        --cov-report=html
-    )
-    for d in "${project_dirs[@]}"; do
-        cov_args+=(--cov="${d}")
-    done
     rm -rf ./htmlcov
     venv
     pip install --group test --upgrade --editable . || pip install --upgrade --editable .
     pip install --upgrade pytest-cov
-    pytest "${cov_args[@]}"
+    pytest \
+        --cov \
+        --cov-branch \
+        --cov-context=test \
+        --cov-report=html \
+        --cov-omit="*/tests/*,*/test_*,*/venv/*,*/.venv/*,*/site-packages/*,*/dist-packages/*,*/build/*,*/dist/*"
     web ./htmlcov/index.html
 }
 
