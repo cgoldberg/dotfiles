@@ -890,6 +890,7 @@ omit =
     */dist/*
 EOF
     trap 'rm -f "${cov_cfg}"' EXIT
+    echo "installing packages..."
     venv
     pip install --group test --upgrade --editable . || pip install --upgrade --editable .
     pip install --upgrade pytest-cov
