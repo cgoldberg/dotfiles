@@ -65,22 +65,12 @@ alias killall="killall --ignore-case --process-group --wait"
 alias wget="wget --hsts-file=/dev/null"
 
 
-# python virtual env
-alias activate="source ./venv/bin/activate"
-alias deact="deactivate"
-alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
-
-
 # show tcp/udp listening sockets and summary of network connections
 alias listening="ss --summary --listening --numeric --processes --resolve --tcp --udp"
 
 
 # show tcp/udp non-listening sockets and summary of network connections
 alias sockets="ss --summary --numeric --processes --resolve --tcp --udp"
-
-
-# open url or file in default browser
-alias web="sensible-browser"
 
 
 # display slideshow of images in given directory
@@ -125,6 +115,16 @@ ips() {
     if [ -n "${ipv6}" ]; then
         echo "IPv6: ${ipv6}"
     fi
+}
+
+
+# open url or file in default browser
+web() {
+    if [ -z "$1" ]; then
+        err "please enter a file or url"
+        return 1
+    fi
+    sensible-browser "$1"
 }
 
 
@@ -533,6 +533,15 @@ update-pyenv() {
     pyenv global
     echo
     ok "done updating pythons"
+}
+
+
+# create/activate python virtual env
+venv() {
+    if [ ! -d venv/ ]; then
+        python3 -m venv --upgrade-deps venv
+    fi
+    source ./venv/bin/activate
 }
 
 

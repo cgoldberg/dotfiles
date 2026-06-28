@@ -831,6 +831,7 @@ clean-py() {
         venv
     )
     local recurse_files=(
+        *.coverage
         *.spec
         *.pyc
     )
@@ -858,6 +859,31 @@ clean-py() {
     done
     echo
     ok "done"
+}
+
+
+run-pytest-with-cov() {
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        err "not a git repository"
+        return 1
+    fi
+    local project_dirs
+    mapfile -t project_dirs < <(
+        find . -type f -name "*.py" \
+            ! -path "*/tests/*" \
+            ! -path "*/test_*" \
+            ! -path "*/venv/*" \
+            ! -path "*/site-packages/*" \
+            ! -path "*/dist-packages/*" \
+            -exec dirname {} \; | sort -u
+    )
+    rm -rf ./htmlcov
+    venv
+    pip install --upgrade --editable .
+    pip install --upgrade pytest-cov
+    local IFS=,
+    pytest --cov="${project_dirs[*]}" --cov-context=test --cov-report=html
+    web ./htmlcov/index.html
 }
 
 

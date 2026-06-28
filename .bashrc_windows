@@ -15,12 +15,6 @@ fi
 PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 
 
-# python virtual env
-alias activate="source ./venv/Scripts/activate"
-alias deact="deactivate"
-alias venv="[ ! -d venv/ ] && python3 -m venv --upgrade-deps venv && activate || activate"
-
-
 # exit shell
 alias x="TASKKILL //F //IM git.exe >/dev/null 2>&1; exit"
 
@@ -87,3 +81,12 @@ scoop-update-all() {
 if [ "${PWD}" == "${HOME}" ] && [ -z "${OLDPWD}" ] && [ -d "${HOME}/code" ]; then
     cd "${HOME}/code"
 fi
+
+
+# create/activate python virtual env
+venv() {
+    if [ ! -d venv/ ]; then
+        python3 -m venv --upgrade-deps venv
+    fi
+    source ./venv/Scripts/activate
+}
