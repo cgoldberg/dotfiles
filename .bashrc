@@ -683,10 +683,6 @@ wl() {
 # - ignores .git directories
 # - uses fd if available
 countfiles() {
-    if ! type git >/dev/null 2>&1; then
-        err "git not found"
-        return 1
-    fi
     if [ -n "$1" ]; then
         local path=". $1"
     else
@@ -831,6 +827,7 @@ clean-py() {
         .venv
         .*_cache
         *.egg-info
+        htmlcov
         venv
     )
     local recurse_files=(
