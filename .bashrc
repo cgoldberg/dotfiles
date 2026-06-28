@@ -873,7 +873,9 @@ run-pytest-with-cov() {
         err "not a python project"
         return 1
     fi
-    local cov_cfg="$(mktemp)"
+    local tmp_dir="$(mktemp -d)"
+    local html_dir="${tmp_dir}/html"
+    local cov_cfg="${tmp_dir}/coveragerc"
     cat > "${cov_cfg}" <<'EOF'
 [run]
 branch = True
@@ -891,14 +893,12 @@ EOF
     venv
     pip install --group test --upgrade --editable . || pip install --upgrade --editable .
     pip install --upgrade pytest-cov
-    rm -rf ./htmlcov
-    pytest \
+    COVERAGE_FILE="${tmp_dir}/.coverage" pytest \
         --cov=. \
-        --cov-branch \
         --cov-context=test \
-        --cov-report=html \
-        --cov-config="${cov_cfg}"
-    web ./htmlcov/index.html
+        --cov-config="${cov_cfg}" \
+        --cov-report=html:"${html_dir}"
+    web "${html_dir}/index.html"
 }
 
 
