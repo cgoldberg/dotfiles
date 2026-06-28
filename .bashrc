@@ -873,16 +873,31 @@ run-pytest-with-cov() {
         err "not a python project"
         return 1
     fi
-    rm -rf ./htmlcov
+    local cov_cfg="$(mktemp)"
+    cat > "${cov_cfg}" <<'EOF'
+[run]
+branch = True
+omit =
+    */tests/*
+    */test_*
+    */venv/*
+    */.venv/*
+    */site-packages/*
+    */dist-packages/*
+    */build/*
+    */dist/*
+EOF
+    trap 'rm -f "${cov_cfg}"' EXIT
     venv
     pip install --group test --upgrade --editable . || pip install --upgrade --editable .
     pip install --upgrade pytest-cov
+    rm -rf ./htmlcov
     pytest \
-        --cov \
+        --cov=. \
         --cov-branch \
         --cov-context=test \
         --cov-report=html \
-        --cov-omit="*/tests/*,*/test_*,*/venv/*,*/.venv/*,*/site-packages/*,*/dist-packages/*,*/build/*,*/dist/*"
+        --cov-config="${cov_cfg}"
     web ./htmlcov/index.html
 }
 
