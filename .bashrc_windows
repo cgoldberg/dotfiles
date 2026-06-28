@@ -78,9 +78,12 @@ scoop-update-all() {
 }
 
 
-if [ "${PWD}" == "${HOME}" ] && [ -z "${OLDPWD}" ] && [ -d "${HOME}/code" ]; then
-    cd "${HOME}/code"
-fi
+# activate python virtual env
+activate() {
+    if [ -d venv/ ]; then
+        source ./venv/Scripts/activate
+    fi
+}
 
 
 # create/activate python virtual env
@@ -88,5 +91,10 @@ venv() {
     if [ ! -d venv/ ]; then
         python3 -m venv --upgrade-deps venv
     fi
-    source ./venv/Scripts/activate
+    activate
 }
+
+
+if [ "${PWD}" == "${HOME}" ] && [ -z "${OLDPWD}" ] && [ -d "${HOME}/code" ]; then
+    cd "${HOME}/code"
+fi

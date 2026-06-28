@@ -879,7 +879,7 @@ run-pytest-with-cov() {
     )
     rm -rf ./htmlcov
     venv
-    pip install --upgrade --editable .
+    pip install --group test --upgrade --editable . || pip install --upgrade --editable .
     pip install --upgrade pytest-cov
     local IFS=,
     pytest --cov="${project_dirs[*]}" --cov-context=test --cov-report=html
