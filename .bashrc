@@ -862,12 +862,18 @@ clean-py() {
 }
 
 
+# run pytest with coverage and open html report in browser
 run-pytest-with-cov() {
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         err "not a git repository"
         return 1
     fi
-    local project_dirs
+    cd "$(git rev-parse --show-toplevel)"
+    if [ ! -f "pyproject.toml" ]; then
+        err "not a python project"
+        return 1
+    fi
+    local project_dirs cov_args d
     mapfile -t project_dirs < <(
         find . -type f -name "*.py" \
             ! -path "*/tests/*" \
@@ -877,12 +883,19 @@ run-pytest-with-cov() {
             ! -path "*/dist-packages/*" \
             -exec dirname {} \; | sort -u
     )
+    cov_args=(
+        --cov-branch
+        --cov-context=test
+        --cov-report=html
+    )
+    for d in "${project_dirs[@]}"; do
+        cov_args+=(--cov="${d}")
+    done
     rm -rf ./htmlcov
     venv
     pip install --group test --upgrade --editable . || pip install --upgrade --editable .
     pip install --upgrade pytest-cov
-    local IFS=,
-    pytest --cov="${project_dirs[*]}" --cov-context=test --cov-report=html
+    pytest "${cov_args[@]}"
     web ./htmlcov/index.html
 }
 
