@@ -440,7 +440,7 @@ trim-trailing-whitespace() {
         err "please specify a file name"
         return 1
     fi
-    echo "trimming whitespace ..."
+    echo "trimming whitespace..."
     perl -pi -e 's/[ \t]+(?=\r?$)//' "$1"
 }
 
@@ -448,7 +448,7 @@ trim-trailing-whitespace() {
 # remove trailing whitespace from lines in all files under
 # current directory (recursive)
 trim-trailing-whitespace-from-files() {
-    echo "trimming whitespace ..."
+    echo "trimming whitespace..."
     find . -type f -print0 \
         | xargs --null --no-run-if-empty sed -i -e 's/[[:blank:]]*$//'
 }
@@ -465,7 +465,7 @@ clean-img-metadata() {
         err "exiftool not found"
         return 1
     fi
-    echo "removing metadata ..."
+    echo "removing metadata..."
     # keep orientation tag
     exiftool -all= -tagsfromfile @ -Orientation -overwrite_original "$@" 2>/dev/null
 }
@@ -639,7 +639,7 @@ alias md="makedir"
 
 # reload shell configuration
 re-source() {
-    echo 'sourcing ~/.bashrc ...'
+    echo 'sourcing ~/.bashrc...'
     unalias -a # remove all aliases
     source "${HOME}/.bashrc"
     # if a virtual env is active, reactivate it, since the prompt
@@ -654,7 +654,7 @@ re-source() {
 weather() {
     date
     echo
-    echo -ne "fetching weather ...\r"
+    echo -ne "fetching weather...\r"
     curl --max-time 10 https://wttr.in/Boston?2F
     echo
 }
@@ -786,7 +786,7 @@ py-refurb() {
 
 # clean pip/pipx cache
 clean-pip() {
-    echo "cleaning pip/pipx cache ..."
+    echo "cleaning pip/pipx cache..."
     pip cache purge
     local dirs=(
         "${HOME}/.cache/pip/"
@@ -839,7 +839,7 @@ clean-py() {
         echo "deactivating venv"
         deactivate
     fi
-    echo "cleaning python dev/temp files ..."
+    echo "cleaning python dev/temp files..."
     echo
     for d in "${dirs[@]}"; do
         if [ -d ${d} ]; then
@@ -938,19 +938,19 @@ pipx-upgrade-all() {
         echo "deactivating venv"
         deactivate
     fi
-    echo "upgrading pip ..."
+    echo "upgrading pip..."
     PIP_REQUIRE_VIRTUALENV=false python -m pip install --upgrade \
         --upgrade-strategy=eager pip
-    echo "upgrading pipx ..."
+    echo "upgrading pipx..."
     PIP_REQUIRE_VIRTUALENV=false pip install --user --upgrade \
         --upgrade-strategy=eager pipx
     local py_version=$(python3 --version)
     local pipx_list_output=$(pipx list)
-    echo "upgrading pipx apps ..."
+    echo "upgrading pipx apps..."
     if [[ "${pipx_list_output}" == *"${py_version}"* ]]; then
         pipx upgrade-all --backend=pip --pip-args=--upgrade-strategy=eager
     else
-        echo "app versions don't match interpreter. reinstalling packages ..."
+        echo "app versions don't match interpreter. reinstalling packages..."
         echo
         if [ -d "${HOME}/.pyenv" ]; then
             pipx reinstall-all --backend=pip --python "$(pyenv which python)"

@@ -256,14 +256,14 @@ current_branch=$(git branch --show-current)
 default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's/.*\///')
 
 git checkout "${default_branch}" >/dev/null 2>&1
-echo "syncing local branches in ${DOTFILES_HOME} from github ..."
+echo "syncing local branches in ${DOTFILES_HOME} from github..."
 git sync
 echo
 
 # --------------------------------- CONFIGS -----------------------------------
 
 if is_windows; then
-    echo "copying windows configs from dotfiles repo to ${HOME} ..."
+    echo "copying windows configs from dotfiles repo to ${HOME}..."
     for config in "${WIN_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
@@ -272,7 +272,7 @@ if is_windows; then
 
     alacritty_dir="${APPDATA//\\//}/alacritty"
     alacritty_config="./alacritty/alacritty.toml"
-    echo "copying alacritty config from dotfiles repo to ${alacritty_dir} ..."
+    echo "copying alacritty config from dotfiles repo to ${alacritty_dir}..."
     mkdir --parents "${alacritty_dir}"
     echo -e "  copying: ${alacritty_config}"
     cp "${alacritty_config}" "${alacritty_dir}"
@@ -280,7 +280,7 @@ if is_windows; then
 fi
 
 if is_linux; then
-    echo "copying linux configs from dotfiles repo to ${HOME} ..."
+    echo "copying linux configs from dotfiles repo to ${HOME}..."
     for config in "${LINUX_CONFIGS[@]}"; do
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
@@ -289,7 +289,7 @@ if is_linux; then
 
     btop_dir="${HOME}/.config/btop"
     btop_config="./btop/btop.conf"
-    echo "copying btop config from dotfiles repo to ${btop_dir} ..."
+    echo "copying btop config from dotfiles repo to ${btop_dir}..."
     mkdir --parents "${btop_dir}"
     echo -e "  copying: ${btop_config}"
     cp "${btop_config}" "${btop_dir}"
@@ -297,43 +297,43 @@ if is_linux; then
 
     sublime_dir="${HOME}/.config/sublime-text/Packages/User"
     sublime_config="./sublime/Preferences.sublime-settings"
-    echo "copying sublime config from dotfiles repo to ${sublime_dir} ..."
+    echo "copying sublime config from dotfiles repo to ${sublime_dir}..."
     mkdir --parents "${sublime_dir}"
     echo -e "  copying: ${sublime_config}"
     cp "${sublime_config}" "${sublime_dir}"
     echo
 
     gnome_terminal_config="gnome-terminal.properties"
-    echo "setting gnome-terminal dconf config from dotfiles repo ..."
+    echo "setting gnome-terminal dconf config from dotfiles repo..."
     echo -e "  loading: ${gnome_terminal_config}"
     dconf load /org/gnome/terminal/ < "./debian/dconf/${gnome_terminal_config}"
     echo
 
     gnome_media_keybindings_config="gnome-media-keybindings.properties"
-    echo "setting media keybindings dconf config from dotfiles repo ..."
+    echo "setting media keybindings dconf config from dotfiles repo..."
     echo -e "  loading: ${gnome_media_keybindings_config}"
     dconf load /org/gnome/settings-daemon/plugins/media-keys/ < "./debian/dconf/${gnome_media_keybindings_config}"
     echo
 
     gnome_wm_keybindings_config="gnome-wm-keybindings.properties"
-    echo "setting window manager keybindings dconf config from dotfiles repo ..."
+    echo "setting window manager keybindings dconf config from dotfiles repo..."
     echo -e "  loading: ${gnome_wm_keybindings_config}"
     dconf load /org/gnome/desktop/wm/keybindings/ < "./debian/dconf/${gnome_wm_keybindings_config}"
     echo
 
     fonts_dir="${HOME}/.local/share/fonts"
-    echo "copying fonts from dotfiles repo to ${fonts_dir} ..."
+    echo "copying fonts from dotfiles repo to ${fonts_dir}..."
     mkdir --parents "${fonts_dir}"
     for ttf in ./debian/fonts/*.ttf; do
         echo -e "  copying: ${ttf}"
         cp "${ttf}" "${fonts_dir}"
     done
-    echo "rebuilding font cache ..."
+    echo "rebuilding font cache..."
     fc-cache -f "${fonts_dir}"
     echo
 fi
 
-echo "copying configs from dotfiles repo to ${HOME} ..."
+echo "copying configs from dotfiles repo to ${HOME}..."
 for config in "${CONFIGS[@]}"; do
     echo -e "  copying: ${config}"
     cp "${config}" "${HOME}"
@@ -342,7 +342,7 @@ echo
 
 git_hooks_dir="${HOME}/.git-hooks"
 pre_commit_git_hook="./pre-commit/pre-commit"
-echo "copying global pre-commit hook from dotfiles repo to ${git_hooks_dir} ..."
+echo "copying global pre-commit hook from dotfiles repo to ${git_hooks_dir}..."
 mkdir --parents "${git_hooks_dir}"
 echo -e "  copying: ${pre_commit_git_hook}"
 cp "${pre_commit_git_hook}" "${git_hooks_dir}"
@@ -350,7 +350,7 @@ echo
 
 pre_commit_config_dir="${HOME}/.config/pre-commit"
 pre_commit_config="./pre-commit/global-pre-commit-config.yaml"
-echo "copying pre-commit config from dotfiles repo to ${pre_commit_config_dir} ..."
+echo "copying pre-commit config from dotfiles repo to ${pre_commit_config_dir}..."
 mkdir --parents "${pre_commit_config_dir}"
 echo -e "  copying: ${pre_commit_config}"
 cp "${pre_commit_config}" "${pre_commit_config_dir}"
@@ -358,7 +358,7 @@ echo
 
 pandoc_template_dir="${HOME}/.pandoc"
 pandoc_templates=("./pandoc/template.html" "./pandoc/template.css")
-echo "copying pandoc templates from dotfiles repo to ${pandoc_template_dir} ..."
+echo "copying pandoc templates from dotfiles repo to ${pandoc_template_dir}..."
 mkdir --parents "${pandoc_template_dir}"
 for template in "${pandoc_templates[@]}"; do
     echo -e "  copying: ${template}"
@@ -368,7 +368,7 @@ echo
 
 # --------------------------------- SCRIPTS -----------------------------------
 
-echo "copying scripts from dotfiles repo to ${BIN_DIR} ..."
+echo "copying scripts from dotfiles repo to ${BIN_DIR}..."
 for script in "${SCRIPTS[@]}"; do
     echo -e "  copying: ${script}"
     cp "${script}" "${BIN_DIR}"
@@ -376,7 +376,7 @@ done
 echo
 
 if is_linux; then
-    echo "copying linux scripts from dotfiles repo to ${BIN_DIR} ..."
+    echo "copying linux scripts from dotfiles repo to ${BIN_DIR}..."
     for script in "${LINUX_SCRIPTS[@]}"; do
         echo -e "  copying: ${script}"
         cp "${script}" "${BIN_DIR}"
@@ -384,7 +384,7 @@ if is_linux; then
     echo
 fi
 
-echo "downloading git scripts from github to ${BIN_DIR} ..."
+echo "downloading git scripts from github to ${BIN_DIR}..."
 for script in "${GIT_SCRIPTS[@]}"; do
     url="https://raw.githubusercontent.com/cgoldberg/git-scripts/refs/heads/main/${script}"
     echo -e "  downloading: ./${BIN_DIR##*/}/${script}"

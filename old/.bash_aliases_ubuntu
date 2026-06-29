@@ -73,7 +73,7 @@ alias ebrc="subl -n ${HOME}/.bashrc ${HOME}/.bash_aliases"
 alias funcs="compgen -a -A function | grep -v ^_ | sort"
 
 # reset shell and reload shell configurations
-alias re-source="echo 'sourcing ${HOME}/.bashrc ...' && tput reset && source ${HOME}/.bashrc"
+alias re-source="echo 'sourcing ${HOME}/.bashrc...' && tput reset && source ${HOME}/.bashrc"
 
 # system shutdown
 alias sd="sudo poweroff"

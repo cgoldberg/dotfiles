@@ -147,7 +147,7 @@ echo "  - file size: ${FILE_SIZE}"
 echo "  - source: ${NAS_MNT1}"
 echo "  - destination: ${NAS_MNT2}"
 echo
-echo "running data transfer tests ..."
+echo "running data transfer tests..."
 echo
 echo "${SEP}"
 echo

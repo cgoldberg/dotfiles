@@ -93,7 +93,7 @@ timer() {
 }
 
 do_backup() {
-    echo "syncing ${NAS_MNT} to ${USB_DIR} ..."
+    echo "syncing ${NAS_MNT} to ${USB_DIR}..."
     echo
     rsync \
         --delete-during \
@@ -123,7 +123,7 @@ echo
 mount-bitz
 check_mounts
 echo
-echo "starting backup job ..."
+echo "starting backup job..."
 echo
 echo "${SEP}"
 echo

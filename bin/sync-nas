@@ -67,7 +67,7 @@ check_configuration
 echo
 mount-bitz
 echo
-echo "syncing filesystem ..."
+echo "syncing filesystem..."
 sync
 sshpass -f "${PASSWORD_FILE}" ssh "admin@${NAS_IP}" "sync"
 echo

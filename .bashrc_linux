@@ -240,19 +240,19 @@ clean-apt-index() {
 
 # whack all system logs
 clean-system-logs() {
-    echo "stopping systemd-journald service ..."
+    echo "stopping systemd-journald service..."
     sudo systemctl --quiet stop systemd-journald
-    echo "removing systemd-journald logs ..."
+    echo "removing systemd-journald logs..."
     sudo rm -rf /var/log/journal/*
     sudo rm -rf /run/log/journal/*
-    echo "truncating all system log files ..."
+    echo "truncating all system log files..."
     sudo find /var/log -type f -name "*.log" -exec truncate -s 0 {} \;
     sudo truncate -s 0 /var/log/wtmp /var/log/wtmp.db
-    echo "removing rotated log files and their archives ..."
+    echo "removing rotated log files and their archives..."
     sudo find /var/log -type f -name "*.log.*" -exec rm -f {} \;
-    echo "removing other archived log files ..."
+    echo "removing other archived log files..."
     sudo find /var/log -type f \( -name "*.gz" -o -name "*.xz" -o -name "*.tar" \) -exec rm -f {} \;
-    echo "restarting systemd-journald service ..."
+    echo "restarting systemd-journald service..."
     sudo systemctl start systemd-journald
     echo
     ok "cleaned all system logs"
@@ -263,7 +263,7 @@ clean-system-logs() {
     select result in "yes" "no"; do
         if [ "${result}" == "yes" ]; then
             echo
-            ok "rebooting now ..."
+            ok "rebooting now..."
             sudo reboot
         fi
         break
@@ -353,7 +353,7 @@ apt-check-available-backports() {
     sudo apt-get update --no-allow-insecure-repositories >/dev/null
     debian_codename=$(lsb_release -cs)
     echo -e "\nchecking installed packages for newer versions" \
-        "in ${debian_codename}-backports ..."
+        "in ${debian_codename}-backports..."
     echo
     printf "%b%-40s%b %-40s %-40s\n" \
         "${BOLD}${GREEN}" "Package" "${RESET}" \
@@ -427,11 +427,11 @@ update-apt-local-pkgs() {
         local pkg_repo_dir="${HOME}/code/${pkg}"
         cd "${pkg_repo_dir}"
         echo
-        echo "downloading latest release of package: '${pkg}' ..."
+        echo "downloading latest release of package: '${pkg}'..."
         gh release download --clobber --pattern="*${architecture}.deb" --dir="/tmp"
         for deb in /tmp/*"${architecture}.deb"; do
             if [[ ${deb} != *musl* ]]; then
-                echo "installing ..."
+                echo "installing..."
                 sudo apt install -y "${deb}"
                 echo
             fi
@@ -471,7 +471,7 @@ update-rust-bins() {
     rustup update
     echo
     for rust_pkg in $(cargo install --list | cut -d' ' -f1 | \grep .); do
-        echo "Updating ${rust_pkg} ..."
+        echo "Updating ${rust_pkg}..."
         cargo install "${rust_pkg}"
         echo
     done
@@ -498,18 +498,18 @@ update-pyenv() {
     fi
     echo
     pyenv global system
-    echo "updating pyenv ..."
+    echo "updating pyenv..."
     pyenv update
     pyenv rehash
     echo
     local minor_versions=( $(pyenv versions --bare | \grep "${py_version}") )
     for minor_version in "${minor_versions[@]}"; do
-        echo "uninstalling Python ${minor_version} ..."
+        echo "uninstalling Python ${minor_version}..."
         pyenv uninstall --force "${minor_version}"
         echo
     done
     for py_version in "${PY_VERSIONS[@]}"; do
-        echo "installing latest version of Python ${py_version} ..."
+        echo "installing latest version of Python ${py_version}..."
         # build with optimizations for maximum performance (builds take longer)
         env PYTHON_CONFIGURE_OPTS='--enable-optimizations --with-lto' \
             PYTHON_CFLAGS='-march=native -mtune=native' pyenv install \
@@ -517,7 +517,7 @@ update-pyenv() {
         pyenv global "${py_version}"
         echo "installed $(python3 --version)"
         echo
-        echo "updating pip ..."
+        echo "updating pip..."
         PIP_REQUIRE_VIRTUALENV=false python3 -m pip install --upgrade \
             --upgrade-strategy=eager pip
         echo

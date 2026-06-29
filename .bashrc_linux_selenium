@@ -55,7 +55,7 @@ clean-selenium-dev() {
         ${HOME}/.cache/bazelisk/
         ${HOME}/.cache/pnpm/
     )
-    echo "cleaning up selenium bazel cache ..."
+    echo "cleaning up selenium bazel cache..."
     if [ -d "${sel_home}" ]; then
         for sl in ${symlinks[@]}; do
             if [ -L ${sl} ]; then
@@ -143,25 +143,25 @@ update-webrivers() {
     done
     echo
     cd "${sel_mgr_home}"
-    echo "updating selenium manager ..."
+    echo "updating selenium manager..."
     gh release download --clobber --pattern="${sel_mgr_bin}-linux" --output="${sel_home}/${sel_mgr_bin}"
     cd "${sel_home}"
     chmod +x "./${sel_mgr_bin}"
     "./${sel_mgr_bin}" --version
     echo
-    echo "updating grid server ..."
+    echo "updating grid server..."
     gh release download --clobber --pattern="selenium-server*.jar" --output="${server_jar}"
     java -jar "${server_jar}" info --version
     echo
-    echo "updating chrome/chromedriver ..."
+    echo "updating chrome/chromedriver..."
     start_spinner
     "./${sel_mgr_bin}" --force-browser-download --browser=chrome --driver=chromedriver
     stop_spinner
-    echo "updating edge/edgedriver ..."
+    echo "updating edge/edgedriver..."
     start_spinner
     "./${sel_mgr_bin}" --force-browser-download --browser=edge --driver=edgedriver
     stop_spinner
-    echo "updating firefox/geckodriver ..."
+    echo "updating firefox/geckodriver..."
     start_spinner
     "./${sel_mgr_bin}" --force-browser-download --browser=firefox --driver=geckodriver
     stop_spinner

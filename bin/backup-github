@@ -86,7 +86,7 @@ timer() {
 }
 
 do_backup() {
-    echo "downloading backups of GitHub repos ..."
+    echo "downloading backups of GitHub repos..."
     echo
     githubtakeout "${GITHUB_USERNAME}" --gists --history --skip_forks
     echo
@@ -96,7 +96,7 @@ do_backup() {
     echo
     echo "syncing "\
         "${BACKUP_LOCAL_PATH}/${GITHUB_BACKUP_DIR} to "\
-        "${NAS_MNT}/${GITHUB_BACKUP_DIR} ..."
+        "${NAS_MNT}/${GITHUB_BACKUP_DIR}..."
     echo
     rsync \
         --delete-during \
@@ -121,15 +121,15 @@ do_backup() {
 
 check_host
 echo
-echo "changing directory to: ${BACKUP_LOCAL_PATH} ..."
+echo "changing directory to: ${BACKUP_LOCAL_PATH}..."
 cd "${BACKUP_LOCAL_PATH}"
 check_configuration
 echo
 mount-bitz
 echo
-echo "deleting old local backups ..."
+echo "deleting old local backups..."
 delete_old_backups
-echo "starting backup job ..."
+echo "starting backup job..."
 echo
 echo "${SEP}"
 echo
@@ -137,7 +137,7 @@ timer do_backup
 echo
 echo "${SEP}"
 echo
-echo "changing directory back to: ${ORIGINAL_DIR} ..."
+echo "changing directory back to: ${ORIGINAL_DIR}..."
 cd "${ORIGINAL_DIR}"
 echo
 echo "elapsed time: ${elapsed_time}"
