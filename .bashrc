@@ -884,7 +884,7 @@ clean-py() {
 
 
 # run pytest with coverage and open html report in browser
-run-pytest-with-cov() {
+pytest-with-cov() {
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         err "not a git repository"
         return 1
