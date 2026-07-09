@@ -514,13 +514,9 @@ update-rust-bins() {
     fi
     rustup update
     echo
-    for rust_pkg in $(cargo install --list | cut -d' ' -f1 | \grep .); do
-        echo "Updating ${rust_pkg}..."
-        cargo install "${rust_pkg}"
-        echo
-    done
-    clean-rust
+    cargo install-update --all
     echo
+    clean-rust
     ok "updated all rust toolchains and binaries"
 }
 
