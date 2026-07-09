@@ -318,7 +318,7 @@ clean-system-logs() {
 # deb package maintenance
 apt-up() {
     run() {
-        "$@" || { err "apt error: $*"; return 1; }
+        "$@" || { err "command failed: $*"; return 1; }
     }
     write() {
         printf "\n${BOLD}%s${RESET}\n" "$*" >&2
@@ -351,7 +351,7 @@ apt-up() {
 # flatpak maintenance
 flat-up() {
     run() {
-        "$@" || { err "apt error: $*"; return 1; }
+        "$@" || { err "command failed: $*"; return 1; }
     }
     write() {
         printf "\n${BOLD}%s${RESET}\n" "$*" >&2
