@@ -168,7 +168,6 @@ echo
 echo "elapsed time: ${elapsed_time}"
 echo
 prune_trash
-echo
 diskspace
 echo
 sudo umount -l "${DESTINATION_NAS_MNT}"
