@@ -24,9 +24,6 @@ SOURCE_NAS_MNT="/mnt/${SOURCE_NAS_HOST}"
 DESTINATION_NAS_HOST="bytez"
 DESTINATION_NAS_MNT="/mnt/${DESTINATION_NAS_HOST}"
 
-NAS_HOSTS=("${SOURCE_NAS_HOST}" "${DESTINATION_NAS_HOST}")
-NAS_MNTS=("${SOURCE_NAS_MNT}" "${DESTINATION_NAS_MNT}")
-
 SEP="----------------------------------------------------------------"
 BOLD="\e[1m"
 GREEN="\e[32m"
@@ -34,6 +31,7 @@ RED="\e[31m"
 RESET="\e[0m"
 CHECK="\u2713"
 CROSS="\u2717"
+
 
 die() {
     printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
@@ -64,7 +62,7 @@ check_host() {
 }
 
 check_mounts() {
-    for mnt in "${NAS_MNTS[@]}"; do
+    for mnt in "${SOURCE_NAS_MNT}" "${DESTINATION_NAS_MNT}"; do
         if ! findmnt "${mnt}" >/dev/null; then
             die "fatal: ${mnt} not mounted"
         fi

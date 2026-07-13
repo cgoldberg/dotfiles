@@ -13,11 +13,15 @@ trap cleanup SIGINT SIGTERM
 
 
 EXPECTED_HOSTS=("minime" "raspberrypi")
+
+# 2-bay QNAP
 NAS_HOST="bitz"
 NAS_MNT="/mnt/${NAS_HOST}"
+
+# External SSD
 USB_MNT="/media/${USER}/T7Shield"
 USB_DIR="${USB_MNT}/backup"
-MOUNTS=("${NAS_MNT}" "${USB_MNT}")
+
 SEP="----------------------------------------------------------------"
 BOLD="\e[1m"
 GREEN="\e[32m"
@@ -25,6 +29,7 @@ RED="\e[31m"
 RESET="\e[0m"
 CHECK="\u2713"
 CROSS="\u2717"
+
 
 die() {
     printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
@@ -55,7 +60,7 @@ check_host() {
 }
 
 check_mounts() {
-    for mnt in "${MOUNTS[@]}"; do
+    for mnt in "${NAS_MNT}" "${USB_MNT}"; do
         if ! findmnt "${mnt}" >/dev/null; then
             die "fatal: ${mnt} not mounted"
         fi
