@@ -5,11 +5,12 @@
 # NAS to NAS backup script:
 #  - mounts remote NAS filesystems with CIFS/SMB if needed
 #  - syncs files from source NAS to destination NAS
+#  - saves previous 14 days of deleted/overwritten files on destination NAS
 #  - unmounts bytez NAS
 #
 # requires:
 #  - rsync
-# - 'sync-nas' script
+#  - sync-nas script
 
 trap cleanup SIGINT SIGTERM
 
@@ -23,6 +24,7 @@ SOURCE_NAS_MNT="/mnt/${SOURCE_NAS_HOST}"
 # 1-bay QNAP
 DESTINATION_NAS_HOST="bytez"
 DESTINATION_NAS_MNT="/mnt/${DESTINATION_NAS_HOST}"
+RSYNC_TRASH_DIR="${DESTINATION_NAS_MNT}/rsync-trash"
 
 SEP="----------------------------------------------------------------"
 BOLD="\e[1m"
@@ -73,6 +75,9 @@ check_configuration() {
     if ! type rsync >/dev/null 2>&1; then
         die "fatal: rsync not found"
     fi
+    if ! type sync-nas >/dev/null 2>&1; then
+        die "fatal: sync-nas not found"
+    fi
     local min_gb=100
     local min_bytes=$((min_gb * 1024 * 1024 * 1024))
     local avail
@@ -103,6 +108,8 @@ timer() {
 do_backup() {
     echo "syncing ${SOURCE_NAS_MNT} to ${DESTINATION_NAS_MNT}..."
     echo
+    mkdir -p "${RSYNC_TRASH_DIR}"
+    local rsync_trash="${RSYNC_TRASH_DIR}/$(date +"%Y-%m-%d_%H-%M-%S")"
     rsync \
         --delete-during \
         --fsync \
@@ -117,11 +124,18 @@ do_backup() {
         --times \
         --verbose \
         --verbose \
-        --max-delete=500 \
+        --backup-dir=${rsync_trash} \
         --info=progress2 \
+        --max-delete=500 \
         "${SOURCE_NAS_MNT}/" \
         "${DESTINATION_NAS_MNT}/" \
         | grep -v "file_list pointer array"
+}
+
+prune_trash() {
+    mkdir -p "${RSYNC_TRASH_DIR}"
+    echo "pruning rsync trash older than 14 days..."
+    find "${RSYNC_TRASH_DIR}" -mindepth 1 -maxdepth 1 -type d -mtime +14 -exec rm -rf {} \;
 }
 
 check_host
@@ -141,6 +155,8 @@ echo "${SEP}"
 sync-nas >/dev/null 2>&1
 echo
 echo "elapsed time: ${elapsed_time}"
+echo
+prune_deleted
 echo
 diskspace
 echo
