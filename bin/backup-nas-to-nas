@@ -129,6 +129,7 @@ do_backup() {
         --verbose \
         --verbose \
         --backup-dir="${rsync_trash}" \
+        --exclude="$(basename "${RSYNC_TRASH_DIR}")/" \
         --info=progress2 \
         --max-delete=500 \
         "${SOURCE_NAS_MNT}/" \
