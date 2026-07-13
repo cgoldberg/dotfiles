@@ -5,7 +5,7 @@
 # NAS to NAS backup script:
 #  - mounts remote NAS filesystems with CIFS/SMB if needed
 #  - syncs files from source NAS to destination NAS
-#  - saves previous 14 days of deleted/overwritten files on destination NAS
+#  - configurable retention of deleted/overwritten files on destination NAS
 #  - unmounts bytez NAS
 #
 # requires:
