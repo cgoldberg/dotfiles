@@ -109,6 +109,7 @@ do_backup() {
         --times \
         --verbose \
         --verbose \
+        --max-delete=500 \
         --info=progress2 \
         --exclude='d0/' \
         --exclude='d1/' \
