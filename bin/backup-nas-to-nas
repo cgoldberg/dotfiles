@@ -26,7 +26,9 @@ SOURCE_NAS_MNT="/mnt/${SOURCE_NAS_HOST}"
 # 1-bay QNAP
 DESTINATION_NAS_HOST="bytez"
 DESTINATION_NAS_MNT="/mnt/${DESTINATION_NAS_HOST}"
+
 RSYNC_TRASH_DIR="${DESTINATION_NAS_MNT}/rsync-trash"
+RSYNC_TRASH_DAYS=14
 
 SEP="----------------------------------------------------------------"
 BOLD="\e[1m"
@@ -136,7 +138,12 @@ do_backup() {
 }
 
 prune_trash() {
-    find "${RSYNC_TRASH_DIR}" -mindepth 1 -maxdepth 1 -type d -mtime +14 -exec rm -rf {} \;
+    find "${RSYNC_TRASH_DIR}" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -mtime "+${RSYNC_TRASH_DAYS}" \
+        -exec rm -rf {} \;
 }
 
 check_host
