@@ -12,6 +12,8 @@
 #  - rsync
 #  - sync-nas script
 
+set -o pipefail
+
 trap cleanup SIGINT SIGTERM
 
 
@@ -108,9 +110,9 @@ timer() {
 do_backup() {
     echo "syncing ${SOURCE_NAS_MNT} to ${DESTINATION_NAS_MNT}..."
     echo
-    mkdir -p "${RSYNC_TRASH_DIR}"
     local rsync_trash="${RSYNC_TRASH_DIR}/$(date +"%Y-%m-%d_%H-%M-%S")"
     rsync \
+        --backup \
         --delete-during \
         --fsync \
         --human-readable \
@@ -124,17 +126,16 @@ do_backup() {
         --times \
         --verbose \
         --verbose \
-        --backup-dir=${rsync_trash} \
+        --backup-dir="${rsync_trash}" \
         --info=progress2 \
         --max-delete=500 \
         "${SOURCE_NAS_MNT}/" \
         "${DESTINATION_NAS_MNT}/" \
-        | grep -v "file_list pointer array"
+        | grep -v "file_list pointer array" \
+        || die "rsync failed"
 }
 
 prune_trash() {
-    mkdir -p "${RSYNC_TRASH_DIR}"
-    echo "pruning rsync trash older than 14 days..."
     find "${RSYNC_TRASH_DIR}" -mindepth 1 -maxdepth 1 -type d -mtime +14 -exec rm -rf {} \;
 }
 
@@ -149,6 +150,8 @@ echo "starting backup job..."
 echo
 echo "${SEP}"
 echo
+mkdir -p "${RSYNC_TRASH_DIR}"
+prune_trash
 sync
 timer do_backup
 echo "${SEP}"
