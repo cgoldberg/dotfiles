@@ -156,7 +156,7 @@ sync-nas >/dev/null 2>&1
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
-prune_deleted
+prune_trash
 echo
 diskspace
 echo
