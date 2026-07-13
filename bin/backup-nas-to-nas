@@ -27,7 +27,7 @@ SOURCE_NAS_MNT="/mnt/${SOURCE_NAS_HOST}"
 DESTINATION_NAS_HOST="bytez"
 DESTINATION_NAS_MNT="/mnt/${DESTINATION_NAS_HOST}"
 
-RSYNC_TRASH_DIR="${DESTINATION_NAS_MNT}/rsync-trash"
+RSYNC_TRASH_DIR="${DESTINATION_NAS_MNT}/.rsync-trash"
 RSYNC_TRASH_DAYS=14
 
 SEP="----------------------------------------------------------------"
