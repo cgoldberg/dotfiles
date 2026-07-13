@@ -75,6 +75,16 @@ check_configuration() {
     if ! type rsync >/dev/null 2>&1; then
         die "fatal: rsync not found"
     fi
+    local min_gb=100
+    local min_bytes=$((min_gb * 1024 * 1024 * 1024))
+    local avail
+    avail=$(df --output=avail -B1 "${DESTINATION_NAS_MNT}" | tail -1)
+    if ! [[ "${avail}" =~ ^[0-9]+$ ]]; then
+        die "fatal: could not determine free space on destination"
+    fi
+    if [ "${avail}" -lt "${min_bytes}" ]; then
+        die "fatal: less than ${min_gb} GB free on destination"
+    fi
 }
 
 diskspace() {
