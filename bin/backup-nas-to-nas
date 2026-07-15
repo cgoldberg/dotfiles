@@ -17,8 +17,6 @@ set -o pipefail
 trap cleanup SIGINT SIGTERM
 
 
-EXPECTED_HOSTS=("minime" "raspberrypi")
-
 # 2-bay QNAP
 SOURCE_NAS_HOST="bitz"
 SOURCE_NAS_MNT="/mnt/${SOURCE_NAS_HOST}"
@@ -27,8 +25,10 @@ SOURCE_NAS_MNT="/mnt/${SOURCE_NAS_HOST}"
 DESTINATION_NAS_HOST="bytez"
 DESTINATION_NAS_MNT="/mnt/${DESTINATION_NAS_HOST}"
 
+ALLOWED_HOSTS=("minime" "raspberrypi")
+MIN_DESTINATION_GB=100
 RSYNC_TRASH_DIR="${DESTINATION_NAS_MNT}/.rsync-trash"
-RSYNC_TRASH_DAYS=14
+RSYNC_TRASH_DAYS=30
 
 SEP="----------------------------------------------------------------"
 BOLD="\e[1m"
@@ -57,13 +57,13 @@ cleanup() {
 check_host() {
     local can_run="false"
     for i in {0..1}; do
-        local host="${EXPECTED_HOSTS[${i}]}"
+        local host="${ALLOWED_HOSTS[${i}]}"
         if [ "${HOSTNAME}" == "${host}" ]; then
             can_run="true"
         fi
     done
     if [ "${can_run}" == "false" ] ; then
-        die "fatal: can't run on this host: ${HOSTNAME}"
+        die "fatal: can not run on this host: ${HOSTNAME}"
     fi
 }
 
@@ -82,8 +82,7 @@ check_configuration() {
     if ! type sync-nas >/dev/null 2>&1; then
         die "fatal: sync-nas not found"
     fi
-    local min_gb=100
-    local min_bytes=$((min_gb * 1024 * 1024 * 1024))
+    local min_bytes=$((${MIN_DESTINATION_GB} * 1024 * 1024 * 1024))
     local avail
     avail=$(df --output=avail -B1 "${DESTINATION_NAS_MNT}" | tail -1)
     if ! [[ "${avail}" =~ ^[0-9]+$ ]]; then

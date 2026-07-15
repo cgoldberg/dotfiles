@@ -12,15 +12,16 @@
 trap cleanup SIGINT SIGTERM
 
 
-EXPECTED_HOSTS=("minime" "raspberrypi")
-
 # 2-bay QNAP
 NAS_HOST="bitz"
 NAS_MNT="/mnt/${NAS_HOST}"
 
 # External SSD
-USB_MNT="/media/${USER}/T7Shield"
-USB_DIR="${USB_MNT}/backup"
+USB_NAME="T7Shield"
+USB_MNT="/media/${USER}/${USB_NAME}"
+
+ALLOWED_HOSTS=("minime" "raspberrypi")
+MIN_USB_GB=50
 
 SEP="----------------------------------------------------------------"
 BOLD="\e[1m"
@@ -49,13 +50,13 @@ cleanup() {
 check_host() {
     local can_run="false"
     for i in {0..1}; do
-        local host="${EXPECTED_HOSTS[${i}]}"
+        local host="${ALLOWED_HOSTS[${i}]}"
         if [ "${HOSTNAME}" == "${host}" ]; then
             can_run="true"
         fi
     done
     if [ "${can_run}" == "false" ] ; then
-        die "fatal: can't run on this host: ${HOSTNAME}"
+        die "fatal: can not run on this host: ${HOSTNAME}"
     fi
 }
 
@@ -71,15 +72,14 @@ check_configuration() {
     if ! type rsync >/dev/null 2>&1; then
         die "fatal: rsync not found"
     fi
-    local min_gb=50
-    local min_bytes=$((min_gb * 1024 * 1024 * 1024))
+    local min_bytes=$((${MIN_USB_GB} * 1024 * 1024 * 1024))
     local avail
     avail=$(df --output=avail -B1 "${USB_MNT}" | tail -1)
     if ! [[ "${avail}" =~ ^[0-9]+$ ]]; then
         die "fatal: could not determine free space on destination"
     fi
     if [ "${avail}" -lt "${min_bytes}" ]; then
-        die "fatal: less than ${min_gb} GiB free on destination"
+        die "fatal: less than ${min_gb} GB free on destination"
     fi
 }
 
@@ -108,7 +108,7 @@ timer() {
 }
 
 do_backup() {
-    echo "syncing ${NAS_MNT} to ${USB_DIR}..."
+    echo "syncing ${NAS_MNT} to ${USB_MNT}..."
     echo
     rsync \
         --delete-during \
@@ -129,7 +129,7 @@ do_backup() {
         --exclude='d0/' \
         --exclude='d1/' \
         "${NAS_MNT}/" \
-        "${USB_DIR}/" \
+        "${USB_MNT}/" \
         | grep -v "file_list pointer array"
 }
 
