@@ -27,7 +27,7 @@
 #    - python3 (sudo apt install python3, scoop install python)
 #    - pyupgrade (pipx-install pyupgrade)
 #    - refurb (pipx-install refurb)
-#    - rg (cargo install ripgrep, scoop install ripgrep)
+#    - rg (cargo install ripgrep --features pcre2, scoop install ripgrep)
 #    - ruby (sudo apt install ruby, scoop install ruby)
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
@@ -286,6 +286,14 @@ if is_linux; then
         echo -e "  copying: ${config}"
         cp "${config}" "${HOME}"
     done
+    echo
+
+    cargo_dir="${HOME}/.cargo"
+    cargo_config="./cargo/config.toml"
+    echo "copying cargo config from dotfiles repo to ${cargo_dir}..."
+    mkdir --parents "${cargo_dir}"
+    echo -e "  copying: ${cargo_config}"
+    cp "${cargo_config}" "${cargo_dir}"
     echo
 
     btop_dir="${HOME}/.config/btop"

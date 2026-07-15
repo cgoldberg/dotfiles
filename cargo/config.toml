@@ -1,0 +1,7 @@
+# ~/.cargo/config.toml
+# Cargo user-wide configuration for customizing Rust builds
+
+[build]
+rustflags = [
+    "-C", "target-cpu=native",
+]
