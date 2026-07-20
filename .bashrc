@@ -475,6 +475,29 @@ trim-trailing-whitespace-from-files() {
 }
 
 
+# give file(s) a new filesystem identity (inode/file ID) and discard most
+# filesystem metadata, while preserving its contents.
+# - usage: renew-inode <file_or_glob>
+renew-inode() {
+    if [ -z "$1" ]; then
+        err "please specify an file or glob pattern with matches"
+        return 1
+    fi
+    for f in "$@"; do
+        [ -f "${f}" ] || continue
+        tmp="${f}.tmp.$$"
+        if cat -- "${f}" >"$tmp"; then
+            rm -- "${f}" &&
+            mv -- "${tmp}" "${f}" &&
+            echo "renewed: ${f}"
+        else
+            echo "failed: ${f}"
+            rm -f -- "${tmp}"
+        fi
+    done
+}
+
+
 # remove metadata from an image
 # - usage: clean-img-metadata <image_file_or_glob>
 clean-img-metadata() {
