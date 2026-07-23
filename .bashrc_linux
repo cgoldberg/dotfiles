@@ -284,6 +284,12 @@ clean-apt-index() {
 
 # whack all system logs
 clean-system-logs() {
+    local no_prompt="false"
+    case "$1" in
+        -y|--yes)
+            no_prompt="true"
+            ;;
+    esac
     echo "stopping systemd-journald service..."
     sudo systemctl --quiet stop systemd-journald
     echo "removing systemd-journald logs..."
@@ -300,18 +306,20 @@ clean-system-logs() {
     sudo systemctl start systemd-journald
     echo
     ok "cleaned all system logs"
-    echo
-    echo "reboot now?"
-    echo
-    local result
-    select result in "yes" "no"; do
-        if [ "${result}" == "yes" ]; then
-            echo
-            ok "rebooting now..."
-            sudo reboot
-        fi
-        break
-    done
+    if [[ "${no_prompt}" == "false" ]]; then
+        echo
+        echo "reboot now?"
+        echo
+        local result
+        select result in "yes" "no"; do
+            if [ "${result}" == "yes" ]; then
+                echo
+                ok "rebooting now..."
+                sudo reboot
+            fi
+            break
+        done
+    fi
 }
 
 
