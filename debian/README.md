@@ -142,6 +142,7 @@ sudo apt install \
   - Astra Monitor
   - Dash to Panel
   - Quick Shutdown
+  - Wallpaper Carousel
 
 ----
 
