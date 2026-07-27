@@ -151,6 +151,7 @@ LINUX_SCRIPTS=(
     "./bin/mount-bitz"
     "./bin/mount-bytez"
     "./bin/now"
+    "./bin/random-wallpaper"
     "./bin/squeezebox-function"
     "./bin/sync-nas"
     "./bin/sysinfo"

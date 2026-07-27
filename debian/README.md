@@ -132,7 +132,7 @@ sudo apt install \
 
 ----
 
-## Install/Configure Gnome Shell extensions
+## Install/Configure GNOME Shell extensions
 
 - install:
   - `sudo apt install gnome-shell-extensions`
@@ -142,7 +142,6 @@ sudo apt install \
   - Astra Monitor
   - Dash to Panel
   - Quick Shutdown
-  - Wallpaper Carousel
 
 ----
 
@@ -385,6 +384,48 @@ sudo chmod 600 /root/.smbcredentials
 
 ----
 
+# Rotate GNOME wallpaper on a timer
+
+- create the service: `~/.config/systemd/user/random-wallpaper.service`:
+
+```
+[Unit]
+Description=Set a random GNOME wallpaper
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/random-wallpaper
+```
+
+- create the timer `~/.config/systemd/user/random-wallpaper.timer`:
+
+```
+[Unit]
+Description=Change wallpaper every 10 minutes
+
+[Timer]
+OnStartupSec=5s
+OnUnitActiveSec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+- enable it:
+
+```
+systemctl --user daemon-reload
+systemctl --user enable --now random-wallpaper.timer
+```
+
+- try it:
+
+```
+systemctl --user start random-wallpaper.service
+```
+
+----
 
 ## Add managed policy for Chromium browser (un-enshittify, remove AI features, add privacy hardening)
 

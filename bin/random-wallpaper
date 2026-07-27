@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+#
+# set a random GNOME wallpaper
+
+
+set -euo pipefail
+
+
+WALLPAPER_DIR="${HOME}/Wallpapers"
+
+
+mapfile -d '' files < <(find "${WALLPAPER_DIR}" -type f -print0)
+
+if (( ${#files[@]} == 0 )); then
+    echo "no wallpaper images found in: ${WALLPAPER_DIR}" >&2
+    exit 1
+fi
+
+wallpaper="${files[RANDOM % ${#files[@]}]}"
+
+echo "switching wallpaper to: ${wallpaper}"
+
+gsettings set org.gnome.desktop.background picture-uri "file://${wallpaper}"
+gsettings set org.gnome.desktop.background picture-uri-dark "file://${wallpaper}"
