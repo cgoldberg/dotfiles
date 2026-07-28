@@ -2,7 +2,8 @@
 #
 # Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
 #
-# set a random GNOME wallpaper
+# set a random GNOME wallpaper from files in a directory without
+# repeating the last image
 
 
 set -euo pipefail
@@ -10,15 +11,29 @@ set -euo pipefail
 
 WALLPAPER_DIR="${HOME}/Wallpapers"
 
-
 mapfile -d '' files < <(find "${WALLPAPER_DIR}" -type f -print0)
 
 if (( ${#files[@]} == 0 )); then
-    echo "no wallpaper images found in: ${WALLPAPER_DIR}" >&2
+    echo "no files found in: ${WALLPAPER_DIR}" >&2
     exit 1
 fi
 
-wallpaper="${files[RANDOM % ${#files[@]}]}"
+current="$(gsettings get org.gnome.desktop.background picture-uri)"
+current="${current#\'file://}"
+current="${current%\'}"
+
+choices=()
+for file in "${files[@]}"; do
+    if [ "${file}" != "${current}" ]; then
+        choices+=("${file}")
+    fi
+done
+
+if (( ${#choices[@]} == 0 )); then
+    wallpaper="${current}"
+else
+    wallpaper="${choices[RANDOM % ${#choices[@]}]}"
+fi
 
 echo "switching wallpaper to: ${wallpaper}"
 
