@@ -2,8 +2,7 @@
 #
 # Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
 #
-# set a random GNOME wallpaper from files in a directory without
-# repeating the last image
+# set a random GNOME wallpaper from a directory without repeating the current image
 
 
 set -euo pipefail
@@ -11,10 +10,17 @@ set -euo pipefail
 
 WALLPAPER_DIR="${HOME}/Wallpapers"
 
-mapfile -d '' files < <(find "${WALLPAPER_DIR}" -type f -print0)
+if {
+    ! type gsettings >/dev/null 2>&1 ||
+    ! type gdk-pixbuf-thumbnailer >/dev/null 2>&1 ||
+    [[ ":${XDG_CURRENT_DESKTOP:-}:" != *:GNOME:* ]]
+}; then
+    echo "this script requires GNOME" >&2
+    exit 1
+fi
 
-if (( ${#files[@]} == 0 )); then
-    echo "no files found in: ${WALLPAPER_DIR}" >&2
+if [ ! -d "${WALLPAPER_DIR}" ]; then
+    echo "${WALLPAPER_DIR} not found" >&2
     exit 1
 fi
 
@@ -22,8 +28,17 @@ current="$(gsettings get org.gnome.desktop.background picture-uri)"
 current="${current#\'file://}"
 current="${current%\'}"
 
+mapfile -d '' files < <(find "${WALLPAPER_DIR}" -type f -print0)
+
 choices=()
 for file in "${files[@]}"; do
+    case "${file,,}" in
+        *.jpg|*.jpeg|*.png|*.webp)
+            ;;
+        *)
+            continue
+            ;;
+    esac
     if [ "${file}" != "${current}" ]; then
         choices+=("${file}")
     fi
@@ -35,7 +50,7 @@ else
     wallpaper="${choices[RANDOM % ${#choices[@]}]}"
 fi
 
-echo "switching wallpaper to: ${wallpaper}"
-
 gsettings set org.gnome.desktop.background picture-uri "file://${wallpaper}"
 gsettings set org.gnome.desktop.background picture-uri-dark "file://${wallpaper}"
+
+echo "switched wallpaper to: ${wallpaper}"
