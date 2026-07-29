@@ -79,7 +79,7 @@ PS1=\
 '\[\033[1;38;5;255m\]\$ \[\033[0m\]'
 
 
-# set termcap colors (used by less pager)
+# set termcap colors for less pager
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')
 export LESS_TERMCAP_md=$(printf '\e[01;38;5;75m')
 export LESS_TERMCAP_me=$(printf '\e[0m')
