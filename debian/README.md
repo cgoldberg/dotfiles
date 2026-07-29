@@ -219,7 +219,8 @@ sudo systemctl restart systemd-journald
       - find `GRUB_CMDLINE_LINUX_DEFAULT`, and add `quiet`
     - disable autosuspend for all USB devices
       - find `GRUB_CMDLINE_LINUX_DEFAULT`, and add `usbcore.autosuspend=-1`
-    - final kernel parameters should be: `GRUB_CMDLINE_LINUX_DEFAULT="quiet usbcore.autosuspend=-1"`
+    - final kernel parameters should be:
+      - `GRUB_CMDLINE_LINUX_DEFAULT="quiet usbcore.autosuspend=-1"`
   - update grub:
     - `sudo update-grub`
   - reboot
@@ -406,7 +407,6 @@ Description=Change wallpaper every 10 minutes
 [Timer]
 OnStartupSec=5s
 OnUnitActiveSec=10min
-Persistent=true
 
 [Install]
 WantedBy=timers.target
