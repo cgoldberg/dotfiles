@@ -690,7 +690,7 @@ alias w="weather"
 
 
 # stock watchlist
-wl() {
+stocks() {
     if ! type tickrs >/dev/null 2>&1; then
         err "tickrs not found"
         return 1
