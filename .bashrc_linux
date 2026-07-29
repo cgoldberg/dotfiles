@@ -198,6 +198,24 @@ firewall-blocks() {
 }
 
 
+# run a command and send a desktop notification when it finishes
+# - exit status from command is returned
+# - example: notify sleep 5
+notify() {
+    local cmd="$*"
+    local start=${EPOCHREALTIME}
+    "$@"
+    local status=$?
+    local elapsed=$(awk "BEGIN { printf \"%.2f\", ${EPOCHREALTIME} - ${start} }")
+    if [ ${status} -eq 0 ]; then
+        notify-send "Done (${elapsed}s)" "${cmd}"
+    else
+        notify-send -u critical "Failed (${elapsed}s, exit ${status})" "${cmd}"
+    fi
+    return ${status}
+}
+
+
 # run jekyll server for blog and open local url in browser
 blog() {
     local blog_dir="${HOME}/code/cgoldberg.github.io"

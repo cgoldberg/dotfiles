@@ -47,6 +47,7 @@
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (pipx install google-drive-export)
 #    - mpv (sudo apt install mpv)
+#    - notify-send (sudo apt install libnotify-bin)
 #    - iostat (sudo apt install sysstat)
 #    - ncal (sudo apt install ncal)
 #    - pyenv (https://github.com/pyenv/pyenv)
@@ -113,6 +114,7 @@ DEPENDENCIES_LINUX=(
     "iostat"
     "mpv"
     "ncal"
+    "notify-send"
     "pyenv"
     "rsync"
     "rustup"
