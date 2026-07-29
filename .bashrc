@@ -375,14 +375,6 @@ yt-mp3() {
         err "please specify a YouTube URL"
         return 1
     fi
-    if ! type yt-dlp >/dev/null 2>&1; then
-        err "yt-dlp not found"
-        return 1
-    fi
-    if ! type ffmpeg >/dev/null 2>&1; then
-        err "ffmpeg not found"
-        return 1
-    fi
     yt-dlp \
       --format "bestaudio" \
       --extract-audio \
@@ -396,14 +388,6 @@ yt-mp3() {
 yt-video() {
     if [ -z "$1" ]; then
         err "please specify a YouTube URL"
-        return 1
-    fi
-    if ! type yt-dlp >/dev/null 2>&1; then
-        err "yt-dlp not found"
-        return 1
-    fi
-    if ! type ffmpeg >/dev/null 2>&1; then
-        err "ffmpeg not found"
         return 1
     fi
     yt-dlp \
