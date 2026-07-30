@@ -691,11 +691,7 @@ alias w="weather"
 
 # stock watchlist
 stocks() {
-    if ! type tickrs >/dev/null 2>&1; then
-        err "tickrs not found"
-        return 1
-    fi
-    local tickers="^DJI,^GSPC,^IXIC,^RUT,AMZN,COPP,FBTC,FETH,XRPZ"
+    local tickers="^DJI,^GSPC,^IXIC,^RUJ,AMZN,COPP,FBTC,FETH,XRPZ"
     tickrs \
         --show-x-labels \
         --summary \
