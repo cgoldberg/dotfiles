@@ -11,7 +11,7 @@
 #  - key-based ssh login configured between host and NAS
 #
 # note:
-#  - run ssh once on host to accept host keys before running this
+#  - connect with ssh once to accept host keys before running this
 #    for the first time or it will fail silently
 
 

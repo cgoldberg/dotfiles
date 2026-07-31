@@ -6,7 +6,7 @@
 #  - mounts remote NAS filesystems with CIFS/SMB if needed
 #  - syncs files from source NAS to destination NAS
 #  - configurable retention of deleted/overwritten files on destination NAS
-#  - unmounts bytez NAS
+#  - unmounts destination NAS
 #
 # requires:
 #  - rsync
