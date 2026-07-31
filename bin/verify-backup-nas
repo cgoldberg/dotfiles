@@ -101,12 +101,10 @@ verify_checksums() {
         --recursive \
         --stats \
         --verbose \
-        --verbose \
         --exclude=".rsync-trash/" \
-        --info=progress1 \
+        --info=progress2 \
         "${NAS_MNT}/" \
         "admin@${BACKUP_NAS_IP}:/share/Public/" \
-        | grep -v "file_list pointer array" \
         || die "rsync failed"
 }
 
