@@ -43,6 +43,7 @@ RESET="\e[0m"
 CHECK="\u2713"
 CROSS="\u2717"
 
+
 die() {
     printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
     exit 1
@@ -56,7 +57,7 @@ cleanup() {
     echo
     delete_test_files
     sudo umount -l "${NAS_MNT2}"
-    die "Aborted"
+    die "aborted"
 }
 
 check_host() {

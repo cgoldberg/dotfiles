@@ -9,14 +9,17 @@
 
 
 ALLOWED_HOSTS=("minime")
+
 HEADPHONE_SINK=35 # HDMI
 SPEAKER_SINK=57 # USB DAC
+
 BOLD="\e[1m"
 GREEN="\e[32m"
 RED="\e[31m"
 RESET="\e[0m"
 CHECK="\u2713"
 CROSS="\u2717"
+
 
 die() {
     printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2

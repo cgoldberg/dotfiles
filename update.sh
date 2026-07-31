@@ -53,7 +53,6 @@
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (sudo apt install rsync)
 #    - rustup (https://rustup.rs)
-#    - sshpass (sudo apt install sshpass)
 #    - toilet (sudo apt install toilet)
 #
 #  - windows only:
@@ -118,7 +117,6 @@ DEPENDENCIES_LINUX=(
     "pyenv"
     "rsync"
     "rustup"
-    "sshpass"
     "toilet"
 )
 DEPENDENCIES_WINDOWS=(

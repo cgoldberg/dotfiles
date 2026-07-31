@@ -44,7 +44,7 @@ ok() {
 cleanup() {
     echo
     eject_usb
-    die "Aborted"
+    die "aborted"
 }
 
 check_host() {

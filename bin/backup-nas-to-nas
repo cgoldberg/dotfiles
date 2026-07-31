@@ -51,7 +51,7 @@ ok() {
 cleanup() {
     echo
     sudo umount -l "${DESTINATION_NAS_MNT}"
-    die "Aborted"
+    die "aborted"
 }
 
 check_host() {
@@ -150,22 +150,21 @@ check_configuration
 echo
 mount-bitz >/dev/null 2>&1
 mount-bytez >/dev/null 2>&1
+mkdir -p "${RSYNC_TRASH_DIR}"
+prune_trash
 sync-nas >/dev/null 2>&1
 echo
 echo "starting backup job..."
 echo
 echo "${SEP}"
 echo
-mkdir -p "${RSYNC_TRASH_DIR}"
-prune_trash
-sync
 timer do_backup
 echo "${SEP}"
+prune_trash
 sync-nas >/dev/null 2>&1
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
-prune_trash
 diskspace
 echo
 sudo umount -l "${DESTINATION_NAS_MNT}"

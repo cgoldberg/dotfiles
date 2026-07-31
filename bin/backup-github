@@ -17,10 +17,11 @@ trap cleanup SIGINT SIGTERM
 
 ALLOWED_HOSTS=("minime" "raspberrypi")
 NAS_HOST="bitz"
-BACKUP_LOCAL_PATH="${HOME}/backup"
 NAS_MNT="/mnt/${NAS_HOST}"
+BACKUP_LOCAL_PATH="${HOME}/backup"
 GITHUB_BACKUP_DIR="GitHub_Backup"
 ORIGINAL_DIR="${PWD}"
+
 SEP="----------------------------------------------------------------"
 BOLD="\e[1m"
 GREEN="\e[32m"
@@ -28,6 +29,7 @@ RED="\e[31m"
 RESET="\e[0m"
 CHECK="\u2713"
 CROSS="\u2717"
+
 
 die() {
     printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
@@ -41,7 +43,7 @@ ok() {
 
 cleanup() {
     echo
-    die "Aborted"
+    die "aborted"
 }
 
 check_host() {

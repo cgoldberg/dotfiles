@@ -8,7 +8,7 @@
 #  - syncs remote filesystem via ssh
 #
 # requires:
-#  - sshpass (file with password must exist at: ~/.ssh/nas_pass.txt)
+#  - key-based ssh login configured between host and NAS
 #
 # note:
 #  - run ssh once on host to accept host keys before running this
@@ -16,7 +16,6 @@
 
 
 ALLOWED_HOSTS=("minime" "raspberrypi")
-PASSWORD_FILE="${HOME}/.ssh/nas_pass.txt"
 
 # 2-bay QNAP
 NAS_HOST="bitz"
@@ -30,6 +29,7 @@ RED="\e[31m"
 RESET="\e[0m"
 CHECK="\u2713"
 CROSS="\u2717"
+
 
 die() {
     printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
@@ -53,22 +53,12 @@ check_host() {
     fi
 }
 
-check_configuration() {
-    if ! type sshpass >/dev/null 2>&1; then
-        die "sshpass not found"
-    fi
-    if [ ! -f "${PASSWORD_FILE}" ]; then
-        die "password file not found: ${PASSWORD_FILE}"
-    fi
-}
-
 check_host
-check_configuration
 echo
 mount-bitz
 echo
 echo "syncing filesystem..."
 sync
-sshpass -f "${PASSWORD_FILE}" ssh "admin@${NAS_IP}" "sync"
+ssh "admin@${NAS_IP}" "sync"
 echo
 ok "sync complete"

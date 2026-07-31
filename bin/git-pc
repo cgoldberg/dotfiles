@@ -15,6 +15,7 @@ RESET="\e[0m"
 CHECK="\u2713"
 CROSS="\u2717"
 
+
 die() {
     printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
     exit 1

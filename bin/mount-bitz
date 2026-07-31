@@ -6,16 +6,19 @@
 
 
 ALLOWED_HOSTS=("minime" "raspberrypi")
+
 NAS_HOST="bitz"
+NAS_MNT="/mnt/${NAS_HOST}"
 NAS_IP="10.0.0.5"
 NAS_SHARE="//${NAS_IP}/public"
-NAS_MNT="/mnt/${NAS_HOST}"
+
 BOLD="\e[1m"
 GREEN="\e[32m"
 RED="\e[31m"
 RESET="\e[0m"
 CHECK="\u2713"
 CROSS="\u2717"
+
 
 die() {
     printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
