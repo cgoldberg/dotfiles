@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+#
+# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+#
+# NAS to NAS data verification script:
+#  - mounts remote NAS filesystem with CIFS/SMB if needed
+#  - verifies file integrity by comparing checksums of
+#    all files on primary NAS with backup NAS
+#  - done via rsync dry-run in checksum mode with an SSH
+#    connection between primary NAS and backup NAS
+#
+# requires:
+#  - rsync
+#  - key-based ssh login configured between host and primary NAS
+#  - key-based ssh login configured between primary NAS and backup NAS
+#
+# note:
+#  - connect with ssh once (host->primary, primary->backup) to accept host
+#    keys before running this for the first time or it will fail silently
+
+set -o pipefail
+
+trap cleanup SIGINT SIGTERM
+
+
+ALLOWED_HOSTS=("minime" "raspberrypi")
+
+# 2-bay QNAP
+NAS_HOST="bitz"
+NAS_MNT="/mnt/${NAS_HOST}"
+
+# 1-bay QNAP
+BACKUP_NAS_IP="10.0.0.6"
+
+SEP="----------------------------------------------------------------"
+BOLD="\e[1m"
+GREEN="\e[32m"
+RED="\e[31m"
+RESET="\e[0m"
+CHECK="\u2713"
+CROSS="\u2717"
+
+
+die() {
+    printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
+    exit 1
+}
+
+ok() {
+    printf "${BOLD}${GREEN}%b${RESET} ${BOLD}%s${RESET}\n" "${CHECK}" "$*" 1>&2
+}
+
+cleanup() {
+    echo
+    die "aborted"
+}
+
+check_host() {
+    local can_run="false"
+    for i in {0..1}; do
+        local host="${ALLOWED_HOSTS[${i}]}"
+        if [ "${HOSTNAME}" == "${host}" ]; then
+            can_run="true"
+        fi
+    done
+    if [ "${can_run}" == "false" ] ; then
+        die "fatal: can not run on this host: ${HOSTNAME}"
+    fi
+}
+
+check_mount() {
+    if ! findmnt "${NAS_MNT}" >/dev/null; then
+        die "fatal: ${NAS_MNT} not mounted"
+    fi
+}
+
+check_configuration() {
+    if ! type rsync >/dev/null 2>&1; then
+        die "fatal: rsync not found"
+    fi
+}
+
+timer() {
+    local start_time=${SECONDS}
+    "$@"
+    local end_time=${SECONDS}
+    local duration=$((end_time - start_time))
+    local hours=$((duration / 3600))
+    local minutes=$(((duration % 3600) / 60))
+    local seconds=$((duration % 60))
+    printf -v elapsed_time "%02d:%02d:%02d" "${hours}" "${minutes}" "${seconds}"
+}
+
+verify_checksums() {
+    echo "verifying file checksums on ${NAS_MNT} against backup NAS (${BACKUP_NAS_IP})..."
+    echo
+    rsync \
+        --checksum \
+        --dry-run \
+        --human-readable \
+        --recursive \
+        --stats \
+        --verbose \
+        --verbose \
+        --exclude=".rsync-trash/" \
+        --info=progress1 \
+        "${NAS_MNT}/" \
+        "admin@${BACKUP_NAS_IP}:/share/Public/" \
+        | grep -v "file_list pointer array" \
+        || die "rsync failed"
+}
+
+check_host
+check_configuration
+echo
+mount-bitz >/dev/null 2>&1
+echo
+echo "starting checksum verification..."
+echo
+echo "${SEP}"
+echo
+timer verify_checksums
+echo "${SEP}"
+echo
+echo "elapsed time: ${elapsed_time}"
+echo
+ok "verification complete"
