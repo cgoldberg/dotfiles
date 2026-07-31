@@ -15,7 +15,7 @@
 #    for the first time or it will fail silently
 
 
-EXPECTED_HOSTS=("minime" "raspberrypi")
+ALLOWED_HOSTS=("minime" "raspberrypi")
 PASSWORD_FILE="${HOME}/.ssh/nas_pass.txt"
 
 # 2-bay QNAP
@@ -43,7 +43,7 @@ ok() {
 check_host() {
     local can_run="false"
     for i in {0..1}; do
-        local host="${EXPECTED_HOSTS[${i}]}"
+        local host="${ALLOWED_HOSTS[${i}]}"
         if [ "${HOSTNAME}" == "${host}" ]; then
             can_run="true"
         fi

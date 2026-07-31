@@ -14,7 +14,7 @@
 trap cleanup SIGINT SIGTERM
 
 
-EXPECTED_HOSTS=("minime" "raspberrypi")
+ALLOWED_HOSTS=("minime" "raspberrypi")
 NAS_HOST="bitz"
 BACKUP_LOCAL_PATH="${HOME}/backup"
 NAS_MNT="/mnt/${NAS_HOST}"
@@ -46,7 +46,7 @@ cleanup() {
 check_host() {
     local can_run="false"
     for i in {0..1}; do
-        local host="${EXPECTED_HOSTS[${i}]}"
+        local host="${ALLOWED_HOSTS[${i}]}"
         if [ "${HOSTNAME}" == "${host}" ]; then
             can_run="true"
         fi

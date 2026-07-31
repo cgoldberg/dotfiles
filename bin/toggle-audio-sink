@@ -8,7 +8,7 @@
 #   USB/IEC958 DAC (speakers)
 
 
-EXPECTED_HOSTS=("minime")
+ALLOWED_HOSTS=("minime")
 HEADPHONE_SINK=35 # HDMI
 SPEAKER_SINK=57 # USB DAC
 BOLD="\e[1m"
@@ -30,7 +30,7 @@ ok() {
 check_host() {
     local can_run="false"
     for i in {0..1}; do
-        local host="${EXPECTED_HOSTS[${i}]}"
+        local host="${ALLOWED_HOSTS[${i}]}"
         if [ "${HOSTNAME}" == "${host}" ]; then
             can_run="true"
         fi
