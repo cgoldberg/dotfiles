@@ -83,8 +83,7 @@ check_configuration() {
         die "fatal: sync-nas not found"
     fi
     local min_bytes=$((${MIN_DESTINATION_GB} * 1024 * 1024 * 1024))
-    local avail
-    avail=$(df --output=avail -B1 "${DESTINATION_NAS_MNT}" | tail -1)
+    local avail=$(df --output=avail -B1 "${DESTINATION_NAS_MNT}" | tail -1)
     if ! [[ "${avail}" =~ ^[0-9]+$ ]]; then
         die "fatal: could not determine free space on destination"
     fi

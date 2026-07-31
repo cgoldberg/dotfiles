@@ -73,8 +73,7 @@ check_configuration() {
         die "fatal: rsync not found"
     fi
     local min_bytes=$((${MIN_USB_GB} * 1024 * 1024 * 1024))
-    local avail
-    avail=$(df --output=avail -B1 "${USB_MNT}" | tail -1)
+    local avail=$(df --output=avail -B1 "${USB_MNT}" | tail -1)
     if ! [[ "${avail}" =~ ^[0-9]+$ ]]; then
         die "fatal: could not determine free space on destination"
     fi
