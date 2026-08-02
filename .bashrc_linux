@@ -516,14 +516,6 @@ update-apt-local-pkgs() {
 
 # clean cargo cache and registry
 clean-rust() {
-    if ! type cargo >/dev/null 2>&1; then
-        err "cargo not found"
-        return 1
-    fi
-    if ! type cargo-cache >/dev/null 2>&1; then
-        err "cargo-cache not found"
-        return 1
-    fi
     cargo cache --autoclean
     if [ -d "${HOME}/.cargo" ]; then
         rm -rf "${HOME}/.cargo/registry"

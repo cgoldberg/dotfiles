@@ -38,6 +38,7 @@
 #    - bandwhich (cargo install bandwhich, then `sudo setcap cap_sys_ptrace,cap_dac_read_search,cap_net_raw,cap_net_admin+ep ~/.cargo/bin/bandwhich`)
 #    - bmon (sudo apt install bmon)
 #    - btop (https://github.com/aristocratos/btop - download/unarchive, then: `sudo make install && sudo make setcap`)
+#    - cargo (https://rustup.rs)
 #    - cargo-cache (cargo install cargo-cache)
 #    - cargo-update (cargo install cargo-update)
 #    - flatpak (sudo apt install flatpak)
@@ -103,7 +104,9 @@ DEPENDENCIES_LINUX=(
     "bandwhich"
     "bmon"
     "btop"
+    "cargo"
     "cargo-cache"
+    "cargo-update"
     "flatpak"
     "githubtakeout"
     "gnome-terminal"
