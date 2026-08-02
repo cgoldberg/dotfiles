@@ -40,7 +40,7 @@
 #    - btop (https://github.com/aristocratos/btop - download/unarchive, then: `sudo make install && sudo make setcap`)
 #    - cargo (https://rustup.rs)
 #    - cargo-cache (cargo install cargo-cache)
-#    - cargo-update (cargo install cargo-update)
+#    - cargo-install-update (cargo install cargo-update)
 #    - flatpak (sudo apt install flatpak)
 #    - gcc (sudo apt install build-essential)
 #    - githubtakeout (pipx-install githubtakeout)
@@ -106,7 +106,7 @@ DEPENDENCIES_LINUX=(
     "btop"
     "cargo"
     "cargo-cache"
-    "cargo-update"
+    "cargo-install-update"
     "flatpak"
     "githubtakeout"
     "gnome-terminal"
