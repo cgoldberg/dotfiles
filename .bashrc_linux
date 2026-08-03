@@ -396,7 +396,7 @@ flat-up() {
 
 
 # show which system package an executable on PATH comes from
-which-pkg() {
+apt-which-pkg() {
     if [ -z "$1" ]; then
         err "no package specified"
         return 1
