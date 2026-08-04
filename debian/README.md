@@ -132,6 +132,15 @@ sudo apt install \
 
 ----
 
+# Build alternate Python versions
+
+- install pyenv:
+  - `curl -fsSL https://pyenv.run | bash`
+- build/install latest release of python major versions (from source with optimizations):
+  - `update-pyenv`
+
+----
+
 ## Install/Configure GNOME Shell extensions
 
 - install:

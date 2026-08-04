@@ -31,6 +31,10 @@ if [[ "${OSTYPE}" != "linux"* ]]; then
 fi
 
 
+# python versions to manage with pyenv
+PY_VERSIONS=("3.14" "3.13" "3.12" "3.11" "3.10" "pypy3.11")
+
+
 # make less more friendly for non-text input files
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -547,7 +551,7 @@ update-rust-bins() {
 # - re-install pipx with most recent python interpreter and update all pipx applications
 update-pyenv() {
     if [ ! -d "${HOME}/.pyenv" ]; then
-        err "pyenv is not installed"
+        err "pyenv not configured"
         return 1
     fi
     if [ -n "${VIRTUAL_ENV}" ]; then
@@ -615,10 +619,9 @@ venv() {
 
 
 # pyenv
-if [ -d "${HOME}/.pyenv" ]; then
+if type pyenv >/dev/null 2>&1; then
     export PYENV_ROOT="${HOME}/.pyenv"
     [[ -d "${PYENV_ROOT}/bin" ]] && export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init - bash)"
-    PY_VERSIONS=("3.14" "3.13" "3.12" "3.11" "3.10" "pypy3.11")
     eval "pyenv global ${PY_VERSIONS[*]}"
 fi
