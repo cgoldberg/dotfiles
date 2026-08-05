@@ -1,7 +1,6 @@
 # ~/.gitconfig
 #
-# global git configuration
-# (set in each repo's .git/config to override these)
+# global git configuration (set in each repo's .git/config to override these)
 
 [user]
     name = Corey Goldberg
@@ -52,12 +51,10 @@
     b = branch
     d = diff
     s = stat # ~/bin/git-stat
-    bd = branch -D # delete branch (even if not merged)
     co = checkout
     df = diff --staged
     clone-blobless = clone --filter=blob:none
     clone-shallow = clone --depth=1
-    undo = reset --soft HEAD~1 # reset current branch to previous commit, preserving all changes
 
     # commit logs
     l = log --stat --pretty=fuller
@@ -65,24 +62,32 @@
     ll = log --graph --pretty=tformat:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     ls = log --pretty=tformat:'%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ar %C(auto,magenta)%<(14,trunc)%aN %C(auto,green)%s%Creset'
 
+    # reset current branch to previous commit (preserve changes)
+    undo = reset --soft HEAD~1
+
+    # delete branch (even if not merged)
+    bd = branch -D
+
     # list branches with ahead/behind + timestamp
-    br = "!git branches"
+    br = branches # ~/bin/git-branches
 
     # list git aliases
     alias = "!git config --list | grep alias | cut -c 7- | tr -s ' ' | sort"
 
-    # commit all staged/unstaged changes with inline message
-    ci = "!f() { git commit --all --message \"$*\"; }; f"
-
     # open Github web page for default remote repository (requires GitHub CLI)
     open = "!gh repo view --web >/dev/null 2>&1 &"
 
-    # remove objects that are no longer referenced, remove deleted remote references, and run garbage collection
-    tidy = "!git fetch --prune --verbose && git prune --progress --verbose \
-            && git remote prune origin && git gc --prune=now"
+    # run repo maintenance, remove unreferenced objects, and run garbage collection
+    tidy = "!git fetch --all --prune --tags && \
+        git reflog expire --expire=now --expire-unreachable=now --all && \
+        git gc --prune=now && \
+        git maintenance run"
 
     # sync remote with parent if in a fork, and rebase all local branches
     up = "!git syncrepo && sleep 3; git sync; git branches"
+
+    # commit all staged/unstaged changes with inline message
+    ci = "!f() { git commit --all --message \"$*\"; }; f"
 
     # save a stash with a custom name
     stash-save = "!f() { \
@@ -108,7 +113,7 @@
         fi; \
     }; f"
 
-# delta pager - https://github.com/dandavison/delta
+# delta pager: https://github.com/dandavison/delta
 [delta]
     features = custom-theme
 
