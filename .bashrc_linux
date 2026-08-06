@@ -478,10 +478,6 @@ apt-show-local-pkgs() {
 
 # update locally installed .deb packages
 update-apt-local-pkgs() {
-    if ! type gh >/dev/null 2>&1; then
-        err "GitHub CLI not found"
-        return 1
-    fi
     if [ "$(arch)" == "aarch64" ]; then
         local architecture="arm64"
     else
@@ -536,10 +532,6 @@ clean-rust() {
 
 # update all rust toolchains and binaries that were installed with cargo
 update-rust-bins() {
-    if ! type rustup >/dev/null 2>&1; then
-        err "rustup not found"
-        return 1
-    fi
     rustup update
     echo
     cargo install-update --all
