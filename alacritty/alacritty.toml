@@ -15,7 +15,7 @@ padding = { x = 8, y = 4 }
 position = { x = 0, y = 0 }
 
 [font]
-size = 14
+size = 13
 
 [font.normal]
 family = "UbuntuMono Nerd Font"
