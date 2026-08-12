@@ -464,7 +464,7 @@ trim-trailing-whitespace-from-files() {
 # - usage: renew-inode <file_or_glob>
 renew-inode() {
     if [ -z "$1" ]; then
-        err "please specify an file or glob pattern with matches"
+        err "please specify a file or glob pattern with matches"
         return 1
     fi
     for f in "$@"; do
