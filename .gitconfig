@@ -77,17 +77,30 @@
     # open Github web page for default remote repository (requires GitHub CLI)
     open = "!gh repo view --web >/dev/null 2>&1 &"
 
-    # run repo maintenance, remove unreferenced objects, and run garbage collection
-    tidy = "!git fetch --all --prune --tags && \
-        git reflog expire --expire=now --expire-unreachable=now --all && \
-        git gc --prune=now && \
-        git maintenance run"
-
     # sync remote with parent if in a fork, and rebase all local branches
     up = "!git syncrepo && sleep 3; git sync; git branches"
 
     # commit all staged/unstaged changes with inline message
     ci = "!f() { git commit --all --message \"$*\"; }; f"
+
+    # perform normal repo maintenance and cleanup
+    # - preserves recently unreachable objects
+    tidy = "!f() { \
+        echo 'cleaning up repo...'; \
+        git fetch --all --prune --tags && \
+        git gc && \
+        git maintenance run; \
+    }; f"
+
+    # perform aggressive repo maintenance and cleanup
+    # - immediately expires reflogs and permanently prunes unreachable objects
+    tidy-aggressive = "!f() { \
+        echo 'aggressively cleaning up repo...'; \
+        git fetch --all --prune --tags && \
+        git reflog expire --expire=now --expire-unreachable=now --all && \
+        git gc --prune=now && \
+        git maintenance run; \
+    }; f"
 
     # save a stash with a custom name
     stash-save = "!f() { \
