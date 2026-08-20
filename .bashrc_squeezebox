@@ -93,17 +93,15 @@ squeezebox-next() {
 alias n=squeezebox-next
 
 
-# skip forward given secs in currently playing track on Squeezebox player
+# skip forward 2 mins in currently playing track on Squeezebox player
 squeezebox-skip-forward() {
-    echo "$(printf '["time", "+%s"]' "$1")"
-    send-squeezebox-cmd "$(printf '["time", "+%s"]' "$1")"
+    send-squeezebox-cmd '["time", "+120"]'
 }
 
 
-# skip back given secs in currently playing track on Squeezebox player
+# skip back 30 secs in currently playing track on Squeezebox player
 squeezebox-skip-back() {
-    echo "$(printf '["time", "-%s"]' "$1")"
-    send-squeezebox-cmd "$(printf '["time", "-%s"]' "$1")"
+    send-squeezebox-cmd '["time", "-30"]'
 }
 
 
