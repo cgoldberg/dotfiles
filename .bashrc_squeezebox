@@ -68,15 +68,6 @@ squeezebox-show() {
 alias s=squeezebox-show
 
 
-# skip to next track in playlist on Squeezebox player
-squeezebox-next() {
-    if send-squeezebox-cmd '["button", "jump_fwd"]'; then
-        squeezebox-show
-    fi
-}
-alias n=squeezebox-next
-
-
 # play random song mix on Squeezebox player
 squeezebox-mix() {
     if send-squeezebox-cmd '["randomplay", "tracks"]'; then
@@ -93,7 +84,30 @@ squeezebox-pause() {
 alias p="squeezebox-pause"
 
 
-# send POST request rescan music library
+# skip to next track in playlist on Squeezebox player
+squeezebox-next() {
+    if send-squeezebox-cmd '["button", "jump_fwd"]'; then
+        squeezebox-show
+    fi
+}
+alias n=squeezebox-next
+
+
+# skip forward given secs in currently playing track on Squeezebox player
+squeezebox-skip-forward() {
+    echo "$(printf '["time", "+%s"]' "$1")"
+    send-squeezebox-cmd "$(printf '["time", "+%s"]' "$1")"
+}
+
+
+# skip back given secs in currently playing track on Squeezebox player
+squeezebox-skip-back() {
+    echo "$(printf '["time", "-%s"]' "$1")"
+    send-squeezebox-cmd "$(printf '["time", "-%s"]' "$1")"
+}
+
+
+# rescan given music library on Lyrion Music Server
 send-squeezebox-rescan() {
     local music_dir=$(printf '%s' "$1" | sed -e 's/ /%20/g' -e 's/\//%2F/g')
     local payload
