@@ -499,9 +499,9 @@ clean-img-metadata() {
 }
 
 
-# generate a self-contained html from markdown
+# generate a self-contained html from markdown using pandoc
 # - uses modified bootstrap css
-# - usage: md2html <markdown_file>
+# - usage: md2html <markdown_file> [output_html_file]
 md2html() {
     if [ -z "$1" ]; then
         err "please specify a markdown file"
@@ -513,7 +513,7 @@ md2html() {
     fi
     local input="$1"
     local base="${input%.*}"
-    local output="${base}.html"
+    local output="${2:-${base}.html}"
     local title="${base##*/}"
     pandoc "${input}" \
         --output "${output}" \
@@ -524,7 +524,26 @@ md2html() {
         --metadata title="${title}" \
         --embed-resources \
         --standalone
-    echo "${output}"
+    echo "generated: ${output}"
+}
+
+
+# preview rendered html from a markdown file in web browser
+# - generates a temporary self-contained html file
+# - launches default browser to view it
+# - usage: preview-md2html <markdown_file>
+preview-md2html() {
+    if [ -z "$1" ]; then
+        err "please specify a markdown file"
+        return 1
+    fi
+    local input="$1"
+    local filename="${input##*/}"
+    local basename="${filename%.md}"
+    local tmpdir="$(mktemp -d)" || return 1
+    local output="${tmpdir}/${basename}.html"
+    md2html "${input}" "${output}" || return 1
+    web "${output}"
 }
 
 
