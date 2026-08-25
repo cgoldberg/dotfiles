@@ -432,8 +432,7 @@ apt-check-available-backports() {
     local debian_codename installed_version backports_version pkg
     sudo apt-get update --no-allow-insecure-repositories >/dev/null
     debian_codename=$(lsb_release -cs)
-    echo -e "\nchecking installed packages for newer versions" \
-        "in ${debian_codename}-backports..."
+    echo -e "\nchecking installed packages for newer versions in ${debian_codename}-backports..."
     echo
     printf "%b%-40s%b %-40s %-40s\n" \
         "${BOLD}${GREEN}" "Package" "${RESET}" \
