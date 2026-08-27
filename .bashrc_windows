@@ -31,10 +31,6 @@ if [[ "${OSTYPE}" != "msys" && "${OSTYPE}" != "cygwin" ]]; then
 fi
 
 
-# set the terminal title to current directory
-PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
-
-
 # ======================================================
 #
 #            888 d8b
