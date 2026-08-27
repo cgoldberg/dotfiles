@@ -347,17 +347,29 @@ stop_spinner() {
 
 
 # extract audio from a YouTube video and save as .mp3
+# - usage: yt-mp3 <video url> [quality]
+# - examples:
+#   - encode at highest CBR (320k)
+#     - yt-mp3 <video url>
+#   - encode at 256k CBR
+#     - yt-mp3 <video url> 256k
+#   - encode at highest quality VBR
+#     - yt-mp3 <video url> vbr
 yt-mp3() {
     if [ -z "$1" ]; then
         err "please specify a YouTube URL"
         return 1
     fi
+    local bitrate="${2:-320k}"
+    if [ "${bitrate}" = "vbr" ]; then
+        bitrate="0"
+    fi
     yt-dlp \
-      --format "bestaudio" \
-      --extract-audio \
-      --audio-format mp3 \
-      --audio-quality 320k \
-      "$1"
+        --format "bestaudio" \
+        --extract-audio \
+        --audio-format mp3 \
+        --audio-quality "${bitrate}" \
+        "$1"
 }
 
 
