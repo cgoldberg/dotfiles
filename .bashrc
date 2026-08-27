@@ -136,20 +136,12 @@ HISTFILESIZE=9999
 PROMPT_COMMAND="history -n; history -w; history -c; history -r"
 
 
-# add local bin directories to the end of PATH if they don't exist in PATH
-add-bins() {
-    local bin_dirs=(
-        "${HOME}/.local/bin"
-        "${HOME}/bin"
-    )
-    for d in "${bin_dirs[@]}"; do
-        mkdir --parents "${d}"
-        if [[ "${PATH}" != *"${d}"* ]]; then
-            export PATH="${PATH}:${d}"
-        fi
-    done
-}
-add-bins
+# add local bin directories to the end of PATH
+for d in "${HOME}/bin" "${HOME}/.local/bin"; do
+    if [[ ":${PATH}:" != *":${d}:"* ]]; then
+        export PATH="${PATH}:${d}"
+    fi
+done
 
 
 # ruby gems
