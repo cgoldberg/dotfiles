@@ -64,21 +64,6 @@ fi
 export VISUAL="${EDITOR}"
 
 
-# set a colored prompt with:
-# - user:dir
-# - git branch with state (if in a git repo)
-export GIT_PS1_HIDE_IF_PWD_IGNORED=1
-export GIT_PS1_SHOWDIRTYSTATE=1
-export GIT_PS1_SHOWSTASHSTATE=1
-export GIT_PS1_SHOWUPSTREAM="auto"
-PS1=\
-'\[\033[1;38;5;214m\]\u\[\033[0m\]'\
-'\[\033[1;38;5;255m\]:\[\033[00m\]'\
-'\[\033[1;38;5;123m\]\w\[\033[00m\]'\
-'\[\033[0;38;5;046m\]$(__git_ps1 " (%s)")\[\033[0m\] '\
-'\[\033[1;38;5;255m\]\$ \[\033[0m\]'
-
-
 # set termcap colors for less pager
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')
 export LESS_TERMCAP_md=$(printf '\e[01;38;5;75m')
