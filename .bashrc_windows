@@ -32,8 +32,11 @@ fi
 
 
 # enable git completion + prompt
-source /mingw64/share/git/completion/git-completion.bash
-source /mingw64/share/git/completion/git-prompt.sh
+git_completion_path="$(git --exec-path)"
+git_completion_path="${git_completion_path%/libexec/git-core}"
+git_completion_path="${git_completion_path%/lib/git-core}"
+source "${git_completion_path}/share/git/completion/git-completion.bash" 2>/dev/null
+source "${git_completion_path}/share/git/completion/git-prompt.sh" 2>/dev/null
 
 
 # set a colored prompt with:

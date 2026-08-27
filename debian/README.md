@@ -67,8 +67,8 @@ sudo systemctl mask apt-daily-upgrade.timer
 
 ```
 sudo apt install \
-    audacious build-essential cifs-utils curl git gvfs-backends htop \
-    libfuse2 nano pavucontrol python-is-python3 smplayer
+    audacious bash-completion build-essential cifs-utils curl git gvfs-backends \
+    htop libfuse2 nano pavucontrol python-is-python3 smplayer
 
 ```
 
@@ -81,7 +81,8 @@ sudo apt remove --purge \
     cups* apache* libreoffice* sane* blueman bluez bolt modemmanager
 ```
 
-(this removes cellular data, print services, scanner utilities, bluetooth support, thunderbolt support, etc)
+(this removes cellular data, print services, scanner utilities,
+bluetooth support, thunderbolt support, etc)
 
 ----
 

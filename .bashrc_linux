@@ -35,9 +35,8 @@ fi
 source /usr/share/bash-completion/bash_completion
 
 
-# enable git completion + prompt
-source /usr/share/bash-completion/completions/git
-source /usr/share/git/completion/git-prompt.sh
+# enable git prompt
+source /usr/lib/git-core/git-sh-prompt
 
 
 # set a colored prompt with:
