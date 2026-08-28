@@ -2,7 +2,7 @@
 #
 # Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
 #
-# NAS to NAS data verification script:
+# NAS to NAS file verification script:
 #  - mounts remote NAS filesystem with CIFS/SMB if needed
 #  - verifies file integrity by comparing checksums of
 #    all files on primary NAS with backup NAS
@@ -28,6 +28,7 @@ ALLOWED_HOSTS=("minime" "raspberrypi")
 # 2-bay QNAP
 NAS_HOST="bitz"
 NAS_MNT="/mnt/${NAS_HOST}"
+RSYNC_TRASH_DIR=".rsync-trash"
 
 # 1-bay QNAP
 BACKUP_NAS_IP="10.0.0.6"
@@ -101,7 +102,7 @@ verify_checksums() {
         --recursive \
         --stats \
         --verbose \
-        --exclude=".rsync-trash/" \
+        --exclude="${RSYNC_TRASH_DIR}/" \
         --info=progress2 \
         "${NAS_MNT}/" \
         "admin@${BACKUP_NAS_IP}:/share/Public/" \
