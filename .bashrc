@@ -296,7 +296,7 @@ alias webserver="python3 -m http.server"
 
 # print bold message to stderr preceded with red ballot x
 err() {
-    printf '%b%s%b %s\n' "${GREEN}" "$(printf '%b' "${CROSS}")" "${RESET}" "$*" >&2
+    printf '%b%s%b %s\n' "${RED}" "$(printf '%b' "${CROSS}")" "${RESET}" "$*" >&2
 }
 
 
