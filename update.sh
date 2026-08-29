@@ -179,11 +179,11 @@ GIT_SCRIPTS=(
 )
 
 err() {
-    printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
+    printf '%b%s%b %s\n' "${GREEN}" "$(printf '%b' "${CHECK}")" "${RESET}" "$*" >&2
 }
 
 ok() {
-    printf "${BOLD}${GREEN}%b${RESET} ${BOLD}%s${RESET}\n" "${CHECK}" "$*" 1>&2
+    printf '%b%s%b %s\n' "${GREEN}" "$(printf '%b' "${CHECK}")" "${RESET}" "$*" >&2
 }
 
 die() {
