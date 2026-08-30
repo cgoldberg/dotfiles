@@ -20,7 +20,6 @@ NAS_HOST="bitz"
 NAS_MNT="/mnt/${NAS_HOST}"
 BACKUP_LOCAL_PATH="${HOME}/backup"
 GITHUB_BACKUP_DIR="GitHub_Backup"
-ORIGINAL_DIR="${PWD}"
 
 SEP="----------------------------------------------------------------"
 BOLD="\e[1m"
@@ -41,7 +40,6 @@ ok() {
 }
 
 cleanup() {
-    cd "${ORIGINAL_DIR}"
     echo
     die "aborted"
 }
@@ -138,9 +136,6 @@ echo
 timer do_backup
 echo
 echo "${SEP}"
-echo
-echo "changing directory back to: ${ORIGINAL_DIR}..."
-cd "${ORIGINAL_DIR}"
 echo
 echo "elapsed time: ${elapsed_time}"
 echo
