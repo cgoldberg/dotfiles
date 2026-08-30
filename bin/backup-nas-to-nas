@@ -38,11 +38,13 @@ RESET="\e[0m"
 
 
 err() {
-    printf '%b✗%b %s\n' "${RED}" "${RESET}" "$*" >&2
+    printf '%b%b✗%b %b%s%b\n' \
+        "${BOLD}" "${RED}" "${RESET}" "${BOLD}" "$*" "${RESET}" >&2
 }
 
 ok() {
-    printf '%b✓%b %s\n' "${GREEN}" "${RESET}" "$*" >&2
+    printf '%b%b✓%b %b%s%b\n' \
+        "${BOLD}" "${GREEN}" "${RESET}" "${BOLD}" "$*" "${RESET}" >&2
 }
 
 die() {

@@ -294,13 +294,15 @@ alias webserver="python3 -m http.server"
 
 # print bold message to stderr preceded with red ballot x
 err() {
-    printf '%b✗%b %s\n' "${RED}" "${RESET}" "$*" >&2
+    printf '%b%b✗%b %b%s%b\n' \
+        "${BOLD}" "${RED}" "${RESET}" "${BOLD}" "$*" "${RESET}" >&2
 }
 
 
 # print bold message to stderr preceded with green check mark
 ok() {
-    printf '%b✓%b %s\n' "${GREEN}" "${RESET}" "$*" >&2
+    printf '%b%b✓%b %b%s%b\n' \
+        "${BOLD}" "${GREEN}" "${RESET}" "${BOLD}" "$*" "${RESET}" >&2
 }
 
 
