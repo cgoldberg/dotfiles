@@ -35,14 +35,12 @@ case $- in
 esac
 
 
-# colors and symbols
+# ANSI color codes
 BOLD="\e[1m"
 BLUE="\e[34m"
 GREEN="\e[32m"
 RED="\e[31m"
 RESET="\e[0m"
-CHECK="\u2713"
-CROSS="\u2717"
 
 
 # export environment variables
@@ -296,13 +294,13 @@ alias webserver="python3 -m http.server"
 
 # print bold message to stderr preceded with red ballot x
 err() {
-    printf '%b%s%b %s\n' "${RED}" "$(printf '%b' "${CROSS}")" "${RESET}" "$*" >&2
+    printf '%b✗%b %s\n' "${RED}" "${RESET}" "$*" >&2
 }
 
 
 # print bold message to stderr preceded with green check mark
 ok() {
-    printf '%b%s%b %s\n' "${GREEN}" "$(printf '%b' "${CHECK}")" "${RESET}" "$*" >&2
+    printf '%b✓%b %s\n' "${GREEN}" "${RESET}" "$*" >&2
 }
 
 

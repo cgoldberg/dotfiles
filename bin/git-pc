@@ -12,12 +12,10 @@ GREEN="\e[32m"
 RED="\e[31m"
 WHITE="\e[97m"
 RESET="\e[0m"
-CHECK="\u2713"
-CROSS="\u2717"
 
 
 die() {
-    printf "${BOLD}${RED}%b${RESET} ${BOLD}%s${RESET}\n" "${CROSS}" "$*" 1>&2
+    printf '%b✗%b %s\n' "${RED}" "${RESET}" "$*" >&2
     exit 1
 }
 
@@ -44,10 +42,10 @@ elapsed_ms=$((end - start))
 elapsed_s=$(awk "BEGIN {printf \"%.2f\", ${elapsed_ms} / 1000}")
 num_files=$(git ls-files | wc -l | numfmt --grouping)
 if [ "${status}" -eq 0 ]; then
-    marker="${CHECK}"
+    marker="✓"
     color="${GREEN}"
 else
-    marker="${CROSS}"
+    marker="✗"
     color="${RED}"
 fi
 echo -en "${BOLD}${color}${marker}${RESET} "

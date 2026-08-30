@@ -64,8 +64,6 @@ BOLD="\e[1m"
 GREEN="\e[32m"
 RED="\e[31m"
 RESET="\e[0m"
-CHECK="\u2713"
-CROSS="\u2717"
 DOTFILES_HOME="${HOME}/code/dotfiles"
 BIN_DIR="${HOME}/bin"
 REQUIREMENTS=(
@@ -179,11 +177,11 @@ GIT_SCRIPTS=(
 )
 
 err() {
-    printf '%b%s%b %s\n' "${RED}" "$(printf '%b' "${CROSS}")" "${RESET}" "$*" >&2
+    printf '%b✗%b %s\n' "${RED}" "${RESET}" "$*" >&2
 }
 
 ok() {
-    printf '%b%s%b %s\n' "${GREEN}" "$(printf '%b' "${CHECK}")" "${RESET}" "$*" >&2
+    printf '%b✓%b %s\n' "${GREEN}" "${RESET}" "$*" >&2
 }
 
 die() {
