@@ -179,9 +179,9 @@ apostrophe() {
 
 # show disk space used by root filesystem and mounted filesystems
 diskspace() {
-    \df --human-readable --sync --type=ext4 --type=btrfs --type=cifs --type=exfat \
-        | awk 'NR==1 || $NF == "/" || $NF ~ /^\/(mnt|media)\//' \
-        | sed '1{p;s/./-/g;}'
+    \df --human-readable --sync --type=ext4 --type=btrfs --type=cifs --type=exfat |
+        awk 'NR==1 || $NF == "/" || $NF ~ /^\/(mnt|media)\//' |
+        sed '1{p;s/./-/g;}'
 }
 # make it available in non-interactive shells so watch can see it
 export -f diskspace
@@ -403,8 +403,8 @@ apt-up() {
     write "removing cached packages..."
     run sudo apt clean || return 1
     write "purging orphaned package configs..."
-    local rc_pkgs=$(dpkg-query -W -f='${db:Status-Abbrev} ${binary:Package}\n' \
-        | grep '^rc' | awk '{print $2}')
+    local rc_pkgs=$(dpkg-query -W -f='${db:Status-Abbrev} ${binary:Package}\n' |
+        grep '^rc' | awk '{print $2}')
     if [ -n "${rc_pkgs}" ]; then
         echo "$(wc -w <<<"${rc_pkgs}") orphaned package configs found"
         sudo dpkg --purge ${rc_pkgs} || return 1

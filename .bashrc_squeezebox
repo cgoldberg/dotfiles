@@ -61,8 +61,8 @@ send-squeezebox-cmd() {
 squeezebox-show() {
     if send-squeezebox-cmd '["status", "-", 1, "tags:a"]'; then
         jq -r '.result.playlist_loop | .[0] | "\(.artist) - \(.title)"' \
-            <<< "${lms_result}" \
-            | awk '{print "\033[1m" $0 "\033[0m"}'
+            <<< "${lms_result}" |
+            awk '{print "\033[1m" $0 "\033[0m"}'
     fi
 }
 alias s=squeezebox-show

@@ -265,10 +265,10 @@ alias py="python"
 
 # uninstall all python packages in current environment
 alias pip-uninstall-all="\
-    python -m pip freeze \
-        | sed 's/^-e //g' \
-        | PIP_REQUIRE_VIRTUALENV=false \
-            xargs --no-run-if-empty python -m pip uninstall -y"
+    python -m pip freeze |
+        sed 's/^-e //g' |
+        PIP_REQUIRE_VIRTUALENV=false \
+        xargs --no-run-if-empty python -m pip uninstall -y"
 
 
 # show the zen of python
@@ -309,8 +309,8 @@ ok() {
 # list bash functions and aliases
 funcs() {
     ( alias | cut -d= -f1 | sed 's/^alias //' && \
-        declare -F | sed 's/^.* //g' | grep -v '^_' ) \
-        | sort | less
+        declare -F | sed 's/^.* //g' | grep -v '^_' ) |
+    sort | less
 }
 
 
@@ -393,8 +393,7 @@ dff() {
         return 1
     fi
     \diff --report-identical-files --strip-trailing-cr \
-        --color=always "$1" "$2" \
-        | less
+        --color=always "$1" "$2" | less
 }
 alias diff="dff"
 
@@ -443,8 +442,8 @@ trim-trailing-whitespace() {
 # current directory (recursive)
 trim-trailing-whitespace-from-files() {
     echo "trimming whitespace..."
-    find . -type f -print0 \
-        | xargs --null --no-run-if-empty sed -i -e 's/[[:blank:]]*$//'
+    find . -type f -print0 |
+        xargs --null --no-run-if-empty sed -i -e 's/[[:blank:]]*$//'
 }
 
 
@@ -593,9 +592,8 @@ ff() {
             ! -path "*/.venv/*" \
             ! -path "*/__pycache__/*" \
             ! -path "*/venv/*" \
-            -print \
-            | \grep --ignore-case --color=always "$1" \
-            | less
+            -print |
+            \grep --ignore-case --color=always "$1" | less
     fi
 }
 
@@ -633,8 +631,7 @@ rg() {
             --glob=!'.*_cache/' \
             --glob='!__pycache__/' \
             --glob='!venv/' \
-            "${escaped_pattern}" \
-            | less
+            "${escaped_pattern}" | less
     else
         \grep -r \
             --ignore-case \
@@ -649,8 +646,7 @@ rg() {
             --exclude-dir=.venv \
             --exclude-dir=__pycache__ \
             --exclude-dir="venv" \
-            "$1" \
-            | less
+            "$1" | less
     fi
 }
 
@@ -659,9 +655,9 @@ rg() {
 # - usage: h <pattern>
 h() {
     local num="50"
-    history | \grep -v "  h " \
-        | \grep --ignore-case --color=always "$1" \
-        | tail -n "${num}"
+    history | \grep -v "  h " |
+        \grep --ignore-case --color=always "$1" |
+        tail -n "${num}"
 }
 
 
@@ -737,10 +733,9 @@ countfiles() {
 # - usage: psgrep <pattern>
 psgrep() {
     if [ -n "$1" ]; then
-        ps -ef \
-            | \grep --color=always --extended-regexp --ignore-case "$1" \
-            | grep --invert-match --word-regexp "grep" \
-            | nowrap
+        ps -ef |
+            \grep --color=always --extended-regexp --ignore-case "$1" |
+            \grep --invert-match --word-regexp "grep" | nowrap
     else
         ps -ef
     fi
@@ -776,8 +771,8 @@ py-upgrade() {
             ! -path "*/.tox/*" \
             ! -path "*/venv/*" \
             ! -path "*/"*"_cache/*" \
-            -print0 \
-                | xargs --null --no-run-if-empty unix2dos 2>/dev/null
+            -print0 |
+            xargs --null --no-run-if-empty unix2dos 2>/dev/null
         fi
     echo
     ok "Processed ${count} files"
@@ -800,7 +795,7 @@ py-refurb() {
             --disable FURB173 \
             --disable FURB183 \
             --disable FURB184 \
-        "${file}"
+            "${file}"
         count=$((count + 1))
     done < <(
         find . \
@@ -1003,10 +998,6 @@ pipx-upgrade-all() {
 # - requires GitHub CLI (gh) and gh-markdown-preview extension
 # - install extension with: `gh extension install yusukebe/gh-markdown-preview`
 preview-md() {
-    if ! type gh >/dev/null 2>&1; then
-        err "GitHub CLI not found"
-        return 1
-    fi
     gh markdown-preview --light-mode --markdown-mode "$1"
 }
 
@@ -1017,10 +1008,6 @@ preview-md() {
 # - files are overwritten in-place
 # - usage: shrink-images <width>
 shrink-images() {
-    if ! type magick >/dev/null 2>&1; then
-        err "ImageMagick not found"
-        return 1
-    fi
     if [ -z "$1" ]; then
         err "please specify a width in pixels"
         return 1
