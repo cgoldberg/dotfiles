@@ -538,8 +538,8 @@ preview-md2html() {
 # print system PATH
 path() {
     IFS=":"
-    for d in $PATH; do
-        echo "$d"
+    for d in ${PATH}; do
+        echo "${d}"
     done
     unset IFS
 }
