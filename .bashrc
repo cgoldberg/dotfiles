@@ -197,6 +197,7 @@ alias grep="grep --color=always"
 
 # version control
 alias g="git"
+complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
 
 
 # disk usage (directory sizes)
