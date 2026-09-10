@@ -207,11 +207,22 @@ ips() {
 
 # open url or file in default browser
 web() {
-    if [ -z "$1" ]; then
+    local path="${1-}"
+    if [ -z "${path}" ]; then
         err "please enter a file or url"
         return 1
     fi
-    sensible-browser "$1"
+    if [[ ! "${path}" =~ ^https?:// && -d "${path}" ]]; then
+        if [ -f "${path%/}/README.md" ]; then
+            path="${path%/}/README.md"
+        elif [ -f "${path%/}/index.html" ]; then
+            path="${path%/}/index.html"
+        else
+            err "please enter a file or url"
+            return 1
+        fi
+    fi
+    sensible-browser "${path}"
 }
 
 
