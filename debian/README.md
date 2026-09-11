@@ -151,6 +151,7 @@ sudo apt install \
 - add user-installed extensions:
   - Astra Monitor
   - Dash to Panel
+  - GSConnect
   - Quick Shutdown
 
 ----
@@ -285,11 +286,7 @@ EOF
   - set default policy to deny all incoming traffic
   - allow inbound loopback (lo) traffic
   - allow DHCP for IPv4 from router (UDP, remote port 67 to local port 68)
-  - allow multicast for IPv4 from router (IGMP)
-  - allow DHCP for IPv6 from router (UDP, remote port 547 to local port 546)
-  - allow multicast for IPv6 from router (MLD)
-  - allow IPv6 multicast from router (to range ff02::1:ff00:0/104)
-  - allow IPv6 MLD multicast from router (to ff02::16)
+  - allow KDE Connect/GSConnect traffic from the local network (TCP and UDP, ports 1714–1764)
   - enable firewall
   - check status
 
@@ -299,11 +296,8 @@ sudo ufw default allow outgoing
 sudo ufw default deny incoming
 sudo ufw allow in on lo
 sudo ufw allow in from 10.0.0.1 port 67 to any port 68 proto udp
-sudo ufw allow in from 10.0.0.1 proto igmp
-sudo ufw allow in from fe80::1 port 547 to any port 546 proto udp
-sudo ufw allow in from fe80::1 proto mld
-sudo ufw allow in from fe80::1 to ff02::1:ff00:0/104
-sudo ufw allow in from fe80::1 to ff02::16
+sudo ufw allow from 10.0.0.0/24 to any port 1714:1764 proto tcp
+sudo ufw allow from 10.0.0.0/24 to any port 1714:1764 proto udp
 sudo ufw --force enable
 sudo ufw status verbose
 ```
