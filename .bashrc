@@ -226,10 +226,6 @@ if type eza >/dev/null 2>&1; then
     alias l="eza --long --all --git --git-repos-no-status \
         --group-directories-first --header --modified --no-quotes \
         --classify=always --sort=Name --time-style=long-iso"
-    alias tree="eza --tree --all --group-directories-first --no-git \
-        --no-quotes --classify=always --color=always --sort=Name \
-        --ignore-glob='venv|.git|.tox|*_cache|__pycache__' \
-        | less"
 else
     alias l="ll"
 fi
