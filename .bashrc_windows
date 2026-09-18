@@ -90,21 +90,36 @@ alias clean-tmp="rm -rf /tmp/* /tmp/.*"
 # =========================================================================================
 
 
-# open url or file in chrome browser
+# open url or file in browser
 web() {
-    if [ -z "$1" ]; then
-        err "please enter a file or url"
+    local path="${1-}"
+    if [[ -z "$path" ]]; then
+        err "please enter a file, directory, or URL"
         return 1
     fi
-    if [[ "$1" == http* ]]; then
+    if [[ "${path}" =~ ^https?:// ]]; then
         python -m webbrowser -t "$1"
-    else
-        python -c "import os, webbrowser; \
-            file_path = os.path.abspath('$1'); \
-            chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe'; \
-            webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chrome_path)); \
-            webbrowser.get('chrome').open(f'file://{file_path}')"
+        return
     fi
+    if [[ -d "${path}" ]]; then
+        if [[ -f "${path%/}/README.md" ]]; then
+            path="${path%/}/README.md"
+        elif [[ -f "${path%/}/index.html" ]]; then
+            path="${path%/}/index.html"
+        else
+            err "directory has no README.md or index.html: ${path}"
+            return 1
+        fi
+    fi
+    if [[ ! -f "${path}" ]]; then
+        err "file not found: ${path}"
+        return 1
+    fi
+    python -c "import os, webbrowser; \
+        file_path = os.path.abspath('${path}'); \
+        chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe'; \
+        webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chrome_path)); \
+        webbrowser.get('chrome').open(f'file://{file_path}')"
 }
 
 

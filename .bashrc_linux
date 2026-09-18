@@ -206,22 +206,25 @@ ips() {
 }
 
 
-# open url or file in default browser
+# open url or file in browser
 web() {
     local path="${1-}"
-    if [ -z "${path}" ]; then
-        err "please enter a file or url"
+    if [[ -z "${path}" ]]; then
+        err "please enter a file, directory, or URL"
         return 1
     fi
     if [[ ! "${path}" =~ ^https?:// && -d "${path}" ]]; then
-        if [ -f "${path%/}/README.md" ]; then
+        if [[ -f "${path%/}/README.md" ]]; then
             path="${path%/}/README.md"
-        elif [ -f "${path%/}/index.html" ]; then
+        elif [[ -f "${path%/}/index.html" ]]; then
             path="${path%/}/index.html"
         else
-            err "please enter a file or url"
+            err "directory has no README.md or index.html: $path"
             return 1
         fi
+    elif [[ ! "${path}" =~ ^https?:// && ! -f "${path}" ]]; then
+        err "file not found: ${path}"
+        return 1
     fi
     sensible-browser "${path}"
 }
