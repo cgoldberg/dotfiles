@@ -1,7 +1,8 @@
 # ~/.bashrc
+
 # ============================================================================
 # Bash shell configuration
-# Copyright (c) Corey Goldberg (https://github.com/cgoldberg)
+# Corey Goldberg (https://github.com/cgoldberg)
 # ============================================================================
 #
 #    bbbbbbbb
