@@ -456,18 +456,17 @@ apt-which-pkg() {
         err "no package specified"
         return 1
     fi
-    bin_path="$(realpath $(\which $1) 2>/dev/null)"
+    local bin_path="$(realpath $(\which $1) 2>/dev/null)"
     if [ -z "${bin_path}" ]; then
         err "'$1' not found on PATH"
         return 1
-    else
-        pkg="$(dpkg -S ${bin_path} 2>/dev/null)"
-        if [ -z "${pkg}" ]; then
-            err "'$1' not found in a package"
-            return 1
-        fi
     fi
-    ok "'${bin_path}' found in package '${pkg%%:*}'"
+    pkg="$(dpkg -S ${bin_path} 2>/dev/null)"
+    if [ -z "${pkg}" ]; then
+        err "'$1' not found in a package"
+        return 1
+    fi
+    echo "${bin_path} found in package: ${pkg%%:*}"
 }
 
 
