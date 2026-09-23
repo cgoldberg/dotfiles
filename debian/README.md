@@ -78,8 +78,8 @@ sudo apt install \
 
 ```
 sudo apt remove --purge \
-    cups* apache* libreoffice* sane* blueman bluez bolt \
-    evolution-data-server, modemmanager
+    bluez* cups* apache* libreoffice* sane* blueman bolt \
+    evolution-data-server modemmanager
 ```
 
 (this removes cellular data, print services, scanner utilities,
