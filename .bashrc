@@ -192,6 +192,10 @@ alias cd........="cd ../../../../../../.."
 alias cd.........="cd ../../../../../../../.."
 
 
+# list directory tree
+alias tree="treex"
+
+
 # enable color support for grep
 alias grep="grep --color=always"
 
