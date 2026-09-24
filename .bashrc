@@ -858,6 +858,7 @@ clean-py() {
         *.coverage
         *.spec
         *.pyc
+        *.venv
     )
     if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
