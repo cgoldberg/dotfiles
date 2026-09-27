@@ -134,7 +134,7 @@ sudo apt install \
 
 ----
 
-# Build alternate Python versions
+## Build alternate Python versions
 
 - install pyenv:
   - `curl -fsSL https://pyenv.run | bash`
@@ -146,7 +146,7 @@ sudo apt install \
 ## Install/Configure GNOME Shell extensions
 
 - install:
-  - `sudo apt install gnome-shell-extensions`
+  - `sudo apt install gnome-shell-extensions gnome-shell-extension-manager`
 - add system extensions:
   - Native Window Placement
 - add user-installed extensions:
@@ -386,7 +386,7 @@ sudo chmod 600 /root/.smbcredentials
 
 ----
 
-# Rotate GNOME wallpaper on a timer
+## Rotate GNOME wallpaper on a timer
 
 - create the service: `~/.config/systemd/user/random-wallpaper.service`:
 
