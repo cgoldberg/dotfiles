@@ -7,6 +7,9 @@
     email = 1113081+cgoldberg@users.noreply.github.com
     useConfigOnly = true
 
+[init]
+    defaultBranch = main
+
 [color]
     branch = always
     decorate = always
