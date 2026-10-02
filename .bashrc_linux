@@ -607,6 +607,15 @@ update-pyenv() {
     echo "updating pyenv..."
     pyenv update
     pyenv rehash
+    ok "updated"
+    echo
+    echo "installing prerequisites..."
+    pyenv install-prerequisites
+    ok "installed"
+    echo
+    echo "validating pyenv..."
+    pyenv doctor
+    ok "verified"
     echo
     local minor_versions=( $(pyenv versions --bare | \grep "${py_version}") )
     for minor_version in "${minor_versions[@]}"; do
