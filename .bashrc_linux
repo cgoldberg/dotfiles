@@ -517,56 +517,6 @@ apt-install-package-from-backports() {
 }
 
 
-# show locally installed .deb packages
-apt-show-local-pkgs() {
-    apt list --installed 2>/dev/null | \grep installed,local | cut -d'/' -f1
-}
-
-
-# update locally installed .deb packages
-update-apt-local-pkgs() {
-    if [ "$(arch)" == "aarch64" ]; then
-        local architecture="arm64"
-    else
-        local architecture="amd64"
-    fi
-    local packages=$(apt-show-local-pkgs)
-    local original_dir=${PWD}
-    rm -f /tmp/*.deb
-    for pkg in ${packages[@]}; do
-        local pkg_repo_dir="${HOME}/code/${pkg}"
-        if [ ! -d "${pkg_repo_dir}" ]; then
-            echo
-            err "can't find git repo for package: ${pkg}"
-            echo
-            echo "locally cloned repos are required at:"
-            for pkg in ${packages[@]}; do
-                echo " - ${HOME}/code/${pkg}"
-            done
-            return 1
-        fi
-    done
-    for pkg in ${packages[@]}; do
-        local pkg_repo_dir="${HOME}/code/${pkg}"
-        cd "${pkg_repo_dir}"
-        echo
-        echo "downloading latest release of package: '${pkg}'..."
-        gh release download --clobber --pattern="*${architecture}.deb" --dir="/tmp"
-        for deb in /tmp/*"${architecture}.deb"; do
-            if [[ ${deb} != *musl* ]]; then
-                echo "installing..."
-                sudo apt install -y "${deb}"
-                echo
-            fi
-            rm "${deb}"
-            cd "${original_dir}"
-        done
-    done
-    cd "${original_dir}"
-    ok "done upgrading locally installed packages"
-}
-
-
 # clean cargo cache and registry
 clean-rust() {
     cargo cache --autoclean
