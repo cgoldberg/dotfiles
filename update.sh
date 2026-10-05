@@ -32,7 +32,6 @@
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - tickrs (cargo install tickrs, scoop install tickrs)
-#    - yt-dlp (pipx-install yt-dlp[default,curl-cffi,deno,secretstorage])
 #
 #  - linux only:
 #    - bandwhich (cargo install bandwhich, then `sudo setcap cap_sys_ptrace,cap_dac_read_search,cap_net_raw,cap_net_admin+ep ~/.cargo/bin/bandwhich`)
@@ -55,6 +54,7 @@
 #    - rsync (sudo apt install rsync)
 #    - rustup (https://rustup.rs)
 #    - toilet (sudo apt install toilet)
+#    - yt-dlp (pipx-install yt-dlp[default,curl-cffi,deno,secretstorage])
 #
 #  - windows only:
 #    - alacritty (scoop install alacritty)
@@ -96,7 +96,6 @@ DEPENDENCIES=(
     "shellcheck"
     "subl"
     "tickrs"
-    "yt-dlp"
 )
 DEPENDENCIES_LINUX=(
     "bandwhich"
@@ -119,6 +118,7 @@ DEPENDENCIES_LINUX=(
     "rsync"
     "rustup"
     "toilet"
+    "yt-dlp"
 )
 DEPENDENCIES_WINDOWS=(
     "alacritty"
