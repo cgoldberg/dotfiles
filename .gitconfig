@@ -148,7 +148,7 @@
     hunk-header-decoration-style = "#5E81AC ul"
     hunk-header-file-style = "blue ul bold"
     hunk-header-line-number-style = "yellow box bold"
-    hunk-header-style = "file line-number bold"
+    hunk-header-style = "file line-number bold omit-code-fragment"
     line-numbers = true
     line-numbers-left-style = "#5E81AC"
     line-numbers-minus-style = brightred
