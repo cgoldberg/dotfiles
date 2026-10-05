@@ -222,7 +222,7 @@ sudo systemctl restart systemd-journald
 
 - edit `/etc/default/grub`
   - reduce timeout:
-    - set `GRUB_TIMEOUT=3`
+    - set `GRUB_TIMEOUT=2`
   - set kernel command-line parameters:
     - remove boot splash screen
       - find `GRUB_CMDLINE_LINUX_DEFAULT`, and remove `splash`
