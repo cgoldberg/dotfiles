@@ -694,7 +694,7 @@ weather() {
 alias w="weather"
 
 
-# stock watchlist
+# stock charts
 stocks() {
     local tickers="^DJI,^IXIC,^GSPC,^RUI,^RLV,^RLG,^RUT,^RUJ,^RUO,AMZN,COPP,SPCX,FBTC,FETH,XRPZ"
     tickrs \
