@@ -696,7 +696,7 @@ alias w="weather"
 
 # stock charts
 stocks() {
-    local tickers="^DJI,^IXIC,^GSPC,^RUI,^RLG,^RUJ,^RUO,AMZN,COPP,SPCX,FBTC,FETH,XRPZ"
+    local tickers="^DJI,^IXIC,^GSPC,^RLG,^RLV,^RUO,^RUJ,AMZN,COPP,SPCX,FBTC,FETH,XRPZ"
     tickrs \
         --show-x-labels \
         --summary \
