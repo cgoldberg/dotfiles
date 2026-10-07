@@ -57,13 +57,14 @@ curl -fsSL "${SOUND_URL}" -o "${SOUND_FILE}" || {
     exit 1
 }
 
-echo "Waiting for HTTP 200 from ${URL} ..."
+printf '\nWaiting for HTTP 200 from %s ...\n\n' "${URL}"
 
 while true; do
     resp_code=$(curl -sS -o /dev/null -w '%{http_code}' "${URL}")
+
     if [ "${resp_code}" = "200" ]; then
-        echo
-        echo "🎉🎉🎉 HTTP 200 — ${URL} IS UP! 🎉🎉🎉"
+        printf '\n🎉🎉🎉 HTTP 200 — %s IS UP! 🎉🎉🎉\n' "${URL}"
+        printf '         🕐 %s UTC\n\n' "$(date -u '+%Y-%m-%d %H:%M:%S')"
         end_time=$((SECONDS + CELEBRATION_SECONDS))
         while [ "${SECONDS}" -lt "${end_time}" ]; do
             pw-play "${SOUND_FILE}" &
