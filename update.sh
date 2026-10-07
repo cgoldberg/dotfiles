@@ -149,6 +149,7 @@ LINUX_SCRIPTS=(
     "./bin/backup-github"
     "./bin/backup-nas-to-external"
     "./bin/backup-nas-to-nas"
+    "./bin/http-watch"
     "./bin/mount-bitz"
     "./bin/mount-bytez"
     "./bin/now"
