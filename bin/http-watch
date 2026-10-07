@@ -20,7 +20,7 @@
 set -u
 
 POLL_INTERVAL="${2:-10}"
-CELEBRATION_SECONDS=60
+CELEBRATION_SECONDS=10
 SOUND_URL="https://opengameart.org/sites/default/files/fanfare1.wav"
 
 if [ $# -lt 1 ] || [ $# -gt 2 ]; then
