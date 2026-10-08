@@ -19,8 +19,11 @@
 
 set -u
 
+trap handle_interrupt INT TERM
+trap cleanup EXIT
+
 POLL_INTERVAL="${2:-10}"
-CELEBRATION_SECONDS=10
+CELEBRATION_SECONDS=30
 SOUND_URL="https://opengameart.org/sites/default/files/fanfare1.wav"
 
 if [ $# -lt 1 ] || [ $# -gt 2 ]; then
@@ -49,20 +52,19 @@ handle_interrupt() {
     exit 130
 }
 
-trap handle_interrupt INT TERM
-trap cleanup EXIT
-
-curl -fsSL "${SOUND_URL}" -o "${SOUND_FILE}" || {
-    echo "Failed to download notification sound"
-    exit 1
+download_sound() {
+    curl -fsSL "${SOUND_URL}" -o "${SOUND_FILE}" || {
+        echo "Failed to download notification sound"
+        exit 1
+    }
 }
 
 printf '\nWaiting for HTTP 200 from %s ...\n\n' "${URL}"
 
 while true; do
     resp_code=$(curl -sS -o /dev/null -w '%{http_code}' "${URL}")
-
     if [ "${resp_code}" = "200" ]; then
+        download_sound
         printf '\n🎉🎉🎉 HTTP 200 — %s IS UP! 🎉🎉🎉\n' "${URL}"
         printf '         🕐 %s UTC\n\n' "$(date -u '+%Y-%m-%d %H:%M:%S')"
         end_time=$((SECONDS + CELEBRATION_SECONDS))
