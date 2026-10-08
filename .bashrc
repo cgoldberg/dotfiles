@@ -812,9 +812,10 @@ py-refurb() {
 }
 
 
-# clean pip/pipx cache
+# clean python pip/pipx cache
 clean-pip() {
     echo "cleaning pip/pipx cache..."
+    echo
     pip cache purge
     local dirs=(
         "${HOME}/.cache/pip/"
@@ -832,6 +833,18 @@ clean-pip() {
             rm -rf ${d}
         fi
     done
+    echo
+    ok "done"
+}
+
+
+# clean python uv cache
+clean-uv() {
+    echo "cleaning uv cache..."
+    echo
+    uv cache clean
+    echo
+    ok "done"
 }
 
 
