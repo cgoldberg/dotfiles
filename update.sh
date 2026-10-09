@@ -97,6 +97,7 @@ DEPENDENCIES=(
     "shellcheck"
     "subl"
     "tickrs"
+    "uv"
 )
 DEPENDENCIES_LINUX=(
     "bandwhich"
