@@ -398,8 +398,8 @@ sudo apt install dkms r8125-dkms
 - verify the driver built successfully:
 
 ```
-dkms status
-modinfo r8125 | head
+sudo dkms status
+sudo modinfo r8125 | head
 ```
 
 - prevent r8169 from loading:
