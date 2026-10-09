@@ -897,7 +897,7 @@ clean-py() {
     for rf in "${recurse_files[@]}"; do
         echo "recursively deleting ${rf}"
         \fd --hidden --no-ignore --glob --exclude=".git/" --type=f "${rf}" \
-            --exec rm -rf
+            --exec rm -f
     done
     echo
     ok "done"
