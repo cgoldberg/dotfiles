@@ -408,6 +408,12 @@ sudo modinfo r8125 | head
 echo 'blacklist r8169' | sudo tee /etc/modprobe.d/blacklist-r8169.conf
 ```
 
+- ensure r8125 loads at boot
+
+```
+echo r8125 | sudo tee /etc/modules-load.d/r8125.conf
+```
+
 - rebuild initramfs:
 
 ```
@@ -423,6 +429,7 @@ sudo reboot
 - verify both adapters
 
 ```
+lspci -nnk | grep -A 4 -i ethernet
 sudo ethtool -i eno1
 sudo ethtool -i enp4s0
 ```
