@@ -854,10 +854,6 @@ clean-py() {
         err "can't run from this directory"
         return 1
     fi
-    if ! type fd >/dev/null 2>&1; then
-        err "fd not found"
-        return 1
-    fi
     local dirs=(
         build
         dist
@@ -891,13 +887,11 @@ clean-py() {
     done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
-        \fd --hidden --no-ignore --glob --exclude=".git/" --type=d "${rd}" \
-            --exec rm -rf
+        find . -path '*/.git' -prune -o -type d -name "${rd}" -prune -exec rm -rf -- {} +
     done
     for rf in "${recurse_files[@]}"; do
         echo "recursively deleting ${rf}"
-        \fd --hidden --no-ignore --glob --exclude=".git/" --type=f "${rf}" \
-            --exec rm -f
+        find . -path '*/.git' -prune -o -type f -name "${rf}" -exec rm -f -- {} +
     done
     echo
     ok "done"
