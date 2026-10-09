@@ -305,10 +305,8 @@ sudo ufw status verbose
 
 - install:
   - `sudo apt install systemd-resolved`
-
 - find NetworkManager connection name:
   - `nmcli connection show` (name will be something like `Wired connection 1`)
-
 - ensure NetworkManager doesn’t inject other DNS:
 
 ```
@@ -382,6 +380,57 @@ sudo chmod 600 /root/.smbcredentials
 
 ```
 //10.0.0.5/public /mnt/bitz cifs credentials=/root/.smbcredentials,relatime,nofail,serverino,nosharesock,_netdev,cache=strict,actimeo=60,gid=1000,uid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8  0  0
+```
+
+----
+
+## Use DKMS driver for Realtek RTL8125 ethernet adapters
+
+Bosgame ARB19D-03 has 2 Realtek RTL8125 2.5GbE controllers. We can use the Debian packaged version
+of the Realtek r8125 driver instead of the generic r8169 driver in the Linux kernel.
+
+- install the DKMS driver
+
+```
+sudo apt install dkms r8125-dkms
+```
+
+- verify the driver built successfully:
+
+```
+dkms status
+modinfo r8125 | head
+```
+
+- prevent r8169 from loading:
+
+```
+echo 'blacklist r8169' | sudo tee /etc/modprobe.d/blacklist-r8169.conf
+```
+
+- rebuild initramfs:
+
+```
+sudo update-initramfs -u
+```
+
+- reboot:
+
+```
+sudo reboot
+```
+
+- verify both adapters
+
+```
+sudo ethtool -i eno1
+sudo ethtool -i enp4s0
+```
+
+- both should report:
+
+```
+driver: r8125
 ```
 
 ----
@@ -467,5 +516,6 @@ sudo touch /etc/chromium/policies/managed/managed_policies.json
 }
 ```
 
-- verify policies are enabled (status "OK"): chrome://policy
-- lookup settings for each policy at: https://chromeenterprise.google/policies/?policy=<policy>
+- verify policies are enabled (status "OK"): [chrome://policy](chrome://policy)
+- lookup settings for each policy at:
+  [https://chromeenterprise.google/policies/?policy=<policy>](https://chromeenterprise.google/policies/?policy=<policy>)
