@@ -13,9 +13,7 @@ Settings can be exported with `dconf dump` and restored with `dconf load`.
 
 ## gnome-terminal
 
-`gnome-terminal.properties` contains settings for `gnome-terminal`.
-
-- generate new file with current settings:
+- export current settings to file:
 
 ```
 dconf dump /org/gnome/terminal/ > gnome-terminal.properties
@@ -31,36 +29,25 @@ dconf load /org/gnome/terminal/ < gnome-terminal.properties
 
 ----
 
-## keybindings (global shortcuts layer)
+## keybindings
 
-`gnome-media-keybindings.properties` contains settings for keyboard keybindings.
+- shortcut types:
+  - media keys and custom shortcuts
+  - window manager shortcuts
+  - gnome shell shortcuts
 
-- generate new file with current settings:
+- export current settings to files:
 
 ```
 dconf dump /org/gnome/settings-daemon/plugins/media-keys/ > gnome-media-keybindings.properties
+dconf dump /org/gnome/desktop/wm/keybindings/ > gnome-wm-keybindings.properties
+dconf dump /org/gnome/shell/keybindings/ > gnome-shell-keybindings.properties
 ```
 
 - restore settings:
 
 ```
 dconf load /org/gnome/settings-daemon/plugins/media-keys/ < gnome-media-keybindings.properties
-```
-
-----
-
-## keybindings (window manager layer)
-
-`gnome-wm-keybindings.properties` contains settings for keyboard keybindings.
-
-- generate new file with current settings:
-
-```
-dconf dump /org/gnome/desktop/wm/keybindings/ > gnome-wm-keybindings.properties
-```
-
-- restore settings:
-
-```
 dconf load /org/gnome/desktop/wm/keybindings/ < gnome-wm-keybindings.properties
+dconf load /org/gnome/shell/keybindings/ < gnome-shell-keybindings.properties
 ```
