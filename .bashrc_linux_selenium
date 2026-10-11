@@ -121,15 +121,6 @@ selenium-server() {
 # also delete and re-download selenium grid server
 update-webrivers() {
     kill-webdrivers
-    local sel_mgr_bin
-    if [ "$(arch)" == "x86_64" ]; then
-        sel_mgr_bin="selenium-manager-linux-x86_64"
-    elif [ "$(arch)" == "aarch64" ]; then
-        sel_mgr_bin="selenium-manager-linux-arm64"
-    else
-        err "unsupported architecture for selenium manager"
-        return 1
-    fi
     local sel_home="${SELENIUM_HOME}"
     local sel_mgr_home="${SELENIUM_MANAGER_HOME}"
     local server_jar="selenium-server.jar"
@@ -152,6 +143,15 @@ update-webrivers() {
         err "${sel_mgr_home} not found"
         return 1
     fi
+    local sel_mgr_bin
+    if [ "$(arch)" == "x86_64" ]; then
+        sel_mgr_bin="selenium-manager-linux-x86_64"
+    elif [ "$(arch)" == "aarch64" ]; then
+        sel_mgr_bin="selenium-manager-linux-arm64"
+    else
+        err "unsupported architecture for selenium manager"
+        return 1
+    fi
     for d in ${dirs[@]}; do
         if [ -d ${d} ]; then
             echo "deleting ${d}"
@@ -161,10 +161,11 @@ update-webrivers() {
     echo
     cd "${sel_mgr_home}"
     echo "updating selenium manager..."
-    gh release download --clobber --pattern="${sel_mgr_bin}-linux" --output="${sel_home}/${sel_mgr_bin}"
+    gh release download --clobber --pattern="${sel_mgr_bin}" --output="${sel_home}/${sel_mgr_bin}"
     cd "${sel_home}"
-    chmod +x "./${sel_mgr_bin}"
-    "./${sel_mgr_bin}" --version
+    mv "./${sel_mgr_bin}" ./selenium-manager
+    chmod +x ./selenium-manager
+    ./selenium-manager --version
     echo
     echo "updating grid server..."
     gh release download --clobber --pattern="selenium-server*.jar" --output="${server_jar}"
