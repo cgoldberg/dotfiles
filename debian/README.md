@@ -484,7 +484,9 @@ systemctl --user start random-wallpaper.service
 
 ----
 
-## Add managed policy for Chromium browser (un-enshittify, remove AI features, add privacy hardening)
+## Add managed policy for Chromium browser
+
+un-enshittify, remove AI features, add privacy hardening
 
 - create a managed policy:
 
