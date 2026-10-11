@@ -52,6 +52,7 @@
 #    - ncal (sudo apt install ncal)
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (sudo apt install rsync)
+#    - ruby (sudo apt install ruby)
 #    - rustup (https://rustup.rs)
 #    - toilet (sudo apt install toilet)
 #    - yt-dlp (pipx-install yt-dlp[default,curl-cffi,deno,secretstorage])
@@ -116,6 +117,7 @@ DEPENDENCIES_LINUX=(
     "notify-send"
     "pyenv"
     "rsync"
+    "ruby"
     "rustup"
     "toilet"
     "yt-dlp"
