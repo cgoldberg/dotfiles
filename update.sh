@@ -28,7 +28,6 @@
 #    - pyupgrade (pipx-install pyupgrade)
 #    - refurb (pipx-install refurb)
 #    - rg (cargo install ripgrep --features pcre2, scoop install ripgrep)
-#    - ruby (sudo apt install ruby, scoop install ruby)
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - tickrs (cargo install tickrs, scoop install tickrs)
@@ -93,7 +92,6 @@ DEPENDENCIES=(
     "pyupgrade"
     "refurb"
     "rg"
-    "ruby"
     "shellcheck"
     "subl"
     "tickrs"
