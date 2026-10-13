@@ -771,38 +771,6 @@ py-upgrade() {
 }
 
 
-# run refurb against all python files in current directory (recursive)
-# and display recommendations
-py-refurb() {
-    if ! type refurb >/dev/null 2>&1; then
-        err "refurb not found"
-        return 1
-    fi
-    local count=0
-    while IFS= read -r -d '' file; do
-        refurb \
-            --enable-all \
-            --python-version 3.10 \
-            --disable FURB107 \
-            --disable FURB173 \
-            --disable FURB183 \
-            --disable FURB184 \
-            "${file}"
-        count=$((count + 1))
-    done < <(
-        find . \
-            -name "*.py" \
-            ! -path "*/.git/*" \
-            ! -path "*/.tox/*" \
-            ! -path "*/venv/*" \
-            ! -path "*/"*"_cache/*" \
-            -print0
-    )
-    echo
-    ok "Processed ${count} files"
-}
-
-
 # clean python pip/pipx cache
 clean-pip() {
     echo "cleaning pip/pipx cache..."
