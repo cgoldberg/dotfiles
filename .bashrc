@@ -765,7 +765,7 @@ py-upgrade() {
     # so we convert them back
     if [[ "${OSTYPE}" == "msys" || "${OSTYPE}" == "cygwin" ]]; then
         git ls-files -z -- "*.py" | xargs --null --no-run-if-empty unix2dos 2>/dev/null
-        fi
+    fi
     echo
     ok "Processed ${count} files"
 }
