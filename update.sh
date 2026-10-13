@@ -26,7 +26,6 @@
 #    - pre-commit (pipx-install pre-commit)
 #    - python3 (sudo apt install python3, scoop install python)
 #    - pyupgrade (pipx-install pyupgrade)
-#    - refurb (pipx-install refurb)
 #    - rg (cargo install ripgrep --features pcre2, scoop install ripgrep)
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)

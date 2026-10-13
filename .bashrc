@@ -760,26 +760,11 @@ py-upgrade() {
     while IFS= read -r -d '' file; do
         pyupgrade --py310-plus "${file}"
         count=$((count + 1))
-    done < <(
-        find . \
-            -name "*.py" \
-            ! -path "*/.git/*" \
-            ! -path "*/.tox/*" \
-            ! -path "*/venv/*" \
-            ! -path "*/"*"_cache/*" \
-            -print0
-    )
+    done < <(git ls-files -z -- "*.py")
     # on Windows, pyupgrade rewrites files with LF line endings,
     # so we convert them back
     if [[ "${OSTYPE}" == "msys" || "${OSTYPE}" == "cygwin" ]]; then
-        find . \
-            -name "*.py" \
-            ! -path "*/.git/*" \
-            ! -path "*/.tox/*" \
-            ! -path "*/venv/*" \
-            ! -path "*/"*"_cache/*" \
-            -print0 |
-            xargs --null --no-run-if-empty unix2dos 2>/dev/null
+        git ls-files -z -- "*.py" | xargs --null --no-run-if-empty unix2dos 2>/dev/null
         fi
     echo
     ok "Processed ${count} files"
