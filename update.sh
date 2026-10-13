@@ -90,7 +90,6 @@ DEPENDENCIES=(
     "pre-commit"
     "python3"
     "pyupgrade"
-    "refurb"
     "rg"
     "shellcheck"
     "subl"
