@@ -77,10 +77,6 @@ alias x="TASKKILL //F //IM git.exe >/dev/null 2>&1; exit"
 alias clean-tmp="rm -rf /tmp/* /tmp/.*"
 
 
-# give tox subprocesses direct access to terminal
-alias tox="tox --no-capture"
-
-
 # =========================================================================================
 #
 #     .o88o.                                       .    o8o
