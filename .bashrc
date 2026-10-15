@@ -202,10 +202,6 @@ alias cd.........="cd ../../../../../../../.."
 alias tree="treex"
 
 
-# give tox subprocesses direct access to terminal
-alias tox="tox --no-capture"
-
-
 # enable color support for grep
 alias grep="grep --color=always"
 
