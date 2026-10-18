@@ -158,6 +158,7 @@ if type pipx >/dev/null 2>&1; then
     eval "$(register-python-argcomplete pipx)"
 fi
 
+
 # uv
 if type uv >/dev/null 2>&1; then
     eval "$(uv generate-shell-completion bash)"
@@ -200,6 +201,10 @@ alias cd.........="cd ../../../../../../../.."
 
 # list directory tree
 alias tree="treex"
+
+
+# give tox subprocesses direct access to terminal
+alias tox="tox --no-capture"
 
 
 # enable color support for grep
