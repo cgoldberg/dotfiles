@@ -821,6 +821,7 @@ clean-py() {
     local dirs=(
         build
         dist
+        target
     )
     local recurse_dirs=(
         __pycache__
