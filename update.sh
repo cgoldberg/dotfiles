@@ -311,11 +311,14 @@ if is_linux; then
     echo
 
     sublime_dir="${HOME}/.config/sublime-text/Packages/User"
-    sublime_config="./sublime/Preferences.sublime-settings"
-    echo "copying sublime config from dotfiles repo to ${sublime_dir}..."
+    sublime_prefs_config="./sublime/Preferences.sublime-settings"
+    sublime_mouse_config="./sublime/Default.sublime-mousemap"
+    echo "copying sublime configs from dotfiles repo to ${sublime_dir}..."
     mkdir --parents "${sublime_dir}"
-    echo -e "  copying: ${sublime_config}"
-    cp "${sublime_config}" "${sublime_dir}"
+    echo -e "  copying: ${sublime_prefs_config}"
+    cp "${sublime_prefs_config}" "${sublime_dir}"
+    echo -e "  copying: ${sublime_mouse_config}"
+    cp "${sublime_mouse_config}" "${sublime_dir}"
     echo
 
     gnome_terminal_config="gnome-terminal.properties"
