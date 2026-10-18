@@ -1,0 +1,21 @@
+// Hold Ctrl while scrolling to jump one page at a time.
+[
+    {
+        "button": "scroll_up",
+        "modifiers": ["ctrl"],
+        "command": "move",
+        "args": {
+            "by": "pages",
+            "forward": false
+        }
+    },
+    {
+        "button": "scroll_down",
+        "modifiers": ["ctrl"],
+        "command": "move",
+        "args": {
+            "by": "pages",
+            "forward": true
+        }
+    }
+]
