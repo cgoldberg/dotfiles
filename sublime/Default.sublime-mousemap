@@ -1,21 +1,15 @@
-// Hold Ctrl while scrolling to jump one page at a time.
 [
+    // Hold Ctrl and scroll to move by 40 lines at a time.
     {
         "button": "scroll_up",
         "modifiers": ["ctrl"],
-        "command": "move",
-        "args": {
-            "by": "pages",
-            "forward": false
-        }
+        "command": "scroll_lines",
+        "args": {"amount": 40.0}
     },
     {
         "button": "scroll_down",
         "modifiers": ["ctrl"],
-        "command": "move",
-        "args": {
-            "by": "pages",
-            "forward": true
-        }
+        "command": "scroll_lines",
+        "args": {"amount": -40.0}
     }
 ]
