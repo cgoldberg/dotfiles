@@ -81,14 +81,14 @@ clean-selenium-dev() {
         for sl in ${symlinks[@]}; do
             if [ -L ${sl} ]; then
                 echo "deleting ${sl}"
-                sudo rm -rf ${sl}
+                sudo rm -rf -- ${sl}
             fi
         done
     fi
     for dd in ${dot_dirs[@]}; do
         if [ -d ${dd} ]; then
             echo "deleting ${dd}"
-            sudo rm -rf ${dd}
+            sudo rm -rf -- ${dd}
         fi
     done
 }
@@ -155,7 +155,7 @@ update-webrivers() {
     for d in ${dirs[@]}; do
         if [ -d ${d} ]; then
             echo "deleting ${d}"
-            rm -rf ${d}
+            rm -rf -- ${d}
         fi
     done
     echo

@@ -794,7 +794,7 @@ clean-pip() {
     for d in ${dirs[@]}; do
         if [ -d ${d} ]; then
             echo "deleting ${d}"
-            rm -rf ${d}
+            rm -rf -- ${d}
         fi
     done
     echo
@@ -818,19 +818,18 @@ clean-py() {
         err "can't run from this directory"
         return 1
     fi
-    local dirs=(
-        build
-        dist
-        target
-    )
     local recurse_dirs=(
         __pycache__
+        build
+        dist
+        htmlcov
+        target
+        venv
+        wheelhouse
         .tox
         .venv
         .*_cache
         *.egg-info
-        htmlcov
-        venv
     )
     local recurse_files=(
         *.coverage
@@ -844,12 +843,6 @@ clean-py() {
     fi
     echo "cleaning python dev/temp files..."
     echo
-    for d in "${dirs[@]}"; do
-        if [ -d ${d} ]; then
-            echo "deleting ${d}/"
-            rm -rf "${d}/"
-        fi
-    done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
         find . -path '*/.git' -prune -o -type d -name "${rd}" -prune -exec rm -rf -- {} +

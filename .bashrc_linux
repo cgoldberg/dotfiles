@@ -347,14 +347,14 @@ trim-audio() {
 
 # whack the thumbnail cache
 clean-thumbnails() {
-    rm -rf "${HOME}/.cache/thumbnails/"
+    rm -rf -- "${HOME}/.cache/thumbnails/"
     ok "cleaned thumbnail cache"
 }
 
 
 # whack the package resource lists
 clean-apt-index() {
-    sudo rm -rf /var/lib/apt/lists/*
+    sudo rm -rf -- /var/lib/apt/lists/*
     ok "cleaned package resource lists"
 }
 
@@ -370,8 +370,8 @@ clean-system-logs() {
     echo "stopping systemd-journald service..."
     sudo systemctl --quiet stop systemd-journald
     echo "removing systemd-journald logs..."
-    sudo rm -rf /var/log/journal/*
-    sudo rm -rf /run/log/journal/*
+    sudo rm -rf -- /var/log/journal/*
+    sudo rm -rf -- /run/log/journal/*
     echo "truncating all system log files..."
     sudo find /var/log -type f -name "*.log" -exec truncate -s 0 {} \;
     sudo truncate -s 0 /var/log/wtmp /var/log/wtmp.db
@@ -521,8 +521,8 @@ apt-install-package-from-backports() {
 clean-rust() {
     cargo cache --autoclean
     if [ -d "${HOME}/.cargo" ]; then
-        rm -rf "${HOME}/.cargo/registry"
-        rm -rf "${HOME}/.cargo/git"
+        rm -rf -- "${HOME}/.cargo/registry"
+        rm -rf -- "${HOME}/.cargo/git"
     fi
 }
 

@@ -74,7 +74,7 @@ alias x="TASKKILL //F //IM git.exe >/dev/null 2>&1; exit"
 
 
 # delete crap in /tmp
-alias clean-tmp="rm -rf /tmp/* /tmp/.*"
+alias clean-tmp="rm -rf -- /tmp/* /tmp/.*"
 
 
 # =========================================================================================
@@ -150,7 +150,7 @@ scoop-update-all() {
         if [ "${dir_count}" -gt 1 ]; then
             local oldest_version_dir=$(find "${d}" -mindepth 1 -maxdepth 1 -type d ! -type l | sort -V | head -n 1)
             echo "deleting ${oldest_version_dir}"
-            rm -rf "${oldest_version_dir}"
+            rm -rf -- "${oldest_version_dir}"
         fi
     done
     echo "Deleting Cache..."
