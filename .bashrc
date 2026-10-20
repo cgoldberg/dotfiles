@@ -926,7 +926,6 @@ clean-rust() {
     cargo cache --autoclean
     rm -rf -- "${CARGO_HOME}/registry"
     rm -rf -- "${CARGO_HOME}/git"
-    echo
     ok "done"
 }
 
