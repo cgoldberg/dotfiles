@@ -872,7 +872,7 @@ clean-dev() {
     echo && update-rust-bins &&
     echo && pipx-upgrade-all
     echo
-    ok "done cleaning"
+    ok "done cleaning and updating"
 }
 
 
