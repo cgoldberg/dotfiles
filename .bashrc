@@ -812,7 +812,7 @@ clean-uv() {
 }
 
 
-# clean python dev/temp files from current directory and subdirectories
+# recursively clean python dev/temp files starting from current directory
 clean-py() {
     if [[ "${PWD}" == "${HOME}" || "${PWD}" != "${HOME}"/* ]]; then
         err "can't run from this directory"
@@ -856,6 +856,24 @@ clean-py() {
 }
 
 
+# clean all dev junk
+# - recursively clean python dev/temp files
+# - purge python pip/pipx/uv/cargo cache
+# - upgrade pip/pipx and pipx applications
+# - update rust toolchains and cargo-installed binaries
+clean-dev() {
+    local code_dir="$HOME/code"
+    if [ -d "${code_dir}" ]; then
+        (cd "${code_dir}" && clean-py) || return $?
+    fi
+    clean-pip &&
+    clean-uv &&
+    clean-rust &&
+    update-rust-bins &&
+    pipx-upgrade-all
+}
+
+
 # run pytest with coverage and open html report in browser
 pytest-with-cov() {
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -882,6 +900,7 @@ omit =
     */dist-packages/*
     */build/*
     */dist/*
+    */wheelhouse/*
 EOF
     trap 'rm -f "${cov_cfg}"' EXIT
     echo "installing packages..."
@@ -903,19 +922,22 @@ clean-rust() {
         err "can't find cargo"
         return 1
     fi
+    echo "cleaning cargo cache and registry..."
+    cargo cache --autoclean
     rm -rf -- "${CARGO_HOME}/registry"
     rm -rf -- "${CARGO_HOME}/git"
+    echo
+    ok "done"
 }
 
 
-# update all rust toolchains and binaries that were installed with cargo
+# update all rust toolchains and binaries that are installed with cargo
 update-rust-bins() {
+    echo "updating rust toolchains and installed binaries"
     rustup update
     echo
     cargo install-update --all
-    echo
     clean-rust
-    ok "updated all rust toolchains and binaries"
 }
 
 
