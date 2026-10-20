@@ -8,8 +8,10 @@
 #
 #  - all platforms:
 #    - bat (cargo install bat, scoop install bat)
+#    - cargo (https://rustup.rs, scoop install rustup-gnu)
+#    - cargo-cache (cargo install cargo-cache)
+#    - cargo-install-update (cargo install cargo-update)
 #    - delta (cargo install git-delta, scoop install delta)
-#    - deno (curl -fsSL https://deno.land/install.sh | sh, scoop install deno)
 #    - exiftool (sudo apt install exiftool, scoop install exiftool)
 #    - eza (cargo install eza, scoop install eza)
 #    - fd (cargo install fd-find, scoop install fd)
@@ -27,18 +29,17 @@
 #    - python3 (sudo apt install python3, scoop install python)
 #    - pyupgrade (pipx-install pyupgrade)
 #    - rg (cargo install ripgrep --features pcre2, scoop install ripgrep)
+#    - rustup (https://rustup.rs, scoop install rustup-gnu)
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - tickrs (cargo install tickrs, scoop install tickrs)
 #    - uv (pipx-install uv, scoop install uv)
 #
 #  - linux only:
-#    - bandwhich (cargo install bandwhich, then `sudo setcap cap_sys_ptrace,cap_dac_read_search,cap_net_raw,cap_net_admin+ep ~/.cargo/bin/bandwhich`)
+#    - bandwhich (cargo install bandwhich, then: sudo setcap cap_sys_ptrace,cap_dac_read_search,cap_net_raw,cap_net_admin+ep ~/.cargo/bin/bandwhich)
 #    - bmon (sudo apt install bmon)
-#    - btop (https://github.com/aristocratos/btop - download/unarchive, then: `sudo make install && sudo make setcap`)
-#    - cargo (https://rustup.rs)
-#    - cargo-cache (cargo install cargo-cache)
-#    - cargo-install-update (cargo install cargo-update)
+#    - btop (https://github.com/aristocratos/btop - download/unarchive, then: sudo make install && sudo make setcap)
+#    - deno (curl -fsSL https://deno.land/install.sh | sh, scoop install deno)
 #    - flatpak (sudo apt install flatpak)
 #    - gcc (sudo apt install build-essential)
 #    - githubtakeout (pipx-install githubtakeout)
@@ -52,7 +53,6 @@
 #    - pyenv (https://github.com/pyenv/pyenv)
 #    - rsync (sudo apt install rsync)
 #    - ruby (sudo apt install ruby)
-#    - rustup (https://rustup.rs)
 #    - toilet (sudo apt install toilet)
 #    - yt-dlp (pipx-install yt-dlp[default,curl-cffi,deno,secretstorage])
 #
@@ -72,9 +72,11 @@ REQUIREMENTS=(
 )
 DEPENDENCIES=(
     "bat"
+    "cargo"
+    "cargo-cache"
+    "cargo-install-update"
     "delta"
     "exiftool"
-    "deno"
     "eza"
     "fd"
     "ffmpeg"
@@ -91,6 +93,7 @@ DEPENDENCIES=(
     "python3"
     "pyupgrade"
     "rg"
+    "rustup"
     "shellcheck"
     "subl"
     "tickrs"
@@ -100,9 +103,7 @@ DEPENDENCIES_LINUX=(
     "bandwhich"
     "bmon"
     "btop"
-    "cargo"
-    "cargo-cache"
-    "cargo-install-update"
+    "deno"
     "flatpak"
     "githubtakeout"
     "gnome-terminal"
@@ -116,7 +117,6 @@ DEPENDENCIES_LINUX=(
     "pyenv"
     "rsync"
     "ruby"
-    "rustup"
     "toilet"
     "yt-dlp"
 )
