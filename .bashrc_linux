@@ -517,27 +517,6 @@ apt-install-package-from-backports() {
 }
 
 
-# clean cargo cache and registry
-clean-rust() {
-    cargo cache --autoclean
-    if [ -d "${HOME}/.cargo" ]; then
-        rm -rf -- "${HOME}/.cargo/registry"
-        rm -rf -- "${HOME}/.cargo/git"
-    fi
-}
-
-
-# update all rust toolchains and binaries that were installed with cargo
-update-rust-bins() {
-    rustup update
-    echo
-    cargo install-update --all
-    echo
-    clean-rust
-    ok "updated all rust toolchains and binaries"
-}
-
-
 # update python interpreters with pyenv
 # - update pyenv
 # - uninstall every python installation

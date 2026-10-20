@@ -897,6 +897,28 @@ EOF
 }
 
 
+# clean cargo cache and registry
+clean-rust() {
+    if [ -z "${CARGO_HOME}" ]; then
+        err "can't find cargo"
+        return 1
+    fi
+    rm -rf -- "${CARGO_HOME}/registry"
+    rm -rf -- "${CARGO_HOME}/git"
+}
+
+
+# update all rust toolchains and binaries that were installed with cargo
+update-rust-bins() {
+    rustup update
+    echo
+    cargo install-update --all
+    echo
+    clean-rust
+    ok "updated all rust toolchains and binaries"
+}
+
+
 # install a python application in an isoloated environment with the
 # current global interpreter
 # - usage: pipx-install <package>
