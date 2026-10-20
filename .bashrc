@@ -95,9 +95,8 @@ shopt -s globstar
 # open when a command completes
 shopt -s varredir_close
 
-
-# better command history handling
-# -------------------------------
+# configure command history
+# -------------------------
 # append to history file, rather than overwrite it
 shopt -s histappend
 # edit recalled history line before executing
@@ -120,7 +119,7 @@ HISTFILESIZE=9999
 PROMPT_COMMAND="history -n; history -w; history -c; history -r"
 
 
-# add local bin directories to the end of PATH
+# append local bin directories PATH
 for d in "${HOME}/bin" "${HOME}/.local/bin"; do
     if [[ ":${PATH}:" != *":${d}:"* ]]; then
         export PATH="${PATH}:${d}"
@@ -131,13 +130,14 @@ done
 # ruby gems
 if type ruby >/dev/null 2>&1; then
     export GEM_HOME="${HOME}/.gems"
-    export PATH="${PATH}:${HOME}/.gems/bin"
+    export PATH="${PATH}:${GEM_HOME}/bin"
 fi
 
 
 # rust/cargo
 if [ -d "${HOME}/.cargo" ]; then
     source "${HOME}/.cargo/env"
+    export CARGO_HOME="${HOME}/.cargo"
 fi
 
 
