@@ -864,13 +864,13 @@ clean-py() {
 clean-dev() {
     local code_dir="$HOME/code"
     if [ -d "${code_dir}" ]; then
-        (cd "${code_dir}" && clean-py) || return $?
+        (echo && cd "${code_dir}" && clean-py) || return $?
     fi
-    clean-pip &&
-    clean-uv &&
-    clean-rust &&
-    update-rust-bins &&
-    pipx-upgrade-all
+    echo && clean-pip &&
+    echo && clean-uv &&
+    echo && clean-rust &&
+    echo && update-rust-bins &&
+    echo && pipx-upgrade-all
 }
 
 
@@ -932,7 +932,7 @@ clean-rust() {
 
 # update all rust toolchains and binaries that are installed with cargo
 update-rust-bins() {
-    echo "updating rust toolchains and installed binaries"
+    echo "updating rust toolchains and installed binaries..."
     rustup update
     echo
     cargo install-update --all
