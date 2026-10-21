@@ -858,7 +858,7 @@ clean-py() {
 
 # clean all dev junk
 # - recursively clean python dev/temp files
-# - purge python pip/pipx/uv/cargo cache
+# - purge python pip/pipx/uv/cibuildwheel/cargo cache
 # - upgrade pip/pipx and pipx applications
 # - update rust toolchains and cargo-installed binaries
 clean-dev() {
@@ -866,6 +866,7 @@ clean-dev() {
     if [ -d "${code_dir}" ]; then
         (echo && cd "${code_dir}" && clean-py) || return $?
     fi
+    rm -rf -- "${HOME}/.cache/cibuildwheel" &&
     echo && clean-pip &&
     echo && clean-uv &&
     echo && clean-rust &&
