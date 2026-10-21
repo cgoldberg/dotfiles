@@ -926,6 +926,7 @@ clean-rust() {
         return 1
     fi
     echo "cleaning cargo cache and registry..."
+    echo
     cargo cache --autoclean
     rm -rf -- "${CARGO_HOME}/registry"
     rm -rf -- "${CARGO_HOME}/git"
