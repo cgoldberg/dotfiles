@@ -818,12 +818,15 @@ clean-py() {
         err "can't run from this directory"
         return 1
     fi
+    local recurse_files=(
+        *.coverage
+        *.spec
+        *.pyc
+        *.venv
+    )
     local recurse_dirs=(
         __pycache__
-        build
-        dist
         htmlcov
-        target
         venv
         wheelhouse
         .tox
@@ -831,11 +834,11 @@ clean-py() {
         .*_cache
         *.egg-info
     )
-    local recurse_files=(
-        *.coverage
-        *.spec
-        *.pyc
-        *.venv
+    # limit search depth
+    local unsafe_recurse_dirs=(
+        build
+        dist
+        target
     )
     if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv"
@@ -843,13 +846,17 @@ clean-py() {
     fi
     echo "cleaning python dev/temp files..."
     echo
+    for rf in "${recurse_files[@]}"; do
+        echo "recursively deleting ${rf}"
+        find . -path '*/.git' -prune -o -type f -name "${rf}" -exec rm -f -- {} +
+    done
     for rd in "${recurse_dirs[@]}"; do
         echo "recursively deleting ${rd}/"
         find . -path '*/.git' -prune -o -type d -name "${rd}" -prune -exec rm -rf -- {} +
     done
-    for rf in "${recurse_files[@]}"; do
-        echo "recursively deleting ${rf}"
-        find . -path '*/.git' -prune -o -type f -name "${rf}" -exec rm -f -- {} +
+    for rd in "${unsafe_recurse_dirs[@]}"; do
+        echo "recursively deleting ${rd}/"
+        find . -maxdepth 3 -path '*/.git' -prune -o -type d -name "${rd}" -prune -exec rm -rf -- {} +
     done
     echo
     ok "done"
