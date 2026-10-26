@@ -481,8 +481,7 @@ apt-check-available-backports() {
     local count=0
     sudo apt-get update --no-allow-insecure-repositories >/dev/null
     debian_codename=$(lsb_release -cs)
-    printf '\nChecking installed non-lib packages for newer versions in %s-backports...\n' "${debian_codename}"
-    echo
+    printf '\nChecking installed non-lib packages for newer versions in %s-backports...\n\n' "${debian_codename}"
     printf "%b%-40s%b %-40s %-40s\n" \
         "${BOLD}${GREEN}" "Package" "${RESET}" \
         "Installed Version" "Backports Version"
@@ -522,7 +521,7 @@ apt-check-available-upgrades() {
     sudo apt-get update --no-allow-insecure-repositories >/dev/null
     debian_codename=$(lsb_release -cs)
     printf 'DEBUG: debian_codename=[%s]\n' "${debian_codename}"
-    printf '\nChecking all installed packages for newer versions in %s-backports...\n' "${debian_codename}"
+    printf '\nChecking all installed packages for newer versions in %s-backports...\n\n' "${debian_codename}"
     printf "%b%-40s%b %-35s %-35s\n" \
         "${BOLD}${GREEN}" "Package" "${RESET}" \
         "Installed Version" "Backports Version"
