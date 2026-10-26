@@ -520,7 +520,6 @@ apt-check-available-upgrades() {
     local count=0
     sudo apt-get update --no-allow-insecure-repositories >/dev/null
     debian_codename=$(lsb_release -cs)
-    printf 'DEBUG: debian_codename=[%s]\n' "${debian_codename}"
     printf '\nChecking all installed packages for newer versions in %s-backports...\n\n' "${debian_codename}"
     printf "%b%-40s%b %-35s %-35s\n" \
         "${BOLD}${GREEN}" "Package" "${RESET}" \
