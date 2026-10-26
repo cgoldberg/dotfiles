@@ -474,34 +474,86 @@ apt-which-pkg() {
 }
 
 
-# check all installed packages against backports and show if a newer version is available
+# find installed packages that have a newer version available in backports
 # - skips packages named lib*
 apt-check-available-backports() {
-    local debian_codename installed_version backports_version pkg
+    local backports_version debian_codename installed_version pkg version
+    local count=0
     sudo apt-get update --no-allow-insecure-repositories >/dev/null
     debian_codename=$(lsb_release -cs)
-    echo -e "\nchecking installed packages for newer versions in ${debian_codename}-backports..."
+    printf '\nChecking installed non-lib packages for newer versions in %s-backports...\n' "${debian_codename}"
     echo
     printf "%b%-40s%b %-40s %-40s\n" \
         "${BOLD}${GREEN}" "Package" "${RESET}" \
         "Installed Version" "Backports Version"
     printf '%.0s-' {1..120}; echo
-    for pkg in $(dpkg --get-selections | grep -v deinstall | cut -f1); do
-        if [[ "${pkg}" != lib* ]]; then
-            installed_version=$(dpkg-query -W -f='${Version}' "${pkg}")
-            backports_version=$(apt-cache madison "${pkg}" | grep -oP \
-                ".*${debian_codename}-backports.*" | awk '{print $3}' | head -n 1)
-            # if backports_version is empty or invalid, skip this package
-            if [[ -z "${backports_version}" || ! "${backports_version}" =~ ^[0-9] ]]; then
-                continue
+    for pkg in $(dpkg --get-selections | awk '$2 == "install" {print $1}'); do
+        [[ "${pkg%%:*}" == lib* ]] && continue
+        installed_version=$(dpkg-query -W -f='${Version}' "${pkg}" 2>/dev/null) || continue
+        backports_version=""
+        while read -r version; do
+            if [[ -z "${backports_version}" ]] ||
+                dpkg --compare-versions "${version}" gt "${backports_version}"; then
+                backports_version="${version}"
             fi
-            if dpkg --compare-versions "${backports_version}" gt "${installed_version}"; then
-                printf "%b%-40s%b %-40s %-40s\n" \
-                    "${BOLD}${GREEN}" "${pkg%%:*}" "${RESET}" \
-                    "${installed_version}" "${backports_version}"
-            fi
+        done < <(
+            apt-cache madison "${pkg}" |
+                awk -F ' *\\| *' -v suite="${debian_codename}-backports" \
+                    '$3 ~ suite && $3 ~ /Packages/ {print $2}'
+        )
+        [[ -z "${backports_version}" ]] && continue
+        if dpkg --compare-versions "${backports_version}" gt "${installed_version}"; then
+            printf "%b%-40s%b %-40s %-40s\n" \
+                "${BOLD}${GREEN}" "${pkg%%:*}" "${RESET}" \
+                "${installed_version}" "${backports_version}"
+            ((count++))
         fi
     done
+    printf '\n\n%s non-lib packages with newer backports versions available.\n' "${count}"
+}
+
+
+# find newer backports versions for all installed packages
+# - includes lib* packages
+# - shows packages where the Backports version is newer than the installed version.
+apt-check-available-upgrades() {
+    local backports_version debian_codename installed_version pkg version
+    local count=0
+    sudo apt-get update --no-allow-insecure-repositories >/dev/null
+    debian_codename=$(lsb_release -cs)
+    printf 'DEBUG: debian_codename=[%s]\n' "${debian_codename}"
+    printf '\nChecking all installed packages for newer versions in %s-backports...\n' "${debian_codename}"
+    printf "%b%-40s%b %-35s %-35s\n" \
+        "${BOLD}${GREEN}" "Package" "${RESET}" \
+        "Installed Version" "Backports Version"
+    printf '%.0s-' {1..120}
+    echo
+    while IFS=$'\t' read -r pkg installed_version; do
+        pkg="${pkg%%:*}"
+        backports_version=""
+        while IFS= read -r version; do
+            [[ -z "$version" ]] && continue
+            if [[ -z "$backports_version" ]] ||
+                dpkg --compare-versions "$version" gt "$backports_version"; then
+                backports_version="$version"
+            fi
+        done < <(
+            apt-cache madison "$pkg" |
+                awk -F ' *[|] *' \
+                    -v suite="${debian_codename}-backports" \
+                    '$3 ~ suite && $3 ~ /Packages/ {print $2}'
+        )
+        [[ -z "$backports_version" ]] && continue
+        if dpkg --compare-versions "$backports_version" gt "$installed_version"; then
+            printf "%b%-40s%b %-35s %-35s\n" \
+                "${BOLD}${GREEN}" "$pkg" "${RESET}" \
+                "$installed_version" "$backports_version"
+            ((count++))
+        fi
+    done < <(
+        dpkg-query -W -f='${binary:Package}\t${Version}\n' 2>/dev/null
+    )
+    printf '\n\n%s packages with newer backports versions available.\n' "${count}"
 }
 
 
@@ -519,8 +571,8 @@ apt-install-package-from-backports() {
 
 # update python interpreters with pyenv
 # - update pyenv
-# - uninstall every python installation
-# - install latest version of each python interpreter
+# - uninstall every pyenv managed python interpreter
+# - build/install latest version of each python interpreter
 # - update pip in each python installation
 # - re-install pipx with most recent python interpreter and update all pipx applications
 update-pyenv() {
