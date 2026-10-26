@@ -509,7 +509,7 @@ apt-check-available-backports() {
             ((count++))
         fi
     done
-    printf '\n\n%s non-lib packages with newer backports versions available.\n' "${count}"
+    printf '\n%s non-lib packages with newer backports versions available.\n\n' "${count}"
 }
 
 
@@ -553,7 +553,7 @@ apt-check-available-upgrades() {
     done < <(
         dpkg-query -W -f='${binary:Package}\t${Version}\n' 2>/dev/null
     )
-    printf '\n\n%s packages with newer backports versions available.\n' "${count}"
+    printf '\n%s packages with newer backports versions available.\n\n' "${count}"
 }
 
 
