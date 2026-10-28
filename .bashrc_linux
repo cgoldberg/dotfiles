@@ -385,18 +385,53 @@ clean-system-logs() {
     ok "cleaned all system logs"
     if [[ "${no_prompt}" == "false" ]]; then
         echo
-        echo "reboot now?"
-        echo
-        local result
-        select result in "yes" "no"; do
-            if [ "${result}" == "yes" ]; then
-                echo
-                ok "rebooting now..."
-                sudo reboot
-            fi
-            break
-        done
+        wait_for_key "rebooting now..."
+        sudo reboot
     fi
+}
+
+
+# run all backups
+backup-all() {
+    backup-gdrive || return 1
+    backup-github || return 1
+    backup-nas-to-nas || return 1
+}
+
+
+# deep clean
+clean-all() {
+    wait_for_key "cleaning everything..."
+    clean-thumbnails
+    clean-apt-index
+    clean-selenium-dev
+    clean-dev
+    clean-system-logs -y
+    rm -rf -- ~/.cache/
+    sync
+    sleep 1
+    sudo reboot
+}
+
+
+# flatpak maintenance
+flat-up() {
+    run() {
+        "$@" || { err "command failed: $*"; return 1; }
+    }
+    write() {
+        printf "\n${BOLD}%s${RESET}\n" "$*" >&2
+    }
+    write "upgrading apps and runtimes..."
+    flatpak update || return 1
+    write "removing unused runtimes..."
+    flatpak uninstall --unused || return 1
+    local app_count=$(flatpak list --app | wc -l)
+    local runtime_count=$(flatpak list --runtime | wc -l)
+    echo
+    ok "done (${app_count} apps and ${runtime_count} runtimes installed)"
+    unset -f run
+    unset -f write
 }
 
 
@@ -428,27 +463,6 @@ apt-up() {
     local num_pkgs=$(dpkg-query -W -f='${db:Status-Abbrev}\n' | grep -c '^ii')
     echo
     ok "done (${num_pkgs} packages installed)"
-    unset -f run
-    unset -f write
-}
-
-
-# flatpak maintenance
-flat-up() {
-    run() {
-        "$@" || { err "command failed: $*"; return 1; }
-    }
-    write() {
-        printf "\n${BOLD}%s${RESET}\n" "$*" >&2
-    }
-    write "upgrading apps and runtimes..."
-    flatpak update || return 1
-    write "removing unused runtimes..."
-    flatpak uninstall --unused || return 1
-    local app_count=$(flatpak list --app | wc -l)
-    local runtime_count=$(flatpak list --runtime | wc -l)
-    echo
-    ok "done (${app_count} apps and ${runtime_count} runtimes installed)"
     unset -f run
     unset -f write
 }

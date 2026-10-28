@@ -500,6 +500,7 @@ sudo touch /etc/chromium/policies/managed/managed_policies.json
 ```
 {
   "AIModeSettings": 1,
+  "AutofillGenAiSettings": 2,
   "BackgroundModeEnabled": false,
   "BrowserSignin": 0,
   "BuiltInDnsClientEnabled": true,
@@ -515,13 +516,18 @@ sudo touch /etc/chromium/policies/managed/managed_policies.json
   "MetricsReportingEnabled": false,
   "PasswordLeakDetectionEnabled": false,
   "PasswordManagerEnabled": false,
-  "SafeBrowsingExtendedReportingEnabled": false,
+  "SafeBrowsingDeepScanningEnabled": false,
+  "SafeBrowsingProtectionLevel": 0,
   "SafeBrowsingSurveysEnabled": false,
   "SearchContentSharingSettings": 1,
   "SearchSuggestEnabled": false,
+  "SmartTabSharingSettings": 1,
   "SyncDisabled": true,
   "TabCompareSettings": 2,
+  "ThirdPartyAiChatSettings": 1,
+  "TryOnYouSettings": 2,
   "UrlKeyedAnonymizedDataCollectionEnabled": false,
+  "VoiceTypingSettings": 2,
 }
 ```
 

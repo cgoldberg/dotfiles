@@ -318,6 +318,15 @@ ok() {
 }
 
 
+# display an optional message and wait for a keypress
+# - usage: wait_for_key "Running foo..."
+wait_for_key() {
+    [[ -n "$1" ]] && echo -e "\n$1\n"
+    read -n 1 -s -r -p "press any key to continue (ctrl+c to cancel):"
+    echo
+}
+
+
 # list bash functions and aliases
 funcs() {
     ( alias | cut -d= -f1 | sed 's/^alias //' && \
