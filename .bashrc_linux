@@ -59,7 +59,7 @@ PS1=\
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 
-# python versions to build with pyenv
+# python build matrix for pyenv
 PY_VERSIONS=("3.15" "3.15t" "3.14" "3.13" "3.12" "3.11" "3.10" "pypy3.12")
 
 
