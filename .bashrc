@@ -37,11 +37,15 @@ esac
 
 
 # ANSI color codes
-BOLD="\e[1m"
-BLUE="\e[34m"
-GREEN="\e[32m"
-RED="\e[31m"
-RESET="\e[0m"
+BOLD='\e[1m'
+BLUE='\e[34m'
+GREEN='\e[32m'
+RED='\e[31m'
+ORANGE='\e[1;38;5;214m'
+WHITE='\e[1;38;5;255m'
+LIGHT_BLUE='\e[1;38;5;123m'
+LIGHT_GREEN='\e[38;5;46m'
+RESET='\e[0m'
 
 
 # export environment variables
