@@ -949,7 +949,7 @@ uv-tool-upgrade() {
     echo
     uv tool list
     echo
-    ok "$done"
+    ok "done"
 }
 
 
