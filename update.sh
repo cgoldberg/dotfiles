@@ -24,28 +24,26 @@
 #    - magick (sudo apt install imagemagick, scoop install imagemagick)
 #    - pandoc (https://github.com/jgm/pandoc, scoop install pandoc)
 #    - perl (sudo apt install perl, scoop install perl)
-#    - pipx (pip install --user pipx)
-#    - pre-commit (pipx-install pre-commit)
+#    - pre-commit (uv-tool-install pre-commit)
 #    - python3 (sudo apt install python3, scoop install python)
-#    - pyupgrade (pipx-install pyupgrade)
+#    - pyupgrade (uv-tool-install pyupgrade)
 #    - rg (cargo install ripgrep --features pcre2, scoop install ripgrep)
 #    - rustup (https://rustup.rs, scoop install rustup-gnu)
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - tickrs (cargo install tickrs, scoop install tickrs)
-#    - uv (pipx-install uv, scoop install uv)
+#    - uv (cargo install uv, scoop install uv)
 #
 #  - linux only:
 #    - bandwhich (cargo install bandwhich, then: sudo setcap cap_sys_ptrace,cap_dac_read_search,cap_net_raw,cap_net_admin+ep ~/.cargo/bin/bandwhich)
 #    - bmon (sudo apt install bmon)
 #    - btop (https://github.com/aristocratos/btop - download/unarchive, then: sudo make install && sudo make setcap)
-#    - deno (curl -fsSL https://deno.land/install.sh | sh, scoop install deno)
 #    - flatpak (sudo apt install flatpak)
 #    - gcc (sudo apt install build-essential)
-#    - githubtakeout (pipx-install githubtakeout)
+#    - githubtakeout (uv-tool-install githubtakeout)
 #    - gnome-terminal (sudo apt install gnome-terminal)
 #    - go (https://go.dev/doc/install)
-#    - google_drive_export (pipx install google-drive-export)
+#    - google_drive_export (uv tool install google-drive-export)
 #    - mpv (sudo apt install mpv)
 #    - notify-send (sudo apt install libnotify-bin)
 #    - iostat (sudo apt install sysstat)
@@ -54,7 +52,7 @@
 #    - rsync (sudo apt install rsync)
 #    - ruby (sudo apt install ruby)
 #    - toilet (sudo apt install toilet)
-#    - yt-dlp (pipx-install yt-dlp[default,curl-cffi,deno,secretstorage])
+#    - yt-dlp (uv-tool-install yt-dlp[default,curl-cffi,deno,secretstorage])
 #
 #  - windows only:
 #    - alacritty (scoop install alacritty)
@@ -88,7 +86,6 @@ DEPENDENCIES=(
     "magick"
     "pandoc"
     "perl"
-    "pipx"
     "pre-commit"
     "python3"
     "pyupgrade"
@@ -103,7 +100,6 @@ DEPENDENCIES_LINUX=(
     "bandwhich"
     "bmon"
     "btop"
-    "deno"
     "flatpak"
     "githubtakeout"
     "gnome-terminal"

@@ -146,21 +146,9 @@ if [ -d "${HOME}/.cargo" ]; then
 fi
 
 
-# deno/js
-if [ -d "${HOME}/.deno" ]; then
-    source "${HOME}/.deno/env"
-fi
-
-
 # golang
 if [ -d "/usr/local/go" ]; then
     export PATH="${PATH}:/usr/local/go/bin"
-fi
-
-
-# pipx
-if type pipx >/dev/null 2>&1; then
-    eval "$(register-python-argcomplete pipx)"
 fi
 
 
@@ -790,19 +778,14 @@ py-upgrade() {
 }
 
 
-# clean python pip/pipx cache
+# clean python pip cache
 clean-pip() {
-    echo "cleaning pip/pipx cache..."
+    echo "cleaning pip cache..."
     echo
     pip cache purge
     local dirs=(
         "${HOME}/.cache/pip/"
         "${HOME}/.cache/pip-tools/"
-        "${HOME}/.cache/pipx/"
-        "${HOME}/.local/pipx/.cache/"
-        "${HOME}/.local/pipx/logs/"
-        "${HOME}/pipx/.cache/"
-        "${HOME}/pipx/logs/"
         "${HOME}/AppData/Local/pip/cache/"
     )
     for d in ${dirs[@]}; do
@@ -879,8 +862,8 @@ clean-py() {
 
 # clean all dev junk
 # - recursively clean python dev/temp files
-# - purge python pip/pipx/uv/cibuildwheel/cargo cache
-# - upgrade pip/pipx and pipx applications
+# - purge python pip/uv/cibuildwheel/cargo cache
+# - upgrade pip and uv tool applications
 # - update rust toolchains and cargo-installed binaries
 clean-dev() {
     local code_dir="$HOME/code"
@@ -892,51 +875,9 @@ clean-dev() {
     echo && clean-uv &&
     echo && clean-rust &&
     echo && update-rust-bins &&
-    echo && pipx-upgrade-all
+    echo && uv-tool-upgrade
     echo
     ok "done cleaning and updating"
-}
-
-
-# run pytest with coverage and open html report in browser
-pytest-with-cov() {
-    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-        err "not a git repository"
-        return 1
-    fi
-    cd "$(git rev-parse --show-toplevel)"
-    if [ ! -f "pyproject.toml" ]; then
-        err "not a python project"
-        return 1
-    fi
-    local tmp_dir="$(mktemp -d)"
-    local html_dir="${tmp_dir}/html"
-    local cov_cfg="${tmp_dir}/coveragerc"
-    cat > "${cov_cfg}" <<'EOF'
-[run]
-branch = True
-omit =
-    */tests/*
-    */test_*
-    */venv/*
-    */.venv/*
-    */site-packages/*
-    */dist-packages/*
-    */build/*
-    */dist/*
-    */wheelhouse/*
-EOF
-    trap 'rm -f "${cov_cfg}"' EXIT
-    echo "installing packages..."
-    venv
-    pip install --group test --upgrade --editable . || pip install --upgrade --editable .
-    pip install --upgrade pytest-cov
-    COVERAGE_FILE="${tmp_dir}/.coverage" pytest \
-        --cov=. \
-        --cov-context=test \
-        --cov-config="${cov_cfg}" \
-        --cov-report=html:"${html_dir}"
-    web "${html_dir}/index.html"
 }
 
 
@@ -968,14 +909,14 @@ update-rust-bins() {
 
 # install a python application in an isoloated environment with the
 # current global interpreter
-# - usage: pipx-install <package>
-pipx-install() {
+# - usage: uv-tool-install <package>
+uv-tool-install() {
     if [ -z "$1" ]; then
         err "please specify a package"
         return 1
     fi
-    if ! type pipx >/dev/null 2>&1; then
-        err "pipx not found"
+    if ! type uv >/dev/null 2>&1; then
+        err "uv not found"
         return 1
     fi
     if [ -n "${VIRTUAL_ENV}" ]; then
@@ -983,16 +924,15 @@ pipx-install() {
         deactivate
     fi
     if [ -d "${HOME}/.pyenv" ]; then
-        pipx install "$1" --backend=pip --python "$(pyenv which python)"
+        uv tool install "$1" --python "$(pyenv which python)"
     else
-        pipx install "$1" --backend=pip
+        uv tool install "$1"
     fi
 }
 
 
-# upgrade all pipx applications
-# - reinstalls apps if they don't match the current python interpreter version
-pipx-upgrade-all() {
+# upgrade pip and all uv tool applications
+uv-tool-install() {
     if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv..."
         deactivate
@@ -1000,29 +940,16 @@ pipx-upgrade-all() {
     echo "upgrading pip..."
     PIP_REQUIRE_VIRTUALENV=false python -m pip install --upgrade \
         --upgrade-strategy=eager pip
-    echo "upgrading pipx..."
-    PIP_REQUIRE_VIRTUALENV=false pip install --user --upgrade \
-        --upgrade-strategy=eager pipx
-    local py_version=$(python3 --version)
-    local pipx_list_output=$(pipx list)
-    echo "upgrading pipx apps..."
-    if [[ "${pipx_list_output}" == *"${py_version}"* ]]; then
-        pipx upgrade-all --force --backend=pip --pip-args=--upgrade-strategy=eager
+    echo "upgrading uv tool apps..."
+    if [ -d "${HOME}/.pyenv" ]; then
+        uv tool upgrade --all --reinstall --python "$(pyenv which python)"
     else
-        echo "app versions don't match interpreter. reinstalling packages..."
-        echo
-        if [ -d "${HOME}/.pyenv" ]; then
-            pipx reinstall-all --backend=pip --python "$(pyenv which python)"
-        else
-            pipx reinstall-all --backend=pip
-        fi
+        uv tool upgrade --all --reinstall
     fi
     echo
-    local pipx_list_output=$(pipx list)
-    echo "${pipx_list_output}"
+    uv tool list
     echo
-    ok "$(grep -c '\- ' <<< ${pipx_list_output}) apps from"\
-        "$(grep -c 'package ' <<< ${pipx_list_output}) packages installed"
+    ok "$done"
 }
 
 
