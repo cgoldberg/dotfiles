@@ -875,7 +875,7 @@ clean-dev() {
     echo && clean-uv &&
     echo && clean-rust &&
     echo && update-rust-bins &&
-    echo && uv-tool-upgrade
+    echo && update-uv-tools
     echo
     ok "done cleaning and updating"
 }
@@ -932,7 +932,7 @@ uv-tool-install() {
 
 
 # upgrade pip and all uv tool applications
-uv-tool-upgrade() {
+update-uv-tools() {
     if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv..."
         deactivate
