@@ -992,12 +992,8 @@ pipx-install() {
 # upgrade all pipx applications
 # - reinstalls apps if they don't match the current python interpreter version
 pipx-upgrade-all() {
-    if ! type pipx >/dev/null 2>&1; then
-        err "pipx not found"
-        return 1
-    fi
     if [ -n "${VIRTUAL_ENV}" ]; then
-        echo "deactivating venv"
+        echo "deactivating venv..."
         deactivate
     fi
     echo "upgrading pip..."
