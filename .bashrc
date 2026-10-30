@@ -932,7 +932,7 @@ uv-tool-install() {
 
 
 # upgrade pip and all uv tool applications
-uv-tool-install() {
+uv-tool-upgrade() {
     if [ -n "${VIRTUAL_ENV}" ]; then
         echo "deactivating venv..."
         deactivate
