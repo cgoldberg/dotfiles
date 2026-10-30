@@ -55,6 +55,7 @@ export LESS="--LONG-PROMPT --RAW-CONTROL-CHARS --no-init --quit-at-eof --quit-if
 export GITHUB_USERNAME="cgoldberg"
 export PIP_DISABLE_PIP_VERSION_CHECK=true
 export PIP_REQUIRE_VIRTUALENV=true
+export CARGO_INSTALL_OPTS="--locked"
 export DO_NOT_TRACK=true
 export LESSHISTFILE=- # don't leave .lesshst files
 if type subl >/dev/null 2>&1; then
@@ -960,7 +961,7 @@ update-rust-bins() {
     echo "updating rust toolchains and installed binaries..."
     rustup update
     echo
-    cargo install-update --all
+    cargo install-update --all --locked
     clean-rust
 }
 
