@@ -923,11 +923,7 @@ uv-tool-install() {
         echo "deactivating venv"
         deactivate
     fi
-    if [ -d "${HOME}/.pyenv" ]; then
-        uv tool install "$1" --python "$(pyenv which python)"
-    else
-        uv tool install "$1" --python "$(which python)"
-    fi
+    uv tool install "$1" --python $(python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
 }
 
 
@@ -941,11 +937,7 @@ update-uv-tools() {
     PIP_REQUIRE_VIRTUALENV=false python -m pip install --upgrade \
         --upgrade-strategy=eager pip
     echo "upgrading uv tool apps..."
-    if [ -d "${HOME}/.pyenv" ]; then
-        uv tool upgrade --all --reinstall --python "$(pyenv which python)"
-    else
-        uv tool upgrade --all --reinstall
-    fi
+    uv tool upgrade --all --reinstall --python $(python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
     echo
     uv tool list
     echo
