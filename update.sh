@@ -32,6 +32,7 @@
 #    - shellcheck (sudo apt install shellcheck, scoop install shellcheck)
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - tickrs (cargo install tickrs, scoop install tickrs)
+#    - tox (uv-tool-install tox)
 #    - uv (cargo install uv, scoop install uv)
 #
 #  - linux only:
@@ -94,6 +95,7 @@ DEPENDENCIES=(
     "shellcheck"
     "subl"
     "tickrs"
+    "tox"
     "uv"
 )
 DEPENDENCIES_LINUX=(

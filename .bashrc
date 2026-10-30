@@ -926,7 +926,7 @@ uv-tool-install() {
     if [ -d "${HOME}/.pyenv" ]; then
         uv tool install "$1" --python "$(pyenv which python)"
     else
-        uv tool install "$1"
+        uv tool install "$1" --python "$(which python)"
     fi
 }
 
