@@ -902,7 +902,7 @@ update-rust-bins() {
     echo "updating rust toolchains and installed binaries..."
     rustup update
     echo
-    cargo install-update --all --locked
+    cargo install-update --all
     clean-rust
 }
 
