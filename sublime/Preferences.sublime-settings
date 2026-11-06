@@ -27,7 +27,7 @@
     "fold_buttons": false,
     "folder_exclude_patterns": [".git", ".tox", ".venv", "venv", "__pycache__", ".*_cache", "*.egg-info"],
     "font_face": "hack",
-    "font_size": 10,
+    "font_size": 11,
     "default_font_size": 10,
     "font_options": ["no_italic"],
     "highlight_gutter": true,

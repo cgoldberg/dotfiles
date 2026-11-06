@@ -1,5 +1,5 @@
 [
-    // Hold Ctrl and scroll to move by 40 lines at a time.
+    // Ctrl+scroll for fast scrolling
     {
         "button": "scroll_up",
         "modifiers": ["ctrl"],
@@ -11,5 +11,18 @@
         "modifiers": ["ctrl"],
         "command": "scroll_lines",
         "args": {"amount": -40.0}
+    },
+    // Alt+scroll for even fast scrolling
+    {
+        "button": "scroll_up",
+        "modifiers": ["alt"],
+        "command": "scroll_lines",
+        "args": {"amount": 80.0}
+    },
+    {
+        "button": "scroll_down",
+        "modifiers": ["alt"],
+        "command": "scroll_lines",
+        "args": {"amount": -80.0}
     }
 ]
