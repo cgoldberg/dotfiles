@@ -765,7 +765,7 @@ py-upgrade() {
     fi
     local count=0
     while IFS= read -r -d '' file; do
-        pyupgrade --py310-plus "${file}"
+        pyupgrade --py312-plus "${file}"
         count=$((count + 1))
     done < <(git ls-files -z -- "*.py")
     # on Windows, pyupgrade rewrites files with LF line endings,
