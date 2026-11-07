@@ -615,7 +615,7 @@ apt-install-package-from-backports() {
 # - uninstall every pyenv managed python interpreter
 # - build/install latest version of each python interpreter
 # - update pip in each python installation
-# - re-install pipx with most recent python interpreter and update all pipx applications
+# - re-install uv tools
 update-pyenv() {
     if [ ! -d "${HOME}/.pyenv" ]; then
         err "pyenv not configured"
