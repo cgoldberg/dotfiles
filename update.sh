@@ -33,6 +33,7 @@
 #    - subl (https://sublimetext.com/docs/linux_repositories.html)
 #    - tickrs (cargo install tickrs, scoop install tickrs)
 #    - tox (uv-tool-install tox)
+#    - treex (uv-tool-install treex-cli)
 #    - uv (cargo install uv, scoop install uv)
 #
 #  - linux only:
@@ -96,6 +97,7 @@ DEPENDENCIES=(
     "subl"
     "tickrs"
     "tox"
+    "treex"
     "uv"
 )
 DEPENDENCIES_LINUX=(
