@@ -34,7 +34,7 @@
 #    - tickrs (cargo install tickrs, scoop install tickrs)
 #    - tox (uv-tool-install tox)
 #    - treex (uv-tool-install treex-cli)
-#    - uv (cargo install uv, scoop install uv)
+#    - uv (curlpipe installer, scoop install uv)
 #
 #  - linux only:
 #    - bandwhich (cargo install bandwhich, then: sudo setcap cap_sys_ptrace,cap_dac_read_search,cap_net_raw,cap_net_admin+ep ~/.cargo/bin/bandwhich)
