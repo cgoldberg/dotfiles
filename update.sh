@@ -43,7 +43,6 @@
 #    - flatpak (sudo apt install flatpak)
 #    - gcc (sudo apt install build-essential)
 #    - githubtakeout (uv-tool-install githubtakeout)
-#    - gnome-terminal (sudo apt install gnome-terminal)
 #    - go (https://go.dev/doc/install)
 #    - google_drive_export (uv tool install google-drive-export)
 #    - mpv (sudo apt install mpv)
