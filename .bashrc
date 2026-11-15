@@ -485,8 +485,10 @@ renew-inode() {
 
 # get latest tox and tox-uv package versions from pypi
 get-tox-version() {
+    local pkg version
     for pkg in "tox" "tox-uv"; do
-        echo "${pkg}: $(curl -s https://pypi.org/pypi/$p/json | jq -r '.info.version')"
+        version="$(curl -s https://pypi.org/pypi/${pkg}/json | jq -r '.info.version')"
+        echo "${pkg}: ${version}"
     done
 }
 
