@@ -483,7 +483,15 @@ renew-inode() {
 }
 
 
-# remove metadata from an image
+# get latest tox and tox-uv package versions from pypi
+get-tox-version() {
+    for pkg in "tox" "tox-uv"; do
+        echo "${pkg}: $(curl -s https://pypi.org/pypi/$p/json | jq -r '.info.version')"
+    done
+}
+
+
+# remove metadata from image
 # - usage: clean-img-metadata <image_file_or_glob>
 clean-img-metadata() {
     if [ -z "$1" ]; then
