@@ -36,7 +36,7 @@
 [pager]
     diff = delta
     log = less
-    show = less
+    show = delta
 
 [rebase]
     autoStash = true
