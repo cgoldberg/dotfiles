@@ -797,7 +797,7 @@ clean-pip() {
         "${HOME}/.cache/pip-tools/"
         "${HOME}/AppData/Local/pip/cache/"
     )
-    for d in ${dirs[@]}; do
+    for d in "${dirs[@]}"; do
         if [ -d ${d} ]; then
             echo "deleting ${d}"
             rm -rf -- ${d}
