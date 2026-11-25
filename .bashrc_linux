@@ -436,7 +436,7 @@ clean-all() {
     clean-selenium-dev
     clean-dev
     clean-system-logs -y
-    rm -rf -- ~/.cache/
+    sudo rm -rf -- ~/.cache/
     sync
     sleep 1
     sudo reboot
