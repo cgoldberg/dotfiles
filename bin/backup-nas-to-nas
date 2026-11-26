@@ -28,7 +28,7 @@ DESTINATION_NAS_MNT="/mnt/${DESTINATION_NAS_HOST}"
 ALLOWED_HOSTS=("minime" "raspberrypi")
 MIN_DESTINATION_GB=100
 RSYNC_TRASH_DIR="${DESTINATION_NAS_MNT}/.rsync-trash"
-RSYNC_TRASH_DAYS=30
+RSYNC_TRASH_DAYS=7
 
 SEP="----------------------------------------------------------------"
 BOLD="\e[1m"
